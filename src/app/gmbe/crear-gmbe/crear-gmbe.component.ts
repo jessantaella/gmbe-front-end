@@ -53,7 +53,7 @@ export class CrearGmbeComponent {
 
   padreActual : number = 0;
 
-  tipo = 0;
+  tipo = 2;
   categoria: any;
   subcategoriasAgregadas: any[] = [];
   estructuraFinalFilasTitulos: any = [];
