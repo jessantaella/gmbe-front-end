@@ -28,6 +28,11 @@
     color:#ffffff;
  }
 
+ .btn-guardar:disabled {
+  background-color: #D0CECE; /* Color de fondo para el botón deshabilitado */
+  color: #ffffff; /* Color del texto para el botón deshabilitado */
+}
+
  .btn-nuevo, .btn-nuevo:hover{
    background-color: #21409A;
    color: #ffffff;

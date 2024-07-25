@@ -1,22 +1,25 @@
 
 <div class="sidebar " *ngIf="getrol() !== 0">
     <div class="menu-des">
-    <div class="menu">
-        <em class='bi bi-list icon-menu m-3' (click)="activarSidebar()" id="btn"></em>
+    <div class="menu text-start fs-4">
+        <fa-icon [icon]="faBars" (click)="activarSidebar()" id="btn" class="m-2"></fa-icon>
+        <!--em class='bi bi-list icon-menu m-3' (click)="activarSidebar()" id="btn"></!--em-->
     </div>
         <ul class="nav">
             <li>
-                <a class="p-0 border-0" [routerLink]="['/usuarios']">
-                    <em class="bi bi-people-fill"></em>
-                    <span class="link_name">
+                <a [routerLink]="['/usuarios']">
+                    <!--em class="bi bi-people-fill"></!--em-->
+                    <fa-icon [icon]="faUserGroup" class="text-start iconoMenu ms-3"></fa-icon>
+                    <span class="link_name m-2">
                         Usuarios
                     </span>
                 </a>
             </li>
             <li>
                 <a [routerLink]="['/gmbe']">
-                    <em class='bi bi-cast'></em>
-                    <span class="link_name">
+                    <!--em class='bi bi-cast'></em-->
+                    <fa-icon [icon]="faDesktop" class="text-start iconoMenu ms-3"></fa-icon>
+                    <span class="link_name m-2">
                         MBE
                     </span>
                 </a>

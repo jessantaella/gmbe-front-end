@@ -1,7 +1,7 @@
 <div class="accordion w-75 m-auto mt-3" id="accordionExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button custom-accordion-button collapsed mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+            <button class="accordion-button custom-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                 aria-expanded="true" aria-controls="collapseOne">
                 Datos generales
             </button>
@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mt-2">
                         <div class="row">
-                            <label for="nombre" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start">* Nombre :</label>
+                            <label for="nombre" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start">* Nombre:</label>
                             <div class="col-sm-8">
                               <input type="text" class="form-control" id="nombre" formControlName="nombre" maxlength="200">
                             </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mt-2">
                         <div class="row">
-                            <label for="objetivos" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start">* Objetivos :</label>
+                            <label for="objetivos" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start">* Objetivos:</label>
                             <div class="col-sm-8">
                               <input type="text" class="form-control" id="objetivos" formControlName="objetivo" maxlength="500">
                             </div>
@@ -30,7 +30,7 @@
 
                     <div class="col-md-12 col-sm-12 mt-2">
                         <div class="row">
-                            <label for="hallazgos" class="col-sm-2 col-form-label text-md-end text-sm-start">* Resumen con principales hallazgos :</label>
+                            <label for="hallazgos" class="col-sm-2 col-form-label text-md-end text-sm-start">* Resumen con principales hallazgos:</label>
                             <div class="col-sm-10">
                                 <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;" formControlName="resumen"></textarea>
                             </div>
@@ -39,7 +39,7 @@
 
                     <div class="col-12 mt-2">
                         <div class="row">
-                            <label for="icono" class="col-sm-2 col-form-label text-md-end text-sm-star">* Carga de ícono MBE :</label>
+                            <label for="icono" class="col-sm-2 col-form-label text-md-end text-sm-star">* Carga de ícono MBE:</label>
                             <div class="col-sm-10">
                                 <div class="d-flex flex-row bd-highlight mb-3">
                                     <div class="p-2 bd-highlight">
@@ -66,7 +66,7 @@
         <h2 class="accordion-header" id="headingTwo">
             <button class="accordion-button custom-accordion-button " type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Marco Conceptual
+                Marco conceptual
             </button>
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -75,7 +75,7 @@
                <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="row">
-                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Tipo :</label>
+                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Tipo:</label>
                         <div class="col-sm-8">
                             <select class="form-select" aria-label="Seleccione una opción" (change)="changeTipo($event)">
                               <option disabled>Seleccione una opción</option>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <div class="row">
-                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Categoría :</label>
+                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Categoría:</label>
                         <div class="col-sm-7">
                             <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
                                 <option selected>Seleccione una opción</option>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <div class="row mt-2">
-                        <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">* Sub-categoría :</label>
+                        <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">* Sub-categoría:</label>
                         <div class="col-sm-7 bg-light listado">
                             <div class="form-check" *ngFor="let sub of subCategorias;let i = index" >
                                 <input class="form-check-input" type="checkbox"  [id]="'flexCheckDefault'+i" [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">
@@ -114,7 +114,7 @@
                         </div>
                       </div>
                       <div class="text-center">
-                        <button class="btn btn-sm btn-success m-2" (click)="agregar()" [disabled]="!activarAgregar">
+                        <button class="btn btn-sm btn-agregar m-2" (click)="agregar()" [disabled]="!activarAgregar">
                             Agregar
                         </button>
                     </div>
@@ -128,15 +128,15 @@
                <table class="table table-bordered" >
                 <caption class="text-center caption-original">Variable de resultados</caption>
                 <thead>
-                  <tr class="text-center">
-                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th id="subtituloTablaColumna" scope="col"  class="titulos-tabla" *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.subcategorias.length">
+                  <tr class="text-center align-middle">
+                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th id="subtituloTablaColumna" scope="col"  class="titulos-tabla align-middle" *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.subcategorias.length">
                         <fa-icon [icon]="faTrash" (click)="eliminarCategoria(1,columna.categoria)"></fa-icon>{{columna.categoria.catalogo}}
                     </th>
                   </tr>
                   <tr>
-                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th id="subtituloTablaFila" class="subtitulos-tabla" *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
+                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th id="subtituloTablaFila" class="subtitulos-tabla align-middle" *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
                             {{ subcolumna.catalogo }}
                      </th>
                   </tr>
@@ -145,10 +145,10 @@
                     <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
                     <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
                   <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index" >
-                    <th  class="titulos-tabla" id="padre" [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}" [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length" *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
+                    <th  class="titulos-tabla align-middle" id="padre" [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}" [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length" *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
                         <fa-icon [icon]="faTrash" (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
                     </th>
-                    <th  class="subtitulos-tabla" scope="row"> {{subFilas.catalogo}} </th>
+                    <th  class="subtitulos-tabla align-middle" scope="row"> {{subFilas.catalogo}} </th>
                   </tr>
                 </tbody>
               </table>
@@ -174,7 +174,7 @@
 
 <ng-template #crearCategoriaModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title w-100 text-center">Nueva Categoría</h4>
+      <label class="modal-title w-100 text-center tituloModal">Nueva Categoría</label>
     </div>
     <div class="modal-body">
   <form [formGroup]="categoriaForm">     
@@ -201,7 +201,7 @@
 
   <ng-template #crearSubcategoriaModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title w-100 text-center">Nueva sub-categoría</h4>
+      <label class="modal-title w-100 text-center tituloModal">Nueva sub-categoría</label>
     </div>
     <div class="modal-body">
   <form [formGroup]="subcategoriaForm">   

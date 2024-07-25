@@ -44,12 +44,12 @@
     </div>
   </form>
 
-  <div class="text-center">
+  <div class="text-center titulosTabla">
     Variable de resultados
   </div>
 
   <div class="d-flex align-items-center">
-    <div class="text-center" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
+    <div class="text-center titulosTabla" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
       Intervenciones
     </div>
     <div class="table-responsive" style="height: 60vh; overflow-y: auto;">
@@ -58,7 +58,7 @@
         <caption class="text-center caption-original"></caption>
         <thead class="sticky-header">
           <tr class="text-center ">
-            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
+            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
             <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle" 
               *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1" [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
               {{ columna?.catalogo }}
@@ -67,7 +67,7 @@
           <tr>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
               <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th id="subtituloTablaFila" class="subtitulos-tabla" *ngIf="!hijo?.auxiliar">
+                  <th id="subtituloTablaFila " class="subtitulos-tabla align-middle" *ngIf="!hijo?.auxiliar">
                     {{ hijo?.idSubCategoria?.catalogo }}
                   </th>
                   <!--th id="subtituloTablaFila" class="subtitulos-tabla" *ngIf="hijo.auxiliar">

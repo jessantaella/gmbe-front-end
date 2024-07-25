@@ -33,7 +33,7 @@ export class EditarGmbeComponent {
   nombreImagen: string = '';
   usuario: any;
 
-  textoBienvenida = 'Edición de GMBE';
+  textoBienvenida = 'Editar MBE';
 
   constructor(private titulos: TitulosService, 
     private route: ActivatedRoute, 

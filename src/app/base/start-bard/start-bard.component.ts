@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {faUser } from '@fortawesome/free-solid-svg-icons';
+import {faUser, faHome } from '@fortawesome/free-solid-svg-icons';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 
@@ -15,6 +15,7 @@ export class StartBardComponent {
   abrir = false;
   usuario:any;
   faUser=faUser;
+  faHome=faHome;
   abrirAdmin = false;
 
   constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService) { }
