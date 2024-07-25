@@ -75,6 +75,7 @@ export class InicioComponent implements OnInit{
       this.router.navigateByUrl('/');
     }
     this.obtenerInformacion();
+    this.obtenerMbesPublicos();
   }
 
   obtenerInformacion(){
@@ -87,6 +88,16 @@ export class InicioComponent implements OnInit{
       err=>{
       });
     //}
+  }
+
+  obtenerMbesPublicos(){
+    this.info.obtenerMBEPublicado().subscribe(
+      res=>{
+        console.log(res);
+        this.mbes =res;
+      },
+      err=>{}
+    )
   }
 
 }

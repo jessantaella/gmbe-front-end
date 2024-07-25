@@ -24,7 +24,7 @@
           <th scope="col">MBE</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody  *ngIf="usuarios.length>0">
         <tr *ngFor="let usuario of usuarios">
           <td class="text-center align-middle">
             <fa-icon [icon]="faEye" class="btn-acciones" (click)="openVer(verModal,usuario)"></fa-icon>
@@ -37,13 +37,24 @@
           </td>
           <td class="align-middle">{{usuario?.nombre}}</td>
           <td class="text-center align-middle">{{usuario?.userName}}</td>
-          <td class="nombreMBE align-middle">
+          <td class="nombreMBE align-middle" *ngIf="usuario?.rolUsuario?.idRol !== 1">
             <ul>
               <li *ngFor="let item of resumeTablamMbe(usuario?.mbesAsociados)">
                 {{item}}
               </li>
             </ul>
           </td>
+          <td class="align-middle text-center" *ngIf="usuario?.rolUsuario?.idRol === 1">
+            Todos
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="usuarios.length<1">
+        <tr >
+          <td class="text-center align-middle" colspan="6">
+            Sin resultados
+          </td>
+          
         </tr>
       </tbody>
     </table>
@@ -72,6 +83,11 @@
             <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname"
               (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
           </datalist>
+          <datalist id="usuariosList" style="display: block !important;" *ngIf="validarExisteUser()!.length<1"
+            [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
+            <option [value]="null" class="noExiste">No existe usuario en LDAP</option>
+          </datalist>
+
         </div>
       </div>
       <div class="mb-3 row">
@@ -84,8 +100,8 @@
       <div class="mb-3 row">
         <label for="rol" class="col-sm-4 col-form-label text-md-end text-sm-start">Rol : </label>
         <div class="col-sm-6">
-          <select class="form-select" aria-label="Rol" formControlName="idRol">
-            <option selected>Seleccione un rol</option>
+          <select class="form-select" aria-label="Rol" formControlName="idRol" (change)="validarGmbes()">
+            <option selected disabled>Seleccione un rol</option>
             <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
           </select>
         </div>
@@ -123,7 +139,7 @@
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!usuarioForm.valid">
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="validarExisteUser().length>0  && !validarGmbes()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
@@ -171,9 +187,8 @@
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle ">
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0 || mbeEditables.length>0">Seleccionados
-                {{usuarioEditar?.mbesAsociados?.length}}</span>
-              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<=0">Ningún
-                seleccionado</span>
+                {{mbeEditables.length}}</span>
+              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<1 && mbeEditables.length<1">Ningún seleccionado</span>
             </button>
             <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
               aria-labelledby="button-triggers-manual">

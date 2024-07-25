@@ -14,6 +14,11 @@
   <div class="flip-card-inner">
     <div class="flip-card-front">
      <!--img [src]="data?.urlImg" class="card-img-top" [alt]="data?.url" class="m-auto pt-3"-->
+     <div class="p-2 bd-highlight">
+      <img
+      *ngIf="imageUrl" [src]="imageUrl"
+        alt="Imagen MBE" class="img-thumbnail imagen">
+    </div>
      <p class="card-text m-1 text-center">
       <strong>
         MBE<br>
@@ -22,9 +27,8 @@
     </p>
     </div>
     <div class="flip-card-back">
-      <h1>John Doe</h1>
-      <p>Architect & Engineer</p>
-      <p>We love that guy</p>
+      <p class="titulo">Resumen del MBE</p>
+      <p class="resumen">{{data?.resumen}}</p>
     </div>
   </div>
 </div>

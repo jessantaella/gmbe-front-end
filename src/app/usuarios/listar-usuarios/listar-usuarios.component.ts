@@ -152,13 +152,14 @@ export class ListarUsuariosComponent implements OnInit {
 
   onCheckboxChangeMBE(valor: number) {
     let index = this.mbeEditables?.indexOf(valor);
-    if (index === -1 || index != undefined) {
+    if (index === -1) {
       // Element does not exist, add it
       this.mbeEditables.push(valor);
     } else {
       // Element exists, remove it
       this.mbeEditables?.splice(index, 1);
     }
+    console.log(this.mbeEditables)
   }
 
   resumeTablamMbe(mbesAsociados: any) {
@@ -174,11 +175,19 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   verificaAsociacionMBE(idMbe: number) {
-    let salida = this.mbeEditables.find((m: any) => m.idMbe === idMbe);
+    let salida = this.mbeEditables.find((m: any) => m === idMbe);
     return salida;
   }
 
   open(content: TemplateRef<any>) {
+    this.usuarioForm = this.fb.group({
+      userName: ["", Validators.required],
+      correo: ["", Validators.required],
+      idRol: ["", Validators.required],
+      nombre: ["", Validators.required],
+    });
+    this.usuarioForm.get("nombre")?.disable();
+    this.usuarioForm.get("correo")?.disable();
     this.mbeEditables = [];
     this.modalRef = this.modalService.open(content, {
       centered: true,
@@ -204,13 +213,14 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuarioEditForm.get("userName")?.disable();
     this.usuarioEditForm.get("correo")?.disable();
     this.usuarioEditForm.get("nombre")?.disable();
+    this.usuarioEditForm.get("idRol")?.disable();
   }
 
   openEditar(content: TemplateRef<any>, usuario: any) {
     this.open(content);
     this.usuarioEditar = usuario;
     this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
-      (item: any) => item
+      (item: any) => item.idMbe
     );
     console.log(this.mbeEditables);
 
@@ -226,6 +236,8 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   crear() {
+    console.log(this.usuarioForm.value)
+    console.log(this.usuarioForm.valid)
     let usuarioObj = this.usuarioForm.getRawValue();
     usuarioObj.listaMBEs = this.mbeEditables;
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
@@ -233,11 +245,24 @@ export class ListarUsuariosComponent implements OnInit {
         swal.fire("", "Usuario creado exitosamente", "success");
         if (this.modalRef) {
           this.modalRef.close();
-          this.obtenerUsuarios();
+          this.cambiarPaginaGetAll(0,10,'','TODOS');
         }
       },
       (err) => {}
     );
+  }
+
+  validarExisteUser(){
+    const searchTerm = this.usuarioForm.get('userName')?.value.toLowerCase();
+    let existe = this.usuariosLdap.filter((usuario) =>
+      usuario.samaccountname.toLowerCase().includes(searchTerm)
+    );
+    return existe;
+  }
+
+  validarGmbes(){
+    let form = this.usuarioForm.value;
+    return form.idRol === "1" ? true : this.mbeEditables.length>0;
   }
 
   editar() {
@@ -249,7 +274,8 @@ export class ListarUsuariosComponent implements OnInit {
         swal.fire("", "Usuario actualizado exitosamente", "success");
         if (this.modalRef) {
           this.modalRef.close();
-          this.obtenerUsuarios();
+          //this.obtenerUsuarios();
+          this.cambiarPaginaGetAll(0,10,'','TODOS');
         }
       },
       (err) => {}

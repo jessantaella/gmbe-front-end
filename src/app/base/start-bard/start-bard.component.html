@@ -38,7 +38,7 @@
         <a class="nav-link link-color" *ngIf="rolUsuario() === 1" [routerLink]="['/usuarios']">Usuarios</a>
       </li>
       <li class="nav-item div-nav" *ngIf="validaToken()">
-        <a class="nav-link link-color" [routerLink]="['/gmbe']" >MBE's</a>
+        <a class="nav-link link-color" [routerLink]="['/gmbe']" >MBE</a>
       </li>
       <li class="nav-item div-nav">
         <a class="nav-link link-color cursor" (click)="cerrarSesion()" *ngIf="validaToken()">Cerrar sesión</a>

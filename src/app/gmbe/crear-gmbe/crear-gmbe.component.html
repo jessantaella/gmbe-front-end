@@ -15,7 +15,7 @@
                         <div class="row">
                             <label for="nombre" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start">* Nombre :</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                              <input type="text" class="form-control" id="nombre" formControlName="nombre" maxlength="200">
                             </div>
                           </div>
                     </div>
@@ -23,7 +23,7 @@
                         <div class="row">
                             <label for="objetivos" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start">* Objetivos :</label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="objetivos" formControlName="objetivo">
+                              <input type="text" class="form-control" id="objetivos" formControlName="objetivo" maxlength="500">
                             </div>
                           </div>
                     </div>
@@ -88,12 +88,12 @@
                         <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Categoría :</label>
                         <div class="col-sm-7">
                             <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
-                                <option selected>Seleccione una opción</option>
+                                <option selected disabled>Seleccione una opción</option>
                                 <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
                               </select>
                         </div>
                         <div class="col-sm-1">
-                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearCategoriaModal)"></fa-icon>
+                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearCategoriaModal,'categoria')"></fa-icon>
                         </div>
                       </div>
                 </div>
@@ -101,19 +101,19 @@
                     <div class="row mt-2">
                         <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">* Sub-categoría :</label>
                         <div class="col-sm-7 bg-light listado">
-                            <div class="form-check" *ngFor="let sub of subCategorias">
-                                <input class="form-check-input" type="checkbox" (click)="subcategoriaSeleccionada(sub)" id="flexCheckDefault" [checked]="existeObjeto(sub)">
-                                <label class="form-check-label" for="flexCheckDefault">
+                            <div class="form-check" *ngFor="let sub of subCategorias;let i = index" >
+                                <input class="form-check-input" type="checkbox"  [id]="'flexCheckDefault'+i" [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">
+                                <label class="form-check-label" for="flexCheckDefault" (click)="subcategoriaSeleccionada(sub)">
                                     {{sub.catalogo}}
                                 </label>
                               </div>
                         </div>
                         <div class="col-md-1 col-sm-12">
-                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearSubcategoriaModal)"></fa-icon>
+                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearSubcategoriaModal,'subcategoria')"></fa-icon>
                         </div>
                       </div>
                       <div class="text-center">
-                        <button class="btn btn-sm btn-success m-2" (click)="agregar()">
+                        <button class="btn btn-sm btn-success m-2" (click)="agregar()" [disabled]="!activarAgregar">
                             Agregar
                         </button>
                     </div>
@@ -121,7 +121,7 @@
                </div>
                <div class="d-flex align-items-center">
                 <div class="vertical-text" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
-                  Variable de resultados
+                  Intervenciones
                 </div>
                <div class="table-responsive" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
                <table class="table table-bordered" >
@@ -190,7 +190,7 @@
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
       </button>
-      <button type="button" class="btn btn-sm btn-guardar" (click)="crearCategoria()">
+      <button type="button" class="btn btn-sm btn-guardar" (click)="crearCategoria()" [disabled]="!categoriaForm.valid">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
       </button>
@@ -226,7 +226,7 @@
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
       </button>
-      <button type="button" class="btn btn-sm btn-guardar"  (click)="crearSubcategoria()">
+      <button type="button" class="btn btn-sm btn-guardar"  (click)="crearSubcategoria()" [disabled]="!subcategoriaForm.valid">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
       </button>

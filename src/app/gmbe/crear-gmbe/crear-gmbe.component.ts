@@ -39,6 +39,8 @@ export class CrearGmbeComponent {
 
   opcionesTipoEstructura!: any[];
 
+  activarAgregar : boolean = false;
+
   /** Arreglos de pruebas */
 
   arregloCategorias!: any[];
@@ -94,15 +96,19 @@ export class CrearGmbeComponent {
   }
 
   onFileChange(event: any): void {
-    const file = event.target.files[0];
+    let file = event.target.files[0];
     if (file) {
-      this.imageFile = file;
+        if (file.size > 5242880) { // 5MB en bytes
+          swal.fire('', 'El archivo no debe pesar más de 5mb', 'error');
+            return;
+        }
+        this.imageFile = file;
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imageUrl = e.target?.result;
-      };
-      reader.readAsDataURL(file);
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            this.imageUrl = e.target?.result;
+        };
+        reader.readAsDataURL(file);
     }
   }
 
@@ -115,14 +121,14 @@ export class CrearGmbeComponent {
     if (!this.subcategoriasAgregadas) {
       this.subcategoriasAgregadas = [];
     }
-    const pos = this.subcategoriasAgregadas.findIndex(
+    let pos = this.subcategoriasAgregadas.findIndex(
       (e) => e.idCatalogo === sub.idCatalogo
     );
 
     if (pos === -1) {
       this.subcategoriasAgregadas.push(sub);
     } else {
-      const nuevoArreglo = this.subcategoriasAgregadas?.filter(
+      let nuevoArreglo = this.subcategoriasAgregadas?.filter(
         (elemento) => elemento.idCatalogo !== sub.idCatalogo
       );
       this.subcategoriasAgregadas = nuevoArreglo;
@@ -341,6 +347,7 @@ export class CrearGmbeComponent {
     this.gmbeservice.listarCatalogo(2).subscribe(
       (res) => {
         this.arregloCategorias = res;
+        this.activarAgregar = false;
       },
       (err) => {}
     );
@@ -365,6 +372,7 @@ export class CrearGmbeComponent {
   }
 
   obtenerSubCategorias(idPadre: any) {
+    this.activarAgregar = true;
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
     this.padreActual = selectedValue;
@@ -440,7 +448,7 @@ export class CrearGmbeComponent {
   }
 
   validarGuardar(){
-    return this.generales.valid && this.generaArregloEstructura().length>0 && this.imageFile;
+    return this.generales.valid && this.estructuraFinalFilasSubitulos.length >0 && this.estructuraFinalColumnasSubitulos.length>0 && this.imageFile;
   }
 
   guardar() {
@@ -460,7 +468,7 @@ export class CrearGmbeComponent {
         enviar.ruta = response.remotePath;
         this.gmbeservice.crearGmbe(enviar).subscribe(
           res=>{
-            swal.fire('', 'MBE actualizado exitosamente', 'success');
+            swal.fire('', 'MBE registrado exitosamente', 'success');
             this.router.navigate(['/gmbe'])
           },
           err=>{}
@@ -473,7 +481,20 @@ export class CrearGmbeComponent {
     );
   }
 
-  open(content: TemplateRef<any>) {
+  open(content: TemplateRef<any>,tipo :string) {
+    if(tipo=== 'categoria'){
+      this.categoriaForm = this.fb.group({
+        nombre:['',Validators.required]
+      });
+    }
+
+    if(tipo==='subcategoria'){
+      this.subcategoriaForm = this.fb.group({
+        categoria:[null,Validators.required],
+        nombre:['',Validators.required]
+      })
+    }
+
     this.modalRef = this.modalService.open(content, {
       centered: true,
       size: 'lg',
