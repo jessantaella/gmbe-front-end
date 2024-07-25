@@ -3,7 +3,7 @@
     <div class="p-2 bd-highlight">
       <button [routerLink]="['/crear-gmbe']" class="btn-nuevo btn-sm">
         <em class='bi bi-plus'></em>
-        Nuevo GMBE
+        Nuevo MBE
       </button>
     </div>
   </div>
@@ -36,9 +36,9 @@
           <td class="text-center">
             {{mbe?.idEstatus.catalogo}}
           </td>
-          <td class="text-center">{{ mbe?.created | date: 'dd/MM/yyyy' }}</td>
-          <td class="text-center">{{mbe?.fechaPublicacion | date: 'dd/MM/yyyy'}}</td>
-          <td>
+          <td class="text-center">{{ mbe?.created | date: 'dd-MM-yyyy' }}</td>
+          <td class="text-center">{{mbe?.fechaPublicacion | date: 'dd-MM-yyyy'}}</td>
+          <td class="text-center">
             <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado"
               (click)="openCarga(cargaModal,mbe?.idMbe)"></fa-icon>
             <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado"></fa-icon>
@@ -47,9 +47,9 @@
               *ngIf="!mbe?.bloqueado"></fa-icon>
             <fa-icon [icon]="faPencil" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado"></fa-icon>
 
-            <fa-icon [icon]="faCircleCheck" *ngIf="mbe?.bloqueado && validarRol()" class="btn-acciones m-2 activo"
+            <fa-icon [icon]="faXmarkCircle" *ngIf="mbe?.bloqueado && validarRol()" class="btn-acciones m-2 activo"
               (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
-            <fa-icon [icon]="faXmarkCircle" *ngIf="!mbe?.bloqueado && validarRol()" class="btn-acciones m-2 inactivo"
+            <fa-icon [icon]="faCircleCheck" *ngIf="!mbe?.bloqueado && validarRol()" class="btn-acciones m-2 inactivo"
               (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
 
             <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado"
@@ -78,7 +78,7 @@
       <div class="mb-3 row">
         <label for="usuario" class="col-sm-2 col-form-label text-end">Archivo:</label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" id="usuario" formControlName="nombre">
+          <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly>
         </div>
         <div class="col-sm-2">
           <div class="p-2 bd-highlight">

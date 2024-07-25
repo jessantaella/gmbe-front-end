@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { faLock, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { TitulosService } from "src/app/services/titulos.services";
@@ -15,7 +15,7 @@ declare var swal: any;
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   faLock = faLock;
   faUser = faUser;
   faTimes = faTimes;
@@ -30,7 +30,7 @@ export class LoginComponent {
     private router: Router,
     private auth: AuthService,
     private storage: StorageService,
-    private cifrado:CifradoService
+    private cifrado:CifradoService,
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
 
@@ -41,6 +41,13 @@ export class LoginComponent {
       username: [""],
       password: [""],
     });
+  }
+
+
+  ngOnInit(): void {
+    if(this.storage.getItem('usr') !== null){
+      this.router.navigate(['/inicio']);
+    }
   }
 
   loguear() {
@@ -96,11 +103,19 @@ export class LoginComponent {
         } else {
           swal.fire(
             "",
-            "Usuario o contraseña ingresados son incorrectos",
+            "Usuario o contraseña incorrectos",
             "error"
           );
           this.router.navigate(["/login"]);
         }
-      });
+      },
+    err=>{
+      swal.fire(
+        "",
+        "No cuentas con acceso al sistema, favor de contactar al administrador",
+        "error"
+      );
+
+    });
   }
 }

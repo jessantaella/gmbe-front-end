@@ -21,9 +21,8 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() chartId: string | undefined;
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
-
-  w:number = 150;
-  h:number = 100;
+  w: number = 150;
+  h: number = 100;
 
   public chartOptions: any;
   isBrowser = false;
@@ -47,12 +46,17 @@ export class BurbujasComponent implements AfterViewInit {
 
   getCharOptions() {
     const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble.count, bubble.nombreGpo, bubble.colorBubble));
-  
+
     const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
     const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
     const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
     const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
-  
+
+    // Encuentra el valor máximo de z (tamaño de burbuja)
+    const maxZ = Math.max(...seriesData.map(d => d.z), 0);
+    // Ajuste del tamaño máximo de burbuja
+    const bubbleSizeFactor = 20; // Ajusta este factor según lo necesites
+
     return {
       grid: {
         xaxis: {
@@ -132,12 +136,11 @@ export class BurbujasComponent implements AfterViewInit {
         },
       },
       markers: {
-        size: 0,
+        size: seriesData.map(d => d.z / maxZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
         colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
       },
     };
   }
-  
 
   generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
     const chartWidth = this.w;

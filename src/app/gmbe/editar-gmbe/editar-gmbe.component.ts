@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -49,9 +49,9 @@ export class EditarGmbeComponent {
 
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.generales = this.fb.group({
-      nombre: [''],
-      objetivo: [''],
-      resumen: [''],
+      nombre: ['',Validators.required],
+      objetivo: ['',Validators.required],
+      resumen: ['',Validators.required],
     });
     this.cargaMBE();
 
@@ -61,9 +61,9 @@ export class EditarGmbeComponent {
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res => {
         this.generales = this.fb.group({
-          nombre: [res?.nombre],
-          objetivo: [res?.objetivo],
-          resumen: [res?.resumen],
+          nombre: [res?.nombre,Validators.required],
+          objetivo: [res?.objetivo,Validators.required],
+          resumen: [res?.resumen,Validators.required],
         });
         this.nombreImagen = res.ruta;
         this.obtenerImagen(res.ruta);

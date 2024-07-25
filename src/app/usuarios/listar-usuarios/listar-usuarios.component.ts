@@ -4,7 +4,7 @@ import {
   faPencil,
   faTrashCan,
   faUserGroup,
-  faRotate,
+  faRotateLeft,
   faFloppyDisk,
 } from "@fortawesome/free-solid-svg-icons";
 import { TitulosService } from "src/app/services/titulos.services";
@@ -45,7 +45,7 @@ export class ListarUsuariosComponent implements OnInit {
   faPencil = faPencil;
   faTrashCan = faTrashCan;
   faUserGroup = faUserGroup;
-  faRotate = faRotate;
+  faRotate = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
 
   usuarios!: any[];
@@ -222,7 +222,6 @@ export class ListarUsuariosComponent implements OnInit {
     this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
       (item: any) => item.idMbe
     );
-    console.log(this.mbeEditables);
 
     this.usuarioEditForm = this.fb.group({
       userName: [this.usuarioEditar.userName, Validators.required],
@@ -285,7 +284,7 @@ export class ListarUsuariosComponent implements OnInit {
   eliminar(usuario: any) {
 
     swal.fire({
-      title: '¿Está seguro de eliminar el usuario?',
+      title: '¿Desea eliminar este usuario?',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -301,7 +300,7 @@ export class ListarUsuariosComponent implements OnInit {
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
         if (usuario?.mbesAsociados.length > 0) {
-          swal.fire("", "No se puede eliminar este usuario", "error");
+          swal.fire("", "El usuario no se puede eliminar debido a que tiene MBEs asignados", "error");
         } else {
           this.usuariosService.eliminarUsuario(usuario?.idUsuario).subscribe(
             (res) => {

@@ -70,11 +70,37 @@
 }
 
 .custom-swal-confirm-button {
-  font-size: 16px;
+  font-size: 11px;
   font-family: Arial, sans-serif;
 }
 
 .custom-swal-cancel-button {
-  font-size: 16px;
+  font-size: 11px;
   font-family: Arial, sans-serif;
 }
+
+/* Estilo para el contenido del texto de la alerta */
+.swal2-html-container {
+  font-family: Arial, sans-serif;
+  font-size: 16px !important;
+}
+
+/* Estilo para el botón de la alerta */
+.swal2-confirm {
+  background-color: #21409a !important;
+  color: white !important;
+  font-family: Arial, sans-serif;
+  font-size: 11px !important;
+}
+
+
+.btn-guardar{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:11px;
+}
+
+.btn-cancelar{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:11px;
+}
+

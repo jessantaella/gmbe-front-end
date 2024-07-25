@@ -3,7 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
 import {
   faEllipsisVertical, faEye, faTrashCan, faUserGroup,
-  faUpload, faPencil, faCircleCheck, faXmarkCircle, faRotate,
+  faUpload, faPencil, faCircleCheck, faXmarkCircle, faRotateLeft,
   faFloppyDisk, faX
 } from '@fortawesome/free-solid-svg-icons';
 import { GmbeServicesService } from '../services/gmbe-services.service';
@@ -48,7 +48,7 @@ export class ListarGmbeComponent implements OnInit {
   faPencil = faPencil;
   faCircleCheck = faCircleCheck;
   faXmarkCircle = faXmarkCircle;
-  faRotate = faRotate;
+  faRotate = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
   faX = faX;
 
@@ -70,7 +70,6 @@ export class ListarGmbeComponent implements OnInit {
     this.cargaDatos = this.fb.group({
       nombre: [''],
     });
-
   }
 
 
@@ -178,14 +177,36 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   cargardatos() {
-    this.gmbeServices.cargarInformación(this.archivoCarga,this.idMbe).subscribe(res=>{
-      console.log(res);
-      swal.fire("", "Base de datos cargada con éxito", "success");
-    },err=>{
-      console.log(err);
-      swal.fire("", "Error en la carga, revisar el archivo", "error");
-    })
-  }
+    // Mostrar animación de carga
+    const loading = swal.fire({
+      title: 'Cargando...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      willOpen: () => {
+        swal.showLoading();
+      }
+    });
+
+    this.gmbeServices.cargarInformación(this.archivoCarga, this.idMbe).subscribe(
+      res => {
+        console.log(res);
+        // Cerrar la animación de carga
+        swal.close();
+        // Mostrar mensaje de éxito
+        swal.fire("", "Base de datos cargada con éxito", "success");
+        this.modalRef?.close();
+      },
+      err => {
+        console.log(err);
+        // Cerrar la animación de carga
+        swal.close();
+        // Mostrar mensaje de error
+        swal.fire("", "Error en la carga, revisar el archivo", "error");
+      }
+    );
+}
+
 
   onFileChange(event: any): void {
     const file = event.target.files[0];

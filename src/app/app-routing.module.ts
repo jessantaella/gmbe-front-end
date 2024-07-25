@@ -8,17 +8,18 @@ import { CrearGmbeComponent } from "./gmbe/crear-gmbe/crear-gmbe.component";
 import { BurbujasComponent } from "./graficas/burbujas/burbujas.component";
 import { VistaPreviaComponent } from "./gmbe/vista-previa/vista-previa.component";
 import { EditarGmbeComponent } from "./gmbe/editar-gmbe/editar-gmbe.component";
+import { AuthGuard } from "./shared/guards/AuthGuardt";
 
 const routes: Routes = [
   { path: "", redirectTo: "inicio", pathMatch: "full" },
   { path: "inicio", component: InicioComponent },
   { path: "login", component: LoginComponent },
-  { path: "usuarios", component: ListarUsuariosComponent },
-  { path: "gmbe", component: ListarGmbeComponent },
-  { path: "crear-gmbe", component: CrearGmbeComponent },
-  { path: "editar-gmbe/:id", component: EditarGmbeComponent },
-  { path: "vista-previa/:id", component: VistaPreviaComponent },
-  { path: "grafica", component: BurbujasComponent },
+  { path: "usuarios", component: ListarUsuariosComponent, canActivate: [AuthGuard] },
+  { path: "gmbe", component: ListarGmbeComponent, canActivate: [AuthGuard] },
+  { path: "crear-gmbe", component: CrearGmbeComponent, canActivate: [AuthGuard] },
+  { path: "editar-gmbe/:id", component: EditarGmbeComponent, canActivate: [AuthGuard] },
+  { path: "vista-previa/:id", component: VistaPreviaComponent, canActivate: [AuthGuard] },
+  { path: "grafica", component: BurbujasComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
