@@ -77,3 +77,36 @@
     font-size: 16px;
     font-weight: normal;
   }
+  @media (max-width: 576px) {
+    .accordion-body .row {
+      align-items: center;
+    }
+  
+    .accordion-body label.col-form-label {
+      text-align: left;
+    }
+  
+    .accordion-body .col-12, 
+    .accordion-body .col-md-6 {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  
+    .file-upload-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  
+    .file-upload-wrapper input[type="file"] {
+      display: none;
+    }
+  
+    .file-upload-wrapper .upload-icon {
+      cursor: pointer;
+    }
+  
+    .imagen {
+      max-width: 100%;
+      height: auto;
+    }
+  }

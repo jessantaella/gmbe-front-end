@@ -2,74 +2,66 @@
     <div class="accordion w-75 m-auto mt-3" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button custom-accordion-button collapsed mb-3" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                    aria-controls="collapseOne">
-                    Datos generales
-                </button>
+              <button class="accordion-button custom-accordion-button collapsed mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Datos generales
+              </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <form [formGroup]="generales">
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <form [formGroup]="generales">
+                  <div class="row">
+                    <div class="col-md-6 col-12">
+                      <div class="col-12 mt-2">
                         <div class="row">
-                            <div class="col-6">
-                                <div class="col-12 mt-2">
-                                    <div class="row">
-                                        <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="nombre"
-                                                formControlName="nombre">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <div class="row">
-                                        <label for="objetivos" class="col-sm-4 col-form-label text-end">Objetivos:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="objetivos"
-                                                formControlName="objetivo">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="col-12 mt-2">
-                                    <div class="row">
-                                        <label for="nombre" class="col-sm-4 col-form-label text-end">Resumen con principales hallazgos:</label>
-                                        <div class="col-sm-8">
-                                            <textarea formControlName="resumen"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 mt-2">
-                                <div class="row">
-                                    <label for="icono" class="col-sm-2 col-form-label text-end">* Carga de ícono MBE:</label>
-                                    <div class="col-sm-10">
-                                        <div class="d-flex flex-row bd-highlight mb-3">
-                                            <div class="p-2 bd-highlight" *ngIf="imageUrl">
-                                                <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
-                                            </div>
-                                            <div class="p-2 bd-highlight">
-                                                <div class="file-upload-wrapper">
-                                                    <input type="file" class="file-upload-input" (change)="onFileChange($event)">
-                                                    <i class="fas fa-upload upload-icon"></i>
-                                                  </div> 
-                                            </div>
-                                            <div class="p-2 bd-highlight">
-                                                <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="borrarImagen()"></fa-icon>
-                                            </div>
-                                          </div>
-                                  </div>
-                            </div>
+                          <label for="nombre" class="col-md-4 col-form-label text-md-end text-start">Nombre:</label>
+                          <div class="col-md-8">
+                            <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                          </div>
                         </div>
+                      </div>
+                      <div class="col-12 mt-2">
+                        <div class="row">
+                          <label for="objetivos" class="col-md-4 col-form-label text-md-end text-start">Objetivos:</label>
+                          <div class="col-md-8">
+                            <input type="text" class="form-control" id="objetivos" formControlName="objetivo">
+                          </div>
                         </div>
-                    </form>
-                </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                      <div class="col-12 mt-2">
+                        <div class="row">
+                          <label for="resumen" class="col-md-4 col-form-label text-md-end text-start">Resumen con principales hallazgos:</label>
+                          <div class="col-md-8">
+                            <textarea formControlName="resumen" class="form-control" id="resumen"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 mt-2">
+                      <div class="row">
+                        <label for="icono" class="col-md-2 col-form-label text-md-end text-start">* Carga de ícono MBE:</label>
+                        <div class="col-md-10 d-flex flex-row align-items-center">
+                          <div class="p-2 bd-highlight" *ngIf="imageUrl">
+                            <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
+                          </div>
+                          <div class="p-2 bd-highlight">
+                            <div class="file-upload-wrapper">
+                              <input type="file" class="file-upload-input" (change)="onFileChange($event)">
+                              <i class="fas fa-upload upload-icon"></i>
+                            </div>
+                          </div>
+                          <div class="p-2 bd-highlight">
+                            <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="borrarImagen()"></fa-icon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
-        </div>
+          </div>
         <div class="container m-2 text-center">
             <button class="btn btn-sm btn-cancelar m-2" [routerLink]="['/gmbe']">
                 <fa-icon [icon]="faRotateLeft"></fa-icon>
