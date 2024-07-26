@@ -197,7 +197,7 @@
   <div class="modal-footer justify-content-center">
     <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
       <fa-icon [icon]="faRotate"></fa-icon>
-      Cancelar
+      Cancelar  
     </button>
     <button type="button" class="btn btn-sm btn-guardar" (click)="editar()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
@@ -214,19 +214,19 @@
   <div class="modal-body">
     <form [formGroup]="usuarioEditForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-sm-left text-md-end">Usuario</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="usuario" formControlName="userName">
+          <input type="text" class="form-control" id="usuario" formControlName="userName" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-end">Correo</label>
+        <label for="correo" class="col-sm-4 col-form-label text-sm-left text-md-end">Correo</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="correo" formControlName="correo">
+          <input type="text" class="form-control" id="correo" formControlName="correo" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-end">Rol</label>
+        <label for="rol" class="col-sm-4 col-form-label text-sm-left text-md-end">Rol</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol">
             <option selected>Seleccione un rol</option>
@@ -235,16 +235,16 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Nombre</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="nombre" formControlName="nombre">
+          <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias</label>
+        <label for="mapas" class="col-sm-4 col-form-label text-sm-left text-md-end">Mapas de Brechas de Evidencias</label>
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
-            <button dropdownToggle type="button" class="btn dropdown-toggle ">
+            <button dropdownToggle type="button" class="btn dropdown-toggle">
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0">Seleccionados
                 {{usuarioEditar?.mbesAsociados?.length}}</span>
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<=0">Ningún
@@ -252,7 +252,7 @@
             </button>
             <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
               aria-labelledby="button-triggers-manual">
-              <li role="menuitem" *ngFor="let mbe of this.usuarioEditar.mbesAsociados">
+              <li role="menuitem" *ngFor="let mbe of usuarioEditar?.mbesAsociados">
                 {{mbe.nombreMbe}}
               </li>
             </ul>
@@ -264,7 +264,7 @@
   <div class="modal-footer justify-content-center">
     <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
       <fa-icon [icon]="faRotate"></fa-icon>
-        Regresar
+      Regresar
     </button>
   </div>
 </ng-template>

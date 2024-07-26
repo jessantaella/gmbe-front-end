@@ -173,3 +173,14 @@ label{
     align-items: center;
   }
 }
+
+
+@media (max-width: 576px) {
+  .modal-body .row {
+    align-items: center;
+  }
+
+  .modal-body label.col-form-label {
+    text-align: left;
+  }
+}
