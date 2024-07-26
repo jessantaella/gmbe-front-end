@@ -80,10 +80,13 @@ export class LoginComponent implements OnInit {
       )
       .subscribe((res) => {
         console.log(res);
+        console.log(res.usuarioAutenticado.rolUsuario.rol)
         if (res.usuarioAutenticado?.activo === true) {
           if (res.token) {
             this.router.navigate(["/inicio"]);
             this.storage.setItem("token-gmbe",this.cifrado.cifrar(res.token.token));
+            this.storage.setItem("rolUsuario",this.cifrado.cifrar(res.usuarioAutenticado.rolUsuario.rol));
+            
             this.storage.setItem("usr",this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
           } else if (res.mensaje === "Usuario no encontrado en el sistema") {
             swal.fire(

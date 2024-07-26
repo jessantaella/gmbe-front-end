@@ -9,9 +9,9 @@
         </button>
       </div>
         <div class="escritorio" >
-          <label for="usuario" class="text-light me-3 logousuario2"  *ngIf="validaToken()">
+          <label for="usuario" class="text-light me-3 logousuario"  *ngIf="validaToken()">
             <fa-icon [icon]="faUser"></fa-icon>
-            {{getUsuario()}}
+            {{getRole()}}
           </label>
           <button ngbTooltip="Cerrar sesión" class="white-button etiquetaHome mx-1 text-nowrap" (click)="cerrarSesion()"
                   *ngIf="validaToken()">

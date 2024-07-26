@@ -37,6 +37,10 @@ export class StartBardComponent {
     let objeto = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     return objeto.userName;
   }
+  getRole(){
+   let rol= this.cifrado.descifrar(this.storage.getItem('rolUsuario')!)
+   return rol;
+  }
 
   rolUsuario(): Number{
     return 1 ;//Number(localStorage.getItem('idRol'));
