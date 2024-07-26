@@ -19,12 +19,12 @@
 }
 .ref-white{
   text-decoration: none;
-  color: white;
+  color: #ffff;
 }
 
 .ref-white:hover{
   text-decoration: none;
-  color: white;
+  color: #ffff;
 }
 
 .alinear {
@@ -37,7 +37,7 @@
 }
 
 .letras {
-  color: #fff;
+  color: #ffff;
 }
 
 @media only screen and (max-width: 700px) {
@@ -141,13 +141,13 @@ button{
 
 .color-opciones
 {
-  color: white;
+  color: #ffff;
   background-color: #21a542;
 }
 
 .link-color
 {
-  color: white;
+  color: #ffff;
   font-family: Arial,sans-serif !important;
 }
 
@@ -155,4 +155,10 @@ button{
 .logousuario{
   color: #ffff !important;
 }
+
+.logousuario2{
+  color: #ffff;
+  font-family: Arial,sans-serif !important;
+}
+
 

@@ -35,16 +35,16 @@
           <td class="text-center align-middle ">
             <fa-icon [icon]="faTrashCan" class="btn-acciones" (click)="eliminar(usuario)"></fa-icon>
           </td>
-          <td class="align-middle">{{usuario?.nombre}}</td>
-          <td class="text-center align-middle">{{usuario?.userName}}</td>
-          <td class="nombreMBE align-middle" *ngIf="usuario?.rolUsuario?.idRol !== 1">
+          <td class="align-middle letratabla">{{usuario?.nombre}}</td>
+          <td class="text-center align-middle letratabla">{{usuario?.userName}}</td>
+          <td class="nombreMBE align-middle letratabla" *ngIf="usuario?.rolUsuario?.idRol !== 1">
             <ul>
               <li *ngFor="let item of resumeTablamMbe(usuario?.mbesAsociados)">
                 {{item}}
               </li>
             </ul>
           </td>
-          <td class="align-middle text-center" *ngIf="usuario?.rolUsuario?.idRol === 1">
+          <td class="align-middle text-center letratabla" *ngIf="usuario?.rolUsuario?.idRol === 1">
             Todos
           </td>
         </tr>
@@ -74,31 +74,25 @@
   <div class="modal-body">
     <form [formGroup]="usuarioForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-md-end text-sm-start" style="color: black; font-family: Arial, Helvetica, sans-serif;">Usuario:</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Usuario:</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)"
-            formControlName="userName">
-          <datalist id="usuariosList" style="display: block !important;"
-            [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
-            <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname"
-              (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
+          <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)" formControlName="userName">
+          <datalist id="usuariosList" style="display: block !important;" [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
+            <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname" (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
           </datalist>
-          <datalist id="usuariosList" style="display: block !important;" *ngIf="validarExisteUser()!.length<1"
-            [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
+          <datalist id="usuariosList" style="display: block !important;" *ngIf="validarExisteUser()!.length < 1" [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
             <option [value]="null" class="noExiste">No existe usuario en LDAP</option>
           </datalist>
-
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-md-end text-sm-start">Correo: </label>
+        <label for="correo" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Correo:</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com"
-            formControlName="correo">
+          <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" formControlName="correo">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-md-end text-sm-start">Rol: </label>
+        <label for="rol" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Rol:</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol" (change)="validarGmbes()">
             <option selected disabled>Seleccione un rol</option>
@@ -107,30 +101,26 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-md-end">Nombre: </label>
+        <label for="nombre" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Nombre:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" placeholder="Nombre(s)" formControlName="nombre">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias: </label>
+        <label for="mbe" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Mapas de Brechas de Evidencias:</label>
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
-            <button dropdownToggle type="button" class="btn dropdown-toggle ">
-              <span class="caret icono-toogle" *ngIf="mbeEditables!.length>0">Seleccionados
-                {{mbeEditables!.length}}</span>
-              <span class="caret icono-toogle" *ngIf="mbeEditables!.length<=0">Ningún
-                seleccionado</span>
+            <button dropdownToggle type="button" class="btn dropdown-toggle">
+              <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length > 0">Seleccionados {{mbeEditables!.length}}</span>
+              <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length <= 0">Ningún seleccionado</span>
             </button>
-            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
-              aria-labelledby="button-triggers-manual">
+            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
               <li role="menuitem" *ngFor="let mbe of listaMBE">
                 <input type="checkbox" class="radio" (change)="onCheckboxChangeMBE(mbe.idMbe)" />{{mbe.nombre}}
               </li>
             </ul>
           </div>
         </div>
-
       </div>
     </form>
   </div>
@@ -141,12 +131,13 @@
       </svg>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="validarExisteUser().length>0  && !validarGmbes()">
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="validarExisteUser().length > 0 && !validarGmbes()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
   </div>
 </ng-template>
+
 
 
 
