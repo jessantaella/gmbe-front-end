@@ -503,25 +503,35 @@ export class CrearGmbeComponent {
   }
 
 
-  crearCategoria(){
+  crearCategoria() {
     this.gmbeservice.crearCategoria(this.categoriaForm.get('nombre')?.value).subscribe(
-      res=>{
-        swal.fire('', 'Categoría creada exitosamente', 'success');
+      res => {
+        swal.fire({
+          title: '',
+          text: 'registro creado exitosamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
         if (this.modalRef) {
           this.modalRef.close();
           this.obtenerCategorias();
         }
-       
       },
-      err=>{}
+      err => {
+      }
     )
   }
 
 
   crearSubcategoria(){
     this.gmbeservice.crearSubcategoria(this.subcategoriaForm.get('nombre')?.value,this.subcategoriaForm.get('categoria')?.value).subscribe(
-      res=>{
-        swal.fire('', 'Sub-categoría creada exitosamente', 'success');
+      res => {
+        swal.fire({
+          title: '',
+          text: 'registro creado exitosamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
         if (this.modalRef) {
           this.modalRef.close();
           if(this.padreActual != 0){
