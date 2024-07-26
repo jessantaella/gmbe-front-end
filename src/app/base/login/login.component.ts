@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
           } else {
             swal.fire(
               "",
-              "Usuario o contraseña ingresados son incorrectos",
+              "Usuario o contraseña incorrectos",
               "error"
             );
             this.router.navigate(["/login"]);
