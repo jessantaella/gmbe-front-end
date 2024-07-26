@@ -13,7 +13,7 @@
 
    background-color: #2e3e97 !important;
    color: #ffffff;
-   font-family: Arial, Helvetica, sans-serif;
+   font-family: Arial, Helvetica, sans-serif!important;
   }
 
   .columnaAccion{
@@ -57,6 +57,13 @@
   .noExiste {
     color:red;
     font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif!important;
   }
 
+.modal-title{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.textomodal{
+  color: #2e3e97!important;
+}
