@@ -10,6 +10,7 @@ import { GmbeServicesService } from '../services/gmbe-services.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { icon } from '@fortawesome/fontawesome-svg-core';
 declare var swal: any;
 
 @Component({
@@ -139,25 +140,31 @@ export class ListarGmbeComponent implements OnInit {
   bloquearMbe(idMbe: number, estatusActual: boolean) {
     let mensaje = !estatusActual ? 'bloquear' : 'desbloquear';
     swal.fire({
-      title: '¿Desea ' + mensaje + ' este MBE?',
+      icon: 'warning',
+      text: '¿Desea ' + mensaje + ' este MBE?',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       reverseButtons: true,
       customClass: {
-        title: 'custom-swal-title',
-        htmlContainer: 'custom-swal-html',
-        confirmButton: 'custom-swal-confirm-button',
-        cancelButton: 'custom-swal-cancel-button'
+        htmlContainer: 'titulo-swal',
+        confirmButton: 'guardar-swal',
+        cancelButton: 'cancelar-swal'
       }
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
         this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
           res => {
             let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
-            swal.fire("", 'Se ha '+mensaje+'el MBE', "success");
+            swal.fire({
+              icon: 'success',
+              text: 'Se ha '+mensaje+' el MBE',
+              confirmButtonText: 'Ok',
+              customClass: {
+                htmlContainer: 'titulo-swal',
+                confirmButton: 'ok-swal',
+              }
+            })
             this.cambiarPaginaGetAll(this.page - 1, 10);
           }, err => {
 
@@ -194,7 +201,15 @@ export class ListarGmbeComponent implements OnInit {
         // Cerrar la animación de carga
         swal.close();
         // Mostrar mensaje de éxito
-        swal.fire("", "Base de datos cargada con éxito", "success");
+        swal.fire({
+          icon: 'success',
+          text: 'Base de datos cargada con éxito',
+          confirmButtonText: 'Ok',
+          customClass: {
+            htmlContainer: 'titulo-swal',
+            confirmButton: 'ok-swal',
+          }
+        })
         this.modalRef?.close();
       },
       err => {
@@ -202,7 +217,15 @@ export class ListarGmbeComponent implements OnInit {
         // Cerrar la animación de carga
         swal.close();
         // Mostrar mensaje de error
-        swal.fire("", "Error en la carga, revisar el archivo", "error");
+        swal.fire({
+          icon: 'error',
+          text: 'Error en la carga, revisar el archivo',
+          confirmButtonText: 'Ok',
+          customClass: {
+            htmlContainer: 'titulo-swal',
+            confirmButton: 'ok-swal',
+          }
+        })
       }
     );
 }
@@ -243,18 +266,16 @@ export class ListarGmbeComponent implements OnInit {
 
   eliminarGmbe(idMbe: number) {
     swal.fire({
-      title: '¿Está seguro de que quiere eliminar este MBE?',
+      icon: 'warning',
+      text: '¿Está seguro de que quiere eliminar este MBE?',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       reverseButtons: true,
       customClass: {
-        title: 'custom-swal-title',
-        htmlContainer: 'custom-swal-html',
-        confirmButton: 'custom-swal-confirm-button',
-        cancelButton: 'custom-swal-cancel-button'
+        htmlContainer: 'titulo-swal',
+        confirmButton: 'guardar-swal',
+        cancelButton: 'cancelar-swal'
       }
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {

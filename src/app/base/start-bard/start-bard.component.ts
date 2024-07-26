@@ -18,7 +18,8 @@ export class StartBardComponent {
   faHome=faHome;
   abrirAdmin = false;
 
-  constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService) { }
+  constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService) {
+   }
 
   validaToken(): boolean{
     return this.storage.getItem('token-gmbe')!== null;

@@ -71,15 +71,20 @@
 
 <ng-template #cargaModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title w-100 text-center">Cargar base de datos</h4>
+    <h4 class="modal-title w-100 text-center titulo-modal">Cargar base de datos</h4>
   </div>
-  <div class="modal-body">
+  <div class="modal-body texto">
     <form [formGroup]="cargaDatos">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-2 col-form-label text-end">Archivo:</label>
-        <div class="col-sm-8">
+
+        <div class="col-sm-2 text-center m-auto">
+          <label for="usuario" class="col-sm-2 col-form-label">Archivo:</label>
+        </div>
+
+        <div class="col-sm-8  m-auto">
           <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly>
         </div>
+    
         <div class="col-sm-2">
           <div class="p-2 bd-highlight">
             <div class="file-upload-wrapper m-2">
@@ -89,15 +94,16 @@
             <fa-icon [icon]="faX" class="btnOtrasAcciones m-2 eliminarImagen" (click)="clearImage(fileInput)"></fa-icon>
           </div>
         </div>
+
       </div>
     </form>
   </div>
-  <div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+  <div class="modal-footer justify-content-center botones-modal">
+    <button type="button" class="btn btn-sm btn-cancelar color-btn-cancelar" (click)="modal.dismiss('Cancelar')">
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="cargardatos()">
+    <button type="button" class="btn btn-sm btn-guardar color-btn-guardar" (click)="cargardatos()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>

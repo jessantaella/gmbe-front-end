@@ -25,15 +25,20 @@
         </div>
   
   
-      <div class="navbar movil p-0 m-0">
+        <button ngbTooltip="Iniciar sesión" class="white-button etiquetaHome mx-1 text-nowrap movil" [routerLink]="['/login']"
+                  *ngIf="!validaToken()">
+            <label for="sesion">Iniciar sesión</label>
+        </button>
+      <div class="navbar movil p-0 m-0" *ngIf="validaToken()">
         <button class="white-button mx-0 text-nowrap" type="button" (click)="desplegar();">
           <span class="navbar-toggler-icon color-menu"></span>
         </button>
       </div>
     </div>
   </nav>
+
   <div [ngClass]="{'navbar-collapse color-opciones collapsing movil':!abrir,'navbar-collapse color-opciones collapse movil show': abrir}">
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0 movil d-flex justify-content-start">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0 movil d-flex justify-content-start mx-2 texto-menu-movil">
       <li class="nav-item div-nav"  *ngIf="validaToken()">
         <a class="nav-link link-color" *ngIf="rolUsuario() === 1" [routerLink]="['/usuarios']">Usuarios</a>
       </li>
@@ -43,10 +48,6 @@
       <li class="nav-item div-nav">
         <a class="nav-link link-color cursor" (click)="cerrarSesion()" *ngIf="validaToken()">Cerrar sesión</a>
       </li>
-      <li class="nav-item div-nav">
-        <a class="nav-link link-color cursor" [routerLink]="['/login']" *ngIf="!validaToken()">Iniciar sesión</a>
-      </li>
-
     </ul>
   </div>
   

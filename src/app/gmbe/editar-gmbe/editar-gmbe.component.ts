@@ -115,7 +115,15 @@ export class EditarGmbeComponent {
           res => {
             enviar.ruta = res.remotePath;
             this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
-              swal.fire('', 'MBE actualizado exitosamente', 'success');
+              swal.fire({
+                icon: 'success',
+                text: 'MBE actualizado exitosamente',
+                confirmButtonText: 'Ok',
+                customClass: {
+                  htmlContainer: 'titulo-swal',
+                  confirmButton: 'ok-swal',
+                }
+              })
               this.router.navigate(['/gmbe'])
             })
           },
@@ -128,7 +136,15 @@ export class EditarGmbeComponent {
       enviar.idUsuario = this.usuario?.idUsuario;
       enviar.idMbe = this.id;
           this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
-            swal.fire('', 'MBE actualizado exitosamente', 'success');
+            swal.fire({
+              icon: 'success',
+              text: 'MBE actualizado exitosamente',
+              confirmButtonText: 'Ok',
+              customClass: {
+                htmlContainer: 'titulo-swal',
+                confirmButton: 'ok-swal',
+              }
+            })
             this.router.navigate(['/gmbe'])
           })
     }

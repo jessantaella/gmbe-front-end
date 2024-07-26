@@ -14,12 +14,15 @@ export class VistaPreviaComponent {
   id:number = 0;
   generales: FormGroup;
   imageUrl: SafeUrl | null = null;
-  textoBienvenida = "Vista Previa";
+  textoBienvenida = "Vista previa";
 
   estructuraFinalColumnasTitulos:any[] = [];
   estructuraFinalFilasTitulos:any[] = [];
   estructuraFinalFilasSubitulos:any[] = [];
   datosIntersecciones:any [] = [];
+
+  mostrarNombre:string = '';
+  mostrarObjetivos:string = '';
 
   constructor(private route: ActivatedRoute, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -38,6 +41,8 @@ export class VistaPreviaComponent {
   cargaMBE(){
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res=>{
+        this.mostrarNombre = res.nombre;
+        this.mostrarObjetivos = res.objetivo;
         this.generales = this.fb.group({
           nombre: [res?.nombre],
           objetivos: [res?.objetivo],
