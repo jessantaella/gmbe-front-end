@@ -174,12 +174,12 @@
 
 <ng-template #crearCategoriaModal let-modal>
     <div class="modal-header">
-      <label class="modal-title w-100 text-center tituloModal">Nueva Categoría</label>
+      <label class="modal-title w-100 text-center tituloModal">Nueva categoría</label>
     </div>
     <div class="modal-body">
   <form [formGroup]="categoriaForm">     
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre categoría :</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre categoría:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" placeholder="Categoría" formControlName="nombre">
         </div>
@@ -206,7 +206,7 @@
     <div class="modal-body">
   <form [formGroup]="subcategoriaForm">   
     <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end">* Categoría :</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-end">* Categoría:</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria">
             <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
@@ -215,7 +215,7 @@
       </div>
 
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre :</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-end">* Nombre:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" placeholder="Sub-categoría" formControlName="nombre">
         </div>
