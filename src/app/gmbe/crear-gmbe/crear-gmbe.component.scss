@@ -15,17 +15,26 @@
 
 .custom-accordion-button:hover {
   background-color: #2B3172; /* Color de fondo al pasar el ratón por encima */
-  color: white; /* Se mantiene el color del texto al pasar el ratón por encima */
+  color: white; /* Color del texto al pasar el ratón por encima */
   font-size: 22px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .custom-accordion-button::after {
-  filter: invert(1); /* La flecha negra se vuelve blanca */
+  content: ''; /* Asegúrate de que el pseudo-elemento tenga contenido */
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  border-right: 0.15em solid white; /* Color de la flecha */
+  border-bottom: 0.15em solid white; /* Color de la flecha */
+  transform: rotate(45deg);
+  transition: transform 0.2s; /* Animación de rotación */
 }
 
 .custom-accordion-button:not(.collapsed)::after {
-  filter: invert(1); /* Continúa siendo blanca, sin cambio */
+  transform: rotate(-135deg); /* Rotar la flecha hacia arriba */
+  border-right-color: white; /* Asegúrate de que el color sea consistente */
+  border-bottom-color: white; /* Asegúrate de que el color sea consistente */
 }
 
 .accordion-collapse{
