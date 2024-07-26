@@ -62,3 +62,24 @@ th{
   .table{
     font-family: Arial, Helvetica, sans-serif;
   }
+
+  @media (max-width: 576px) {
+    .modal-body .row {
+      align-items: center;
+      text-align: center;
+    }
+  
+    .modal-body label.col-form-label {
+      text-align: center;
+      width: 100%;
+    }
+  
+    .file-icons {
+      text-align: center;
+    }
+  
+    .modal-body .col-sm-2, .modal-body .col-sm-8, .modal-body .col-sm-2 {
+      display: flex;
+      justify-content: center;
+    }
+  }

@@ -85,40 +85,40 @@
                       </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <div class="row">
-                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Categoría:</label>
-                        <div class="col-sm-7">
-                            <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
-                                <option selected>Seleccione una opción</option>
-                                <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
-                              </select>
-                        </div>
-                        <div class="col-sm-1">
-                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearCategoriaModal,'categoria')"></fa-icon>
-                        </div>
+                  <div class="row">
+                      <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Categoría:</label>
+                      <div class="col-sm-7">
+                          <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
+                              <option selected>Seleccione una opción</option>
+                              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
+                          </select>
                       </div>
-                </div>
-                <div class="col-md-12 col-sm-12">
-                    <div class="row mt-2">
-                        <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">* Sub-categoría:</label>
-                        <div class="col-sm-7 bg-light listado">
-                            <div class="form-check" *ngFor="let sub of subCategorias;let i = index" >
-                                <input class="form-check-input" type="checkbox"  [id]="'flexCheckDefault'+i" [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">
-                                <label class="form-check-label" for="flexCheckDefault" (click)="subcategoriaSeleccionada(sub)">
-                                    {{sub.catalogo}}
-                                </label>
-                              </div>
-                        </div>
-                        <div class="col-md-1 col-sm-12">
-                            <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearSubcategoriaModal,'subcategoria')"></fa-icon>
-                        </div>
+                      <div class="col-sm-1 text-center">
+                          <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearCategoriaModal,'categoria')"></fa-icon>
                       </div>
-                      <div class="text-center">
-                        <button class="btn btn-sm btn-agregar m-2" (click)="agregar()" [disabled]="!activarAgregar">
-                            Agregar
-                        </button>
-                    </div>
-                </div>
+                  </div>
+              </div>
+              <div class="col-md-12 col-sm-12">
+                  <div class="row mt-2">
+                      <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">* Sub-categoría:</label>
+                      <div class="col-sm-7 bg-light listado">
+                          <div class="form-check" *ngFor="let sub of subCategorias;let i = index" >
+                              <input class="form-check-input" type="checkbox"  [id]="'flexCheckDefault'+i" [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">
+                              <label class="form-check-label" for="flexCheckDefault" (click)="subcategoriaSeleccionada(sub)">
+                                  {{sub.catalogo}}
+                              </label>
+                          </div>
+                      </div>
+                      <div class="col-md-1 col-sm-12 text-center">
+                          <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearSubcategoriaModal,'subcategoria')"></fa-icon>
+                      </div>
+                  </div>
+                  <div class="text-center">
+                      <button class="btn btn-sm btn-agregar m-2" (click)="agregar()" [disabled]="!activarAgregar">
+                          Agregar
+                      </button>
+                  </div>
+              </div>
                </div>
                <div class="d-flex align-items-center">
                 <div class="vertical-text" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">

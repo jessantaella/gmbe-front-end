@@ -148,19 +148,19 @@
   <div class="modal-body">
     <form [formGroup]="usuarioEditForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-sm-left text-md-end">Usuario</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="usuario" formControlName="userName">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-end">Correo</label>
+        <label for="correo" class="col-sm-4 col-form-label text-sm-left text-md-end">Correo</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="correo" formControlName="correo">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-end">Rol</label>
+        <label for="rol" class="col-sm-4 col-form-label text-sm-left text-md-end">Rol</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol">
             <option selected>Seleccione un rol</option>
@@ -169,16 +169,16 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end">Nombre</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Nombre</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" formControlName="nombre">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label">Mapas de Brechas de Evidencias</label>
+        <label for="mapas" class="col-sm-4 col-form-label text-sm-left text-md-end">Mapas de Brechas de Evidencias</label>
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
-            <button dropdownToggle type="button" class="btn dropdown-toggle ">
+            <button dropdownToggle type="button" class="btn dropdown-toggle">
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0 || mbeEditables.length>0">Seleccionados
                 {{mbeEditables.length}}</span>
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<1 && mbeEditables.length<1">Ningún seleccionado</span>
