@@ -508,9 +508,13 @@ export class CrearGmbeComponent {
       res => {
         swal.fire({
           title: '',
-          text: 'registro creado exitosamente',
+          text: 'Registro creado exitosamente',
           icon: 'success',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
+          }
         });
         if (this.modalRef) {
           this.modalRef.close();
@@ -518,8 +522,9 @@ export class CrearGmbeComponent {
         }
       },
       err => {
+        // Manejo de errores
       }
-    )
+    );
   }
 
 
@@ -528,9 +533,9 @@ export class CrearGmbeComponent {
       res => {
         swal.fire({
           title: '',
-          text: 'registro creado exitosamente',
+          text: 'Registro creado exitosamente',
           icon: 'success',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'OK'
         });
         if (this.modalRef) {
           this.modalRef.close();

@@ -174,13 +174,13 @@
 
 <ng-template #crearCategoriaModal let-modal>
   <div class="modal-header">
-    <label class="modal-title w-100 text-start tituloModal">Nueva categoría</label>
+    <label class="modal-title w-100 text-center tituloModal">Nueva categoría</label>
   </div>
   <div class="modal-body">
     <form [formGroup]="categoriaForm">     
-      <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
-        <div class="col-sm-6 my-3">
+      <div class="mb-3 row align-items-center">
+        <label for="nombre" class="col-sm-4 col-form-label text-sm-right text-md-end">* Nombre categoría:</label>
+        <div class="col-sm-8">
           <input type="text" class="form-control" id="nombre" placeholder="Categoría" formControlName="nombre">
         </div>
       </div>
@@ -201,7 +201,7 @@
 
 <ng-template #crearSubcategoriaModal let-modal>
   <div class="modal-header">
-    <label class="modal-title w-100 text-start tituloModal">Nueva sub-categoría</label>
+    <label class="modal-title w-100 text-center tituloModal">Nueva sub-categoría</label>
   </div>
   <div class="modal-body">
     <form [formGroup]="subcategoriaForm">   

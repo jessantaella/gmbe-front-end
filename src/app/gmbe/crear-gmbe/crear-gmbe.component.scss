@@ -166,6 +166,21 @@ label{
   font-size: 11px;
 }
 
+.custom-swal-popup {
+  background-color: #21409a !important;
+  color: #ffffff !important; /* Asegurar que el texto sea legible */
+}
+
+/* Estilos personalizados para el botón de confirmación */
+div.swal2-container button.swal2-styled.swal2-confirm.custom-swal-confirm-button {
+  background-color: #21409a !important;
+  color: #ffffff !important; /* Asegurar que el texto del botón sea legible */
+  border: none !important; /* Eliminar cualquier borde */
+  box-shadow: none !important; /* Eliminar cualquier sombra */
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px !important;
+}
+
 @media (max-width: 576px) {
   .btnOtrasAcciones {
     display: flex;
