@@ -138,3 +138,12 @@
   font-size:11px;
 }
 
+
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
+  border: 0;
+  border-radius: .25em;
+  background: initial;
+  background-color: #21409a;
+  color: #fff;
+  font-size: 1em;
+}
