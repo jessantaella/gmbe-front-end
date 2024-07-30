@@ -34,6 +34,8 @@ export class EditarGmbeComponent {
   usuario: any;
 
   textoBienvenida = 'Editar MBE';
+  mostrarNombre:string = '';
+  mostrarObjetivos:string = '';
 
   constructor(private titulos: TitulosService, 
     private route: ActivatedRoute, 
@@ -60,6 +62,8 @@ export class EditarGmbeComponent {
   cargaMBE() {
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res => {
+        this.mostrarNombre = res.nombre;
+        this.mostrarObjetivos = res.objetivo;
         this.generales = this.fb.group({
           nombre: [res?.nombre,Validators.required],
           objetivo: [res?.objetivo,Validators.required],

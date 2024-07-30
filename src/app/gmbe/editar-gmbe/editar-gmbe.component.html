@@ -2,7 +2,7 @@
     <div class="accordion w-75 m-auto mt-3" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button custom-accordion-button collapsed mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <button class="accordion-button custom-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 Datos generales
               </button>
             </h2>
@@ -15,7 +15,7 @@
                         <div class="row">
                           <label for="nombre" class="col-md-4 col-form-label text-md-end text-start">* Nombre:</label>
                           <div class="col-md-8">
-                            <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                            <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre" formControlName="nombre">
                           </div>
                         </div>
                       </div>
@@ -23,7 +23,7 @@
                         <div class="row">
                           <label for="objetivos" class="col-md-4 col-form-label text-md-end text-start">* Objetivos:</label>
                           <div class="col-md-8">
-                            <input type="text" class="form-control" id="objetivos" formControlName="objetivo">
+                            <input type="text" [ngbTooltip]="this.mostrarObjetivos" class="form-control" id="objetivos" formControlName="objetivo">
                           </div>
                         </div>
                       </div>

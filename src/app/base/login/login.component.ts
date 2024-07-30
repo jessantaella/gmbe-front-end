@@ -83,8 +83,8 @@ export class LoginComponent implements OnInit {
         if (res.usuarioAutenticado?.activo === true) {
           if (res.token) {
             this.router.navigate(["/inicio"]);
-            this.storage.setItem("token-gmbe",this.cifrado.cifrar(res.token.token));
-            this.storage.setItem("rolUsuario",this.cifrado.cifrar(res.usuarioAutenticado.rolUsuario.rol));
+            this.storage.setItem("token-gmbe",this.cifrado.cifrar(res.token?.token));
+            this.storage.setItem("rolUsuario",this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
             
             this.storage.setItem("usr",this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
           } else if (res.mensaje === "Usuario no encontrado en el sistema") {
@@ -102,7 +102,8 @@ export class LoginComponent implements OnInit {
             );
             this.router.navigate(["/login"]);
           }
-        } else {
+        }
+        else {
           swal.fire(
             "",
             "Usuario o contraseña incorrectos",

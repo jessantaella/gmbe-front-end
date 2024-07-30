@@ -4,11 +4,11 @@
       <div class="col-12 col-md-6">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre:</label>
-          <input type="text" class="form-control" id="nombre" formControlName="nombre">
+          <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre" formControlName="nombre">
         </div>
         <div class="mb-3">
           <label for="objetivos" class="form-label">Objetivos:</label>
-          <input type="text" class="form-control" id="objetivos" formControlName="objetivos">
+          <input [ngbTooltip]="this.mostrarObjetivos" type="text" class="form-control" id="objetivos" formControlName="objetivos">
         </div>
         <div class="mb-3">
           <label for="imagen" class="form-label">Imagen:</label>
