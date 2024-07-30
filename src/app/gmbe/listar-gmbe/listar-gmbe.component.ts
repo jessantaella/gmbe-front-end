@@ -163,7 +163,7 @@ export class ListarGmbeComponent implements OnInit {
             swal.fire({
               icon: 'success',
               text: 'Se ha '+mensaje+' el MBE',
-              confirmButtonText: 'Ok',
+              confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',
                 confirmButton: 'ok-swal',
@@ -208,7 +208,7 @@ export class ListarGmbeComponent implements OnInit {
         swal.fire({
           icon: 'success',
           text: 'Base de datos cargada con éxito',
-          confirmButtonText: 'Ok',
+          confirmButtonText: 'OK',
           customClass: {
             htmlContainer: 'titulo-swal',
             confirmButton: 'ok-swal',
@@ -224,7 +224,7 @@ export class ListarGmbeComponent implements OnInit {
         swal.fire({
           icon: 'error',
           text: 'Error en la carga, revisar el archivo',
-          confirmButtonText: 'Ok',
+          confirmButtonText: 'OK',
           customClass: {
             htmlContainer: 'titulo-swal',
             confirmButton: 'ok-swal',

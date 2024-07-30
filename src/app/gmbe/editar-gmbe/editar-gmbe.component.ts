@@ -118,7 +118,7 @@ export class EditarGmbeComponent {
               swal.fire({
                 icon: 'success',
                 text: 'MBE actualizado exitosamente',
-                confirmButtonText: 'Ok',
+                confirmButtonText: 'OK',
                 customClass: {
                   htmlContainer: 'titulo-swal',
                   confirmButton: 'ok-swal',
@@ -139,7 +139,7 @@ export class EditarGmbeComponent {
             swal.fire({
               icon: 'success',
               text: 'MBE actualizado exitosamente',
-              confirmButtonText: 'Ok',
+              confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',
                 confirmButton: 'ok-swal',

@@ -74,8 +74,8 @@
   <div class="modal-body">
     <form [formGroup]="usuarioForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Usuario:</label>
-        <div class="col-sm-6">
+        <label for="usuario" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Usuario:</label>
+        <div class="col-12 col-sm-6">
           <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)" formControlName="userName">
           <datalist id="usuariosList" style="display: block !important;" [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
             <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname" (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
@@ -86,14 +86,14 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Correo:</label>
-        <div class="col-sm-6">
+        <label for="correo" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Correo:</label>
+        <div class="col-12 col-sm-6">
           <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" formControlName="correo">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Rol:</label>
-        <div class="col-sm-6">
+        <label for="rol" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Rol:</label>
+        <div class="col-12 col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol" (change)="validarGmbes()">
             <option selected disabled>Seleccione un rol</option>
             <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
@@ -101,14 +101,14 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Nombre:</label>
-        <div class="col-sm-6">
+        <label for="nombre" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Nombre:</label>
+        <div class="col-12 col-sm-6">
           <input type="text" class="form-control" id="nombre" placeholder="Nombre(s)" formControlName="nombre">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="mbe" class="col-sm-4 col-form-label text-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Mapas de Brechas de Evidencias:</label>
-        <div class="col-sm-6">
+        <label for="mbe" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Mapas de Brechas de Evidencias:</label>
+        <div class="col-12 col-sm-6">
           <div class="btn-group drop my-2" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle">
               <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length > 0">Seleccionados {{mbeEditables!.length}}</span>
@@ -141,6 +141,7 @@
 
 
 
+
 <ng-template #editarModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title w-100 text-center">Editar Usuario</h4>
@@ -148,19 +149,19 @@
   <div class="modal-body">
     <form [formGroup]="usuarioEditForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-xs-left text-sm-end">Usuario:</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Usuario:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="usuario" formControlName="userName">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-xs-left text-sm-end">Correo:</label>
+        <label for="correo" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Correo:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="correo" formControlName="correo">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-xs-left text-sm-end">Rol:</label>
+        <label for="rol" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Rol:</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol">
             <option selected>Seleccione un rol</option>
@@ -169,13 +170,13 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-xs-left text-sm-end">Nombre:</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Nombre:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" formControlName="nombre">
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="mapas" class="col-sm-4 col-form-label text-xs-left text-sm-end">Mapas de Brechas de Evidencias:</label>
+        <label for="mapas" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Mapas de Brechas de Evidencias:</label>
         <div class="col-sm-6 my-2">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle">
@@ -207,6 +208,7 @@
 </ng-template>
 
 
+
 <ng-template #verModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title w-100 text-center">Ver Usuario</h4>
@@ -214,19 +216,19 @@
   <div class="modal-body">
     <form [formGroup]="usuarioEditForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-sm-left text-md-end">Usuario</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Usuario</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="usuario" formControlName="userName" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-sm-left text-md-end">Correo</label>
+        <label for="correo" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Correo</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="correo" formControlName="correo" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-sm-left text-md-end">Rol</label>
+        <label for="rol" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Rol</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol">
             <option selected>Seleccione un rol</option>
@@ -235,13 +237,13 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Nombre</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Nombre</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="mapas" class="col-sm-4 col-form-label text-sm-left text-md-end">Mapas de Brechas de Evidencias</label>
+        <label for="mapas" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Mapas de Brechas de Evidencias</label>
         <div class="col-sm-6">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle">
