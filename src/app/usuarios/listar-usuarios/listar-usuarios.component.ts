@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
+
 import {
   faEye,
   faPencil,
@@ -19,7 +20,6 @@ import {
 } from "@angular/forms";
 declare var swal: any;
 import { debounceTime } from "rxjs/internal/operators/debounceTime";
-
 @Component({
   selector: "app-listar-usuarios",
   templateUrl: "./listar-usuarios.component.html",
@@ -288,8 +288,8 @@ export class ListarUsuariosComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: '<i class="fas fa-check"></i> Aceptar',
+      cancelButtonText:  '<i class="fas fa-undo fa-sm"></i> Cancelar',
       reverseButtons: true,
       customClass: {
         title: 'custom-swal-title',

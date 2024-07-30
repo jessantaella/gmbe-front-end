@@ -80,7 +80,7 @@ export class ListarGmbeComponent implements OnInit {
     this.ObjetoUser = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     console.log(this.ObjetoUser);
     this.idUsuario = this.ObjetoUser.idUsuario;
-    
+
     this.cambiarPaginaGetAll(0, 10);
   }
 
@@ -149,8 +149,8 @@ export class ListarGmbeComponent implements OnInit {
       icon: 'warning',
       text: '¿Desea ' + mensaje + ' este MBE?',
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: '<i class="fas fa-check"></i> Aceptar',
+      cancelButtonText: '<i class="fas fa-undo fa-sm"></i> Cancelar',
       reverseButtons: true,
       customClass: {
         htmlContainer: 'titulo-swal',
@@ -275,8 +275,8 @@ export class ListarGmbeComponent implements OnInit {
       icon: 'warning',
       text: '¿Está seguro de que quiere eliminar este MBE?',
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: '<i class="fas fa-check"></i> Aceptar',
+      cancelButtonText: '<i class="fas fa-undo fa-sm"></i> Cancelar',
       reverseButtons: true,
       customClass: {
         htmlContainer: 'titulo-swal',
