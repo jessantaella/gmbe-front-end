@@ -52,6 +52,7 @@ export class ListarGmbeComponent implements OnInit {
   faRotate = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
   faX = faX;
+  ObjetoUser: any;
 
   usuario: any;
 
@@ -75,6 +76,9 @@ export class ListarGmbeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.ObjetoUser = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+    console.log(this.ObjetoUser);
+    
     this.cambiarPaginaGetAll(0, 10);
   }
 
@@ -88,7 +92,7 @@ export class ListarGmbeComponent implements OnInit {
   ) {
     this.listaMBE = [];
     this.gmbeServices
-      .listarGmbes(page, size)
+      .listarGmbes(page, size,this.ObjetoUser.idUsuario)
       .subscribe((data) => {
         console.log(data)
         this.listaMBE = data?.content!;

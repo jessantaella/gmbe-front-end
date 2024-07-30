@@ -45,8 +45,8 @@ export class GmbeServicesService {
     return this.http.put<any>(urlactualizar,{});
   }
 
-  listarGmbes(pagina:number,size:number):Observable<any>{
-    let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/paginated?page='+pagina+'&size='+size;
+  listarGmbes(pagina:number,size:number, idUsuario:number):Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/paginated?page='+pagina+'&size='+size + '&idUsuario='+idUsuario;
     return this.http.get<any>(url);
   }
 
