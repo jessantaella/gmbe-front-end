@@ -80,7 +80,6 @@ export class LoginComponent implements OnInit {
       )
       .subscribe((res) => {
         console.log(res);
-        console.log(res.usuarioAutenticado.rolUsuario.rol)
         if (res.usuarioAutenticado?.activo === true) {
           if (res.token) {
             this.router.navigate(["/inicio"]);

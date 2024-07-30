@@ -128,10 +128,16 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   filterUsuarios(event: any) {
+    if(event.target.value==""){
+    this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
+      usuario.samaccountname.toLowerCase().includes("000")
+  );
+    }else{
     const searchTerm = event.target.value.toLowerCase();
     this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
       usuario.samaccountname.toLowerCase().includes(searchTerm)
     );
+  }
   }
 
   selectUsuario(usuario: any) {
