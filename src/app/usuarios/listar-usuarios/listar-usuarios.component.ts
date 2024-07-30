@@ -288,8 +288,8 @@ export class ListarUsuariosComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: '<i class="fas fa-check"></i> Aceptar',
-      cancelButtonText:  '<i class="fas fa-undo fa-sm"></i> Cancelar',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText:  'Cancelar',
       reverseButtons: true,
       customClass: {
         title: 'custom-swal-title',

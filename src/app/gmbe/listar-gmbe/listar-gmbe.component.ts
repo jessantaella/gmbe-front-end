@@ -149,8 +149,8 @@ export class ListarGmbeComponent implements OnInit {
       icon: 'warning',
       text: '¿Desea ' + mensaje + ' este MBE?',
       showCancelButton: true,
-      confirmButtonText: '<i class="fas fa-check"></i> Aceptar',
-      cancelButtonText: '<i class="fas fa-undo fa-sm"></i> Cancelar',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
       reverseButtons: true,
       customClass: {
         htmlContainer: 'titulo-swal',
@@ -275,8 +275,8 @@ export class ListarGmbeComponent implements OnInit {
       icon: 'warning',
       text: '¿Está seguro de que quiere eliminar este MBE?',
       showCancelButton: true,
-      confirmButtonText: '<i class="fas fa-check"></i> Aceptar',
-      cancelButtonText: '<i class="fas fa-undo fa-sm"></i> Cancelar',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
       reverseButtons: true,
       customClass: {
         htmlContainer: 'titulo-swal',
