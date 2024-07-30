@@ -22,7 +22,7 @@ declare var swal: any;
   styleUrls: ['./crear-gmbe.component.scss'],
 })
 export class CrearGmbeComponent {
-  textoBienvenida = 'Creación de GMBE';
+  textoBienvenida = 'Crear GMBE';
   faX = faX;
   faRotateLeft = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
@@ -76,7 +76,7 @@ export class CrearGmbeComponent {
     private storage:StorageService, private cifrado:CifradoService
   ) {
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    this.titulos.changePestaña('Creación de  GMBE');
+    this.titulos.changePestaña('Crear  GMBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.tipoEstructura();
     this.obtenerCategorias();
