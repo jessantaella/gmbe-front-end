@@ -56,6 +56,7 @@ export class ListarGmbeComponent implements OnInit {
   idUsuario:number = 0;
 
   usuario: any;
+  puedeCrearMBE: boolean = false;
 
   cargaDatos: FormGroup;
   imageUrl: string | ArrayBuffer | null | undefined = null;
@@ -88,6 +89,10 @@ export class ListarGmbeComponent implements OnInit {
     return this.usuario?.rolUsuario?.idRol === 1;
   }
 
+  idRol() {
+    return this.usuario?.rolUsuario?.idRol;
+  }
+
   cambiarPaginaGetAll(
     page: number = 0,
     size: number = 10,
@@ -104,6 +109,44 @@ export class ListarGmbeComponent implements OnInit {
         this.totalPage = data.totalPages;
         this.desde = (this.page - 1) * this.pageSize + 1;
       });
+  }
+
+  acciones(idMbe: any): boolean {
+    switch (this.idRol()) {
+      //ADMIN
+      case 1:
+        this.puedeCrearMBE = true;
+        return true;
+        break
+      //OPERADOR
+      case 2:
+      this.puedeCrearMBE = true;
+        if (idMbe.idEstatus?.idCatalogo === 173 || idMbe.idEstatus?.idCatalogo === 176) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      //VALIDADOR
+      case 3:
+        this.puedeCrearMBE = false;
+        if ( idMbe.idEstatus?.idCatalogo === 175 || idMbe.idEstatus?.idCatalogo === 176) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      //PUBLICADOR
+      case 4:
+        this.puedeCrearMBE = true;
+        if (idMbe.idEstatus?.idCatalogo === 173 || idMbe.idEstatus?.idCatalogo === 176) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+    }
+    return false;
   }
 
   loadPage(e: number) {

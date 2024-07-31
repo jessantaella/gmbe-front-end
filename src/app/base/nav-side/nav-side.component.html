@@ -6,7 +6,7 @@
         <!--em class='bi bi-list icon-menu m-3' (click)="activarSidebar()" id="btn"></!--em-->
     </div>
         <ul class="nav">
-            <li>
+            <li *ngIf="this.getrol() === 1 " >
                 <a [routerLink]="['/usuarios']">
                     <!--em class="bi bi-people-fill"></!--em-->
                     <fa-icon [icon]="faUserGroup" class="text-start iconoMenu ms-3"></fa-icon>

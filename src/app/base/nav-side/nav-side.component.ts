@@ -27,7 +27,7 @@ export class NavSideComponent implements OnInit {
     let rol =  objeto.rolUsuario;
     return rol.idRol;
   }
-
+  
   activarSidebar()
   {
     let sidebar = document.querySelector('.sidebar');
