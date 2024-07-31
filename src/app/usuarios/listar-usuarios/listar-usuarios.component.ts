@@ -27,7 +27,8 @@ import { debounceTime } from "rxjs/internal/operators/debounceTime";
 })
 export class ListarUsuariosComponent implements OnInit {
   textoBienvenida = "Gestión de usuarios";
-
+  existeUser: any=false;
+  hayuser: any="";
   //Paginación
   currentPage: number = 0;
   page: number = 0;
@@ -129,15 +130,20 @@ export class ListarUsuariosComponent implements OnInit {
 
   filterUsuarios(event: any) {
     if(event.target.value==""){
+      this.existeUser=false;
     this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
       usuario.samaccountname.toLowerCase().includes("000")
   );
+ this.hayuser=this.filteredUsuarios
     }else{
+      this.existeUser=true;
     const searchTerm = event.target.value.toLowerCase();
     this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
       usuario.samaccountname.toLowerCase().includes(searchTerm)
     );
+    this.hayuser=this.filteredUsuarios
   }
+  
   }
 
   selectUsuario(usuario: any) {

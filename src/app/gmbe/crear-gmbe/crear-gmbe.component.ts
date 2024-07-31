@@ -90,8 +90,8 @@ export class CrearGmbeComponent {
       nombre:['',Validators.required]
     })
     this.subcategoriaForm = this.fb.group({
-      categoria:[null,Validators.required],
-      nombre:['',Validators.required]
+      categoria:[null],
+      nombre:['']
     })
   }
 

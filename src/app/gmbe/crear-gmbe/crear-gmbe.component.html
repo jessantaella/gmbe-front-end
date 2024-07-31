@@ -100,7 +100,7 @@
               </div>
               <div class="col-md-12 col-sm-12">
                   <div class="row mt-2">
-                      <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">* Sub-categoría:</label>
+                      <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">Sub-categoría:</label>
                       <div class="col-sm-7 bg-light listado">
                           <div class="form-check" *ngFor="let sub of subCategorias;let i = index" >
                               <input class="form-check-input" type="checkbox"  [id]="'flexCheckDefault'+i" [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">

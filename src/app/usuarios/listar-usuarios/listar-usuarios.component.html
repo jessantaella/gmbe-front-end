@@ -132,7 +132,7 @@
       </svg>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="validarExisteUser().length > 0 && !validarGmbes()">
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="this.usuarioForm && !validarGmbes()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
