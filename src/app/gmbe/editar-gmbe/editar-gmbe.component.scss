@@ -1,22 +1,29 @@
 .custom-accordion-button {
-    background-color: #2B3172; /* Color de fondo personalizado */
-    color: white; /* Color del texto personalizado */
-    border: none;
-    font-size: 22px;
-    font-family: Arial, Helvetica, sans-serif;
+  background-color: #2B3172; /* Color de fondo predeterminado */
+  color: white; /* Color del texto */
+  border: none;
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  --bs-btn-active-bg: #2B3172;
+  --bs-btn-active-color: white;
 }
 
 .custom-accordion-button:not(.collapsed) {
-    background-color: #2B3172; /* Color de fondo cuando el acordeón está abierto */
-    font-size: 22px;
-    font-family: Arial, Helvetica, sans-serif;
+  background-color: #2B3172; /* Nuevo color de fondo cuando el acordeón está abierto */
+  color: white; /* Se mantiene el color del texto */
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  --bs-btn-active-bg: #2B3172;
+  --bs-btn-active-color: white;
 }
 
 .custom-accordion-button:hover {
-    background-color: #2B3172; /* Color de fondo al pasar el ratón por encima */
-    color: white; /* Color del texto al pasar el ratón por encima */
-    font-size: 22px;
-    font-family: Arial, Helvetica, sans-serif;
+  background-color: #2B3172; /* Color de fondo al pasar el ratón por encima */
+  color: white; /* Color del texto al pasar el ratón por encima */
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  --bs-btn-active-bg: #2B3172;
+  --bs-btn-active-color: white;
 }
 
 /* Cambiar el color de la flechita */
