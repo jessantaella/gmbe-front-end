@@ -23,14 +23,12 @@ export class ObjetoMbeComponent implements OnInit{
     return this._data;
   }
 
-
-
 constructor(private gmbeservices : GmbeServicesService,private sanitizer: DomSanitizer){}
 
 
 ngOnInit(): void {
-  if(this.data?.ruta)
-    this.obtenerImagen(this.data?.ruta);
+  /*if(this.data?.ruta)
+    this.obtenerImagen(this.data?.ruta);*/
 }
 
 

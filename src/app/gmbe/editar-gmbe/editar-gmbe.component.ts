@@ -77,7 +77,7 @@ export class EditarGmbeComponent {
   }
 
   obtenerImagen(ruta: string) {
-    this.gmbservices.getImage(ruta).subscribe(
+    this.gmbservices.getImageIndividual(ruta).subscribe(
       res => {
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(res);
       },
