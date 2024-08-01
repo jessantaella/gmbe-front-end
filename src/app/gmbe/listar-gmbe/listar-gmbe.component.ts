@@ -207,7 +207,7 @@ export class ListarGmbeComponent implements OnInit {
             let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
             swal.fire({
               icon: 'success',
-              text: 'Se ha '+mensaje+' el MBE',
+              text: 'Se ha '+mensaje+' el MBE con éxito',
               confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',
