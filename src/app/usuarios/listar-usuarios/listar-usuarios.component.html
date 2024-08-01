@@ -129,7 +129,7 @@
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="this.usuarioForm && !validarGmbes()">
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!this.existeUser">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
