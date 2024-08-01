@@ -7,7 +7,7 @@
       </button>
     </div>
   </div>
-  <div class="table-responsive">
+  <div class="table-responsive" *ngIf="listaMBE && listaMBE.length > 0; else sinResultados">
     <table class="table table-striped table-bordered">
       <thead class="cabecera-tabla">
         <tr class="text-center ">
@@ -82,9 +82,9 @@
         <div class="col-sm-2 text-center m-auto">
           <label for="usuario" class="col-sm-2 col-form-label">Archivo:</label>
         </div>
-
-        <div class="col-sm-8  m-auto">
-          <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly>
+        
+        <div class="col-sm-8 m-auto">
+          <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly style="margin-left: 10px;">
         </div>
     
         <div class="col-sm-2">
@@ -109,5 +109,11 @@
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
+  </div>
+</ng-template>
+
+<ng-template #sinResultados>
+  <div class="alert alert-info text-center m-3" role="alert">
+    Sin resultados
   </div>
 </ng-template>

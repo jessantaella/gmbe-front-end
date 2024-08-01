@@ -76,7 +76,7 @@ export class CrearGmbeComponent {
     private storage:StorageService, private cifrado:CifradoService
   ) {
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    this.titulos.changePestaña('Crear  GMBE');
+    this.titulos.changePestaña('Crear  MBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.tipoEstructura();
     this.obtenerCategorias();
