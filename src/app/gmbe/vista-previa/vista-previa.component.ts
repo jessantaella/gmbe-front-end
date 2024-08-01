@@ -180,7 +180,7 @@ datosInterseccion(columna:number,fila:number){
   let respuesta =  this.datosIntersecciones.find(
     obj => obj.idFila === columna && obj.idColumna === fila
   );
-  return respuesta?.arrConteoDisenioEval
+  return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
 }
 
 }
