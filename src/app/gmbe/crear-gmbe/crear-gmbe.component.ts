@@ -76,7 +76,7 @@ export class CrearGmbeComponent {
     private storage:StorageService, private cifrado:CifradoService
   ) {
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    this.titulos.changePestaña('Crear  GMBE');
+    this.titulos.changePestaña('Crear  MBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.tipoEstructura();
     this.obtenerCategorias();
@@ -453,7 +453,10 @@ export class CrearGmbeComponent {
 
   guardar() {
     console.log(this.generales.value);
-    let nombre = this.imageFile?.name ? this.imageFile.name : 'gmbeImage'+Math.random()+'.png';
+
+
+    let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0]+Math.random()+'.png' : 'gmbeImage'+Math.random()+'.png';
+
     let estructura = this.generaArregloEstructura();
     let enviar = this.generales.value;
     enviar.estructura = estructura;
