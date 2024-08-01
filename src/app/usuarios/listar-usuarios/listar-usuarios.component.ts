@@ -311,6 +311,7 @@ export class ListarUsuariosComponent implements OnInit {
   eliminar(usuario: any) {
 
     swal.fire({
+      icon: 'warning',
       title: '¿Desea eliminar este usuario?',
       showCancelButton: true,
       confirmButtonColor: '#00a94f',

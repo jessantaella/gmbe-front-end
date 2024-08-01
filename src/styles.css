@@ -154,3 +154,16 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
   color: #000000 !important;
 }
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: white;
+  background-color: #21409a;
+  border-color: #21409a;
+  
+}
+
+.page-link {
+  color: #21409a;
+  
+}
