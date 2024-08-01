@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mt-2">
                         <div class="row">
-                            <label for="nombre" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start p-0 m-auto">* Nombre:</label>
+                            <label for="nombre" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start ">*Nombre:</label>
                             <div class="col-sm-8">
                               <input type="text" class="form-control" id="nombre" formControlName="nombre" maxlength="200">
                             </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mt-2">
                         <div class="row">
-                            <label for="objetivos" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start p-0 m-auto">* Objetivos:</label>
+                            <label for="objetivos" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start ">*Objetivos:</label>
                             <div class="col-sm-8">
                               <input type="text" class="form-control" id="objetivos" formControlName="objetivo" maxlength="500">
                             </div>
@@ -30,7 +30,7 @@
 
                     <div class="col-md-12 col-sm-12 mt-2">
                         <div class="row">
-                            <label for="hallazgos" class="col-sm-2 col-form-label text-md-end text-sm-start">* Resumen con principales hallazgos:</label>
+                            <label for="hallazgos" class="col-sm-2 col-form-label text-md-end text-sm-start">*Resumen con principales hallazgos:</label>
                             <div class="col-sm-10">
                                 <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;" formControlName="resumen"></textarea>
                             </div>
@@ -39,7 +39,7 @@
 
                     <div class="col-12 mt-2">
                         <div class="row">
-                            <label for="icono" class="col-sm-2 col-form-label text-md-end text-sm-star">* Carga de ícono MBE:</label>
+                            <label for="icono" class="col-sm-2 col-form-label text-md-end text-sm-star">*Carga de ícono MBE:</label>
                             <div class="col-sm-10">
                                 <div class="d-flex flex-row bd-highlight mb-3">
                                     <div class="p-2 bd-highlight">
@@ -75,7 +75,7 @@
                <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="row">
-                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Tipo:</label>
+                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Tipo:</label>
                         <div class="col-sm-8">
                             <select class="form-select" aria-label="Seleccione una opción" (change)="changeTipo($event)">
                               <option disabled>Seleccione una opción</option>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12">
                   <div class="row">
-                      <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">* Categoría:</label>
+                      <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Categoría:</label>
                       <div class="col-sm-7">
                           <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
                               <option selected>Seleccione una opción</option>

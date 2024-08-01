@@ -27,7 +27,6 @@ import { debounceTime } from "rxjs/internal/operators/debounceTime";
 })
 export class ListarUsuariosComponent implements OnInit {
   textoBienvenida = "Gestión de usuarios";
-  existeUser: any=false;
   hayuser: any="";
   //Paginación
   currentPage: number = 0;
@@ -40,7 +39,7 @@ export class ListarUsuariosComponent implements OnInit {
   desde: number = 0;
   palabra: string = "";
   searchValue = new FormControl("", { nonNullable: true });
-
+  existeUser=false;
   //iconos
   faEye = faEye;
   faPencil = faPencil;
@@ -129,14 +128,13 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   filterUsuarios(event: any) {
+    this.existeUser=false;
     if(event.target.value==""){
-      this.existeUser=false;
     this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
       usuario.samaccountname.toLowerCase().includes("000")
   );
  this.hayuser=this.filteredUsuarios
     }else{
-      this.existeUser=true;
     const searchTerm = event.target.value.toLowerCase();
     this.filteredUsuarios = this.usuariosLdap.filter((usuario) =>
       usuario.samaccountname.toLowerCase().includes(searchTerm)
@@ -146,7 +144,6 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuarioForm.get("nombre")?.setValue('');
     this.usuarioForm.get("correo")?.setValue('');
   }
-  
   }
 
   selectUsuario(usuario: any) {
@@ -155,6 +152,14 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuarioForm.get("nombre")?.setValue(usuario.commonName);
     this.usuarioForm.get("correo")?.setValue(usuario.userPrincipal);
     this.filteredUsuarios = []; //this.usuarios.slice(); // Restablecer la lista filtrada
+  if(this.usuarioForm.get("nombre")?.value.lenght==0 || this.usuarioForm.get("nombre")?.value=="Nombre(s)" ){
+   
+    console.log("entra selectusuario")
+  }else{
+    this.existeUser=true
+    console.log("entra selectusuario2")
+  }
+    
   }
 
   onCheckboxChange(event: any, idMbe: number) {
@@ -262,7 +267,14 @@ export class ListarUsuariosComponent implements OnInit {
           this.cambiarPaginaGetAll(0,10,'','TODOS');
         }
       },
-      (err) => {}
+      (err) => {
+        if(this.usuarioForm.get("idRol")?.value==""){
+          swal.fire("", "Asigne un rol al usuario", "error");
+        }else{
+          swal.fire("", "El usuario ya existe", "error");
+        }
+        
+      }
     );
   }
 
