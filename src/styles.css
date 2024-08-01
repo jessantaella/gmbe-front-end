@@ -68,6 +68,7 @@
  .custom-swal-title {
   font-size: 16px;
   font-family: Arial, sans-serif;
+  font-weight: normal !important;
 }
 
 .custom-swal-html {

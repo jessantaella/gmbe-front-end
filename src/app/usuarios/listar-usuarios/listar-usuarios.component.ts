@@ -301,8 +301,8 @@ export class ListarUsuariosComponent implements OnInit {
     swal.fire({
       title: '¿Desea eliminar este usuario?',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#00a94f',
+      cancelButtonColor: '#b3273e',
       confirmButtonText: 'Aceptar',
       cancelButtonText:  'Cancelar',
       reverseButtons: true,
