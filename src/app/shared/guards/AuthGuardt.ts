@@ -21,16 +21,16 @@ export class AuthGuard implements CanActivate {
       idRol: [1, 2, 3, 4],
     },
     {
-      ruta: 'crear-gmbe',
-      idRol: [1, 2, 4],
-    },
-    {
       ruta: 'editar-gmbe',
-      idRol: [1, 2, 3, 4],
+      idRol: [1, 2, 4],
     },
     {
       ruta: 'vista-previa',
       idRol: [1, 2, 3, 4],
+    },
+    {
+      ruta: 'crear-gmbe',
+      idRol: [1, 2, 4],
     }
   ]
 
@@ -39,20 +39,25 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
+
+    // Obtener y descifrar el objeto de usuario desde el localStorage
     const objetoUsuario = JSON.parse(this.cifrado.descifrar(localStorage.getItem('usr')!));
     const idRol = objetoUsuario?.rolUsuario?.idRol;
 
     console.log('idRol', idRol);
+    const routePath = route.routeConfig?.path?.split('/:')[0];
 
-    const url = route.url.map(segment => segment.path).join('/');
+    // Buscar si hay permisos para la parte base de la ruta
+    const permisos = this.rutaAcceso.find(r => r.ruta === routePath);
 
-    const permisos = this.rutaAcceso.find(r => r.ruta === url);
-
-    if (this.storage.getItem('usr') == null) {
+    // Verificar si el usuario está autenticado
+    if (!objetoUsuario) {
       this.router.navigate(['/login']);
       return false;
     }
-    else if (permisos && permisos?.idRol.includes(idRol)) {
+
+    // Verificar si el rol del usuario tiene acceso a la ruta
+    if (permisos && permisos.idRol.includes(idRol)) {
       return true;
     } else {
       this.router.navigate(['/inicio']);

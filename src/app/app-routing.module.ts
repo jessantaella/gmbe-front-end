@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: "usuarios", component: ListarUsuariosComponent, canActivate: [AuthGuard] },
   { path: "gmbe", component: ListarGmbeComponent, canActivate: [AuthGuard] },
   { path: "crear-gmbe", component: CrearGmbeComponent, canActivate: [AuthGuard]},
-  { path: "editar-gmbe/:id", component: EditarGmbeComponent, canActivate: [AuthGuard] },
+  { path: "editar-gmbe/:id", component: EditarGmbeComponent, canActivate: [AuthGuard]},
   { path: "vista-previa/:id", component: VistaPreviaComponent, canActivate: [AuthGuard]},
   { path: "grafica", component: BurbujasComponent, canActivate: [AuthGuard]},
 ];
