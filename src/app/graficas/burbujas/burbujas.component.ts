@@ -128,7 +128,7 @@ export class BurbujasComponent implements AfterViewInit {
         show: false,
       },
       tooltip: {
-        enabled: true,
+        enabled: false,
         y: {
           formatter: function (val: number, opts: any) {
             return opts.w.config.series[0].data[opts.dataPointIndex].nombreGpo;
