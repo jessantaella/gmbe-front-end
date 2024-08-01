@@ -71,8 +71,26 @@ export class EditarGmbeComponent {
         });
         this.nombreImagen = res.ruta;
         this.obtenerImagen(res.ruta);
+        this.escucharCambiosNombre();
+        this.escucharCambiosObjetivos();
       },
       err => { }
+    )
+  }
+
+  escucharCambiosNombre() {
+    this.generales.get('nombre')?.valueChanges.subscribe(
+      res => {
+        this.mostrarNombre = res;
+      }
+    )
+  }
+
+  escucharCambiosObjetivos() {
+    this.generales.get('objetivo')?.valueChanges.subscribe(
+      res => {
+        this.mostrarObjetivos = res;
+      }
     )
   }
 
@@ -121,7 +139,7 @@ export class EditarGmbeComponent {
             this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
               swal.fire({
                 icon: 'success',
-                text: 'MBE actualizado exitosamente',
+                text: 'MBE actualizado con éxito',
                 confirmButtonText: 'OK',
                 customClass: {
                   htmlContainer: 'titulo-swal',
@@ -142,7 +160,7 @@ export class EditarGmbeComponent {
           this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
             swal.fire({
               icon: 'success',
-              text: 'MBE actualizado exitosamente',
+              text: 'MBE actualizado con éxito',
               confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',

@@ -33,12 +33,26 @@
   height: 0.6em;
   border-right: 0.15em solid white; /* Color de la flecha */
   border-bottom: 0.15em solid white; /* Color de la flecha */
-  transform: rotate(45deg);
   transition: transform 0.2s; /* Animación de rotación */
+  transform: rotate(-135deg); /* Rotar la flecha hacia arriba */
+}
+
+//cuando aria-expanded es true (cuando el acordeón está abierto), la flecha se rota 90 grados
+.custom-accordion-button[aria-expanded='true']::after {
+  transform: rotate(45deg);
+  border-right-color: white; /* Asegúrate de que el color sea consistente */
+  border-bottom-color: white; /* Asegúrate de que el color sea consistente */
 }
 
 .custom-accordion-button:not(.collapsed)::after {
-  transform: rotate(-135deg); /* Rotar la flecha hacia arriba */
+  transform: rotate(45deg);
+  border-right-color: white; /* Asegúrate de que el color sea consistente */
+  border-bottom-color: white; /* Asegúrate de que el color sea consistente */
+}
+
+//cuando aria-expanded es false (cuando el acordeón está cerrado), la flecha se rota 90 grados
+.custom-accordion-button[aria-expanded='false']::after {
+  transform: rotate(-135deg);
   border-right-color: white; /* Asegúrate de que el color sea consistente */
   border-bottom-color: white; /* Asegúrate de que el color sea consistente */
 }
