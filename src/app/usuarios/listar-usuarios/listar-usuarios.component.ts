@@ -142,6 +142,9 @@ export class ListarUsuariosComponent implements OnInit {
       usuario.samaccountname.toLowerCase().includes(searchTerm)
     );
     this.hayuser=this.filteredUsuarios
+
+    this.usuarioForm.get("nombre")?.setValue('');
+    this.usuarioForm.get("correo")?.setValue('');
   }
   
   }

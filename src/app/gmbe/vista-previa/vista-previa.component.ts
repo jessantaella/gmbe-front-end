@@ -4,6 +4,13 @@ import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TitulosService } from 'src/app/services/titulos.services';
+import {
+  faRotateLeft,
+  faDownload,
+  faX,
+  faCheck
+} from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-vista-previa',
@@ -23,6 +30,11 @@ export class VistaPreviaComponent {
 
   mostrarNombre:string = '';
   mostrarObjetivos:string = '';
+
+  faRotaLeft = faRotateLeft;
+  faDownload = faDownload;
+  faX = faX;
+  faCheck = faCheck;
 
   constructor(private route: ActivatedRoute, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);

@@ -22,7 +22,7 @@ declare var swal: any;
   styleUrls: ['./crear-gmbe.component.scss'],
 })
 export class CrearGmbeComponent {
-  textoBienvenida = 'Crear GMBE';
+  textoBienvenida = 'Crear MBE';
   faX = faX;
   faRotateLeft = faRotateLeft;
   faFloppyDisk = faFloppyDisk;

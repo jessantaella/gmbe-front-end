@@ -32,7 +32,7 @@
 
   <div class="d-flex align-items-center">
     <div class="vertical-text-container">
-      <div class="vertical-text">
+      <div class="vertical-text titulosTabla">
         Intervenciones
       </div>
     </div>
@@ -79,9 +79,21 @@
     </div>
   </div>
   <div class="d-flex justify-content-center mt-5 mb-2">
-    <button class="btn btn-primary mx-2 border-0 regresar" [routerLink]="['/gmbe']">Regresar</button>
-    <button class="btn btn-primary mx-2 border-0 descargar">Descargar datos</button>
-    <button class="btn btn-primary mx-2 border-0 rechazar">Rechazar</button>
-    <button class="btn btn-primary mx-2 border-0 aprobar">Aprobar</button>
+    <button class="btn btn-primary mx-2 border-0 regresar" [routerLink]="['/gmbe']">
+      <fa-icon [icon]="faRotaLeft" class="btnOtrasAcciones"></fa-icon>
+      Regresar
+    </button>
+    <button class="btn btn-primary mx-2 border-0 descargar">
+      <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
+      Descargar datos
+    </button>
+    <button class="btn btn-primary mx-2 border-0 rechazar">
+      <fa-icon [icon]="faX" class="btnOtrasAcciones"></fa-icon>
+      Rechazar
+    </button>
+    <button class="btn btn-primary mx-2 border-0 aprobar">
+      <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
+      Aprobar
+    </button>
   </div>
 </div>
