@@ -234,49 +234,54 @@ export class ListarGmbeComponent implements OnInit {
 
   cargardatos() {
     // Mostrar animación de carga
+
     const loading = swal.fire({
-      title: 'Cargando...',
+      text: 'Cargando...',
       allowOutsideClick: false,
       allowEscapeKey: false,
       showConfirmButton: false,
+      customClass: {
+        htmlContainer: 'titulo-swal',
+      },
       willOpen: () => {
         swal.showLoading();
       }
     });
-
-    this.gmbeServices.cargarInformación(this.archivoCarga, this.idMbe).subscribe(
-      res => {
-        console.log(res);
-        // Cerrar la animación de carga
-        swal.close();
-        // Mostrar mensaje de éxito
-        swal.fire({
-          icon: 'success',
-          text: 'Base de datos cargada con éxito',
-          confirmButtonText: 'OK',
-          customClass: {
-            htmlContainer: 'titulo-swal',
-            confirmButton: 'ok-swal',
-          }
-        })
-        this.modalRef?.close();
-      },
-      err => {
-        console.log(err);
-        // Cerrar la animación de carga
-        swal.close();
-        // Mostrar mensaje de error
-        swal.fire({
-          icon: 'error',
-          text: 'Error en la carga, revisar el archivo',
-          confirmButtonText: 'OK',
-          customClass: {
-            htmlContainer: 'titulo-swal',
-            confirmButton: 'ok-swal',
-          }
-        })
-      }
-    );
+    setTimeout(() => {
+      this.gmbeServices.cargarInformación(this.archivoCarga, this.idMbe).subscribe(
+        res => {
+          console.log(res);
+          // Cerrar la animación de carga
+          swal.close();
+          // Mostrar mensaje de éxito
+          swal.fire({
+            icon: 'success',
+            text: 'Base de datos cargada con éxito',
+            confirmButtonText: 'OK',
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'ok-swal',
+            }
+          })
+          this.modalRef?.close();
+        },
+        err => {
+          console.log(err);
+          // Cerrar la animación de carga
+          swal.close();
+          // Mostrar mensaje de error
+          swal.fire({
+            icon: 'error',
+            text: 'Error en la carga, revisar el archivo',
+            confirmButtonText: 'OK',
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'ok-swal',
+            }
+          })
+        }
+      );
+    }, 1000);
 }
 
 
