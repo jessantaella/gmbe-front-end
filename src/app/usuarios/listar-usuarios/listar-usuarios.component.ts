@@ -159,6 +159,8 @@ export class ListarUsuariosComponent implements OnInit {
     this.existeUser=true
     console.log("entra selectusuario2")
   }
+
+  this.mbeEditables = [];
     
   }
 
@@ -411,6 +413,14 @@ export class ListarUsuariosComponent implements OnInit {
           this.totalPage = data?.totalPages;
           this.desde = (this.page - 1) * this.pageSize + 1;
         });
+    }
+  }
+
+  validaDisabledGuardar(){
+    if (this.usuarioForm.get('idRol')!.value === '1'){
+      return this.existeUser;
+    }else{
+      return this.mbeEditables.length>0 && this.existeUser;
     }
   }
 }

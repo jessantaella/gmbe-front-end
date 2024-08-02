@@ -94,3 +94,9 @@
   font-family: Arial, Helvetica, sans-serif;
   color:#ffffff;
 }
+
+
+.disabled-dropdown {
+  pointer-events: none;
+  opacity: 0.5;
+}

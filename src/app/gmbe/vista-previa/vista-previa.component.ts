@@ -99,7 +99,7 @@ cargarEstructuraMbe(){
         }
       }
 
-      console.log(this.estructuraFinalColumnasTitulos);
+      console.log('valores columnas',this.estructuraFinalColumnasTitulos);
 
       //obtiene categorias de columnas
       this.estructuraFinalFilasTitulos = this.filtrarCategoriasUnicas(this.obtenerTipo(res,2));
@@ -176,7 +176,20 @@ filtrarCategoriasUnicas(arreglo: any){
 }
 
 
+regresaValorSinSubcategoria(padre:any,hijo:any){
+  if(!hijo?.idColumna){
+    return padre?.idEstructura
+  }else{
+    return hijo?.idColumna;
+  }
+
+}
+
 datosInterseccion(columna:number,fila:number){
+  console.log('fila',columna)
+  console.log('columna',fila)
+
+
   let respuesta =  this.datosIntersecciones.find(
     obj => obj.idFila === columna && obj.idColumna === fila
   );

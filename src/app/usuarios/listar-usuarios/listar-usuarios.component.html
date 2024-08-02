@@ -107,16 +107,18 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="mbe" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Mapas de Brechas de Evidencias:</label>
+        <label for="mbe" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;"
+        *ngIf="usuarioForm.get('idRol')!.value !== '1'">
+        Mapas de Brechas de Evidencias:</label>
         <div class="col-12 col-sm-6">
           <div class="btn-group drop my-2" dropdown #dropdown="bs-dropdown" [autoClose]="false">
-            <button dropdownToggle type="button" class="btn dropdown-toggle">
+            <button dropdownToggle type="button" class="btn dropdown-toggle" *ngIf="usuarioForm.get('idRol')!.value !== '1'">
               <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length > 0">Seleccionados {{mbeEditables!.length}}</span>
               <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length <= 0">Ningún seleccionado</span>
             </button>
             <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
               <li role="menuitem" *ngFor="let mbe of listaMBE">
-                <input type="checkbox" class="radio" (change)="onCheckboxChangeMBE(mbe.idMbe)" />{{mbe.nombre}}
+                <input type="checkbox" class="radio" (change)="onCheckboxChangeMBE(mbe.idMbe)"/>{{mbe.nombre}}
               </li>
             </ul>
           </div>
@@ -129,7 +131,7 @@
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!this.existeUser">
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!validaDisabledGuardar()">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>
