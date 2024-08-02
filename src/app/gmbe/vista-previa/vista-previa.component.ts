@@ -135,9 +135,9 @@ cargarEstructuraMbe(){
       for(let a=0;a<this.estructuraFinalFilasTitulos.length;a++){
         this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.estructuraFinalFilasTitulos[a].hijos);
       }
-      console.log('Columnas',this.estructuraFinalColumnasTitulos)
-      console.log('subtitulos',this.estructuraFinalFilasSubitulos);
-      console.log('hijos filas',this.estructuraFinalFilasTitulos)
+      //console.log('Columnas',this.estructuraFinalColumnasTitulos)
+      //console.log('subtitulos',this.estructuraFinalFilasSubitulos);
+     // console.log('hijos filas',this.estructuraFinalFilasTitulos)
     },
     err=>{}
   )
@@ -186,10 +186,6 @@ regresaValorSinSubcategoria(padre:any,hijo:any){
 }
 
 datosInterseccion(columna:number,fila:number){
-  console.log('fila',columna)
-  console.log('columna',fila)
-
-
   let respuesta =  this.datosIntersecciones.find(
     obj => obj.idFila === columna && obj.idColumna === fila
   );
