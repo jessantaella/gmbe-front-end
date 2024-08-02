@@ -118,8 +118,9 @@ export class ListarGmbeComponent implements OnInit {
         this.puedeCrearMBE = true;
         return true;
         break
-      //OPERADOR
+      //OPERADOR Y PUBLICADOR
       case 2:
+      case 4:
       this.puedeCrearMBE = true;
         if (idMbe.idEstatus?.idCatalogo === 173 || idMbe.idEstatus?.idCatalogo === 176) {
           return true;
@@ -131,15 +132,6 @@ export class ListarGmbeComponent implements OnInit {
       case 3:
         this.puedeCrearMBE = false;
         if ( idMbe.idEstatus?.idCatalogo === 175 || idMbe.idEstatus?.idCatalogo === 176) {
-          return true;
-        } else {
-          return false;
-        }
-        break;
-      //PUBLICADOR
-      case 4:
-        this.puedeCrearMBE = true;
-        if (idMbe.idEstatus?.idCatalogo === 173 || idMbe.idEstatus?.idCatalogo === 176) {
           return true;
         } else {
           return false;
@@ -204,10 +196,10 @@ export class ListarGmbeComponent implements OnInit {
       if (result.isConfirmed) {
         this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
           res => {
-            let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
+            let mensajeModal = !estatusActual ? 'bloqueado' : 'desbloqueado';
             swal.fire({
               icon: 'success',
-              text: 'Se ha '+mensaje+' el MBE con éxito',
+              text: 'Se ha '+mensajeModal+' el MBE con éxito',
               confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',
@@ -235,7 +227,7 @@ export class ListarGmbeComponent implements OnInit {
   cargardatos() {
     // Mostrar animación de carga
 
-    const loading = swal.fire({
+    swal.fire({
       text: 'Cargando...',
       allowOutsideClick: false,
       allowEscapeKey: false,

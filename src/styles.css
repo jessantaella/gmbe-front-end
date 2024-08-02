@@ -52,13 +52,9 @@
 
  }
  .btn-acciones{
-   color : #21409a
+   color : #21409a;
+   cursor: pointer;
  }
-
- .btn-acciones{
-  cursor: pointer;
- }
-
 
  .btn-acciones-inabil{
   color:gray;
@@ -141,7 +137,7 @@
 }
 
 
-div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
+div.swal2-container button.swal2-styled.swal2-confirm {
   border: 0;
   border-radius: .25em;
   background: initial;
@@ -150,8 +146,7 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
   font-size: 1em;
 }
 
-div:where(.swal2-container) div:where(.swal2-popup) {
-
+div.swal2-container div.swal2-popup {
   color: #000000 !important;
 }
 

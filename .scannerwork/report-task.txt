@@ -1,0 +1,6 @@
+projectKey=gmbe-front
+serverUrl=http://vmcijkd01:9000
+serverVersion=8.2.0.32929
+dashboardUrl=http://vmcijkd01:9000/dashboard?id=gmbe-front
+ceTaskId=AZEVJz2PYwWgzz5WDtXI
+ceTaskUrl=http://vmcijkd01:9000/api/ce/task?id=AZEVJz2PYwWgzz5WDtXI

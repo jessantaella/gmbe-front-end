@@ -37,6 +37,11 @@
     margin-right: 1rem; /* Espacio entre el texto y la tabla */
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
     font-weight: bold; /* Opcional: Hace que el texto sea negrita */
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
 
   .table-responsive{
@@ -109,17 +114,6 @@
   display: flex;
   align-items: center;
   height: calc(60vh - 2rem); /* Adjust this value to move the label up or down */
-}
-
-.vertical-text {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg) translateY(+60px);
-  text-align: center ;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
 }
 
   @media (max-width: 768px) {
