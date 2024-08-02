@@ -234,7 +234,6 @@ export class ListarGmbeComponent implements OnInit {
 
   cargardatos() {
     // Mostrar animación de carga
-
     const loading = swal.fire({
       text: 'Cargando...',
       allowOutsideClick: false,
@@ -252,7 +251,7 @@ export class ListarGmbeComponent implements OnInit {
         res => {
           console.log(res);
           // Cerrar la animación de carga
-          swal.close();
+          //swal.close();
           // Mostrar mensaje de éxito
           swal.fire({
             icon: 'success',

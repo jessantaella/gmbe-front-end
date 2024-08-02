@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServerConfigService } from 'src/app/server-config.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { map, retry, catchError ,shareReplay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -130,25 +131,35 @@ export class GmbeServicesService {
     return request$;
   }
 
-
-  getImageIndividual(remotePath: string): Observable<string> {
-    const payload = { sistema: 'GMBE', remotePath };
-    const url = `${this.serverConfigService.getServerConfig()}api/coneval-ms-storage/api/storage/get-file`;
-    return this.http.post(url, payload, { responseType: 'arraybuffer' }).pipe(
-      map(response => {
-        // Convertir array buffer a cadena base64
-        const binaryString = Array.from(new Uint8Array(response))
-          .map(byte => String.fromCharCode(byte))
-          .join('');
-        const base64String = btoa(binaryString);
-        return `data:image/png;base64,${base64String}`;
-      }),
-      catchError(error => {
-        console.error('Error fetching image:', error);
-        return throwError(() => new Error('Error fetching image.'));
-      })
-    );
-  }
+    getImageIndividual(remotePath: string): Observable<string> {
+      if (this.cache.has(remotePath)) {
+        return this.cache.get(remotePath)!;
+      }
+  
+      const payload = { sistema: 'GMBE', remotePath };
+      const url = `${this.serverConfigService.getServerConfig()}api/coneval-ms-storage/api/storage/get-file`;
+  
+      const request$ = this.http.post(url, payload, { responseType: 'arraybuffer' }).pipe(
+        retry(3), // Reintenta la solicitud hasta 3 veces en caso de error
+        map(response => {
+          // Convertir array buffer a cadena base64
+          const binaryString = Array.from(new Uint8Array(response))
+            .map(byte => String.fromCharCode(byte))
+            .join('');
+          const base64String = btoa(binaryString);
+          return `data:image/png;base64,${base64String}`;
+        }),
+        catchError(err => {
+          console.error('Error al obtener la imagen:', err);
+          return of(''); // Devuelve un valor vacío o maneja el error según sea necesario
+        }),
+        shareReplay(1) // Comparte la última emisión y evita múltiples solicitudes
+      );
+  
+      this.cache.set(remotePath, request$);
+  
+      return request$;
+    }
   
 
 
@@ -170,5 +181,19 @@ export class GmbeServicesService {
       return this.http.post<any>(url, formData, {});
      }
 
+     obtenerVersionMaximaMBE(idMbe:number):Observable<any>{
+      let url=this.serverConfigService.getServerConfig()+'api/gmbe/api/datos-mbe/max-revision?idMbe='+idMbe;
+      return this.http.get<any>(url);
+     }
+
+
+     descargarReporteDatos(idMbe:number,revision:number):Observable<HttpResponse<ArrayBuffer>>{
+      let url: string =`${this.serverConfigService.getServerConfig()}api/gmbe/api/reporte/datos-reporte?idMbe=${idMbe}&revision=${revision}`;
+      return this.http.get(url, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        responseType: 'arraybuffer',
+        observe: 'response'
+    });
+     }
 
 }

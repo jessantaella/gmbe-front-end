@@ -10,7 +10,8 @@ import {
   faX,
   faCheck
 } from '@fortawesome/free-solid-svg-icons';
-
+import { HttpResponse } from '@angular/common/http';
+declare var swal: any;
 
 @Component({
   selector: 'app-vista-previa',
@@ -19,6 +20,7 @@ import {
 })
 export class VistaPreviaComponent {
   id:number = 0;
+  versionMaxima = 1;
   generales: FormGroup;
   imageUrl: SafeUrl | null = null;
   textoBienvenida = "Vista previa";
@@ -46,6 +48,7 @@ export class VistaPreviaComponent {
       resumen: [''],
     });
     this.cargaMBE();
+    this.obtenerVersionMax();
     this.cargarEstructuraMbe();
     this.cargarDatosMbe();
   }
@@ -64,6 +67,15 @@ export class VistaPreviaComponent {
         this.obtenerImagen(res.ruta);
       },
       err=>{}
+    )
+  }
+
+  obtenerVersionMax(){
+    this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe(
+      res=>{
+        this.versionMaxima = res?.data;
+        console.log(res);
+      }
     )
   }
 
@@ -190,6 +202,43 @@ datosInterseccion(columna:number,fila:number){
     obj => obj.idFila === columna && obj.idColumna === fila
   );
   return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
+}
+
+
+descargar(){
+  swal.fire({
+    title: 'Descargando',
+    timerProgressBar: true,
+    didOpen: () => {
+      swal.showLoading();
+    }
+  });
+  this.gmbservices.descargarReporteDatos(this.id,this.versionMaxima).subscribe(
+    (res: HttpResponse<ArrayBuffer>) => {
+      if(res.body!.byteLength>0){
+        const file = new Blob([res!.body!], { type: 'application/xlsx' });
+        const fileURL = URL.createObjectURL(file);
+        var link = document.createElement('a');
+        link.href = fileURL;
+        swal.close();
+        swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
+        link.download =this.generales.get('nombre')!.value+'.xlsx';
+        link.click();
+      }else{
+        swal.fire({
+          icon: 'error',
+          title: '<center> Error </center>',
+          text: 'Sin información',
+        })
+      }
+    },
+    err=>{
+      swal.fire({
+        icon: 'error',
+        title: '<center> Error </center>',
+        text: 'Sin información',
+      })
+    })
 }
 
 }

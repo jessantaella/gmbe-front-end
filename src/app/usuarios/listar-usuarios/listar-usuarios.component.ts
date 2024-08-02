@@ -423,6 +423,16 @@ export class ListarUsuariosComponent implements OnInit {
       return this.mbeEditables.length>0 && this.existeUser;
     }
   }
+
+  validaDisabledGuardarEditar(){
+    if (this.usuarioEditForm.get('idRol')!.value === '1' || this.usuarioEditForm.get('idRol')!.value === 1){
+      return this.existeUser;
+    }else{
+      return this.mbeEditables.length>0;
+    }
+  }
+
+
   onCancel() {
     this.existeUser = false;
     this.modalService.dismissAll('Cancelar'); // o como sea que cierres el modal
