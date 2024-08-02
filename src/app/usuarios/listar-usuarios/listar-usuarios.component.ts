@@ -273,7 +273,7 @@ export class ListarUsuariosComponent implements OnInit {
         if(this.usuarioForm.get("idRol")?.value==""){
           swal.fire("", "Asigne un rol al usuario", "error");
         }else{
-          swal.fire("", "El usuario ya existe", "error");
+          swal.fire("", "El usuario ya está registrado", "error");
         }
         
       }
@@ -422,5 +422,9 @@ export class ListarUsuariosComponent implements OnInit {
     }else{
       return this.mbeEditables.length>0 && this.existeUser;
     }
+  }
+  onCancel() {
+    this.existeUser = false;
+    this.modalService.dismissAll('Cancelar'); // o como sea que cierres el modal
   }
 }
