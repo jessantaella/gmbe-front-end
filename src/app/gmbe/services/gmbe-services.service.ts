@@ -166,7 +166,7 @@ export class GmbeServicesService {
     actualizarImagen(imagen:any,nombre:string){
       const formData = new FormData();
       formData.append('file', imagen);
-      formData.append('remotePath',nombre.replace(/_/g, ''));
+      formData.append('remotePath',nombre?.replace(/_/g, ''));
       formData.append('sistema','GMBE');
       let url: string =`${this.serverConfigService.getServerConfig()}api/coneval-ms-storage/api/storage/update-file`;
       return this.http.post<any>(url, formData, {});

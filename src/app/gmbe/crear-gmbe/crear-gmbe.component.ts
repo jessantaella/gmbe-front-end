@@ -97,9 +97,10 @@ export class CrearGmbeComponent {
 
   onFileChange(event: any): void {
     let file = event.target.files[0];
+    console.log(file);
     if (file) {
         if (file.size > 5242880) { // 5MB en bytes
-          swal.fire('', 'El archivo no debe pesar más de 5mb', 'error');
+            swal.fire('', 'El archivo no debe pesar más de 5mb', 'error');
             return;
         }
         this.imageFile = file;
@@ -109,13 +110,17 @@ export class CrearGmbeComponent {
             this.imageUrl = e.target?.result;
         };
         reader.readAsDataURL(file);
-    }
-  }
 
-  clearImage(): void {
+        // Limpia el input de archivo
+        event.target.value = ''; 
+    }
+}
+
+clearImage(): void {
     this.imageUrl = null;
     this.imageFile = null;
-  }
+}
+
 
   subcategoriaSeleccionada(sub: any) {
     if (!this.subcategoriasAgregadas) {
