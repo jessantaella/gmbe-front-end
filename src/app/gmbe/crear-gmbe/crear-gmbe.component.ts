@@ -96,25 +96,31 @@ export class CrearGmbeComponent {
   }
 
   onFileChange(event: any): void {
-    let file = event.target.files[0];
-    console.log(file);
+    const file = event.target.files[0];
     if (file) {
-        if (file.size > 5242880) { // 5MB en bytes
-            swal.fire('', 'El archivo no debe pesar más de 5mb', 'error');
-            return;
-        }
-        this.imageFile = file;
-
-        let reader = new FileReader();
-        reader.onload = (e) => {
-            this.imageUrl = e.target?.result;
-        };
-        reader.readAsDataURL(file);
-
-        // Limpia el input de archivo
-        event.target.value = ''; 
+      const validTypes = ['image/png', 'image/jpeg'];
+      if (!validTypes.includes(file.type)) {
+        swal.fire('', 'Por favor, sube un archivo de imagen válido (PNG o JPEG)', 'error');
+        event.target.value = ''; // Limpia el input de archivo
+        return;
+      }
+  
+      if (file.size > 5242880) { // 5MB en bytes
+        swal.fire('', 'El archivo no debe pesar más de 5mb', 'error');
+        return;
+      }
+  
+      this.imageFile = file;
+  
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imageUrl = e.target?.result;
+      };
+      reader.readAsDataURL(file);
+  
+      event.target.value = ''; // Limpia el input de archivo después de leerlo
     }
-}
+  }
 
 clearImage(): void {
     this.imageUrl = null;
