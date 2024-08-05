@@ -21,8 +21,8 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() chartId: string | undefined;
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
-  w: number = 150;
-  h: number = 100;
+  w: number = 100;
+  h: number = 50;
 
   public chartOptions: any;
   isBrowser = false;
