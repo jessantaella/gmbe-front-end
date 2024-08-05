@@ -50,7 +50,7 @@ export class VistaPreviaComponent {
     this.cargaMBE();
     this.obtenerVersionMax();
     this.cargarEstructuraMbe();
-    this.cargarDatosMbe();
+    //this.cargarDatosMbe();
   }
 
   cargaMBE(){
@@ -74,6 +74,7 @@ export class VistaPreviaComponent {
     this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe(
       res=>{
         this.versionMaxima = res?.data;
+        this.cargarDatosMbe();
         console.log(res);
       }
     )
@@ -156,7 +157,7 @@ cargarEstructuraMbe(){
 }
 
 cargarDatosMbe(){
-  this.gmbservices.obtenerDatosGMBE(this.id).subscribe(
+  this.gmbservices.obtenerDatosGMBE(this.id,this.versionMaxima).subscribe(
     res=>{
       this.datosIntersecciones = res;
       console.log('datos',this.datosIntersecciones)
@@ -222,7 +223,7 @@ descargar(){
         link.href = fileURL;
         swal.close();
         swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
-        link.download =this.generales.get('nombre')!.value+'.xlsx';
+        link.download ='DatosMBE'+this.generales.get('nombre')!.value+'.xlsx';
         link.click();
       }else{
         swal.fire({

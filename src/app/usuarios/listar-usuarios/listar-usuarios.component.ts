@@ -417,16 +417,17 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   validaDisabledGuardar(){
-    if (this.usuarioForm.get('idRol')!.value === '1'){
+    /*if (this.usuarioForm.get('idRol')!.value === '1'){
       return this.existeUser;
     }else{
-      return this.mbeEditables.length>0 && this.existeUser;
-    }
+      return this.existeUser;
+    }*/
+   return this.existeUser && this.usuarioForm.get('idRol')!.value !== '';
   }
 
   validaDisabledGuardarEditar(){
     if (this.usuarioEditForm.get('idRol')!.value === '1' || this.usuarioEditForm.get('idRol')!.value === 1){
-      return this.existeUser;
+      return true;
     }else{
       return this.mbeEditables.length>0;
     }

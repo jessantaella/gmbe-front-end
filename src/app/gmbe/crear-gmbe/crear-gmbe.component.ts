@@ -464,10 +464,7 @@ clearImage(): void {
 
   guardar() {
     console.log(this.generales.value);
-
-
-    let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0]+Math.random()+'.png' : 'gmbeImage'+Math.random()+'.png';
-
+    let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0].replaceAll('.','')+Math.random()+'.png' : 'gmbeImage'+Math.random()+'.png';
     let estructura = this.generaArregloEstructura();
     let enviar = this.generales.value;
     enviar.estructura = estructura;

@@ -142,7 +142,9 @@ export class EditarGmbeComponent {
   }
 
   guardar() {
-    if (this.subiImagen && this.imageFile !== null) {
+ 
+    if (this.imageFile !== null) {
+      console.log('sin edicion de imagen ',this.imageFile)
       let nombre = this.nombreImagen;
       let enviar = this.generales.value;
       enviar.idUsuario = this.usuario?.idUsuario;
@@ -163,10 +165,13 @@ export class EditarGmbeComponent {
               this.router.navigate(['/gmbe'])
             })
           },
-          err => { }
+          err => { 
+            swal.fire('', 'Error al actualizar la imagen', 'error');
+          }
         )
 
     }else{
+      console.log('sin edicion de imagen ')
       let enviar = this.generales.value;
       enviar.ruta = this.nombreImagen;
       enviar.idUsuario = this.usuario?.idUsuario;

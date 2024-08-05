@@ -85,8 +85,8 @@ export class GmbeServicesService {
     return this.http.get<any>(url);
   }
 
-  obtenerDatosGMBE(idMbe:number):Observable<any>{
-    let url=this.serverConfigService.getServerConfig()+'api/gmbe/api/datos-mbe/vista-previa?idMbe='+idMbe;
+  obtenerDatosGMBE(idMbe:number,revision:number):Observable<any>{
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe/api/datos-mbe/vista-previa?idMbe='+idMbe+'&revision='+revision;
     return this.http.get<any>(url);
   }
   
@@ -140,7 +140,7 @@ export class GmbeServicesService {
       const url = `${this.serverConfigService.getServerConfig()}api/coneval-ms-storage/api/storage/get-file`;
   
       const request$ = this.http.post(url, payload, { responseType: 'arraybuffer' }).pipe(
-        retry(3), // Reintenta la solicitud hasta 3 veces en caso de error
+        retry(1), // Reintenta la solicitud hasta 3 veces en caso de error
         map(response => {
           // Convertir array buffer a cadena base64
           const binaryString = Array.from(new Uint8Array(response))
