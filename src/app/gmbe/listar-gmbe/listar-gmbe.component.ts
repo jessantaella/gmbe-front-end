@@ -84,7 +84,22 @@ export class ListarGmbeComponent implements OnInit {
     this.idUsuario = this.ObjetoUser.idUsuario;
 
     this.cambiarPaginaGetAll(0, 10);
+    this.validarAccesos(this.idUsuario);
   }
+
+  validarAccesos(idUsuario: number) {
+    this.gmbeServices.consultarAccesos(idUsuario).subscribe(
+      res => {
+        console.log(res);
+        //Actualizar el localStorage de los accesos del usuario
+        this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
 
   validarRol() {
     return this.usuario?.rolUsuario?.idRol === 1;
@@ -225,6 +240,7 @@ export class ListarGmbeComponent implements OnInit {
                 confirmButton: 'ok-swal',
               }
             })
+            this.validarAccesos(this.idUsuario);
             this.cambiarPaginaGetAll(this.page - 1, 10);
           }, err => {
 
@@ -347,6 +363,7 @@ export class ListarGmbeComponent implements OnInit {
         this.gmbeServices.eliminarGmbe(idMbe).subscribe(
           res => {
             swal.fire("", "Registro eliminado exitosamente", "success");
+            this.validarAccesos(this.idUsuario);
             this.cambiarPaginaGetAll(this.page - 1, 10);
           }, err => {
 

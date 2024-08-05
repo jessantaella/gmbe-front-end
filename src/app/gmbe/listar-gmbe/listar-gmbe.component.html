@@ -49,15 +49,15 @@
 
               <fa-icon [icon]="faPencil" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe)"></fa-icon>
 
-              <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado && validarRol()) && this.acciones(mbe)" class="btn-acciones m-2 activo"
+              <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && this.acciones(mbe)" class="btn-acciones m-2 activo"
                 (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
 
-              <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado && validarRol()) && this.acciones(mbe)" class="btn-acciones m-2 inactivo"
+              <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && this.acciones(mbe)" class="btn-acciones m-2 inactivo"
                 (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
 
-              <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="(!mbe?.bloqueado && this.acciones(mbe) && validarRol())"
+              <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="(!mbe?.bloqueado && this.acciones(mbe))"
                 (click)="eliminarGmbe(mbe?.idMbe)"></fa-icon>
-              <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado || !this.acciones(mbe)) && validarRol()"></fa-icon>
+              <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado || !this.acciones(mbe))"></fa-icon>
           </td>
         </tr>
       </tbody>
