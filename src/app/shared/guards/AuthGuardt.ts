@@ -40,6 +40,9 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
 
+    // Obtener y descifrar el objeto de ids autorizados donde puede acceder el usuario
+    const objetoIds = JSON.parse(this.cifrado.descifrar(localStorage.getItem('autorizadas')!));
+
     // Obtener y descifrar el objeto de usuario desde el localStorage
     const objetoUsuario = JSON.parse(this.cifrado.descifrar(localStorage.getItem('usr')!));
     const idRol = objetoUsuario?.rolUsuario?.idRol;
@@ -56,8 +59,15 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
+    const idAutorizados = objetoIds?.map((id: string) => parseInt(id));
+    const idParam = parseInt(route.params['id']);
+
     // Verificar si el rol del usuario tiene acceso a la ruta
-    if (permisos && permisos.idRol.includes(idRol)) {
+    if (permisos && permisos.idRol.includes(idRol) && routePath !== 'editar-gmbe' && routePath !== 'vista-previa') {
+      return true;
+    }
+    // Verificar si el rol del usuario tiene acceso a la ruta o al id de la ruta
+    else if ((routePath === 'editar-gmbe' || routePath === 'vista-previa') && idAutorizados?.includes(idParam)) {
       return true;
     } else {
       this.router.navigate(['/inicio']);

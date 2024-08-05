@@ -40,7 +40,7 @@
           <td class="text-center">{{mbe?.fechaPublicacion | date: 'dd-MM-yyyy'}}</td>
           <td class="text-center" >
               <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado && this.acciones(mbe)"
-                (click)="openCarga(cargaModal,mbe?.idMbe)"></fa-icon>
+                (click)="openCarga(cargaModal,mbe?.idMbe,mbe)"></fa-icon>
 
               <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe)"></fa-icon>
 
@@ -93,6 +93,7 @@
         
         <div class="col-sm-8 m-auto">
           <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly style="margin-left: 10px;">
+          <span class="text-danger my-1" *ngIf="this.mostrarMensajeRevisiones" style="padding: 12px;" >Este MBE, ya tiene información cargada</span>
         </div>
     
         <div class="col-sm-2">

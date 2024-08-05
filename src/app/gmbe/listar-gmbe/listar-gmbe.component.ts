@@ -61,6 +61,7 @@ export class ListarGmbeComponent implements OnInit {
   cargaDatos: FormGroup;
   imageUrl: string | ArrayBuffer | null | undefined = null;
   archivoCarga: File | null = null;
+  mostrarMensajeRevisiones: any;
 
   constructor(private titulos: TitulosService,
     private modalService: NgbModal,
@@ -109,6 +110,16 @@ export class ListarGmbeComponent implements OnInit {
         this.totalPage = data.totalPages;
         this.desde = (this.page - 1) * this.pageSize + 1;
       });
+  }
+
+  masRevisones(mbe: any = '') {
+    console.log('idMbe');
+    console.log(mbe);
+    if (mbe?.maxRevision > 0) {
+      this.mostrarMensajeRevisiones = true;
+    } else {
+      this.mostrarMensajeRevisiones = false; 
+    }
   }
 
   acciones(idMbe: any): boolean {
@@ -222,7 +233,8 @@ export class ListarGmbeComponent implements OnInit {
     });
   }
 
-  openCarga(content: TemplateRef<any>,idmbe:number) {
+  openCarga(content: TemplateRef<any>,idmbe:number,mbe:any) {
+    this.masRevisones(mbe);
     this.clearImage(this.fileInput?.nativeElement);
     this.modalRef = this.modalService.open(content, {
       size: 'lg',

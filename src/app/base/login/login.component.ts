@@ -82,6 +82,7 @@ export class LoginComponent implements OnInit {
         console.log(res);
         if (res.usuarioAutenticado?.activo === true) {
           if (res.token) {
+            this.idAutorizadas(res.usuarioAutenticado?.idUsuario);
             this.router.navigate(["/inicio"]);
             this.storage.setItem("token-gmbe",this.cifrado.cifrar(res.token?.token));
             this.storage.setItem("rolUsuario",this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
@@ -120,5 +121,14 @@ export class LoginComponent implements OnInit {
       );
 
     });
+  }
+
+  idAutorizadas(idUsuario: number) {
+    this.auth
+      .getAutorizadas(idUsuario)
+      .subscribe((res) => {
+        console.log(res);
+        this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
+      });
   }
 }
