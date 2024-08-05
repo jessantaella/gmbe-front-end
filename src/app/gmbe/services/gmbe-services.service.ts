@@ -196,4 +196,9 @@ export class GmbeServicesService {
     });
      }
 
+     consultarAccesos(idUsuario:number):Observable<any>{
+      let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/'+'api/mbe/get-mbes-permitidos?' + 'idUsuario=' + idUsuario;
+      return this.http.get<any>(url);
+     }
+
 }

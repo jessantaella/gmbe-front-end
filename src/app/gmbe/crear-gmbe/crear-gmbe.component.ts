@@ -483,6 +483,7 @@ clearImage(): void {
         this.gmbeservice.crearGmbe(enviar).subscribe(
           res=>{
             swal.fire('', 'MBE registrado exitosamente', 'success');
+            this.consultarAccesos(enviar.idUsuario);
             this.router.navigate(['/gmbe'])
           },
           err=>{}
@@ -493,6 +494,17 @@ clearImage(): void {
         // Maneja el error aquí
       }
     );
+  }
+
+  consultarAccesos(idUsuario:number){
+    this.gmbeservice.consultarAccesos(idUsuario).subscribe(
+      res=>{
+        console.log(res);
+        //Actualizar el Storage con los accesos
+        this.storage.setItem('autorizadas',this.cifrado.cifrar(JSON.stringify(res)));
+      },
+      err=>{}
+    )
   }
 
   open(content: TemplateRef<any>,tipo :string) {
@@ -543,6 +555,7 @@ clearImage(): void {
 
 
   crearSubcategoria(){
+
     this.gmbeservice.crearSubcategoria(this.subcategoriaForm.get('nombre')?.value,this.subcategoriaForm.get('categoria')?.value).subscribe(
       res => {
         swal.fire({
