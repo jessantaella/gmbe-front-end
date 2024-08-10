@@ -37,6 +37,8 @@ export class LoginComponent implements OnInit {
     config.backdrop = "static";
     config.keyboard = false;
 
+    this.titulos.changePestaña('Login');
+
     this.loginForm = this.fb.group({
       username: [""],
       password: [""],

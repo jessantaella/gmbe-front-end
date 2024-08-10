@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="d-flex flex-row-reverse bd-highlight m-3">
     <div class="p-2 bd-highlight">
-      <button [routerLink]="['/crear-gmbe']" class="btn-nuevo btn-sm" *ngIf="this.puedeCrearMBE" >
+      <button [routerLink]="['/crear-gmbe']" class="btn-nuevo btn-sm"  *ngIf="this.idRol()===1 || idRol()===2 || idRol()===3">
         <em class='bi bi-plus'></em>
         Nuevo MBE
       </button>

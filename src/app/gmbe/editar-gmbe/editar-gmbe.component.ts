@@ -144,12 +144,13 @@ export class EditarGmbeComponent {
   guardar() {
  
     if (this.imageFile !== null) {
-      console.log('sin edicion de imagen ',this.imageFile)
-      let nombre = this.nombreImagen;
+      console.log('Con edicion de imagen ',this.imageFile)
+      //let nombre = this.nombreImagen;
+      let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0].replaceAll('.','')+Math.random()+'.png' : 'gmbeImage'+Math.random()+'.png';
       let enviar = this.generales.value;
       enviar.idUsuario = this.usuario?.idUsuario;
       enviar.idMbe = this.id;
-        this.gmbservices.actualizarImagen(this.imageFile, nombre).subscribe(
+        this.gmbservices.crearImagen(this.imageFile, nombre).subscribe(
           res => {
             enviar.ruta = res.remotePath;
             this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
