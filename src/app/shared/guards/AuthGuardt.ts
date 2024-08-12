@@ -62,6 +62,10 @@ export class AuthGuard implements CanActivate {
     const idAutorizados = objetoIds?.map((id: string) => parseInt(id));
     const idParam = parseInt(route.params['id']);
 
+    console.log('guard',idAutorizados);
+    console.log('guard',permisos);
+    console.log('guard',routePath);
+
     // Verificar si el rol del usuario tiene acceso a la ruta
     if (permisos && permisos.idRol.includes(idRol) && routePath !== 'editar-gmbe' && routePath !== 'vista-previa') {
       return true;
@@ -69,7 +73,9 @@ export class AuthGuard implements CanActivate {
     // Verificar si el rol del usuario tiene acceso a la ruta o al id de la ruta
     else if ((routePath === 'editar-gmbe' || routePath === 'vista-previa') && idAutorizados?.includes(idParam)) {
       return true;
-    } else {
+    } else if(idRol !== '1'){
+      return true;
+    }else{
       this.router.navigate(['/inicio']);
       return false;
     }

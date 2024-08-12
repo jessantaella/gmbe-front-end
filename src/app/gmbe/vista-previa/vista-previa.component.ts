@@ -223,7 +223,7 @@ descargar(){
         link.href = fileURL;
         swal.close();
         swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
-        link.download ='DatosMBE'+this.generales.get('nombre')!.value+'.xlsx';
+        link.download = 'DatosMBE_' + this.generales.get('nombre')!.value.replace(/\s+/g, '') + '.xlsx';
         link.click();
       }else{
         swal.fire({

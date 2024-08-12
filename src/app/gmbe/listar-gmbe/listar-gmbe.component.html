@@ -39,25 +39,24 @@
           <td class="text-center">{{ mbe?.created | date: 'dd-MM-yyyy' }}</td>
           <td class="text-center">{{mbe?.fechaPublicacion | date: 'dd-MM-yyyy'}}</td>
           <td class="text-center" >
-              <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado && this.acciones(mbe)"
+              <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado && this.acciones(mbe,1)"
                 (click)="openCarga(cargaModal,mbe?.idMbe,mbe)"></fa-icon>
+              <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe,1)"></fa-icon>
 
-              <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe)"></fa-icon>
 
               <fa-icon [icon]="faPencil" class="btn-acciones m-2" [routerLink]="['/editar-gmbe',mbe?.idMbe]"
-                *ngIf="!mbe?.bloqueado && this.acciones(mbe)"></fa-icon>
+                *ngIf="!mbe?.bloqueado && this.acciones(mbe,2)"></fa-icon>
+              <fa-icon [icon]="faPencil" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe,2)"></fa-icon>
 
-              <fa-icon [icon]="faPencil" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe)"></fa-icon>
-
-              <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && this.acciones(mbe)" class="btn-acciones m-2 activo"
+              <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && this.acciones(mbe,3)" class="btn-acciones m-2 activo"
                 (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
 
-              <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && this.acciones(mbe)" class="btn-acciones m-2 inactivo"
+              <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && this.acciones(mbe,3)" class="btn-acciones m-2 inactivo"
                 (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
 
-              <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="(!mbe?.bloqueado && this.acciones(mbe))"
+              <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="(!mbe?.bloqueado && this.acciones(mbe,4))"
                 (click)="eliminarGmbe(mbe?.idMbe)"></fa-icon>
-              <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado || !this.acciones(mbe))"></fa-icon>
+              <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado || !this.acciones(mbe,4))"></fa-icon>
           </td>
         </tr>
       </tbody>

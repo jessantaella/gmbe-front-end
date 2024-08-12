@@ -429,7 +429,7 @@ export class ListarUsuariosComponent implements OnInit {
     if (this.usuarioEditForm.get('idRol')!.value === '1' || this.usuarioEditForm.get('idRol')!.value === 1){
       return true;
     }else{
-      return this.mbeEditables.length>0;
+      return true;
     }
   }
 

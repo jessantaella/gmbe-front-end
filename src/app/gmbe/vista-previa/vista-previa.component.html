@@ -1,4 +1,4 @@
-<div class="container-fluid mt-4">
+<div class="container mt-4">
   <form [formGroup]="generales">
     <div class="row">
       <div class="col-12 col-md-6">
@@ -30,20 +30,20 @@
     Variable de resultados
   </div>
 
-  <div class="d-flex align-items-center">
+  <div class="d-flex align-items-center ">
     <div class="vertical-text-container">
       <div class="vertical-text titulosTabla negro">
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive" style="height: 60vh; overflow-y: auto;">
+    <div class="table-responsive tabladatos">
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <caption class="text-center caption-original"></caption>
         <thead class="sticky-header">
           <tr class="text-center ">
             <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
-            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle" 
+            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle" [ngStyle]="{'width': (columna.countSubCats === 0 ? 100 : columna.countSubCats * 100) + 'px'}"
               *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1" [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
               {{ columna?.catalogo }}
             </th>

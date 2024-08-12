@@ -137,7 +137,14 @@ export class ListarGmbeComponent implements OnInit {
     }
   }
 
-  acciones(idMbe: any): boolean {
+  /* Opciones
+  1 Carga
+  2 Editar
+  3 Bloquear
+  4 Eliminar
+  */
+
+  acciones(idMbe: any,opcion:number): boolean {
     switch (this.idRol()) {
       //ADMIN
       case 1:
@@ -148,7 +155,8 @@ export class ListarGmbeComponent implements OnInit {
       case 2:
       this.puedeCrearMBE = true;
         if (idMbe.idEstatus?.idCatalogo === 173 || idMbe.idEstatus?.idCatalogo === 176) {
-          return true;
+          if(opcion < 3)
+            return true;
         } else {
           return false;
         }
