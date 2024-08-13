@@ -190,11 +190,7 @@ filtrarCategoriasUnicas(arreglo: any){
 
 
 regresaValorSinSubcategoria(padre:any,hijo:any){
-  if(!hijo?.idColumna){
-    return padre?.idEstructura
-  }else{
-    return hijo?.idColumna;
-  }
+ return hijo !== undefined ? hijo : padre?.idEstructura;
 
 }
 
