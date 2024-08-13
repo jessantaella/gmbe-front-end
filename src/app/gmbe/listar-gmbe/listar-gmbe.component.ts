@@ -170,9 +170,9 @@ export class ListarGmbeComponent implements OnInit {
         break;
       //PUBLICADOR
       case 4:
-        this.puedeCrearMBE = true;
+        this.puedeCrearMBE = false;
         if (idMbe.idEstatus?.idCatalogo === 173 || idMbe.idEstatus?.idCatalogo === 176) {
-          return true;
+          return true; 
         } else {
           return false;
         }
