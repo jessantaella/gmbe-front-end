@@ -128,8 +128,6 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   masRevisones(mbe: any = '') {
-    console.log('idMbe');
-    console.log(mbe);
     if (mbe?.maxRevision > 0) {
       this.mostrarMensajeRevisiones = true;
     } else {
@@ -258,6 +256,7 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   openCarga(content: TemplateRef<any>,idmbe:number,mbe:any) {
+    console.log(mbe)
     this.masRevisones(mbe);
     this.clearImage(this.fileInput?.nativeElement);
     this.modalRef = this.modalService.open(content, {
