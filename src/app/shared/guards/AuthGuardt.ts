@@ -48,6 +48,7 @@ export class AuthGuard implements CanActivate {
     const idRol = objetoUsuario?.rolUsuario?.idRol;
 
     console.log('idRol', idRol);
+
     const routePath = route.routeConfig?.path?.split('/:')[0];
 
     // Buscar si hay permisos para la parte base de la ruta
@@ -59,7 +60,7 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const idAutorizados = objetoIds?.map((id: string) => parseInt(id));
+    const idAutorizados = objetoIds?.map((obj: any) => parseInt(obj.idMbe));
     const idParam = parseInt(route.params['id']);
 
     console.log('guard',idAutorizados);
@@ -67,17 +68,23 @@ export class AuthGuard implements CanActivate {
     console.log('guard',routePath);
 
     // Verificar si el rol del usuario tiene acceso a la ruta
-    if (permisos && permisos.idRol.includes(idRol) && routePath !== 'editar-gmbe' && routePath !== 'vista-previa') {
+    if (idRol === 1 && routePath !== 'editar-gmbe') {
+      return true;
+    } else if (permisos && permisos.idRol.includes(idRol) && routePath !== 'editar-gmbe' && routePath !== 'vista-previa') {
+      return true;
+    } else if ((routePath === 'editar-gmbe' && idAutorizados?.includes(idParam)) && (idRol !== 3 && idRol !== 4)) {
+      const autorizado = objetoIds.find((obj: any) => obj.idMbe === idParam);
+      if (!autorizado.bloqueado) {
+        return true;
+      } else {
+        this.router.navigate(['/inicio']);
+        return false;
+      }
+    } else if (routePath === 'vista-previa' && idAutorizados?.includes(idParam)) {
       return true;
     }
-    // Verificar si el rol del usuario tiene acceso a la ruta o al id de la ruta
-    else if ((routePath === 'editar-gmbe' || routePath === 'vista-previa') && idAutorizados?.includes(idParam)) {
-      return true;
-    } else if(idRol !== '1'){
-      return true;
-    }else{
-      this.router.navigate(['/inicio']);
-      return false;
-    }
+
+    this.router.navigate(['/inicio']);
+    return false;
   }
 }
