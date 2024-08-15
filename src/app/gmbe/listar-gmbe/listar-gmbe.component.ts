@@ -256,7 +256,7 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   openCarga(content: TemplateRef<any>,idmbe:number,mbe:any) {
-    console.log(mbe)
+    console.log(mbe?.maxRevisiones)
     this.masRevisones(mbe);
     this.clearImage(this.fileInput?.nativeElement);
     this.modalRef = this.modalService.open(content, {
@@ -297,6 +297,7 @@ export class ListarGmbeComponent implements OnInit {
               confirmButton: 'ok-swal',
             }
           })
+          this.cambiarPaginaGetAll(0, 10);
           this.modalRef?.close();
         },
         err => {
