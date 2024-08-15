@@ -44,4 +44,9 @@ export class UsuariosService {
     let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/eliminar/'+idUsuario;
     return this.http.post<any>(url,{});
   }
+
+  desactivarUsuario(idUsuario:number):Observable<any>{
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/activar-desactivar';
+    return this.http.put<any>(url,{idUsuario,activo:false});
+  }
 }

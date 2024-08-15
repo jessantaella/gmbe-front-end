@@ -89,7 +89,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuarioForm.get("correo")?.disable();
   }
   ngOnInit(): void {
-    this.cambiarPaginaGetAll(0, 10, "", "TODOS");
+    this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
     //this.obtenerUsuarios();
     this.usuariosLDAP();
     this.obtenerRoles();
@@ -105,7 +105,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   obtenerUsuarios() {
-    this.usuariosService.listarUsuarios(0, 10, "", "TODOS").subscribe((res) => {
+    this.usuariosService.listarUsuarios(0, 10, "", "ACTIVOS").subscribe((res) => {
       console.log(res);
       this.usuarios = res.content;
     });
@@ -266,7 +266,7 @@ export class ListarUsuariosComponent implements OnInit {
         swal.fire("", "Usuario creado exitosamente", "success");
         if (this.modalRef) {
           this.modalRef.close();
-          this.cambiarPaginaGetAll(0,10,'','TODOS');
+          this.cambiarPaginaGetAll(0,10,'','ACTIVOS');
         }
       },
       (err) => {
@@ -303,7 +303,7 @@ export class ListarUsuariosComponent implements OnInit {
         if (this.modalRef) {
           this.modalRef.close();
           //this.obtenerUsuarios();
-          this.cambiarPaginaGetAll(0,10,'','TODOS');
+          this.cambiarPaginaGetAll(0,10,'','ACTIVOS');
         }
       },
       (err) => {}
@@ -329,17 +329,17 @@ export class ListarUsuariosComponent implements OnInit {
       }
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
-        if (usuario?.mbesAsociados.length > 0) {
+        /*if (usuario?.mbesAsociados.length > 0) {
           swal.fire("", "El usuario no se puede eliminar debido a que tiene MBEs asignados", "error");
-        } else {
-          this.usuariosService.eliminarUsuario(usuario?.idUsuario).subscribe(
+        } else {*/
+          this.usuariosService.desactivarUsuario(usuario?.idUsuario).subscribe(
             (res) => {
               swal.fire("", "Usuario eliminado exitosamente", "success");
-              this.cambiarPaginaGetAll(0, 10, "", "TODOS");
+              this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
             },
             (err) => {}
           );
-        }
+        //}
       }
     });
   }
@@ -349,11 +349,11 @@ export class ListarUsuariosComponent implements OnInit {
       if (e === "") {
         this.seachValue = "";
         this.isModeSearch = false;
-        this.cambiarPaginaGetAll(0, this.pageSize,this.seachValue,'TODOS');
+        this.cambiarPaginaGetAll(0, this.pageSize,this.seachValue,'ACTIVOS');
       } else {
         this.seachValue = e;
         this.isModeSearch = true;
-        this.searchCoincidences(0, this.pageSize,'TODOS');
+        this.searchCoincidences(0, this.pageSize,'ACTIVOS');
       }
     });
   }
@@ -368,13 +368,13 @@ export class ListarUsuariosComponent implements OnInit {
       if (this.isModeSearch) {
         console.log("Busqueda");
         if (this.seachValue === "") {
-          this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "TODOS");
+          this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "ACTIVOS");
         } else {
-          this.searchCoincidences(e - 1, this.pageSize, "TODOS");
+          this.searchCoincidences(e - 1, this.pageSize, "ACTIVOS");
         }
       } else {
         console.log("Paginacion");
-        this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "TODOS");
+        this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "ACTIVOS");
       }
     }
   }
@@ -400,7 +400,7 @@ export class ListarUsuariosComponent implements OnInit {
   ) {
     this.palabra = this.seachValue.trim();
     if (this.palabra === "") {
-      this.cambiarPaginaGetAll(0, 10, "", "TODOS");
+      this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
     }
     if (this.palabra.length >= 2) {
       this.usuariosService
