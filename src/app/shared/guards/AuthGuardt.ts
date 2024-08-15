@@ -72,7 +72,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } else if (permisos && permisos.idRol.includes(idRol) && routePath !== 'editar-gmbe' && routePath !== 'vista-previa') {
       return true;
-    } else if ((routePath === 'editar-gmbe' && idAutorizados?.includes(idParam)) && (idRol !== 3 && idRol !== 4)) {
+    } else if ((routePath === 'editar-gmbe' && idAutorizados?.includes(idParam)) && (idRol !== 3)) {
       const autorizado = objetoIds.find((obj: any) => obj.idMbe === idParam);
       if (!autorizado.bloqueado) {
         return true;
