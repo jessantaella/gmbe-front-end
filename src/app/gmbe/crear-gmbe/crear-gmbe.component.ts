@@ -529,31 +529,53 @@ clearImage(): void {
 
 
   crearCategoria() {
-    this.gmbeservice.crearCategoria(this.categoriaForm.get('nombre')?.value).subscribe(
-      res => {
+    //Si el nombre esta vacio no se puede crear la categoria o comienza con espacio
+
+    let nombre = this.categoriaForm.get('nombre')?.value;
+    nombre = nombre.trim();
+
+    if (nombre !== '' ) {
+      this.gmbeservice.crearCategoria(this.categoriaForm.get('nombre')?.value).subscribe(
+        res => {
+          swal.fire({
+            title: '',
+            text: 'Registro creado exitosamente',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+              popup: 'custom-swal-popup',
+              confirmButton: 'custom-swal-confirm-button'
+            }
+          });
+          if (this.modalRef) {
+            this.modalRef.close();
+            this.obtenerCategorias();
+          }
+        },
+        err => {
+          // Manejo de errores
+        }
+      );
+    } else {
         swal.fire({
           title: '',
-          text: 'Registro creado exitosamente',
-          icon: 'success',
+          text: 'El campo no puede estar vacío',
+          icon: 'error',
           confirmButtonText: 'OK',
           customClass: {
             popup: 'custom-swal-popup',
             confirmButton: 'custom-swal-confirm-button'
           }
         });
-        if (this.modalRef) {
-          this.modalRef.close();
-          this.obtenerCategorias();
-        }
-      },
-      err => {
-        // Manejo de errores
-      }
-    );
+    }
   }
 
 
   crearSubcategoria(){
+
+    let nombre = this.subcategoriaForm.get('nombre')?.value;
+    nombre = nombre.trim();
+    if (nombre !== '' ) {
 
     this.gmbeservice.crearSubcategoria(this.subcategoriaForm.get('nombre')?.value,this.subcategoriaForm.get('categoria')?.value).subscribe(
       res => {
@@ -573,6 +595,14 @@ clearImage(): void {
       },
       err=>{}
     )
+  }else{
+    swal.fire({
+      title: '',
+      text: 'El campo no puede estar vacío',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  }
   }
 
 }
