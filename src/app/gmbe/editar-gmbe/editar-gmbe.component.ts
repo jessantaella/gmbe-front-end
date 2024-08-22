@@ -116,6 +116,7 @@ export class EditarGmbeComponent {
   
   onFileChange(event: any): void {
     const file = event.target.files[0];
+    console.log('file',file)
     if (file) {
       const validTypes = ['image/png', 'image/jpeg'];
       if (!validTypes.includes(file.type)) {

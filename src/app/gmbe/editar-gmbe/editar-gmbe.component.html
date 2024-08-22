@@ -46,11 +46,12 @@
                           <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
                         </div>
                         <div class="p-2 bd-highlight">
-                          <div class="file-upload-wrapper">
+                          <div>
                             <input type="file" class="file-upload-input" accept=".png, .jpg, .jpeg" (change)="onFileChange($event)">
                             <i class="fas fa-upload upload-icon"></i>
                           </div>
                         </div>
+                        
                         <div class="p-2 bd-highlight">
                           <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="borrarImagen()"></fa-icon>
                         </div>
