@@ -91,16 +91,16 @@
     <form [formGroup]="cargaDatos">
       <div class="mb-3 row">
 
-        <div class="col-sm-2 text-center m-auto">
+        <div class="col-xl-2 col-lg-2 text-center m-auto">
           <label for="usuario" class="col-sm-2 col-form-label">Archivo:</label>
         </div>
         
-        <div class="col-sm-8 m-auto">
-          <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly style="margin-left: 10px;">
+        <div class="col-xl-8 col-lg-8  m-auto">
+          <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly>
           <span class="text-danger my-1" *ngIf="this.mostrarMensajeRevisiones" style="padding: 12px;" >Este MBE, ya tiene información cargada</span>
         </div>
     
-        <div class="col-sm-2">
+        <div class="col-xl-2 col-lg-2">
           <div class="p-2 bd-highlight text-center">
             <div class="file-upload-wrapper">
               <input type="file" #fileInput class="file-upload-input" accept=".xlsx" (change)="onFileChange($event)">

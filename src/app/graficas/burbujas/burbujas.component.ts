@@ -33,6 +33,8 @@ export class BurbujasComponent implements AfterViewInit {
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.bubbleData && this.bubbleData.length > 0) {
       this.chartOptions = this.getCharOptions();
+      console.log("Bubble data provided");
+      console.log(this.chartOptions);
       if (this.isBrowser) {
         setTimeout(() => {
           const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
@@ -143,11 +145,23 @@ export class BurbujasComponent implements AfterViewInit {
   }
 
   generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
+    
     const chartWidth = this.w;
     const chartHeight = this.h;
-    const x = Math.random() * chartWidth;
-    const y = Math.random() * chartHeight;
-    const zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
+
+    console.log(`Chart width=${chartWidth}, height=${chartHeight}`);
+    
+    let x = Math.random() * chartWidth;
+    let y = Math.random() * chartHeight;
+    let zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
+
+    console.log(`Bubble data: x=${x}, y=${y}, z=${zAdjusted}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
+    
+    // Validar que x, y, y z sean números válidos
+    x = isNaN(x) ? 0 : x;
+    y = isNaN(y) ? 0 : y;
+    zAdjusted = isNaN(zAdjusted) ? 5 : zAdjusted;
+  
     return { x, y, z: zAdjusted, nombreGpo, colorBubble };
   }
 }
