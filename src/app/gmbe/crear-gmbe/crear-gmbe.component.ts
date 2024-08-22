@@ -106,7 +106,7 @@ export class CrearGmbeComponent {
       }
   
       if (file.size > 5242880) { // 5MB en bytes
-        swal.fire('', 'El archivo no debe pesar más de 5mb', 'error');
+        swal.fire('', 'La imagen excede el tamaño permitido', 'error');
         return;
       }
   

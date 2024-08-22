@@ -8,6 +8,13 @@
   --bs-btn-active-color: white;
 }
 
+@media (max-width: 762px) {
+  .movil
+  {
+    padding: 0 !important;
+  }
+}
+
 .custom-accordion-button:not(.collapsed) {
   background-color: #2B3172; /* Nuevo color de fondo cuando el acordeón está abierto */
   color: white; /* Se mantiene el color del texto */
