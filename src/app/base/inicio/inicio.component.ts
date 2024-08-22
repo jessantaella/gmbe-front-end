@@ -49,6 +49,7 @@ export class InicioComponent implements OnInit{
     private info: ServicioInfoDinamicaService,
     private sanitizer: DomSanitizer
   ){
+    this.obtenerInformacion();
     //if (this.isBrowser) {
       this.titulos.changeBienvenida(this.textoBienvenida);
       this.titulos.changePestaña('Inicio');
@@ -74,7 +75,6 @@ export class InicioComponent implements OnInit{
       window.history.replaceState(null, '', '/');
       this.router.navigateByUrl('/');
     }
-    this.obtenerInformacion();
     this.obtenerMbesPublicos();
   }
 

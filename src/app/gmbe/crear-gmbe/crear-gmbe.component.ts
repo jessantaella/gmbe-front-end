@@ -53,7 +53,7 @@ export class CrearGmbeComponent {
 
   padreActual : number = 0;
 
-  tipo = 2;
+  tipo = 1;
   categoria: any;
   subcategoriasAgregadas: any[] = [];
   estructuraFinalFilasTitulos: any = [];
@@ -175,6 +175,8 @@ clearImage(): void {
 
   agregar() {
     //Filas
+    console.log("TIPO")
+    console.log(this.tipo)
     if (this.tipo === 2) {
       console.log('Filas');
       let existe = this.estructuraFinalFilasTitulos.some(

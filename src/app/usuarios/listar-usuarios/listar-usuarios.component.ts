@@ -123,6 +123,8 @@ export class ListarUsuariosComponent implements OnInit {
 
   obtenerMBEs() {
     this.usuariosService.listarMBE().subscribe((res) => {
+      console.log("MBEs");
+      console.log(res);
       this.listaMBE = res;
     });
   }

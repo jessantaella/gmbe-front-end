@@ -50,7 +50,7 @@
           <tr>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
               <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th id="subtituloTablaFila" class="subtitulos-tabla align-middle" *ngIf="!hijo?.auxiliar">
+                  <th id="subtituloTablaFila" class="subtitulos-tabla align-middle" style="border: 1px solid;" *ngIf="!hijo?.auxiliar">
                     {{ hijo?.idSubCategoria?.catalogo }}
                   </th>
               </ng-container>

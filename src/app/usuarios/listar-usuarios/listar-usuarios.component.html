@@ -110,7 +110,7 @@
         <label for="mbe" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;"
         *ngIf="usuarioForm.get('idRol')!.value !== '1'">
         Mapas de Brechas de Evidencias:</label>
-        <div class="col-12 col-sm-6" *ngIf="usuarioForm.get('idRol')!.value !== '1'">
+        <div class="col-12 col-sm-6 my-1" *ngIf="usuarioForm.get('idRol')!.value !== '1'">
           <div class="btn-group drop my-2" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle" *ngIf="usuarioForm.get('idRol')!.value !== '1'">
               <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length > 0">Seleccionados {{mbeEditables!.length}}</span>
@@ -177,7 +177,7 @@
       <div class="mb-3 row">
         <label for="mapas" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label"
         *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">Mapas de Brechas de Evidencias:</label>
-        <div class="col-sm-6 my-2"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
+        <div class="col-sm-6 my-2 my-1"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0 || mbeEditables.length>0">Seleccionados
@@ -216,19 +216,19 @@
   <div class="modal-body">
     <form [formGroup]="usuarioEditForm">
       <div class="mb-3 row">
-        <label for="usuario" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Usuario:</label>
+        <label for="usuario" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Usuario:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="usuario" formControlName="userName" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="correo" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Correo:</label>
+        <label for="correo" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Correo:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="correo" formControlName="correo" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="rol" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Rol:</label>
+        <label for="rol" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Rol:</label>
         <div class="col-sm-6">
           <select class="form-select" aria-label="Rol" formControlName="idRol">
             <option selected>Seleccione un rol</option>
@@ -237,16 +237,16 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label">Nombre:</label>
+        <label for="nombre" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Nombre:</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly>
         </div>
       </div>
       <div class="mb-3 row">
-        <label for="mapas" class="col-sm-4 col-form-label text-sm-left text-md-end custom-label"
+        <label for="mapas" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label"
         *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1"
         >Mapas de Brechas de Evidencias:</label>
-        <div class="col-sm-6"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
+        <div class="col-sm-6 my-2"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
           <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
             <button dropdownToggle type="button" class="btn dropdown-toggle"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
               <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0">Seleccionados
