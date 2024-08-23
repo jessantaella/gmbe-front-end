@@ -11,7 +11,9 @@ export class ServicioInfoDinamicaService {
   constructor(private http:HttpClient,private serverConfigService: ServerConfigService) { }
 
   obtenerBienvenida():Observable<any>{
+    console.log('obtenerBienvenida');
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/elementos/idElemento?idElemento=1';
+    console.log(this.http.get<any>(url));
     return this.http.get<any>(url);
   }
 

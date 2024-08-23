@@ -299,6 +299,13 @@ clearImage(): void {
         );
     }
 
+    //limpia el arreglo de subcategorias agregadas y los checkboxes
+    this.subcategoriasAgregadas = [];
+    this.ver = true;
+    console.log(this.estructuraFinalFilasSubitulos);
+    console.log(this.estructuraFinalColumnasSubitulos);
+
+
 
     console.log(this.estructuraFinalFilasTitulos);
     console.log(this.estructuraFinalColumnasTitulos);
@@ -385,6 +392,10 @@ clearImage(): void {
   }
 
   obtenerSubCategorias(idPadre: any) {
+    //limpia el arreglo de subcategorias agregadas y los checkboxes y el arreglo de subcategorias de la categoria seleccionada
+    this.subcategoriasAgregadas = [];
+    this.ver = true;
+    this.subCategorias = [];
     this.activarAgregar = true;
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
@@ -535,7 +546,8 @@ clearImage(): void {
     nombre = nombre.trim();
 
     if (nombre !== '' ) {
-      this.gmbeservice.crearCategoria(this.categoriaForm.get('nombre')?.value).subscribe(
+      console.log(nombre);
+      this.gmbeservice.crearCategoria(nombre).subscribe(
         res => {
           swal.fire({
             title: '',
@@ -577,7 +589,7 @@ clearImage(): void {
     nombre = nombre.trim();
     if (nombre !== '' ) {
 
-    this.gmbeservice.crearSubcategoria(this.subcategoriaForm.get('nombre')?.value,this.subcategoriaForm.get('categoria')?.value).subscribe(
+    this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value).subscribe(
       res => {
         swal.fire({
           title: '',
