@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TitulosService } from 'src/app/services/titulos.services';
 import {
@@ -21,13 +21,15 @@ declare var swal: any;
   templateUrl: './crear-gmbe.component.html',
   styleUrls: ['./crear-gmbe.component.scss'],
 })
-export class CrearGmbeComponent {
+export class CrearGmbeComponent implements OnInit {
   textoBienvenida = 'Crear MBE';
   faX = faX;
   faRotateLeft = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
   faPlus = faPlus;
   faTrash = faTrash;
+
+  SelectCatelogirasForm!: FormGroup;
 
   private modalRef: NgbModalRef | undefined;
 
@@ -93,6 +95,28 @@ export class CrearGmbeComponent {
       categoria:[null],
       nombre:['']
     })
+
+    this.SelectCatelogirasForm = this.fb.group({
+      selectTipo: [''],
+      selectCategoria: [''],
+    });
+  }
+  ngOnInit(): void {
+    this.SelectTipoCat1();
+    this.reiniciarSelect();
+  }
+  
+  SelectTipoCat1(){
+    this.SelectCatelogirasForm.get('selectTipo')?.setValue(1);
+  }
+
+  reiniciarSelect(){
+    //si se cambia valor de selectTipo se reinicia el valor de selectCategoria
+    this.SelectCatelogirasForm.get('selectTipo')?.valueChanges.subscribe(
+      (valor) => {
+        this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+      }
+    );
   }
 
   onFileChange(event: any): void {
@@ -177,6 +201,8 @@ clearImage(): void {
     //Filas
     console.log("TIPO")
     console.log(this.tipo)
+    //Reinicia el select de subcategorias
+    this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
     if (this.tipo === 2) {
       console.log('Filas');
       let existe = this.estructuraFinalFilasTitulos.some(
@@ -361,6 +387,7 @@ clearImage(): void {
     this.tipo = parseInt(valor.target.value);
     this.subCategorias = [];
     this.obtenerCategorias();
+    
   }
 
   obtenerCategorias() {

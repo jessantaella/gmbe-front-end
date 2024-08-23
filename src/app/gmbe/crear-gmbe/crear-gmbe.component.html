@@ -1,235 +1,263 @@
 <div class="accordion w-75 m-auto mt-3" id="accordionExample">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button custom-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                aria-expanded="true" aria-controls="collapseOne">
-                Datos generales
-            </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <form [formGroup]="generales">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 mt-2">
-                        <div class="row">
-                            <label for="nombre" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start ">*Nombre:</label>
-                            <div class="col-sm-8">
-                              <textarea class="form-control" id="nombre" formControlName="nombre" maxlength="200"></textarea>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col-md-6 col-sm-12 mt-2">
-                        <div class="row">
-                            <label for="objetivos" class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start ">*Objetivos:</label>
-                            <div class="col-sm-8">
-                              <textarea class="form-control" id="objetivos" formControlName="objetivo" maxlength="500"></textarea>
-                            </div>
-                          </div>
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 mt-2">
-                        <div class="row">
-                            <label for="hallazgos" class="col-sm-2 col-form-label text-md-end text-sm-start">*Resumen con principales hallazgos:</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;" formControlName="resumen"></textarea>
-                            </div>
-                          </div>
-                    </div>
-
-                    <div class="col-12 mt-2">
-                        <div class="row">
-                            <label for="icono" class="col-sm-2 col-form-label text-md-end text-sm-star">*Carga de ícono MBE:</label>
-                            <div class="col-sm-10">
-                                <div class="d-flex flex-row bd-highlight mb-3">
-                                    <div class="p-2 bd-highlight">
-                                        <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen" *ngIf="imageUrl">
-                                    </div>
-                                    <div class="p-2 bd-highlight">
-                                        <div class="file-upload-wrapper">
-                                            <input type="file" class="file-upload-input" accept=".png, .jpg, .jpeg" (change)="onFileChange($event)">
-                                            <i class="fas fa-upload upload-icon"></i>
-                                          </div> 
-                                    </div>
-                                    <div class="p-2 bd-highlight">
-                                        <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="clearImage()"></fa-icon>
-                                    </div>
-                                  </div>
-                          </div>
-                    </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button custom-accordion-button collapsed" type="button" data-bs-toggle="collapse"
+        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Datos generales
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+      data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <form [formGroup]="generales">
+          <div class="row">
+            <div class="col-md-6 col-sm-12 mt-2">
+              <div class="row">
+                <label for="nombre"
+                  class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start ">*Nombre:</label>
+                <div class="col-sm-8">
+                  <textarea class="form-control" id="nombre" formControlName="nombre" maxlength="200"></textarea>
                 </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-2">
+              <div class="row">
+                <label for="objetivos"
+                  class="col-md-4 col-sm-12 col-form-label text-md-end text-sm-start ">*Objetivos:</label>
+                <div class="col-sm-8">
+                  <textarea class="form-control" id="objetivos" formControlName="objetivo" maxlength="500"></textarea>
                 </div>
-            </form>
-        </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 mt-2">
+              <div class="row">
+                <label for="hallazgos" class="col-sm-2 col-form-label text-md-end text-sm-start">*Resumen con
+                  principales hallazgos:</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" placeholder="" id="hallazgos" style="height: 100px;"
+                    formControlName="resumen"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mt-2">
+              <div class="row">
+                <label for="icono" class="col-sm-2 col-form-label text-md-end text-sm-star">*Carga de ícono MBE:</label>
+                <div class="col-sm-10">
+                  <div class="d-flex flex-row bd-highlight mb-3">
+                    <div class="p-2 bd-highlight">
+                      <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen" *ngIf="imageUrl">
+                    </div>
+                    <div class="p-2 bd-highlight">
+                      <div class="file-upload-wrapper">
+                        <input type="file" class="file-upload-input" accept=".png, .jpg, .jpeg"
+                          (change)="onFileChange($event)">
+                        <i class="fas fa-upload upload-icon"></i>
+                      </div>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                      <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="clearImage()"></fa-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button custom-accordion-button " type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Marco conceptual
-            </button>
-        </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-               <div class="row">
-                <div class="col-md-6 col-sm-12">
-                    <div class="row">
-                        <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Tipo:</label>
-                        <div class="col-sm-8">
-                            <select class="form-select" aria-label="Seleccione una opción" (change)="changeTipo($event)">
-                              <option value="" selected disabled>Seleccione una opción</option>
-                                <option [value]="tipo.idCatalogo" *ngFor="let tipo of opcionesTipoEstructura">{{tipo.catalogo}}</option>
-                              </select>
-                        </div>
-                      </div>
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button custom-accordion-button " type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Marco conceptual
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div class="row">
+            <form [formGroup]="SelectCatelogirasForm" class="row" >
+              <div class="col-md-6 col-sm-12">
+                <div class="row">
+                  <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Tipo:</label>
+                  <div class="col-sm-8">
+                    <select class="form-select" formControlName="selectTipo" aria-label="Seleccione una opción" (change)="changeTipo($event)">
+                      <option disabled>Seleccione una opción</option>
+                      <option [value]="tipo.idCatalogo" *ngFor="let tipo of opcionesTipoEstructura">{{tipo.catalogo}}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
-                  <div class="row">
-                      <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Categoría:</label>
-                      <div class="col-sm-7">
-                          <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
-                              <option value="" disabled selected>Seleccione una opción</option>
-                              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
-                          </select>
-                      </div>
-                      <div class="col-sm-1 text-center">
-                          <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearCategoriaModal,'categoria')"></fa-icon>
-                      </div>
-                  </div>
               </div>
-              <div class="col-md-12 col-sm-12">
-                  <div class="row mt-2">
-                      <label for="nombre" class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">Sub-categoría:</label>
-                      <div class="col-sm-7 bg-light listado">
-                          <div class="form-check" *ngFor="let sub of subCategorias;let i = index" >
-                              <input class="form-check-input" type="checkbox"  [id]="'flexCheckDefault'+i" [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">
-                              <label class="form-check-label" for="flexCheckDefault" (click)="subcategoriaSeleccionada(sub)">
-                                  {{sub.catalogo}}
-                              </label>
-                          </div>
-                      </div>
-                      <div class="col-md-1 col-sm-12 text-center">
-                          <fa-icon [icon]="faPlus" class="btnOtrasAcciones" (click)="open(crearSubcategoriaModal,'subcategoria')"></fa-icon>
-                      </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="row">
+                  <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Categoría:</label>
+                  <div class="col-sm-7">
+                    <select class="form-select" formControlName="selectCategoria" aria-label="Seleccione una opción"
+                      (change)="obtenerSubCategorias($event)">
+                      <option value="" disabled selected>Seleccione una opción</option>
+                      <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">
+                        {{categoria.catalogo}}</option>
+                    </select>
                   </div>
-                  <div class="text-center">
-                      <button class="btn btn-sm btn-agregar m-2" (click)="agregar()" [disabled]="!activarAgregar">
-                          Agregar
-                      </button>
+                  <div class="col-sm-1 text-center">
+                    <fa-icon [icon]="faPlus" class="btnOtrasAcciones"
+                      (click)="open(crearCategoriaModal,'categoria')"></fa-icon>
                   </div>
-              </div>
-               </div>
-               <div class="d-flex align-items-center">
-                <div class="vertical-text" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
-                  Intervenciones
                 </div>
-               <div class="table-responsive" *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
-               <table class="table table-bordered" >
+              </div>
+            </form>
+            <div class="col-md-12 col-sm-12">
+              <div class="row mt-2">
+                <label for="nombre"
+                  class="col-md-2 col-sm-12 col-form-label text-md-end text-sm-start">Sub-categoría:</label>
+                <div class="col-sm-7 bg-light listado">
+                  <div class="form-check" *ngFor="let sub of subCategorias;let i = index">
+                    <input class="form-check-input" type="checkbox" [id]="'flexCheckDefault'+i"
+                      [checked]="existeObjeto(sub)" (click)="subcategoriaSeleccionada(sub)">
+                    <label class="form-check-label" for="flexCheckDefault" (click)="subcategoriaSeleccionada(sub)">
+                      {{sub.catalogo}}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-1 col-sm-12 text-center">
+                  <fa-icon [icon]="faPlus" class="btnOtrasAcciones"
+                    (click)="open(crearSubcategoriaModal,'subcategoria')"></fa-icon>
+                </div>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-sm btn-agregar m-2" (click)="agregar()" [disabled]="!activarAgregar">
+                  Agregar
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="vertical-text"
+              *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
+              Intervenciones
+            </div>
+            <div class="table-responsive"
+              *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
+              <table class="table table-bordered">
                 <caption class="text-center caption-original">Variable de resultados</caption>
                 <thead>
                   <tr class="text-center align-middle">
-                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th id="subtituloTablaColumna" scope="col"  class="titulos-tabla align-middle" *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.subcategorias.length">
-                        <fa-icon [icon]="faTrash" (click)="eliminarCategoria(1,columna.categoria)"></fa-icon>{{columna.categoria.catalogo}}
+                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla align-middle"
+                      *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
+                      *ngFor="let columna of estructuraFinalColumnasTitulos"
+                      [attr.colspan]="columna.subcategorias.length">
+                      <fa-icon [icon]="faTrash"
+                        (click)="eliminarCategoria(1,columna.categoria)"></fa-icon>{{columna.categoria.catalogo}}
                     </th>
                   </tr>
                   <tr>
-                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th id="subtituloTablaFila" class="subtitulos-tabla align-middle" *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
-                            {{ subcolumna.catalogo }}
-                     </th>
+                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla align-middle"
+                      *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
+                    <th id="subtituloTablaFila" class="subtitulos-tabla align-middle"
+                      *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
+                      {{ subcolumna.catalogo }}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
-                    <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
-                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index" >
-                    <th  class="titulos-tabla align-middle" id="padre" [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}" [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length" *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
-                        <fa-icon [icon]="faTrash" (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
+                  <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
+                  <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
+                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index">
+                    <th class="titulos-tabla align-middle" id="padre"
+                      [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}"
+                      [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length"
+                      *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
+                      <fa-icon [icon]="faTrash"
+                        (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
                     </th>
-                    <th  class="subtitulos-tabla align-middle" scope="row"> {{subFilas.catalogo}} </th>
+                    <th class="subtitulos-tabla align-middle" scope="row"> {{subFilas.catalogo}} </th>
                   </tr>
                 </tbody>
               </table>
             </div>
-               </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div class="container m-2 text-center">
+  <div class="container m-2 text-center">
     <button class="btn btn-sm btn-cancelar m-2" [routerLink]="['/gmbe']">
-        <fa-icon [icon]="faRotateLeft"></fa-icon>
-        Cancelar
+      <fa-icon [icon]="faRotateLeft"></fa-icon>
+      Cancelar
     </button>
     <button class="btn btn-sm btn-guardar m-2" (click)="guardar()" [disabled]="!validarGuardar()">
+      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+      Guardar
+    </button>
+  </div>
+
+
+
+  <ng-template #crearCategoriaModal let-modal>
+    <div class="modal-header">
+      <label class="modal-title w-100 text-center tituloModal">Nueva categoría</label>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="categoriaForm">
+        <div class="mb-3 row align-items-center">
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-right text-md-end">* Nombre categoría:</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="nombre" placeholder="Categoría" formControlName="nombre">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+        <fa-icon [icon]="faRotateLeft"></fa-icon>
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-sm btn-guardar" (click)="crearCategoria()" [disabled]="!categoriaForm.valid">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
-    </button>
-</div>
+      </button>
+    </div>
+  </ng-template>
 
 
-
-<ng-template #crearCategoriaModal let-modal>
-  <div class="modal-header">
-    <label class="modal-title w-100 text-center tituloModal">Nueva categoría</label>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="categoriaForm">     
-      <div class="mb-3 row align-items-center">
-        <label for="nombre" class="col-sm-4 col-form-label text-sm-right text-md-end">* Nombre categoría:</label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" id="nombre" placeholder="Categoría" formControlName="nombre">
+  <ng-template #crearSubcategoriaModal let-modal>
+    <div class="modal-header">
+      <label class="modal-title w-100 text-center tituloModal">Nueva sub-categoría</label>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="subcategoriaForm">
+        <div class="mb-3 row">
+          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Categoría:</label>
+          <div class="col-sm-6">
+            <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria">
+              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}
+              </option>
+            </select>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
-      <fa-icon [icon]="faRotateLeft"></fa-icon>
-      Cancelar
-    </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crearCategoria()" [disabled]="!categoriaForm.valid">
-      <fa-icon [icon]="faFloppyDisk"></fa-icon>
-      Guardar
-    </button>
-  </div>
-</ng-template>
 
-
-<ng-template #crearSubcategoriaModal let-modal>
-  <div class="modal-header">
-    <label class="modal-title w-100 text-center tituloModal">Nueva sub-categoría</label>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="subcategoriaForm">   
-      <div class="mb-3 row">
-        <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Categoría:</label>
-        <div class="col-sm-6">
-          <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria">
-            <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
-          </select>
+        <div class="mb-3 row">
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="nombre" placeholder="Sub-categoría" formControlName="nombre">
+          </div>
         </div>
-      </div>
-
-      <div class="mb-3 row">
-        <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre:</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="nombre" placeholder="Sub-categoría" formControlName="nombre">
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
-      <fa-icon [icon]="faRotateLeft"></fa-icon>
-      Cancelar
-    </button>
-    <button type="button" class="btn btn-sm btn-guardar" (click)="crearSubcategoria()" [disabled]="!subcategoriaForm.valid">
-      <fa-icon [icon]="faFloppyDisk"></fa-icon>
-      Guardar
-    </button>
-  </div>
-</ng-template>
+      </form>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+        <fa-icon [icon]="faRotateLeft"></fa-icon>
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-sm btn-guardar" (click)="crearSubcategoria()"
+        [disabled]="!subcategoriaForm.valid">
+        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+        Guardar
+      </button>
+    </div>
+  </ng-template>
