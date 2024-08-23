@@ -151,8 +151,11 @@ export class BurbujasComponent implements AfterViewInit {
 
     console.log(`Chart width=${chartWidth}, height=${chartHeight}`);
     
-    let x = Math.random() * chartWidth;
-    let y = Math.random() * chartHeight;
+    let x = Math.random() * (chartWidth / 10);
+    let y = Math.random() * (chartHeight / 2.5);
+    console.log(`Bubble data: x=${x}, y=${y}, z=${z}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
+    //Si z es mayor que 5, se toma un valor aleatorio entre 5 y z
+    z = z > 5 ? (z - 20) / 10 : z;
     let zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
 
     console.log(`Bubble data: x=${x}, y=${y}, z=${zAdjusted}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
