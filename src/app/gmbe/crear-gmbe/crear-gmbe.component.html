@@ -78,7 +78,7 @@
                         <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Tipo:</label>
                         <div class="col-sm-8">
                             <select class="form-select" aria-label="Seleccione una opción" (change)="changeTipo($event)">
-                              <option disabled>Seleccione una opción</option>
+                              <option value="" selected disabled>Seleccione una opción</option>
                                 <option [value]="tipo.idCatalogo" *ngFor="let tipo of opcionesTipoEstructura">{{tipo.catalogo}}</option>
                               </select>
                         </div>
@@ -89,7 +89,7 @@
                       <label for="nombre" class="col-sm-4 col-form-label text-md-end text-sm-start">*Categoría:</label>
                       <div class="col-sm-7">
                           <select class="form-select" aria-label="Seleccione una opción" (change)="obtenerSubCategorias($event)">
-                              <option selected>Seleccione una opción</option>
+                              <option value="" disabled selected>Seleccione una opción</option>
                               <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}</option>
                           </select>
                       </div>
