@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid texto" >
   <div class="accordion w-75 m-auto mt-3" id="accordionExample">
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
@@ -15,19 +15,19 @@
               <div class="col-lg-6 col-12">
                 <div class="col-12 mt-2">
                   <div class="row">
-                    <label for="nombre" class="col-lg-4 col-form-label text-lg-end text-start">* Nombre:</label>
+                    <label for="nombre" class="col-lg-4 col-form-label text-lg-end text-start texto">* Nombre:</label>
                     <div class="col-lg-8">
                       <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre"
-                        formControlName="nombre">
+                        formControlName="nombre" maxlength="200">
                     </div>
                   </div>
                 </div>
                 <div class="col-12 mt-2">
                   <div class="row">
-                    <label for="objetivos" class="col-lg-4 col-form-label text-lg-end text-start">* Objetivos:</label>
+                    <label for="objetivos" class="col-lg-4 col-form-label text-lg-end text-start texto">* Objetivos:</label>
                     <div class="col-lg-8">
                       <input type="text" [ngbTooltip]="this.mostrarObjetivos" class="form-control" id="objetivos"
-                        formControlName="objetivo">
+                        formControlName="objetivo" maxlength="500">
                     </div>
                   </div>
                 </div>
@@ -35,7 +35,7 @@
               <div class="col-lg-6 col-12">
                 <div class="col-12 mt-2">
                   <div class="row">
-                    <label for="resumen" class="col-lg-4 col-form-label text-lg-end text-start">* Resumen con
+                    <label for="resumen" class="col-lg-4 col-form-label text-lg-end text-start texto">* Resumen con
                       principales hallazgos:</label>
                     <div class="col-lg-8 d-flex">
                       <textarea formControlName="resumen" class="form-control" id="resumen"></textarea>
@@ -45,10 +45,10 @@
               </div>
               <div class="col-lg-6 col-12">
                 <div class="col-12 mt-2 d-flex flex-column flex-lg-row align-items-start">
-                  <label for="icono" class="col-12 col-lg-4 col-form-label text-lg-end text-start movil">* Carga de
+                  <label for="icono" class="col-12 col-lg-4 col-form-label text-lg-end text-start movil texto">* Carga de
                     ícono MBE:</label>
                   <div class="d-flex flex-wrap align-items-center">
-                    <div class="movil-padding-2 bd-highlight" *ngIf="imageUrl">
+                    <div class="movil-imagen-padding-2 bd-highlight" *ngIf="imageUrl">
                       <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
                     </div>
                     <div class="movil-padding-2 bd-highlight">

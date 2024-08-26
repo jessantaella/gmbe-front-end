@@ -190,7 +190,7 @@
       <fa-icon [icon]="faRotateLeft"></fa-icon>
       Cancelar
     </button>
-    <button class="btn btn-sm btn-guardar m-2" (click)="guardar()" [disabled]="!validarGuardar()">
+    <button class="btn btn-sm btn-guardar m-2  " (click)="guardar()" [disabled]="!validarGuardar() || this.bloquearBotonGuardar ">
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>

@@ -15,12 +15,25 @@
   }
 
   .movil-padding-2{
-    padding: 0 !important;
+    padding: 0.5rem !important;
   }
+
+  .movil-imagen-padding-2{
+    padding: 0rem !important;
+  }
+}
+
+.texto{
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 @media (min-width: 1031px) {
   .movil-padding-2{
+    padding: 0.5rem !important;
+  }
+
+  .movil-imagen-padding-2{
     padding: 0.5rem !important;
   }
 }

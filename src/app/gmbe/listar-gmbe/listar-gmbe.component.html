@@ -96,11 +96,11 @@
         </div>
         
         <div class="col-xl-8 col-lg-8  m-auto">
-          <input type="text" class="form-control" id="usuario" formControlName="nombre" readonly>
-          <span class="text-danger my-1" *ngIf="this.mostrarMensajeRevisiones" style="padding: 12px;" >Este MBE, ya tiene información cargada</span>
+          <input type="text" class="form-control" [ngClass]="{'input-movil':this.mostrarMensajeRevisiones}" id="usuario"  formControlName="nombre" readonly>
+          <span class="text-danger my-1" *ngIf="this.mostrarMensajeRevisiones">Este MBE, ya tiene información cargada</span>
         </div>
     
-        <div class="col-xl-2 col-lg-2">
+        <div class="col-xl-2 col-lg-2" [ngClass]="{'margin-icon':this.mostrarMensajeRevisiones}">
           <div class="p-2 bd-highlight text-center">
             <div class="file-upload-wrapper">
               <input type="file" #fileInput class="file-upload-input" accept=".xlsx" (change)="onFileChange($event)">

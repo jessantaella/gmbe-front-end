@@ -21,7 +21,7 @@ export class ServerConfigService {
   loadServerConfig() {
     if(this.isBrowser){
       const hostname = window.location.hostname;
-      //const hostname = '10.1.15.102';
+      //const hostname = 'qa.coneval.org.mx';
       let ruta = '';
   
       if (hostname.includes('qa.coneval.org.mx') || hostname.includes('sistemas.coneval.org.mx')) {

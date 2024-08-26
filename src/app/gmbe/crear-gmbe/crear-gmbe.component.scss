@@ -168,11 +168,24 @@ label{
 }
 
 .btn-agregar{
-  background: #21409a;
-  color:#ffffff;
-  font-size: 11px;
-  font-family: Arial, Helvetica, sans-serif;
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
 }
+
+.btn-agregar:hover{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
+
 
 /* Estilo para el texto del mensaje en el modal */
 .swal2-html-container {
@@ -220,4 +233,11 @@ div.swal2-container button.swal2-styled.swal2-confirm.custom-swal-confirm-button
   .modal-body label.col-form-label {
     text-align: left;
   }
+}
+
+.agregar-btn{
+  background-color: #21409a;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
 }
