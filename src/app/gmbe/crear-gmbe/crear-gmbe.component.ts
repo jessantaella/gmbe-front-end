@@ -272,8 +272,6 @@ clearImage(): void {
       );
 
       if (existe) {
-        console.log(this.estructuraFinalColumnasTitulos);
-        console.log(this.categoria);
 
         let arregloOriginal = this.estructuraFinalColumnasTitulos.find(
           (e: any) => {
@@ -286,20 +284,18 @@ clearImage(): void {
           this.subcategoriasAgregadas
         );
 
+
         this.estructuraFinalColumnasTitulos =
         this.estructuraFinalColumnasTitulos.filter(
           (item: { categoria: { idCatalogo: any } }) =>
             item.categoria.idCatalogo !== this.categoria.idCatalogo
         );
 
-        console.log(this.estructuraFinalColumnasTitulos);
 
         this.estructuraFinalColumnasTitulos.push({
           categoria: this.categoria,
           subcategorias: nuevasSubcategorias,
         });
-        console.log(this.estructuraFinalColumnasTitulos);
-
       }else{
         this.estructuraFinalColumnasTitulos.push({
           categoria: this.categoria,
@@ -307,6 +303,7 @@ clearImage(): void {
         });
       }
       // agrega auxiliar para espacios en blanco no subcategorias
+      console.log('subcategorias agregadas',this.subcategoriasAgregadas)
       if(this.subcategoriasAgregadas.length<1){
         this.subcategoriasAgregadas.push({
           activo:true,
@@ -319,23 +316,21 @@ clearImage(): void {
           esAuxiliar:true
         })
       }
-      this.estructuraFinalColumnasSubitulos =
-        this.estructuraFinalColumnasSubitulos.concat(
-          this.subcategoriasAgregadas
-        );
-    }
 
+          this.estructuraFinalColumnasSubitulos = [];
+          this.estructuraFinalColumnasSubitulos =
+            this.estructuraFinalColumnasTitulos.reduce(
+              (acc: string | any[], item: { subcategorias: any }) =>
+                acc.concat(item.subcategorias),
+              []
+            );
+
+      }
+
+     
     //limpia el arreglo de subcategorias agregadas y los checkboxes
     this.subcategoriasAgregadas = [];
     this.ver = true;
-    console.log(this.estructuraFinalFilasSubitulos);
-    console.log(this.estructuraFinalColumnasSubitulos);
-
-
-
-    console.log(this.estructuraFinalFilasTitulos);
-    console.log(this.estructuraFinalColumnasTitulos);
-    console.log(this.subcategoriasAgregadas);
 
     this.obtenerCategorias();
     this.subCategorias = [];
