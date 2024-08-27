@@ -21,8 +21,8 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() chartId: string | undefined;
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
-  w: number = 100;
-  h: number = 50;
+  w: number = 150; // Ajusta el ancho según sea necesario
+  h: number = 100; // Ajusta la altura según sea necesario
 
   public chartOptions: any;
   isBrowser = false;
@@ -47,18 +47,19 @@ export class BurbujasComponent implements AfterViewInit {
   }
 
   getCharOptions() {
-    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble.count, bubble.nombreGpo, bubble.colorBubble));
-
+    const seriesData = this.bubbleData.map((bubble, index) =>
+      this.generateBubbleData(bubble.count, bubble.nombreGpo, bubble.colorBubble, index)
+    );
+    
+    // Ajuste del área de visualización para acomodar las burbujas
     const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
     const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
     const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
     const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
 
-    // Encuentra el valor máximo de z (tamaño de burbuja)
-    const maxZ = Math.max(...seriesData.map(d => d.z), 0);
-    // Ajuste del tamaño máximo de burbuja
-    const bubbleSizeFactor = 20; // Ajusta este factor según lo necesites
-
+    const maxZ = Math.max(...seriesData.map(d => d.valorReal), 0);
+    const bubbleSizeFactor = maxZ;
+    console.log(maxZ)
     return {
       grid: {
         xaxis: {
@@ -130,41 +131,67 @@ export class BurbujasComponent implements AfterViewInit {
         show: false,
       },
       tooltip: {
-        enabled: false,
-        y: {
-          formatter: function (val: number, opts: any) {
-            return opts.w.config.series[0].data[opts.dataPointIndex].nombreGpo;
-          },
+        enabled: true,
+        custom: ({ series, seriesIndex, dataPointIndex, w }: any) => {
+          const data = w.config.series[seriesIndex].data[dataPointIndex];
+          return `
+            <div style="padding: 5px; border-radius: 3px; background-color: ${data.colorBubble}; color: #fff;">
+              <strong>${data.nombreGpo}</strong><br>
+              Count: ${data.valorReal}
+            </div>
+          `;
         },
       },
       markers: {
-        size: seriesData.map(d => d.z / maxZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
-        colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
+        //size: seriesData.map(d => Math.max(d.z / bubbleSizeFactor * 20, 5)), // Ajusta el tamaño de las burbujas para asegurarse de que sean visibles
+        colors: seriesData.map(d => d.colorBubble), // Asigna colores basados en el color de cada burbuja
       },
     };
   }
 
-  generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
+  generateBubbleData(z: number, nombreGpo: string, colorBubble: string, index: number): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string, valorReal: number } {
     
     const chartWidth = this.w;
     const chartHeight = this.h;
+    const margin = 10; // Ajuste del margen entre burbujas
 
-    console.log(`Chart width=${chartWidth}, height=${chartHeight}`);
+    // Distribuir las burbujas en una cuadrícula
+    const columns = Math.ceil(Math.sqrt(this.bubbleData.length)); // Número de columnas basado en el número total de burbujas
+    const rows = Math.ceil(this.bubbleData.length / columns); // Número de filas basado en el número total de burbujas
     
-    let x = Math.random() * (chartWidth / 10);
-    let y = Math.random() * (chartHeight / 2.5);
-    console.log(`Bubble data: x=${x}, y=${y}, z=${z}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
-    //Si z es mayor que 5, se toma un valor aleatorio entre 5 y z
-    z = z > 5 ? (z - 20) / 10 : z;
-    let zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
+    const columnWidth = (chartWidth - margin * (columns - 1)) / columns;
+    const rowHeight = (chartHeight - margin * (rows - 1)) / rows;
 
-    console.log(`Bubble data: x=${x}, y=${y}, z=${zAdjusted}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
-    
+    const colIndex = index % columns;
+    const rowIndex = Math.floor(index / columns);
+
+    let x = colIndex * (columnWidth + margin) + columnWidth / 2;
+    let y = rowIndex * (rowHeight + margin) + rowHeight / 2;
+
+    // Escalar el tamaño de las burbujas en función del valor máximo de `z`
+    //let zAdjusted =Math.max((z / (Math.max(...this.bubbleData.map(b => b.count)) || 1)) * 10,5); // Ajusta este valor para escalar apropiadamente
+    let maxCount = Math.max(...this.bubbleData.map(b => b.count)) || 1;
+    let zAdjusted = z>6 ? (z / maxCount) * (maxCount / 10) : z*10;
+
     // Validar que x, y, y z sean números válidos
     x = isNaN(x) ? 0 : x;
     y = isNaN(y) ? 0 : y;
     zAdjusted = isNaN(zAdjusted) ? 5 : zAdjusted;
-  
-    return { x, y, z: zAdjusted, nombreGpo, colorBubble };
+    
+    console.log({ x, y, z: zAdjusted, nombreGpo, colorBubble, valorReal: z })
+    return { x, y, z: zAdjusted, nombreGpo, colorBubble, valorReal: z };
   }
 }
+
+
+ /* Escenario 
+  Cuando la burbuja mayor le lleve mas del 100% de tamaño a las otras
+    Definir tamaño maximo de burbuja 
+      -> cuando 2 sea maximo tendra el tamaño de una burbujota 
+      -> 
+
+
+      Definir la burbuja más grande y con base a esa sacar el porcentaje
+        Paso 1. Pruebas para saber cuando se ve bien una burbuja 
+        Paso 2, Calcular el porcentaje al que pertenece el valor z de la burbuja a la de referencia y calcular el tamaño.
+      */

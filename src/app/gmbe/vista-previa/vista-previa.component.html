@@ -66,9 +66,10 @@
             </th>
             
             <th class="subtitulos-tabla align-middle" scope="row" *ngIf="!subFilas?.auxiliar"> {{ subFilas?.idSubCategoria?.catalogo }} </th>
-    
+
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
               <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                {{subFilas?.idEstructura}} {{regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura)}}
                 <app-burbujas [chartId]="'chart-' + i + j" [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
               </th>
             </ng-container>

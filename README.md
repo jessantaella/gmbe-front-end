@@ -27,3 +27,24 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 # GMBE-FRONT-END
 
+
+`Compilación de datos para liberar en servidor`
+# Estaticos en conf
+Se guarda assets/, runtime, polyfills, main e styles...
+
+# SSR/GMBE
+
+va la carpeta de GMBE con su contenido de browser y server
+
+# Configuración final del index 
+
+<script src="runtime.1ae41777471fc243.js" type="module"></script>
+<script src="polyfills.8fce0e528950373a.js" type="module"></script>
+<script src="main.1b7e969b4ffce75d.js" type="module"></script>
+<script src="/conf/GMBE/runtime.1ae41777471fc243.js" type="module"></script>
+<script src="/conf/GMBE/polyfills.8fce0e528950373a.js" type="module"></script>
+<script src="/conf/GMBE/main.1b7e969b4ffce75d.js" type="module"></script>
+
+
+<link rel="stylesheet" href="/conf/GMBE/styles.afc56ca8bba95b7b.css" media="print" onload="this.media='all'"><noscript>
+<link rel="stylesheet" href="/conf/GMBE/styles.afc56ca8bba95b7b.css"></noscript></head>
