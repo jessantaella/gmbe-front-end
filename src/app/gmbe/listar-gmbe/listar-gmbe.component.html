@@ -118,7 +118,7 @@
       <fa-icon [icon]="faRotate"></fa-icon>
       Cancelar
     </button>
-    <button type="button" class="btn btn-sm btn-guardar color-btn-guardar" (click)="cargardatos()">
+    <button type="button" class="btn btn-sm btn-guardar color-btn-guardar" (click)="cargardatos()" [disabled]="this.cargaDatos.valid" >
       <fa-icon [icon]="faFloppyDisk"></fa-icon>
       Guardar
     </button>

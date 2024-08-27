@@ -42,9 +42,9 @@ export class InicioComponent implements OnInit {
 
 
   mbes = [
-    { urlImg: this.rutaImagenAlimentacion, nombre: "Alimentación" },
+    { urlImg: this.rutaImagenAlimentacion, nombre: "Alimentación", bloqueado: false },
     //{urlImg:this.rutaImagenCuidadoInfantil,nombre:"Cuidado Infantil"},
-    { urlImg: this.rutaImagenSeguridadSocial, nombre: "Seguridad Social" }]
+    { urlImg: this.rutaImagenSeguridadSocial, nombre: "Seguridad Social" , bloqueado: false }]
 
   constructor(
     private titulos: TitulosService,
@@ -107,13 +107,17 @@ export class InicioComponent implements OnInit {
   }
 
   obtenerMbesPublicos() {
-    this.info.obtenerMBEPublicado().subscribe(
-      res => {
-        console.log(res);
-        this.mbes = res;
-      },
-      err => { }
-    )
+    let token_gmbe = localStorage.getItem('token-gmbe');
+    if (token_gmbe) {
+      this.info.obtenerMBEPublicado().subscribe(
+        res => {
+          this.mbes = res.filter((mb:any) => mb.bloqueado === false);
+        },
+        err => { }
+      )
+    } else {
+      this.mbes;
+    }
   }
 
 }

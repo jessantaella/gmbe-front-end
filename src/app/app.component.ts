@@ -3,6 +3,7 @@ import { Meta } from '@angular/platform-browser';
 import { DataDynamic } from './base/services/dinamic-data.services';
 import { isPlatformBrowser } from '@angular/common';
 import { ServerConfigService } from './server-config.service';
+import { StorageService } from './services/storage-service.service';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,14 @@ import { ServerConfigService } from './server-config.service';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.0.1' + new Date();
+  version = 'V-1.2.1' + new Date();
   tags: any;
   ga: any;
   isBrowser = false;
   private renderer: Renderer2;
 
 
-  constructor(private meta: Meta, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any,private url:ServerConfigService, rendererFactory: RendererFactory2) {
+  constructor(private meta: Meta, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
@@ -66,6 +67,11 @@ export class AppComponent implements OnInit {
       this.renderer.appendChild(head, link);
     }*/
 
+    // localStorage.setItem('Versión',packageJson.version);
+    // console.log(packageJson.version);
+    // (window as any).myVariable = packageJson.version;
+
+    this.storage.setItem('Versión',this.version);
   }
 
 
