@@ -41,10 +41,7 @@ export class InicioComponent implements OnInit {
   rutaImagenSeguridadSocial: string = environment.recursos + 'SeguridadSocial.png';
 
 
-  mbes = [
-    { urlImg: this.rutaImagenAlimentacion, nombre: "Alimentación", bloqueado: false },
-    //{urlImg:this.rutaImagenCuidadoInfantil,nombre:"Cuidado Infantil"},
-    { urlImg: this.rutaImagenSeguridadSocial, nombre: "Seguridad Social" , bloqueado: false }]
+  mbes = [];
 
   constructor(
     private titulos: TitulosService,
@@ -115,8 +112,6 @@ export class InicioComponent implements OnInit {
         },
         err => { }
       )
-    } else {
-      this.mbes;
     }
   }
 
