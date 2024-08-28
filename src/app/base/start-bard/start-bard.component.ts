@@ -36,7 +36,7 @@ export class StartBardComponent {
   }
   getUsuario(){
     let objeto = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    return objeto.userName;
+    return objeto.nombre;
   }
   getRole(){
    let rol= this.cifrado.descifrar(this.storage.getItem('rolUsuario')!)
