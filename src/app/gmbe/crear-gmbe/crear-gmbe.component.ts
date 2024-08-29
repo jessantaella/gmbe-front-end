@@ -172,6 +172,10 @@ clearImage(): void {
 
   mergeAndRemoveDuplicates(arreglo1: any, arreglo2: any) {
     // Crear un conjunto de idCatalogo presentes en ambos arreglos
+    console.log('Arreglo 1');
+    console.log(arreglo1);
+    console.log('Arreglo 2');
+    console.log(arreglo2);
     const idsArreglo1 = new Set(
       arreglo1.map((item: { idCatalogo: any }) => item.idCatalogo)
     );
@@ -184,8 +188,9 @@ clearImage(): void {
     );
 
     // Filtrar ambos arreglos para eliminar elementos con idCatalogo en commonIds
+    console.log(this.tipo);
     const filteredArreglo1 = arreglo1.filter(
-      (item: { idCatalogo: any }) => !commonIds.has(item.idCatalogo)
+      (item: { idCatalogo: any }) => this.tipo === 2 ? item.idCatalogo !== null && !commonIds.has(item.idCatalogo) : !commonIds.has(item.idCatalogo)
     );
     const filteredArreglo2 = arreglo2.filter(
       (item: { idCatalogo: any }) => !commonIds.has(item.idCatalogo)
@@ -230,20 +235,36 @@ clearImage(): void {
 
         console.log(this.estructuraFinalFilasTitulos);
 
+        if(nuevasSubcategorias.length<1){
+          console.log('Agregando auxiliar');
+          nuevasSubcategorias.push({
+            activo:true,
+            catalogo:'',
+            complemento:null,
+            created:null,
+            idCatalogo:null,
+            idRelacion:this.categoria?.idCatalogo,
+            idTipoCatalogo:null,
+            esAuxiliar:true
+          })
+        }
+
         this.estructuraFinalFilasTitulos.push({
           categoria: this.categoria,
-          subcategorias: nuevasSubcategorias,
+          subcategorias: nuevasSubcategorias.length > 1 ? nuevasSubcategorias.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : nuevasSubcategorias,
         });
 
         console.log(this.estructuraFinalFilasTitulos);
       } else {
+        console.log(this.estructuraFinalFilasTitulos);
         this.estructuraFinalFilasTitulos.push({
           categoria: this.categoria,
-          subcategorias: this.subcategoriasAgregadas,
+          subcategorias: this.subcategoriasAgregadas.length >= 1 ? this.subcategoriasAgregadas.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : this.subcategoriasAgregadas,
         });
       }
 
-      if(this.subcategoriasAgregadas.length<1){
+      if(this.subcategoriasAgregadas.length<1 || this.estructuraFinalFilasTitulos.length === 1){
+        console.log('Agregando auxiliar');
         this.subcategoriasAgregadas.push({
           activo:true,
           catalogo:'',
@@ -272,7 +293,8 @@ clearImage(): void {
       );
 
       if (existe) {
-
+        console.log("Existe");
+        console.log(this.estructuraFinalColumnasTitulos);
         let arregloOriginal = this.estructuraFinalColumnasTitulos.find(
           (e: any) => {
             return e.categoria.idCatalogo == this.categoria.idCatalogo;
@@ -291,20 +313,42 @@ clearImage(): void {
             item.categoria.idCatalogo !== this.categoria.idCatalogo
         );
 
+        if(nuevasSubcategorias.length<1){
+          console.log('Agregando auxiliar');
+          nuevasSubcategorias.push({
+            activo:true,
+            catalogo:'',
+            complemento:null,
+            created:null,
+            idCatalogo:null,
+            idRelacion:this.categoria?.idCatalogo,
+            idTipoCatalogo:null,
+            esAuxiliar:true
+          })
+        }
 
         this.estructuraFinalColumnasTitulos.push({
           categoria: this.categoria,
-          subcategorias: nuevasSubcategorias,
+          subcategorias: nuevasSubcategorias.length > 1 ? nuevasSubcategorias.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : nuevasSubcategorias,
         });
+
+        console.log(this.estructuraFinalColumnasTitulos);
+        console.log(nuevasSubcategorias)
       }else{
+        console.log("No existe");
+        console.log(this.subCategorias);
+        console.log(this.subcategoriasAgregadas);
         this.estructuraFinalColumnasTitulos.push({
           categoria: this.categoria,
-          subcategorias: this.subcategoriasAgregadas,
+          subcategorias: this.subcategoriasAgregadas.length >= 1 ? this.subcategoriasAgregadas.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : this.subcategoriasAgregadas,
         });
       }
       // agrega auxiliar para espacios en blanco no subcategorias
       console.log('subcategorias agregadas',this.subcategoriasAgregadas)
-      if(this.subcategoriasAgregadas.length<1){
+      console.log('subcategorias agregadas',this.subcategoriasAgregadas.length)
+      console.log('estructuraFinalColumnasTitulos',this.estructuraFinalColumnasTitulos.length)
+      if(this.subcategoriasAgregadas.length<1 || this.estructuraFinalColumnasTitulos.length > 0){
+        console.log('Agregando auxiliar');
         this.subcategoriasAgregadas.push({
           activo:true,
           catalogo:'',
@@ -316,6 +360,21 @@ clearImage(): void {
           esAuxiliar:true
         })
       }
+
+      console.log(this.subcategoriasAgregadas);
+      console.log(this.estructuraFinalColumnasTitulos);
+
+
+
+      // else{
+      //   console.log(this.subcategoriasAgregadas);
+      //   console.log(this.estructuraFinalColumnasTitulos);
+
+      //   this.estructuraFinalColumnasTitulos.forEach((element: any) => {
+      //     element.subcategorias = element.subcategorias.filter((e: any) => e.idCatalogo !== null);
+      //   });
+      // }
+
 
           this.estructuraFinalColumnasSubitulos = [];
           this.estructuraFinalColumnasSubitulos =

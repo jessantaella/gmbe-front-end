@@ -36,7 +36,9 @@ export class StartBardComponent {
   }
   getUsuario(){
     let objeto = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    return objeto.nombre;
+    //Sacar unicamnete el nombre o los dos nombres sin apellidos del objeto
+    let nombre = objeto.nombre.split(" ")[0];
+    return nombre;
   }
   getRole(){
    let rol= this.cifrado.descifrar(this.storage.getItem('rolUsuario')!)
