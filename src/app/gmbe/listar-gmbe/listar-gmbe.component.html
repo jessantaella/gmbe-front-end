@@ -27,7 +27,17 @@
             <fa-icon [icon]="faEye" class="btn-acciones" [routerLink]="['/vista-previa',mbe.idMbe]"></fa-icon>
           </td>
           <td class="text-center">
-            <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
+            <div ngbDropdown class="d-inline-block">
+              <button class="btn" id="dropdownBasic1" ngbDropdownToggle >
+                <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Aprobar</button>
+                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Enviar a validar</button>
+                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,176)">Rechazar</button>
+                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,174)">Publicar</button>
+              </div>
+            </div>
           </td>
           <td class="text-start">
             {{mbe?.nombre}}

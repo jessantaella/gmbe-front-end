@@ -181,6 +181,16 @@ export class ListarGmbeComponent implements OnInit {
     return false;
   }
 
+  cambiarEstatusMBE(idMbe: number, estatusActual: number) {
+    let idRol = this.usuario.rolUsuario.idRol;
+    this.gmbeServices.estatusGmbe(idMbe, estatusActual,idRol).subscribe(
+      res => {
+        this.cambiarPaginaGetAll(0, 10);
+      }, err => {
+
+      });
+  }
+
   loadPage(e: number) {
     if (e !== this.currentPage) {
       console.log('currentPage');

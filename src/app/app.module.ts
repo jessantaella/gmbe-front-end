@@ -27,6 +27,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { VistaPreviaComponent } from './gmbe/vista-previa/vista-previa.component';
 import { EditarGmbeComponent } from './gmbe/editar-gmbe/editar-gmbe.component';
+import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 
 
 
@@ -42,6 +43,7 @@ import { EditarGmbeComponent } from './gmbe/editar-gmbe/editar-gmbe.component';
     ListarUsuariosComponent,
     NavSideComponent,
     StartBardComponent,
+    NotificacionesComponent,
     ListarGmbeComponent,
     CrearGmbeComponent,
     EditarGmbeComponent,

@@ -201,4 +201,9 @@ export class GmbeServicesService {
       return this.http.get<any>(url);
      }
 
+     estatusGmbe(idMbe:number, idEstatus:number, idRol: number):Observable<any>{
+      let url=this.serverConfigService.getServerConfig()+'api/gmbe/api/estatus/cambiar-estatus?idMbe='+idMbe+'&status='+idEstatus+'&idRol='+idRol;
+      return this.http.get<any>(url);
+     }
+
 }
