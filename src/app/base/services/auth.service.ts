@@ -19,4 +19,9 @@ export class AuthService {
     let urlLogin = this.serverConfigService.getServerConfig()+ 'api/gmbe-catalogos/'+'api/mbe/get-mbes-permitidos?' + 'idUsuario=' + idUsuario;
     return this.http.get<any>(urlLogin,{});
   }
+
+  getNotificaciones(idUsuario:number): Observable<any>{
+    let urlLogin = this.serverConfigService.getServerConfig()+ 'api/gmbe/'+'api/estatus/notificaciones?' + 'idUsuario=' + idUsuario;
+    return this.http.get<any>(urlLogin,{});
+  }
 }

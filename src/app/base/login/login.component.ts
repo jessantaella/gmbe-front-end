@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private storage: StorageService,
-    private cifrado:CifradoService,
+    private cifrado: CifradoService,
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
 
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if(this.storage.getItem('usr') !== null){
+    if (this.storage.getItem('usr') !== null) {
       this.router.navigate(['/inicio']);
     }
   }
@@ -84,12 +84,13 @@ export class LoginComponent implements OnInit {
         console.log(res);
         if (res.usuarioAutenticado?.activo === true) {
           if (res.token) {
+            this.Notificaciones(res.usuarioAutenticado?.idUsuario);
             this.idAutorizadas(res.usuarioAutenticado?.idUsuario);
             this.router.navigate(["/inicio"]);
-            this.storage.setItem("token-gmbe",this.cifrado.cifrar(res.token?.token));
-            this.storage.setItem("rolUsuario",this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
-            
-            this.storage.setItem("usr",this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
+            this.storage.setItem("token-gmbe", this.cifrado.cifrar(res.token?.token));
+            this.storage.setItem("rolUsuario", this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
+
+            this.storage.setItem("usr", this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
           } else if (res.mensaje === "Usuario no encontrado en el sistema") {
             swal.fire(
               "",
@@ -115,14 +116,14 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/login"]);
         }
       },
-    err=>{
-      swal.fire(
-        "",
-        "No cuentas con acceso al sistema, favor de contactar al administrador",
-        "error"
-      );
+        err => {
+          swal.fire(
+            "",
+            "No cuentas con acceso al sistema, favor de contactar al administrador",
+            "error"
+          );
 
-    });
+        });
   }
 
   idAutorizadas(idUsuario: number) {
@@ -131,6 +132,15 @@ export class LoginComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
+      });
+  }
+
+  Notificaciones(idUsuario: number) {
+    this.auth
+      .getNotificaciones(idUsuario)
+      .subscribe((res) => {
+        console.log(res);
+        this.storage.setItem("notificaciones", this.cifrado.cifrar(JSON.stringify(res)));
       });
   }
 }

@@ -28,6 +28,8 @@ export class StartBardComponent {
   cerrarSesion(){
     this.storage.removeItem('usr');
     this.storage.removeItem('token-gmbe')
+    this.storage.removeItem('notificaciones')
+    this.storage.removeItem('autorizadas')
     this.router.navigate(['/login'])
   }
 
