@@ -699,4 +699,14 @@ clearImage(): void {
   }
   }
 
+
+validaSubtitulosColumna(){
+  return this.estructuraFinalColumnasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
+}
+
+validaSubtitulosFilas(){
+  return this.estructuraFinalFilasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
+}
+
+  
 }

@@ -154,7 +154,7 @@
                         (click)="eliminarCategoria(1,columna.categoria)"></fa-icon>{{columna.categoria.catalogo}}
                     </th>
                   </tr>
-                  <tr>
+                  <tr *ngIf="validaSubtitulosColumna()">
                     <th id="tituloTablaFila" colspan="2" class="titulos-tabla align-middle"
                       *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
                     <th id="subtituloTablaFila" class="subtitulos-tabla align-middle"
@@ -174,7 +174,7 @@
                       <fa-icon [icon]="faTrash"
                         (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
                     </th>
-                    <th class="subtitulos-tabla align-middle" scope="row"> {{subFilas.catalogo}} </th>
+                    <th class="subtitulos-tabla align-middle" scope="row" *ngIf="validaSubtitulosFilas()"> {{subFilas.catalogo}} </th>
                   </tr>
                 </tbody>
               </table>
