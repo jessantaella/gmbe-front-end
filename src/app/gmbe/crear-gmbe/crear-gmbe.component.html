@@ -139,18 +139,15 @@
               *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
               Intervenciones
             </div>
-            <div class="text-center titulosTabla mt-4 negro">
-              Variable de resultados
-            </div>
             <div class="table-responsive"
               *ngIf="estructuraFinalColumnasTitulos.length >0 || estructuraFinalFilasTitulos.length>0">
               <table class="table table-bordered">
-                <caption class="text-center caption-original"></caption>
+                <caption class="text-center caption-original">Variable de resultados</caption>
                 <thead>
                   <tr class="text-center align-middle">
-                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla align-middle"
+                    <th id="tituloTablaColumna" colspan="2" class="titulos-tabla align-middle text-center"
                       *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
+                    <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle text-center"
                       *ngFor="let columna of estructuraFinalColumnasTitulos"
                       [attr.colspan]="columna.subcategorias.length">
                       <fa-icon [icon]="faTrash"
@@ -158,9 +155,9 @@
                     </th>
                   </tr>
                   <tr *ngIf="validaSubtitulosColumna()">
-                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla align-middle"
+                    <th id="tituloTablaFila" colspan="2" class="titulos-tabla align-middle text-center"
                       *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
-                    <th id="subtituloTablaFila" class="subtitulos-tabla align-middle"
+                    <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center"
                       *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
                       {{ subcolumna.catalogo }}
                     </th>
@@ -170,14 +167,14 @@
                   <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
                   <tr *ngIf="estructuraFinalFilasTitulos.length>0" class="titulos-tabla"></tr>
                   <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos;let i = index">
-                    <th class="titulos-tabla align-middle" id="padre"
+                    <th class="titulos-tabla align-middle text-center" id="padre"
                       [ngStyle]="{'padding-top': (regresaPapa(subFilas.idRelacion).subcategorias.length * 2)+'%'}"
                       [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length"
                       *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
                       <fa-icon [icon]="faTrash"
                         (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
                     </th>
-                    <th class="subtitulos-tabla align-middle" scope="row" *ngIf="validaSubtitulosFilas()"> {{subFilas.catalogo}} </th>
+                    <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="validaSubtitulosFilas()"> {{subFilas.catalogo}} </th>
                   </tr>
                 </tbody>
               </table>
