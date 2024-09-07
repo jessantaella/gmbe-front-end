@@ -90,14 +90,18 @@ export class VistaPreviaComponent {
   }
 
   anchoDinamico(){
-    if(this.estructuraFinalColumnasTitulos.length  <= 2 && this.estructuraFinalColumnasTitulos.some(c => c.hijos.length <= 3)){
-      return '60';
-    }else{
-      if(this.estructuraFinalColumnasTitulos.length  <= 4){
-        return '90';
+    if (window.innerWidth >= 920) {
+      if(this.estructuraFinalColumnasTitulos.length  <= 2 && this.estructuraFinalColumnasTitulos.some(c => c.hijos.length <= 3)){
+        return '60';
       }else{
-        return '100';
-      }
+        if(this.estructuraFinalColumnasTitulos.length  <= 4){
+          return '90';
+        }else{
+          return '100';
+        }
+      } 
+    }else{
+      return '100';
     }
   }
 
