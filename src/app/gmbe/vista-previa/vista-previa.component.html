@@ -35,7 +35,7 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos">
+    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}"  >
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <caption class="text-center caption-original"></caption>

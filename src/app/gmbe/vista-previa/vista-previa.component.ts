@@ -89,6 +89,18 @@ export class VistaPreviaComponent {
     );
   }
 
+  anchoDinamico(){
+    if(this.estructuraFinalColumnasTitulos.length  <= 2){
+      return '60';
+    }else{
+      if(this.estructuraFinalColumnasTitulos.length  <= 4){
+        return '90';
+      }else{
+        return '100';
+      }
+    }
+  }
+
 cargarEstructuraMbe(){
   this.gmbservices.obtenerEstructuraGMBE(this.id).subscribe(
     res=>{
