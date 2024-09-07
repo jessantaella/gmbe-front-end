@@ -90,7 +90,7 @@ export class VistaPreviaComponent {
   }
 
   anchoDinamico(){
-    if(this.estructuraFinalColumnasTitulos.length  <= 2){
+    if(this.estructuraFinalColumnasTitulos.length  <= 2 && this.estructuraFinalColumnasTitulos.some(c => c.hijos.length <= 3)){
       return '60';
     }else{
       if(this.estructuraFinalColumnasTitulos.length  <= 4){
