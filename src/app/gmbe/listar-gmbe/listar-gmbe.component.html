@@ -27,15 +27,15 @@
             <fa-icon [icon]="faEye" class="btn-acciones" [routerLink]="['/vista-previa',mbe.idMbe]"></fa-icon>
           </td>
           <td class="text-center">
-            <div ngbDropdown class="d-inline-block">
+            <div ngbDropdown class="d-inline-block" *ngIf="this.validarBotones(mbe.idEstatus.idCatalogo)">
               <button class="btn" id="dropdownBasic1" ngbDropdownToggle >
                 <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
               </button>
-              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Aprobar</button>
-                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Enviar a validar</button>
-                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,176)">Rechazar</button>
-                <button ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,174)">Publicar</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,192)" >Aprobar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'enviar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Enviar a validar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'rechazar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,176)">Rechazar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'publicar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,174)">Publicar</button>
               </div>
             </div>
           </td>

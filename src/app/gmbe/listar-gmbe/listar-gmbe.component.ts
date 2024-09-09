@@ -63,6 +63,12 @@ export class ListarGmbeComponent implements OnInit {
   archivoCarga: File | null = null;
   mostrarMensajeRevisiones: any;
 
+  creado: number = 173;
+  publicado: number = 174;
+  pendiente: number = 175;
+  rechazado: number = 176;
+  validado: number = 192;
+
   constructor(private titulos: TitulosService,
     private modalService: NgbModal,
     private gmbeServices: GmbeServicesService,
@@ -87,6 +93,91 @@ export class ListarGmbeComponent implements OnInit {
     this.validarAccesos(this.idUsuario);
   }
 
+  validarAcciones(idCatalogo:number, accion:string):boolean {
+    //Roles
+    //1.- ADMIN
+    //2.- OPERADOR
+    //3.- VALIDADOR
+    //4.- PUBLICADOR
+    switch (accion) {
+      case "aprobar":
+        if ((idCatalogo === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 )) || this.idRol() === 1  ) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case "enviar":
+        if ((idCatalogo === (this.creado || this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 )) || this.idRol() === 1  ) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case "rechazar":
+        if (((idCatalogo === this.pendiente && (this.idRol() === 4 || this.idRol() === 3) )
+        || (idCatalogo === this.validado && (this.idRol() === 4) )) || this.idRol() === 1 ) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case "publicar":
+        if ((idCatalogo === this.validado && this.idRol() === 4) || this.idRol() === 1  ) {
+          return true;
+        } else {
+          return false;
+        }
+      default:
+        return false;
+        break
+    }
+  }
+
+  validarBotones(idCatalogo:number):boolean {
+    //Roles
+    //1.- ADMIN
+    //2.- OPERADOR
+    //3.- VALIDADOR
+    //4.- PUBLICADOR
+    switch (idCatalogo) {
+      case this.creado:
+        if (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case this.pendiente:
+        if (this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case this.rechazado:
+        if (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case this.validado:
+        if (this.idRol() === 4 || this.idRol() === 1) {
+          return true;
+        } else {
+          return false;
+        }
+        break;
+      case this.publicado:
+        return false;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
+
   validarAccesos(idUsuario: number) {
     this.gmbeServices.consultarAccesos(idUsuario).subscribe(
       res => {
@@ -106,6 +197,7 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   idRol() {
+    console.log(this.usuario?.rolUsuario?.idRol);
     return this.usuario?.rolUsuario?.idRol;
   }
 
