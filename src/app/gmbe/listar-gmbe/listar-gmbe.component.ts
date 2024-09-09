@@ -197,7 +197,6 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   idRol() {
-    console.log(this.usuario?.rolUsuario?.idRol);
     return this.usuario?.rolUsuario?.idRol;
   }
 
@@ -275,12 +274,48 @@ export class ListarGmbeComponent implements OnInit {
 
   cambiarEstatusMBE(idMbe: number, estatusActual: number) {
     let idRol = this.usuario.rolUsuario.idRol;
-    this.gmbeServices.estatusGmbe(idMbe, estatusActual,idRol).subscribe(
-      res => {
-        this.cambiarPaginaGetAll(0, 10);
-      }, err => {
+    let estatus;
+    switch (estatusActual) {
+      case 174:
+        estatus = 'Publicar'
+        break;
+      case 175:
+        estatus = 'Enviar a validar'
+        break;
+      case 176:
+        estatus = 'Rechazar'
+        break;
+      case 192:
+        estatus = 'Aprobar'
+        break;
+    }
 
-      });
+    //Mandar una alerta para cambiar el estatus
+    swal.fire({
+      icon: 'warning',
+      text: '¿Está seguro de que quiere '+estatus+' este MBE? ',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        htmlContainer: 'titulo-swal',
+        confirmButton: 'guardar-swal',
+        cancelButton: 'cancelar-swal'
+      }
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        this.gmbeServices.estatusGmbe(idMbe, estatusActual,idRol).subscribe(
+          res => {
+            swal.fire("", "MBE actualizado exitosamente", "success");
+            this.cambiarPaginaGetAll(0, 10);
+          }, err => {
+
+          });
+      }
+    });
   }
 
   loadPage(e: number) {
