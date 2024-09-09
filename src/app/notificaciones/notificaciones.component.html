@@ -5,8 +5,8 @@
             <strong class="me-auto ">¡Aviso!</strong>
             <button *ngIf="this.termino" type="button" class="btn-close" (click)="this.clickEliminarNotificacion()" ></button>
         </div>
-        <div class="toast-body" >
-            <span>{{alerta.notificacion}}</span>
+        <div class="toast-body" [ngbTooltip]="alerta.notificacion" >
+            <span class="titulo-notificacion">{{alerta.notificacion}}</span>
         </div>
     </div>
 </div>

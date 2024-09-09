@@ -8,6 +8,15 @@
 
 .toast-body{
     color: black !important;
+    z-index: 1000 !important;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.titulo-notificacion{
+  display: -webkit-box;
+  -webkit-line-clamp: 1;   /* Número máximo de líneas a mostrar */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

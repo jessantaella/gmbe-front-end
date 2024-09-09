@@ -128,7 +128,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         this.mostrarCincoPrimerasNotificaciones(res);
         this.intervalo = setInterval(() => {
           this.mostrarCincoPrimerasNotificaciones(res);
-        }, 5000);
+        }, 10000);
       });
       
   }
