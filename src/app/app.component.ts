@@ -4,6 +4,7 @@ import { DataDynamic } from './base/services/dinamic-data.services';
 import { isPlatformBrowser } from '@angular/common';
 import { ServerConfigService } from './server-config.service';
 import { StorageService } from './services/storage-service.service';
+import { NotificacionesService } from './services/notificaciones.service';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +17,20 @@ export class AppComponent implements OnInit {
   ga: any;
   isBrowser = false;
   private renderer: Renderer2;
+  mostrarNotificaciones = false;
 
 
-  constructor(private meta: Meta, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
+  constructor(private meta: Meta, private notificacionesService: NotificacionesService, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
   }
 
   ngOnInit(): void {
+    this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
+      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      this.mostrarNotificaciones = mostrar;
+    });
     this.consultarTags();
 
     this.meta.addTag({

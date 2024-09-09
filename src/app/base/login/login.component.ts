@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import * as CryptoJS from "crypto-js";
 import { StorageService } from "src/app/services/storage-service.service";
 import { CifradoService } from "src/app/services/cifrado.service";
+import { NotificacionesService } from "src/app/services/notificaciones.service";
 declare var swal: any;
 
 @Component({
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private storage: StorageService,
     private cifrado: CifradoService,
+    private notificacionService: NotificacionesService
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
 
@@ -84,13 +86,13 @@ export class LoginComponent implements OnInit {
         console.log(res);
         if (res.usuarioAutenticado?.activo === true) {
           if (res.token) {
-            this.Notificaciones(res.usuarioAutenticado?.idUsuario);
             this.idAutorizadas(res.usuarioAutenticado?.idUsuario);
             this.router.navigate(["/inicio"]);
             this.storage.setItem("token-gmbe", this.cifrado.cifrar(res.token?.token));
             this.storage.setItem("rolUsuario", this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
 
             this.storage.setItem("usr", this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
+            this.notificacionService.mostrar();
           } else if (res.mensaje === "Usuario no encontrado en el sistema") {
             swal.fire(
               "",
@@ -132,15 +134,6 @@ export class LoginComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
-      });
-  }
-
-  Notificaciones(idUsuario: number) {
-    this.auth
-      .getNotificaciones(idUsuario)
-      .subscribe((res) => {
-        console.log(res);
-        this.storage.setItem("notificaciones", this.cifrado.cifrar(JSON.stringify(res)));
       });
   }
 }

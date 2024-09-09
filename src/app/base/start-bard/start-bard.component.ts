@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {faUser, faHome } from '@fortawesome/free-solid-svg-icons';
 import { CifradoService } from 'src/app/services/cifrado.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 
 
@@ -18,7 +19,7 @@ export class StartBardComponent {
   faHome=faHome;
   abrirAdmin = false;
 
-  constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService) {
+  constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService, private notificacionesService:NotificacionesService) {
    }
 
   validaToken(): boolean{
@@ -31,6 +32,7 @@ export class StartBardComponent {
     this.storage.removeItem('notificaciones')
     this.storage.removeItem('autorizadas')
     this.router.navigate(['/login'])
+    this.notificacionesService.ocultar();
   }
 
   desplegar(){
