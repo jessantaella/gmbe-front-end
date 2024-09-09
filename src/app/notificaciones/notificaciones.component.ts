@@ -66,6 +66,8 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         //Se reinicia el intervalo para mostrar las notificaciones informativas.
         if (!this.banderaBucle) {
           this.banderaBucle = true;
+          this.notificacionesCache = this.notificacionesInformativas;
+          console.log('Notificaciones Informativas:', this.notificacionesInformativas);
           this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
         }
         
@@ -79,6 +81,8 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
           //Se reinicia el intervalo para mostrar las notificaciones informativas.
           if (!this.banderaBucle) {
             this.banderaBucle = true;
+            this.notificacionesCache = this.notificacionesInformativas;
+            console.log('Notificaciones Informativas:', this.notificacionesInformativas);
             this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
           }
         } else {
@@ -95,6 +99,14 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   clickEliminarNotificacion() {
     //Cuando se elimina una notificación informativa, se debe de eliminar de la lista de notificaciones y hasta que se elimine la última notificación de la lista, se debe de mostrar la siguientes 5 notificación.
     const notificacionEliminada = this.cincoPrimerasNotificaciones.shift();
+
+    //Se elimina la notificación de la lista de notificaciones que tenga la propiedad informativa en true.
+    if (!notificacionEliminada.informativa) {
+      this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
+        console.log('Notificación Eliminada:', res);
+      })
+    }
+
     //Hasta que se elimine la última notificación de la lista, se debe de mostrar las siguientes 5 notificaciones.
     if (this.cincoPrimerasNotificaciones.length === 0) {
       this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
@@ -110,7 +122,8 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         console.log("RESULTADOS");
         console.log(res);
         this.notificacionesCache = res;
-        this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === true);
+        this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === false);
+        console.log('Notificaciones:', this.notificacionesCache);
         console.log('Notificaciones Informativas:', this.notificacionesInformativas);
         this.mostrarCincoPrimerasNotificaciones(res);
         this.intervalo = setInterval(() => {
