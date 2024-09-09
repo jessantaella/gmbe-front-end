@@ -301,13 +301,13 @@ export class ListarGmbeComponent implements OnInit {
           this.modalRef?.close();
         },
         err => {
-          console.log(err);
+          console.log(err.error);
           // Cerrar la animación de carga
           swal.close();
           // Mostrar mensaje de error
           swal.fire({
             icon: 'error',
-            text: 'Error en la carga, revisar el archivo',
+            text: err.error.message,
             confirmButtonText: 'OK',
             customClass: {
               htmlContainer: 'titulo-swal',
