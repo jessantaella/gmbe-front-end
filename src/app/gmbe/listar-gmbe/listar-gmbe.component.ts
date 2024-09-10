@@ -307,7 +307,7 @@ export class ListarGmbeComponent implements OnInit {
           // Mostrar mensaje de error
           swal.fire({
             icon: 'error',
-            text: err.error.message,
+            html: err.error.message.replace(/\n/g, '<br>'),
             confirmButtonText: 'OK',
             customClass: {
               htmlContainer: 'titulo-swal',
