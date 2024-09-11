@@ -648,6 +648,19 @@ clearImage(): void {
         },
         err => {
           // Manejo de errores
+          console.log(err.error);
+          // Cerrar la animación de carga
+          swal.close();
+          // Mostrar mensaje de error
+          swal.fire({
+            icon: 'error',
+            text: err.error.messaje,
+            confirmButtonText: 'OK',
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'ok-swal',
+            }
+          })
         }
       );
     } else {
@@ -687,7 +700,22 @@ clearImage(): void {
         }
        
       },
-      err=>{}
+      err=>{
+        console.log(err.error);
+        // Cerrar la animación de carga
+        swal.close();
+        // Mostrar mensaje de error
+        swal.fire({
+          icon: 'error',
+          text: err.error.messaje,
+          confirmButtonText: 'OK',
+          customClass: {
+            htmlContainer: 'titulo-swal',
+            confirmButton: 'ok-swal',
+          }
+        })
+
+      }
     )
   }else{
     swal.fire({
@@ -699,4 +727,14 @@ clearImage(): void {
   }
   }
 
+
+validaSubtitulosColumna(){
+  return this.estructuraFinalColumnasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
+}
+
+validaSubtitulosFilas(){
+  return this.estructuraFinalFilasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
+}
+
+  
 }

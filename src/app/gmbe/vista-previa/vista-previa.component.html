@@ -35,14 +35,14 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos">
+    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}"  >
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <caption class="text-center caption-original"></caption>
         <thead class="sticky-header">
           <tr class="text-center ">
             <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
-            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle" [ngStyle]="{'width': (columna.countSubCats === 0 ? 200 : columna.countSubCats * 150) + 'px'}"
+            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle" [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 100) + 'px'}"
               *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1" [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
               {{ columna?.catalogo }}
             </th>
@@ -50,7 +50,7 @@
           <tr>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
               <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th id="subtituloTablaFila" class="subtitulos-tabla align-middle" style="border: 1px solid;" *ngIf="!hijo?.auxiliar">
+                  <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" style="border: 1px solid;" *ngIf="!hijo?.auxiliar">
                     {{ hijo?.idSubCategoria?.catalogo }}
                   </th>
               </ng-container>
@@ -65,7 +65,7 @@
               {{ subFilas?.idCategoria?.catalogo }}
             </th>
             
-            <th class="subtitulos-tabla align-middle" scope="row" *ngIf="!subFilas?.auxiliar"> {{ subFilas?.idSubCategoria?.catalogo }} </th>
+            <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="!subFilas?.auxiliar"> {{ subFilas?.idSubCategoria?.catalogo }} </th>
     
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
               <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
