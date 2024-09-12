@@ -1,0 +1,37 @@
+.table {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  table-layout: fixed; /* Para que las columnas tengan anchos fijos */
+  width: 100%;
+}
+
+.titulos-tabla {
+  background-color: #3968C6;
+  color: white;
+}
+
+.subtitulos-tabla {
+  background-color: #BEDBFE;
+  color: black;
+}
+
+.tabladatos {
+  height: 60vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#tituloTablaColumna {
+  width: 300px;
+}
+
+#contenidoFila {
+  width: 200px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 10;
+}

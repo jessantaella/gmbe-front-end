@@ -206,4 +206,9 @@ export class GmbeServicesService {
       return this.http.get<any>(url);
      }
 
+     obtenerEstructuraPanelResultados(datos: any): Observable<any> {
+      const url = this.serverConfigService.getServerConfig() + 'api/gmbe/api/estructura-mbe/estructura-mbe-panel-resultados';
+      return this.http.post<any>(url, datos); 
+    }
+     
 }

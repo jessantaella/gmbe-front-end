@@ -28,6 +28,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { VistaPreviaComponent } from './gmbe/vista-previa/vista-previa.component';
 import { EditarGmbeComponent } from './gmbe/editar-gmbe/editar-gmbe.component';
 import { NotificacionesComponent } from './notificaciones/notificaciones.component';
+import { PanelResultadosComponent } from './gmbe/panel-resultados/listar-panel/listar-panel.component';
+import { FormsModule } from '@angular/forms'; 
 
 
 
@@ -47,7 +49,9 @@ import { NotificacionesComponent } from './notificaciones/notificaciones.compone
     ListarGmbeComponent,
     CrearGmbeComponent,
     EditarGmbeComponent,
-    BurbujasComponent,VistaPreviaComponent
+    BurbujasComponent,
+    VistaPreviaComponent,
+    PanelResultadosComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,8 @@ import { NotificacionesComponent } from './notificaciones/notificaciones.compone
     FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    FormsModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
   bootstrap: [AppComponent]

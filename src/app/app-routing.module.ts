@@ -7,6 +7,7 @@ import { ListarGmbeComponent } from "./gmbe/listar-gmbe/listar-gmbe.component";
 import { CrearGmbeComponent } from "./gmbe/crear-gmbe/crear-gmbe.component";
 import { BurbujasComponent } from "./graficas/burbujas/burbujas.component";
 import { VistaPreviaComponent } from "./gmbe/vista-previa/vista-previa.component";
+import { PanelResultadosComponent } from "./gmbe/panel-resultados/listar-panel/listar-panel.component";
 import { EditarGmbeComponent } from "./gmbe/editar-gmbe/editar-gmbe.component";
 import { AuthGuard } from "./shared/guards/AuthGuardt";
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: "inicio", component: InicioComponent},
   { path: "login", component: LoginComponent },
   { path: "usuarios", component: ListarUsuariosComponent, canActivate: [AuthGuard] },
+  { path: "panel", component: PanelResultadosComponent, canActivate: [AuthGuard] },
   { path: "gmbe", component: ListarGmbeComponent, canActivate: [AuthGuard] },
   { path: "crear-gmbe", component: CrearGmbeComponent, canActivate: [AuthGuard]},
   { path: "editar-gmbe/:id", component: EditarGmbeComponent, canActivate: [AuthGuard]},

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faBars, faUserGroup, faDesktop } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faUserGroup, faDesktop,faFile  } from "@fortawesome/free-solid-svg-icons";
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 
@@ -14,6 +14,7 @@ export class NavSideComponent implements OnInit {
   faBars = faBars;
   faUserGroup=faUserGroup;
   faDesktop = faDesktop;
+  faFile = faFile;
   constructor(private storage:StorageService,private cifrado:CifradoService) {
 
    }
