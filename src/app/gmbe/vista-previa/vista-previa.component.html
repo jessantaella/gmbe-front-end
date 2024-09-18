@@ -117,7 +117,7 @@
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-center modal-titulo">
       <h4 class="modal-title">
-        <strong>Respuestas</strong>
+        <strong>Informacíon</strong>
       </h4>
     </div>
     <div class="modal-body d-flex flex-column">
@@ -146,7 +146,7 @@
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-center modal-titulo">
       <h4 class="modal-title">
-        <strong>Respuestas</strong>
+        <strong>Informacíon</strong>
       </h4>
     </div>
     <div class="modal-body d-flex flex-column">
@@ -196,8 +196,8 @@
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
                       <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
                         <app-burbujas [chartId]="'chart-' + i + j"
-                          [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                          *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+                          [bubbleData]="datosInterseccion(this.revisionDos[i].idFila,this.revisionDos[i].idColumna)"
+                          *ngIf="datosInterseccion(this.revisionDos[i].idFila,this.revisionDos[i].idColumna)"></app-burbujas>
                       </th>
                     </ng-container>
                   </tr>

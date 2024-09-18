@@ -282,7 +282,6 @@ datosInterseccion(columna:number,fila:number){
   return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
 }
 
-
 descargar(){
   swal.fire({
     title: 'Descargando',
