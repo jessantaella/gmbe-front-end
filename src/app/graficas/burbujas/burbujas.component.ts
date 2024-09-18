@@ -30,6 +30,8 @@ export class BurbujasComponent implements AfterViewInit {
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
   ngAfterViewInit(): void {
+    console.log("Bubble data provided");
+    console.log(this.bubbleData);
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.bubbleData && this.bubbleData.length > 0) {
       this.chartOptions = this.getCharOptions();
@@ -37,6 +39,7 @@ export class BurbujasComponent implements AfterViewInit {
       console.log(this.chartOptions);
       if (this.isBrowser) {
         setTimeout(() => {
+          console.log("Rendering chart");
           const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
           chart.render();
         }, 0);
@@ -47,7 +50,10 @@ export class BurbujasComponent implements AfterViewInit {
   }
 
   getCharOptions() {
-    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble.count, bubble.nombreGpo, bubble.colorBubble));
+    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData([bubble.count], bubble.nombreGpo, bubble.colorBubble));
+
+    console.log("Series data"); 
+    console.log(seriesData);
 
     const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
     const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
@@ -127,10 +133,10 @@ export class BurbujasComponent implements AfterViewInit {
         },
       },
       legend: {
-        show: false,
+        show: true,
       },
       tooltip: {
-        enabled: false,
+        enabled: true,
         y: {
           formatter: function (val: number, opts: any) {
             return opts.w.config.series[0].data[opts.dataPointIndex].nombreGpo;
@@ -144,27 +150,34 @@ export class BurbujasComponent implements AfterViewInit {
     };
   }
 
-  generateBubbleData(z: number, nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
+  generateBubbleData(zArray: number[], nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
     
     const chartWidth = this.w;
     const chartHeight = this.h;
 
     console.log(`Chart width=${chartWidth}, height=${chartHeight}`);
     
-    let x = Math.random() * (chartWidth / 10);
-    let y = Math.random() * (chartHeight / 2.5);
-    console.log(`Bubble data: x=${x}, y=${y}, z=${z}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
-    //Si z es mayor que 5, se toma un valor aleatorio entre 5 y z
-    z = z / 10;
-    z = z > 5 ? (z - 20) / 10 : z;
-    let zAdjusted = Math.max(z, 5); // Asegura que el valor mínimo de z sea 5
+    let x = Math.random() * (chartWidth);
+    let y = Math.random() * (chartHeight);
+    
+    console.log(`Bubble data: x=${x}, y=${y}, zArray=${zArray}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
+    
+    // Encuentra el valor máximo de zArray
+    const maxZ = Math.max(...zArray);
+
+    console.log(`Max Z=${maxZ}`);
+
+    // Ajustamos el valor de z tomando el último valor de zArray (por ejemplo) y normalizándolo
+    const z = zArray[zArray.length - 1]; // O elige otro valor según sea necesario
+    const zAdjusted: number = (z / maxZ) * 15;
+
+    console.log(`Z adjusted=${zAdjusted}`);
 
     console.log(`Bubble data: x=${x}, y=${y}, z=${zAdjusted}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
     
     // Validar que x, y, y z sean números válidos
     x = isNaN(x) ? 0 : x;
     y = isNaN(y) ? 0 : y;
-    zAdjusted = isNaN(zAdjusted) ? 5 : zAdjusted;
   
     return { x, y, z: zAdjusted, nombreGpo, colorBubble };
   }

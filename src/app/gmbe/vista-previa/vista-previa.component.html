@@ -4,11 +4,17 @@
       <div class="col-12 col-md-6">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre:</label>
-          <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre" formControlName="nombre">
+          <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre"
+            formControlName="nombre">
         </div>
         <div class="mb-3">
           <label for="objetivos" class="form-label">Objetivos:</label>
-          <input [ngbTooltip]="this.mostrarObjetivos" type="text" class="form-control" id="objetivos" formControlName="objetivos">
+          <div class="d-flex">
+            <input [ngbTooltip]="this.mostrarObjetivos" type="text" class="form-control" id="objetivos"
+              formControlName="objetivos">
+            <button class="btn p-0 mx-2" (click)="this.abrirModal(content)"><img alt=""
+                [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" /></button>
+          </div>
         </div>
         <div class="mb-3">
           <label for="imagen" class="form-label">Imagen:</label>
@@ -35,47 +41,57 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}"  >
+    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}">
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <caption class="text-center caption-original"></caption>
         <thead class="sticky-header">
           <tr class="text-center ">
-            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
-            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle" [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 100) + 'px'}"
-              *ngFor="let columna of estructuraFinalColumnasTitulos" [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1" [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
+            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
+              *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
+            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
+              [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 100) + 'px'}"
+              *ngFor="let columna of estructuraFinalColumnasTitulos"
+              [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
+              [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
               {{ columna?.catalogo }}
             </th>
           </tr>
           <tr>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
               <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" style="border: 1px solid;" *ngIf="!hijo?.auxiliar">
-                    {{ hijo?.idSubCategoria?.catalogo }}
-                  </th>
+                <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" style="border: 1px solid;"
+                  *ngIf="!hijo?.auxiliar">
+                  {{ hijo?.idSubCategoria?.catalogo }}
+                </th>
               </ng-container>
-            </ng-container>            
+            </ng-container>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let i = index">
-            <th class="align-middle text-center titulos-tabla" id="padre" 
-              [attr.rowspan]="subFilas?.countSubCats" [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
+            <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="subFilas?.countSubCats"
+              [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
               *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
               {{ subFilas?.idCategoria?.catalogo }}
             </th>
-            
-            <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="!subFilas?.auxiliar"> {{ subFilas?.idSubCategoria?.catalogo }} </th>
-    
+
+            <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="!subFilas?.auxiliar"> {{
+              subFilas?.idSubCategoria?.catalogo }} </th>
+
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
               <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                <app-burbujas [chartId]="'chart-' + i + j" [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+                <app-burbujas [chartId]="'chart-' + i + j"
+                  [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
+                  *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
               </th>
             </ng-container>
           </tr>
         </tbody>
       </table>
     </div>
+    <button class="btn p-0 mx-2" (click)="this.abrirModal(content)"><img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'"
+        width="25px" height="25px" /></button>
   </div>
   <div class="d-flex justify-content-center mt-5 mb-2">
     <button class="btn btn-primary mx-2 border-0 regresar" [routerLink]="['/gmbe']">
@@ -96,3 +112,31 @@
     </button>
   </div>
 </div>
+
+<ng-template #content>
+  <div class="modal-content">
+    <div class="modal-header d-flex justify-content-center modal-titulo">
+      <h4 class="modal-title">
+        <strong>Respuestas</strong>
+      </h4>
+    </div>
+    <div class="modal-body d-flex flex-column">
+      <div class="justify-content-center w-50">
+        <form class="d-flex flex-column mx-3">
+          <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
+          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100">
+            <input class="form-control" type="text" readonly>
+          </div>
+
+          <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
+          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100">
+            <input class="form-control" type="text" readonly>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center align-items-center">
+      <button class="btn boton-gris-modal" type="button">Regresar</button>
+    </div>
+  </div>
+</ng-template>

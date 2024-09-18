@@ -67,7 +67,7 @@ export class ListarGmbeComponent implements OnInit {
   publicado: number = 174;
   pendiente: number = 175;
   rechazado: number = 176;
-  validado: number = 192;
+  validado: number = 198;
 
   constructor(private titulos: TitulosService,
     private modalService: NgbModal,
@@ -108,7 +108,7 @@ export class ListarGmbeComponent implements OnInit {
         }
         break;
       case "enviar":
-        if ((idCatalogo === (this.creado || this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 )) || this.idRol() === 1  ) {
+        if ((idCatalogo === this.creado) || (idCatalogo === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 ) || this.idRol() === 1  ) {
           return true;
         } else {
           return false;

@@ -47,4 +47,9 @@ export class NotificacionesService {
     let urlLogin = this.serverConfigService.getServerConfig()+ 'api/gmbe/'+'api/estatus/desactivar-notificacion-by-id?' + 'idNotificacion=' + idNotificacion;
     return this.http.put<any>(urlLogin,{});
   }
+
+  eliminarTodasNotificaciones(arregloNotificaciones: any): Observable<any>{
+    let urlLogin = this.serverConfigService.getServerConfig()+ 'api/gmbe/'+'api/estatus/notificaciones-desactivar';
+    return this.http.put<any>(urlLogin,arregloNotificaciones,{});
+  }
 }

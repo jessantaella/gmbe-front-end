@@ -23,11 +23,13 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   indice = 0;
   intervalo: any;
   notificaciones: any;
+  guardarNotificaciones: any;
 
   mostrarNotificaciones = false;
 
   usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
   idUsuario:number = Number(this.usuario.idUsuario);
+  idNotificacionesEliminadas: any;
   
   constructor(private cdr: ChangeDetectorRef,private storage: StorageService, private cifrado: CifradoService, private notificacionesService: NotificacionesService) { }
   ngOnDestroy(): void {
@@ -67,7 +69,9 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         if (!this.banderaBucle) {
           this.banderaBucle = true;
           this.notificacionesCache = this.notificacionesInformativas;
+          //Se elimina los objetos de los ID de las notificaciones que se eliminaron al dar click del arreglo de notificacionesInformativas.
           console.log('Notificaciones Informativas:', this.notificacionesInformativas);
+          this.eliminarNotificacionesNoInformativas(this.guardarNotificaciones);
           this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
         }
         
@@ -83,9 +87,11 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
             this.banderaBucle = true;
             this.notificacionesCache = this.notificacionesInformativas;
             console.log('Notificaciones Informativas:', this.notificacionesInformativas);
+            this.eliminarNotificacionesNoInformativas(this.guardarNotificaciones);
             this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
           }
         } else {
+          //Alamacena todas las notificaciones que no sean informativas.
           this.indice += 5;
         }
       }
@@ -96,22 +102,43 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
     }
   }
 
+  eliminarNotificacionesNoInformativas(notificaciones: any) {
+    //Almacena unicamete los ID de las notificaciones que no sean informativas y se eliminan todos.
+    const notificacionesNoInformativas = notificaciones.filter((notificacion: any) => !notificacion.informativa);
+    console.log('Notificaciones No Informativas:', notificacionesNoInformativas);
+    this.idNotificacionesEliminadas = notificacionesNoInformativas.map((notificacion: any) => notificacion.idNotificacion);
+    const idsNotificaciones = notificacionesNoInformativas.map((notificacion: any) => notificacion.idNotificacion);
+    console.log('IDs Notificaciones:', idsNotificaciones);
+    this.notificacionesService.eliminarTodasNotificaciones(idsNotificaciones).subscribe((res) => {
+      console.log('Notificaciones Eliminadas:', res);
+    });
+  };
+
   clickEliminarNotificacion() {
     //Cuando se elimina una notificación informativa, se debe de eliminar de la lista de notificaciones y hasta que se elimine la última notificación de la lista, se debe de mostrar la siguientes 5 notificación.
     const notificacionEliminada = this.cincoPrimerasNotificaciones.shift();
 
     //Se elimina la notificación de la lista de notificaciones que tenga la propiedad informativa en true.
-    if (!notificacionEliminada.informativa) {
+    
       this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
         console.log('Notificación Eliminada:', res);
       })
-    }
+    
 
     //Hasta que se elimine la última notificación de la lista, se debe de mostrar las siguientes 5 notificaciones.
     if (this.cincoPrimerasNotificaciones.length === 0) {
       this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
     }
     console.log('Notificación Eliminada:', notificacionEliminada);
+  }
+
+  clickEliminarUnadeCinco() {
+    //Elimina una notificación de las 5 mostradas.
+    const notificacionEliminada = this.cincoPrimerasNotificaciones.shift();
+    console.log('Notificación Eliminada:', notificacionEliminada);
+    this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
+      console.log('Notificación Eliminada:', res);
+    });
   }
 
   notificacionesRes(idUsuario: number) {
@@ -122,7 +149,8 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         console.log("RESULTADOS");
         console.log(res);
         this.notificacionesCache = res;
-        this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === false);
+        this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === true);
+        this.guardarNotificaciones = this.notificacionesCache.filter((notificacion: any) => notificacion.informativa === false);
         console.log('Notificaciones:', this.notificacionesCache);
         console.log('Notificaciones Informativas:', this.notificacionesInformativas);
         this.mostrarCincoPrimerasNotificaciones(res);

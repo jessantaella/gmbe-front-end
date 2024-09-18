@@ -75,7 +75,7 @@ export class GmbeServicesService {
   }
 
   obtenerInfoGMBE(idMbe:number):Observable<any>{
-    let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/buscar-por-id?idMbe='+idMbe;
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/buscar-por-id-revisiones?idMbe='+idMbe;
     return this.http.get<any>(url);
   }
 

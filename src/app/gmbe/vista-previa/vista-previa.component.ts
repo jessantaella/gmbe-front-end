@@ -11,6 +11,7 @@ import {
   faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import { HttpResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var swal: any;
 
 @Component({
@@ -38,7 +39,7 @@ export class VistaPreviaComponent {
   faX = faX;
   faCheck = faCheck;
 
-  constructor(private route: ActivatedRoute, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
+  constructor(private route: ActivatedRoute, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
@@ -51,6 +52,15 @@ export class VistaPreviaComponent {
     this.obtenerVersionMax();
     this.cargarEstructuraMbe();
     //this.cargarDatosMbe();
+  }
+
+  abrirModal(content: any){
+    this.modalService.open(content,{
+      centered: true,
+      backdrop: 'static',
+      keyboard: false,
+      size: 'lg'
+    });
   }
 
   cargaMBE(){
