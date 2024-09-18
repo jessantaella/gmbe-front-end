@@ -23,6 +23,7 @@ export class VistaPreviaComponent {
   id:number = 0;
   versionMaxima = 1;
   generales: FormGroup;
+  modalRevisionesForm: FormGroup;
   imageUrl: SafeUrl | null = null;
   textoBienvenida = "Vista previa";
 
@@ -34,10 +35,18 @@ export class VistaPreviaComponent {
   mostrarNombre:string = '';
   mostrarObjetivos:string = '';
 
+  revisionDos:any;
+
+  mostrarNombreModal:string = '';
+  mostrarObjetivosModal:string = '';
+
   faRotaLeft = faRotateLeft;
   faDownload = faDownload;
   faX = faX;
   faCheck = faCheck;
+
+  existeSegundaRevision:boolean = false;
+  existeOtraRevision: boolean = false;
 
   constructor(private route: ActivatedRoute, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -48,10 +57,25 @@ export class VistaPreviaComponent {
       objetivos: [''],
       resumen: [''],
     });
+    this.modalRevisionesForm = this.fb.group({
+      anterior: [''],
+      actual: [''],
+    });
     this.cargaMBE();
     this.obtenerVersionMax();
     this.cargarEstructuraMbe();
+    this.cargarRevisonDos();  
     //this.cargarDatosMbe();
+  }
+
+  cargarRevisonDos(){
+    this.gmbservices.obtenerDatosGMBE(this.id,1).subscribe(
+      res=>{
+        console.log('datos',res)
+        this.revisionDos = res;
+      },
+      err=>{}
+    );
   }
 
   abrirModal(content: any){
@@ -63,28 +87,59 @@ export class VistaPreviaComponent {
     });
   }
 
+  abrirModalGraficas(contentGraficas: any){
+    this.modalService.open(contentGraficas,{
+      centered: true,
+      backdrop: 'static',
+      keyboard: false,
+      size: 'xl'
+    });
+
+    
+
+    console.log('datos',this.datosIntersecciones);
+  }
+
   cargaMBE(){
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res=>{
-        this.mostrarNombre = res.nombre;
-        this.mostrarObjetivos = res.objetivo;
+        this.mostrarNombre = res.revisionOne.nombre;
+        this.mostrarObjetivos = res.revisionOne.objetivo;
         this.generales = this.fb.group({
-          nombre: [res?.nombre],
-          objetivos: [res?.objetivo],
-          resumen: [res?.resumen],
+          nombre: [res?.revisionOne.nombre],
+          objetivos: [res?.revisionOne.objetivo],
+          resumen: [res?.revisionOne.resumen],
         });
+
+        if (res.revisionTwo !== null) {
+          this.existeSegundaRevision = true;
+          this.mostrarObjetivosModal = res.revisionTwo.objetivo;
+          this.modalRevisionesForm = this.fb.group({
+            anterior: [res?.revisionTwo.objetivo],
+            actual: [res?.revisionOne.objetivo],
+          });
+        } else {
+          this.existeSegundaRevision = false;
+        }
         this.generales.disable();
-        this.obtenerImagen(res.ruta);
+        this.obtenerImagen(res.revisionOne.ruta);
       },
       err=>{}
     )
   }
 
+  cerraModal(){
+    this.modalService.dismissAll();
+  }
+
   obtenerVersionMax(){
     this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe(
       res=>{
-        this.versionMaxima = res?.data;
+        this.versionMaxima = res?.data === null ? 1 : res?.data;
+        this.existeOtraRevision = this.versionMaxima > 1 ? true : false;
         this.cargarDatosMbe();
+        console.log('version maxima',this.versionMaxima);
+        console.log('existe otra revision',this.existeOtraRevision);
         console.log(res);
       }
     )

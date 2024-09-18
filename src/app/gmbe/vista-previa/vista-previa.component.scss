@@ -157,10 +157,52 @@
   overflow-y: auto;
 }
 
+.tabladatosModal{
+  height: 40vh;
+  width:100%;
+  overflow-y: auto;
+}
+
 #subtituloTablaFila{
   width: 100px;
 }
 
 #contenidoFila{
   width: 200px;
+}
+
+.modal-titulo{
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.titulosActual-Anterior{
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.boton-gris-modal{
+  background:#21409a !important;
+  color: white;
+  border: none;
+  width: 25%;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white;
+}
+
+.boton-gris-modal:hover{
+  background:#21409a !important;
+  color: white;
+  border: none;
+  width: 25%;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white;
 }
