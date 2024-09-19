@@ -101,29 +101,29 @@ export class ListarGmbeComponent implements OnInit {
     //4.- PUBLICADOR
     switch (accion) {
       case "aprobar":
-        if ((idCatalogo === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 )) || this.idRol() === 1  ) {
+        if (idCatalogo === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1  ) ) {
           return true;
         } else {
           return false;
         }
         break;
       case "enviar":
-        if ((idCatalogo === this.creado) || (idCatalogo === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 ) || this.idRol() === 1  ) {
+        if ((idCatalogo === this.creado) || (idCatalogo === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) {
           return true;
         } else {
           return false;
         }
         break;
       case "rechazar":
-        if (((idCatalogo === this.pendiente && (this.idRol() === 4 || this.idRol() === 3) )
-        || (idCatalogo === this.validado && (this.idRol() === 4) )) || this.idRol() === 1 ) {
+        if (((idCatalogo === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1 ) )
+        || (idCatalogo === this.validado && (this.idRol() === 4 || this.idRol() === 1 ) ))) {
           return true;
         } else {
           return false;
         }
         break;
       case "publicar":
-        if ((idCatalogo === this.validado && this.idRol() === 4) || this.idRol() === 1  ) {
+        if ((idCatalogo === this.validado) && (this.idRol() === 4 || this.idRol() === 1)  ) {
           return true;
         } else {
           return false;
