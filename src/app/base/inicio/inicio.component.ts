@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ServerConfigService } from 'src/app/server-config.service';
 import { HttpClient } from '@angular/common/http';
+import { StorageService } from 'src/app/services/storage-service.service';
 
 @Component({
   selector: 'app-inicio',
@@ -50,6 +51,7 @@ export class InicioComponent implements OnInit {
     private info: ServicioInfoDinamicaService,
     private sanitizer: DomSanitizer,
     private serverConfigService: ServerConfigService,
+    private storage: StorageService,
     @Inject(PLATFORM_ID) private platformId: any,
     private http: HttpClient,
   ) {
@@ -104,7 +106,7 @@ export class InicioComponent implements OnInit {
   }
 
   obtenerMbesPublicos() {
-    let token_gmbe = localStorage.getItem('token-gmbe');
+    let token_gmbe = this.storage.getItem('token-gmbe');
     if (token_gmbe) {
       this.info.obtenerMBEPublicado().subscribe(
         res => {

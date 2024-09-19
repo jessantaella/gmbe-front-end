@@ -16,14 +16,14 @@ export class NotificacionesService {
   constructor(private http:HttpClient,private serverConfigService: ServerConfigService, private storage:StorageService, private cifrado:CifradoService) { }
 
   mostrar(){    
-    const token = localStorage.getItem('token-gmbe') || sessionStorage.getItem('token-gmbe');
+    const token = this.storage.getItem('token-gmbe') || this.storage.getItem('token-gmbe');
     if (token) {
       console.log('Mostrar notificaciones');
       this.mostrarNotificaciones.next(true);
-      localStorage.setItem('mostrarNotificaciones', 'true');
+      this.storage.setItem('mostrarNotificaciones', 'true');
     } else {
       this.mostrarNotificaciones.next(false);
-      localStorage.setItem('mostrarNotificaciones', 'false');
+      this.storage.setItem('mostrarNotificaciones', 'false');
     }
   }
   ocultar(){
@@ -33,8 +33,8 @@ export class NotificacionesService {
 
    // Método que recupera el estado guardado en localStorage
    private obtenerEstadoNotificaciones(): boolean {
-    const estadoGuardado = localStorage.getItem('mostrarNotificaciones');
-    localStorage.setItem('mostrarNotificaciones', 'false');
+    const estadoGuardado = this.storage.getItem('mostrarNotificaciones');
+    this.storage.setItem('mostrarNotificaciones', 'false');
     return estadoGuardado === 'true';
   }
 

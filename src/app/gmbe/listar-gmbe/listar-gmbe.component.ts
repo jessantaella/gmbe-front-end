@@ -276,16 +276,16 @@ export class ListarGmbeComponent implements OnInit {
     let idRol = this.usuario.rolUsuario.idRol;
     let estatus;
     switch (estatusActual) {
-      case 174:
+      case this.publicado:
         estatus = 'Publicar'
         break;
-      case 175:
+      case this.pendiente:
         estatus = 'Enviar a validar'
         break;
-      case 176:
+      case this.rechazado:
         estatus = 'Rechazar'
         break;
-      case 192:
+      case this.validado:
         estatus = 'Aprobar'
         break;
     }

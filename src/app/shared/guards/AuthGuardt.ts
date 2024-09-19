@@ -41,10 +41,10 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): boolean {
 
     // Obtener y descifrar el objeto de ids autorizados donde puede acceder el usuario
-    const objetoIds = JSON.parse(this.cifrado.descifrar(localStorage.getItem('autorizadas')!));
+    const objetoIds = JSON.parse(this.cifrado.descifrar(this.storage.getItem('autorizadas')!));
 
     // Obtener y descifrar el objeto de usuario desde el localStorage
-    const objetoUsuario = JSON.parse(this.cifrado.descifrar(localStorage.getItem('usr')!));
+    const objetoUsuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     const idRol = objetoUsuario?.rolUsuario?.idRol;
 
     console.log('idRol', idRol);

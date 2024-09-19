@@ -62,15 +62,15 @@ export class EditarGmbeComponent {
   cargaMBE() {
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res => {
-        this.mostrarNombre = res.nombre;
-        this.mostrarObjetivos = res.objetivo;
+        this.mostrarNombre = res.revisionOnenombre;
+        this.mostrarObjetivos = res.revisionOneobjetivo;
         this.generales = this.fb.group({
-          nombre: [res?.nombre,Validators.required],
-          objetivo: [res?.objetivo,Validators.required],
-          resumen: [res?.resumen,Validators.required],
+          nombre: [res?.revisionOne.nombre,Validators.required],
+          objetivo: [res?.revisionOne.objetivo,Validators.required],
+          resumen: [res?.revisionOne.resumen,Validators.required],
         });
-        this.nombreImagen = res.ruta;
-        this.obtenerImagen(res.ruta);
+        this.nombreImagen = res.revisionOne.ruta;
+        this.obtenerImagen(res.revisionOne.ruta);
         this.escucharCambiosNombre();
         this.escucharCambiosObjetivos();
       },
