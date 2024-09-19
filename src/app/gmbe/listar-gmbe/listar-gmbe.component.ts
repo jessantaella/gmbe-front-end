@@ -67,7 +67,7 @@ export class ListarGmbeComponent implements OnInit {
   publicado: number = 174;
   pendiente: number = 175;
   rechazado: number = 176;
-  validado: number = 198;
+  validado: number = 200;
 
   constructor(private titulos: TitulosService,
     private modalService: NgbModal,

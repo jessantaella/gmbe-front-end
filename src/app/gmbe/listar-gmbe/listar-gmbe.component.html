@@ -32,7 +32,7 @@
                 <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
               </button>
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
-                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,198)" >Aprobar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,200)" >Aprobar</button>
                 <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'enviar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Enviar a validar</button>
                 <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'rechazar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,176)">Rechazar</button>
                 <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'publicar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,174)">Publicar</button>

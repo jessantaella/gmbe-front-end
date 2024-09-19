@@ -20,8 +20,8 @@ export class ServerConfigService {
 
   loadServerConfig() {
     if(this.isBrowser){
-      //const hostname = window.location.hostname;
-      const hostname = '10.1.15.156';
+      const hostname = window.location.hostname;
+      //const hostname = '10.1.15.156';
       let ruta = '';
   
       if (hostname.includes('qa.coneval.org.mx') || hostname.includes('sistemas.coneval.org.mx')) {
@@ -31,24 +31,24 @@ export class ServerConfigService {
         const ip = hostname.split(':')[0]; // Extrae la IP antes del puerto (si hay alguno)
     
         // Concatena la dirección IP con el puerto 81
-        ruta = `${ip}:8080`;
+        ruta = `${ip}:81`;
       }
       
-      // let url = `http${hostname.includes('qa.coneval.org.mx') || hostname.includes('sistemas.coneval.org.mx') ? 's':''}://${ruta}/conf/server-conf.json`; 
-      // if(url.includes('localhost')) {url = 'http://10.1.15.102:81/conf/server-conf.json';}
-      // const headers = new HttpHeaders()
+      let url = `http${hostname.includes('qa.coneval.org.mx') || hostname.includes('sistemas.coneval.org.mx') ? 's':''}://${ruta}/conf/server-conf.json`; 
+      if(url.includes('localhost')) {url = 'http://10.1.15.102:81/conf/server-conf.json';}
+      const headers = new HttpHeaders()
   
-      //     this.http.get<any>(url,{ headers: headers })
-      //       .subscribe(response => {
-      //         this.serverConfig = response.servidor;
-      //         if(this.storage.getItem('srv') !== this.serverConfig){
-      //             this.storage.setItem('srv',this.serverConfig)
-      //         }
-      //       }, error => {
-      //         console.error('Error al cargar la configuración del servidor:', error);
-      //       });
+          this.http.get<any>(url,{ headers: headers })
+            .subscribe(response => {
+              this.serverConfig = response.servidor;
+              if(this.storage.getItem('srv') !== this.serverConfig){
+                  this.storage.setItem('srv',this.serverConfig)
+              }
+            }, error => {
+              console.error('Error al cargar la configuración del servidor:', error);
+            });
 
-      this.serverConfig = `http://${ruta}/`;
+      //this.serverConfig = `http://${ruta}/`;
     }
   }
 
