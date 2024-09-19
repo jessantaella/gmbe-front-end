@@ -107,14 +107,13 @@ export class InicioComponent implements OnInit {
 
   obtenerMbesPublicos() {
     let token_gmbe = this.storage.getItem('token-gmbe');
-    if (token_gmbe) {
       this.info.obtenerMBEPublicado().subscribe(
         res => {
+          console.log(res);
           this.mbes = res.filter((mb:any) => mb.bloqueado === false);
         },
         err => { }
       )
-    }
   }
 
 }
