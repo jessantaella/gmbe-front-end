@@ -134,7 +134,12 @@ export class ListarGmbeComponent implements OnInit {
     }
   }
 
-  validarBotones(idCatalogo:number):boolean {
+  validarBotones(idCatalogo:number, revisiones: number):boolean {
+    if (revisiones > 0) {
+      this.mostrarMensajeRevisiones = true;
+    } else {
+      this.mostrarMensajeRevisiones = false; 
+    }
     //Roles
     //1.- ADMIN
     //2.- OPERADOR
@@ -142,21 +147,23 @@ export class ListarGmbeComponent implements OnInit {
     //4.- PUBLICADOR
     switch (idCatalogo) {
       case this.creado:
-        if (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) {
+        console.log(this.mostrarMensajeRevisiones);
+        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisiones) {
           return true;
         } else {
           return false;
         }
         break;
       case this.pendiente:
-        if (this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1) {
+        if (this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1 ) {
           return true;
         } else {
           return false;
         }
         break;
       case this.rechazado:
-        if (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) {
+        console.log(this.mostrarMensajeRevisiones);
+        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1)  && this.mostrarMensajeRevisiones) {
           return true;
         } else {
           return false;

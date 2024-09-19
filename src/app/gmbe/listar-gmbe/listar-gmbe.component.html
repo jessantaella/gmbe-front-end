@@ -28,7 +28,7 @@
               <fa-icon [icon]="faEye" class="btn-acciones" [routerLink]="['/vista-previa',mbe.idMbe]"></fa-icon>
             </td>
             <td class="text-center">
-              <div ngbDropdown class="d-inline-block" *ngIf="this.validarBotones(mbe.idEstatus.idCatalogo)">
+              <div ngbDropdown class="d-inline-block" *ngIf="this.validarBotones(mbe.idEstatus.idCatalogo, mbe.maxRevision)">
                 <button class="btn" id="dropdownBasic1" ngbDropdownToggle >
                   <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
                 </button>

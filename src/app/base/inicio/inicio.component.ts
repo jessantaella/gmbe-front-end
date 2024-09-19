@@ -92,11 +92,13 @@ export class InicioComponent implements OnInit {
         while (this.serverConfigService.getServerConfig() === '' || this.serverConfigService.getServerConfig() === undefined || this.serverConfigService.getServerConfig() === null) {
           await new Promise(resolve => setTimeout(resolve, 500)); // Wait for 1 second
           url = this.serverConfigService.getServerConfig() + 'api/gmbe-catalogos/api/elementos/idElemento?idElemento=1';
+          this.obtenerMbesPublicos();
         }
         console.log(url);
         try {
           const result = await this.http.get<any>(url).toPromise();
           console.log(result);
+          this.obtenerMbesPublicos();
           this.bienvenidaContenito = this.sanitizer.bypassSecurityTrustHtml(result.valor);
         } catch (err) {
           console.error(err);
