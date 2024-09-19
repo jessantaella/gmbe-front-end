@@ -277,16 +277,16 @@ export class ListarGmbeComponent implements OnInit {
     let estatus;
     switch (estatusActual) {
       case this.publicado:
-        estatus = 'Publicar'
+        estatus = 'publicar'
         break;
       case this.pendiente:
-        estatus = 'Enviar a validar'
+        estatus = 'enviar a validar'
         break;
       case this.rechazado:
-        estatus = 'Rechazar'
+        estatus = 'rechazar'
         break;
       case this.validado:
-        estatus = 'Aprobar'
+        estatus = 'aprobar'
         break;
     }
 
@@ -309,7 +309,20 @@ export class ListarGmbeComponent implements OnInit {
       if (result.isConfirmed) {
         this.gmbeServices.estatusGmbe(idMbe, estatusActual,idRol).subscribe(
           res => {
-            swal.fire("", "MBE actualizado exitosamente", "success");
+            switch (estatusActual) {
+              case this.publicado:
+                swal.fire("", "Se ha publicado el MBE con éxito", "success");
+                break;
+              case this.pendiente:
+                swal.fire("", "Se ha enviado a validar el MBE con éxito", "success");
+                break;
+              case this.rechazado:
+                swal.fire("", "Se ha rechazado el MBE con éxito", "success");
+                break;
+              case this.validado:
+                swal.fire("", "Se ha aprobado el MBE con éxito", "success");
+                break;
+            }
             this.cambiarPaginaGetAll(0, 10);
           }, err => {
 

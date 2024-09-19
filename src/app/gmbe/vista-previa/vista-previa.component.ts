@@ -12,6 +12,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { StorageService } from 'src/app/services/storage-service.service';
 declare var swal: any;
 
 @Component({
@@ -45,12 +47,23 @@ export class VistaPreviaComponent {
   faX = faX;
   faCheck = faCheck;
 
+  creado: number = 173;
+  publicado: number = 174;
+  pendiente: number = 175;
+  rechazado: number = 176;
+  validado: number = 200;
+
+  usuario: any;
+
   existeSegundaRevision:boolean = false;
   existeOtraRevision: boolean = false;
+  idEstatus: any;
+  idMBE: any;
 
-  constructor(private route: ActivatedRoute, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
+  constructor(private route: ActivatedRoute, private cifrado:CifradoService, private storage:StorageService, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.generales = this.fb.group({
       nombre: [''],
@@ -103,7 +116,10 @@ export class VistaPreviaComponent {
   cargaMBE(){
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res=>{
+        this.idEstatus = res.revisionOne.idEstatus.idCatalogo;
+        console.log('estatus',this.idEstatus);
         this.mostrarNombre = res.revisionOne.nombre;
+        this.idMBE = res.revisionOne.idMbe;
         this.mostrarObjetivos = res.revisionOne.objetivo;
         this.generales = this.fb.group({
           nombre: [res?.revisionOne.nombre],
@@ -126,6 +142,116 @@ export class VistaPreviaComponent {
       },
       err=>{}
     )
+  }
+
+  idRol() {
+    return this.usuario?.rolUsuario?.idRol;
+  }
+
+  validarBotonesAcciones(estatus:string):boolean{
+    switch (estatus) {
+      case 'rechazado':
+        if (((this.idEstatus === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1 ) )
+          || (this.idEstatus === this.validado && (this.idRol() === 4 || this.idRol() === 1 ) ))) {
+            return true;
+          } else {
+            return false;
+          }
+      case 'aprobado':
+        if (this.idEstatus === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1  ) ) {
+          return true;
+        } else {
+          return false;
+        }
+      case 'publicado':
+        if ((this.idEstatus === this.validado) && (this.idRol() === 4 || this.idRol() === 1)  ) {
+          return true;
+        } else {
+          return false;
+        }
+      case 'validar':
+        if ((this.idEstatus === this.creado) || (this.idEstatus === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) {
+          return true;
+        } else {
+          return false;
+        }
+      default:
+        return false;
+    }
+  }
+
+  cambiarEstatusMBE(idEstatus:number){
+    let idRol = this.usuario.rolUsuario.idRol;
+    let estatus;
+    switch (idEstatus) {
+      case this.publicado:
+        estatus = 'publicar'
+        break;
+      case this.pendiente:
+        estatus = 'enviar a validar'
+        break;
+      case this.rechazado:
+        estatus = 'rechazar'
+        break;
+      case this.validado:
+        estatus = 'aprobar'
+        break;
+    }
+
+    //Mandar una alerta para cambiar el estatus
+    swal.fire({
+      icon: 'warning',
+      text: '¿Está seguro de que quiere '+estatus+' este MBE? ',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      customClass: {
+        htmlContainer: 'titulo-swal',
+        confirmButton: 'guardar-swal',
+        cancelButton: 'cancelar-swal'
+      }
+    }).then((result: { isConfirmed: any; }) => {
+      if (result.isConfirmed) {
+        this.gmbservices.estatusGmbe(this.idMBE, idEstatus,idRol).subscribe(
+          res => {
+            switch (idEstatus) {
+              case this.publicado:
+                swal.fire("", "Se ha publicado el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+                break;
+              case this.pendiente:
+                swal.fire("", "Se ha enviado a validar el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+                break;
+              case this.rechazado:
+                swal.fire("", "Se ha rechazado el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+                break;
+              case this.validado:
+                swal.fire("", "Se ha aprobado el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
+                  if (result.isConfirmed) {
+                    window.location.reload();
+                  }
+                });
+                break;
+            }
+          }, err => {
+
+          });
+      }
+    });
   }
 
   cerraModal(){
