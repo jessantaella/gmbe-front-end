@@ -18,7 +18,7 @@ export class ServicioInfoDinamicaService {
   }
 
   obtenerMBEPublicado():Observable<any>{
-    let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/all-by-activo-and-estatus?estatus=CREADO';
+    let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/all-by-activo-and-estatus?estatus=PUBLICADO';
     return this.http.get<any>(url); 
   }
 
