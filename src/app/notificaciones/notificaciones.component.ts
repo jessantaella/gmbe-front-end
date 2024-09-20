@@ -104,7 +104,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
 
   eliminarNotificacionesNoInformativas(notificaciones: any) {
     //Almacena unicamete los ID de las notificaciones que no sean informativas y se eliminan todos.
-    const notificacionesNoInformativas = notificaciones.filter((notificacion: any) => !notificacion.informativa);
+    const notificacionesNoInformativas = notificaciones.filter((notificacion: any) => notificacion.informativa);
     console.log('Notificaciones No Informativas:', notificacionesNoInformativas);
     this.idNotificacionesEliminadas = notificacionesNoInformativas.map((notificacion: any) => notificacion.idNotificacion);
     const idsNotificaciones = notificacionesNoInformativas.map((notificacion: any) => notificacion.idNotificacion);
@@ -119,10 +119,12 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
     const notificacionEliminada = this.cincoPrimerasNotificaciones.shift();
 
     //Se elimina la notificación de la lista de notificaciones que tenga la propiedad informativa en true.
-    
+
+    if (notificacionEliminada.informativa) {
       this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
         console.log('Notificación Eliminada:', res);
-      })
+      }) 
+    }
     
 
     //Hasta que se elimine la última notificación de la lista, se debe de mostrar las siguientes 5 notificaciones.
@@ -149,8 +151,8 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         console.log("RESULTADOS");
         console.log(res);
         this.notificacionesCache = res;
-        this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === true);
-        this.guardarNotificaciones = this.notificacionesCache.filter((notificacion: any) => notificacion.informativa === false);
+        this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === false);
+        this.guardarNotificaciones = this.notificacionesCache.filter((notificacion: any) => notificacion.informativa === true);
         console.log('Notificaciones:', this.notificacionesCache);
         console.log('Notificaciones Informativas:', this.notificacionesInformativas);
         this.mostrarCincoPrimerasNotificaciones(res);

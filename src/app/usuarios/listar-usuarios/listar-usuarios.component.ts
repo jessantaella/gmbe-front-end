@@ -20,6 +20,7 @@ import {
 } from "@angular/forms";
 declare var swal: any;
 import { debounceTime } from "rxjs/internal/operators/debounceTime";
+import { NotificacionesService } from "src/app/services/notificaciones.service";
 @Component({
   selector: "app-listar-usuarios",
   templateUrl: "./listar-usuarios.component.html",
@@ -60,6 +61,8 @@ export class ListarUsuariosComponent implements OnInit {
   usuarioForm: FormGroup;
   usuarioEditForm: FormGroup;
 
+  mostrarNotificaciones = false;
+
   mbeEditables: number[] = [];
 
   private modalRef: NgbModalRef | undefined;
@@ -68,6 +71,7 @@ export class ListarUsuariosComponent implements OnInit {
     private titulos: TitulosService,
     private modalService: NgbModal,
     private usuariosService: UsuariosService,
+    private notificacionesService: NotificacionesService,
     private fb: FormBuilder
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -95,6 +99,10 @@ export class ListarUsuariosComponent implements OnInit {
     this.obtenerRoles();
     this.obtenerMBEs();
     this.buscar();
+    this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
+      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      this.mostrarNotificaciones = mostrar;
+    });
   }
 
   obtenerRoles() {

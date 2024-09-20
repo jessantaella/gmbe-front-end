@@ -11,6 +11,7 @@ import { firstValueFrom } from 'rxjs';
 import { ServerConfigService } from 'src/app/server-config.service';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from 'src/app/services/storage-service.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-inicio',
@@ -41,6 +42,8 @@ export class InicioComponent implements OnInit {
   rutaImagenCuidadoInfantil: string = environment.recursos + 'CuidadoInfantil.png';
   rutaImagenSeguridadSocial: string = environment.recursos + 'SeguridadSocial.png';
 
+  mostrarNotificaciones = false;
+
 
   mbes = [];
 
@@ -50,6 +53,7 @@ export class InicioComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private info: ServicioInfoDinamicaService,
     private sanitizer: DomSanitizer,
+    private notificacionesService: NotificacionesService,
     private serverConfigService: ServerConfigService,
     private storage: StorageService,
     @Inject(PLATFORM_ID) private platformId: any,
@@ -83,6 +87,10 @@ export class InicioComponent implements OnInit {
       this.router.navigateByUrl('/');
     }
     this.obtenerMbesPublicos();
+    this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
+      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      this.mostrarNotificaciones = mostrar;
+    });
   }
 
   async obtenerInformacion() {

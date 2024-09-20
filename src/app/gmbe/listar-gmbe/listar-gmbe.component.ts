@@ -11,6 +11,7 @@ import { StorageService } from 'src/app/services/storage-service.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { icon } from '@fortawesome/fontawesome-svg-core';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 declare var swal: any;
 
 @Component({
@@ -62,6 +63,7 @@ export class ListarGmbeComponent implements OnInit {
   imageUrl: string | ArrayBuffer | null | undefined = null;
   archivoCarga: File | null = null;
   mostrarMensajeRevisiones: any;
+  mostrarNotificaciones = false;
 
   creado: number = 173;
   publicado: number = 174;
@@ -74,6 +76,7 @@ export class ListarGmbeComponent implements OnInit {
     private gmbeServices: GmbeServicesService,
     private storage: StorageService,
     private fb: FormBuilder,
+    private notificacionesService: NotificacionesService,
     private cifrado: CifradoService) {
     this.titulos.changePestaña(this.textoBienvenida);
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -91,6 +94,11 @@ export class ListarGmbeComponent implements OnInit {
 
     this.cambiarPaginaGetAll(0, 10);
     this.validarAccesos(this.idUsuario);
+
+    this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
+      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      this.mostrarNotificaciones = mostrar;
+    });
   }
 
   validarAcciones(idCatalogo:number, accion:string):boolean {
