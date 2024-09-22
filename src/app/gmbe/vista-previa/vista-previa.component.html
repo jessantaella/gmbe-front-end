@@ -102,13 +102,21 @@
       <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
       Descargar datos
     </button>
-    <button class="btn btn-primary mx-2 border-0 rechazar">
+    <button *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(176)" class="btn btn-primary mx-2 border-0 rechazar">
       <fa-icon [icon]="faX" class="btnOtrasAcciones"></fa-icon>
       Rechazar
     </button>
-    <button class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(200)" class="btn btn-primary mx-2 border-0 aprobar">
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Aprobar
+    </button>
+    <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(175)" class="btn btn-primary mx-2 border-0 aprobar">
+      <!-- <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon> -->
+      Enviar a validar
+    </button>
+    <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(174)" class="btn btn-primary mx-2 border-0 aprobar">
+      <!-- <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon> -->
+      Publicar
     </button>
   </div>
 </div>
@@ -153,7 +161,7 @@
       <div class="justify-content-center">
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
-          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100">
+          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-75">
 
             <div class="table-responsive tabladatosModal">
               <table class="table table-bordered"
@@ -208,7 +216,7 @@
           </div>
 
           <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
-          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100">
+          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-75">
 
             <div class="table-responsive tabladatosModal">
               <table class="table table-bordered"
