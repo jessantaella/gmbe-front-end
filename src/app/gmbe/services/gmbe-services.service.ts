@@ -228,5 +228,15 @@ export class GmbeServicesService {
       const url = this.serverConfigService.getServerConfig() + 'api/gmbe/api/estructura-mbe/estructura-mbe-panel-resultados';
       return this.http.post<any>(url, datos); 
     }
+
+    filtroCategoria(datosEnviados:any):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/filtros/filtro-panel-resultados-categoria';
+      return this.http.post<any>(url,datosEnviados,{});
+    }
+
+    filtrosSubcategoria(datosEnviados:any):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/filtros/filtro-panel-resultados-subcategoria';
+      return this.http.post<any>(url,datosEnviados,{});
+    }
      
 }

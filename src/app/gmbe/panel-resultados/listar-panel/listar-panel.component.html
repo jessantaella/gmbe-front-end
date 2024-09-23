@@ -5,31 +5,68 @@
         <div class="mb-3">
           <label class="form-label">Búsqueda por intervenciones:</label>
           <div class="d-flex">
-            <select class="form-select me-2" formControlName="categoria" (change)="onCategoriaChange($event)">
-              <option value="" disabled selected>Categoría</option>
-              <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</option>
-            </select>
-          
-            <select class="form-select" formControlName="subcategoria" [disabled]="!subcategorias.length">
-              <option value="" disabled selected>Subcategoría</option>
-              <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id">{{ subcategoria.nombre }}</option>
-            </select>
+
+            <div class="dropdown w-100">
+              <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+                id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-text">Categoria</span>
+                <em class="bi bi-filter"></em>
+              </button>
+              <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
+                <li class="text-justify">
+                  <div class="dropdown-item textoFiltro">
+                    <div class="mx-2" *ngFor="let categoria of categoriasFilas let i = index">
+                      <div class="form-check">
+                        <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
+                          (click)="onCategoriaChangeFilas($event,categoria?.idCategoria)" />
+                        <label class="form-check-label">{{categoria?.categoria}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="dropdown w-100 mx-2">
+              <button [disabled]="!subcategoriasFilas?.length" class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+                id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-text">Subcategoría</span>
+                <em class="bi bi-filter"></em>
+              </button>
+              <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
+                <li class="text-justify">
+                  <div class="dropdown-item textoFiltro">
+                    <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas">
+                      <div class="form-check" *ngIf="subcategoria?.subCategoria != null" >
+                        <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
+                          (click)="onCategoriaChangeFilas($event,subcategoria?.subcategoria?.idSubcategoria)" />
+                        <label class="form-check-label">{{subcategoria?.subCategoria}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      
+
       <div class="col-12 col-md-6">
         <div class="mb-3">
-          <label class="form-label">Búsqueda por intervenciones:</label>
+          <label class="form-label">Búsqueda por resultados:</label>
           <div class="d-flex">
-            <select class="form-select me-2" formControlName="categoria" (change)="onCategoriaChange($event)">
+            <select class="form-select me-2" formControlName="categoriasColumna"
+              (change)="onCategoriaChangeColumnas($event)">
               <option value="" disabled selected>Categoría</option>
-              <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</option>
+              <option *ngFor="let categoria of categoriasColumnas" [value]="categoria.idCategoria">{{
+                categoria.categoria }}</option>
             </select>
-          
-            <select class="form-select" formControlName="subcategoria" [disabled]="!subcategorias.length">
+
+            <select class="form-select" formControlName="subcategoriasColumna"
+              [disabled]="!subcategoriasColumnas?.length">
               <option value="" disabled selected>Subcategoría</option>
-              <option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id">{{ subcategoria.nombre }}</option>
+              <option *ngFor="let subcategoria of subcategoriasColumnas" [value]="subcategoria?.idSubCategoria">{{
+                subcategoria?.subCategoria }}</option>
             </select>
           </div>
         </div>
@@ -38,18 +75,19 @@
   </form>
   <div class="d-flex align-items-center">
     <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}">
-      <table class="table table-bordered" *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+      <table class="table table-bordered"
+        *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <thead class="sticky-header">
           <tr class="text-center">
-            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle" *ngIf="estructuraFinalColumnasTitulos.length > 0">
+            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
+              *ngIf="estructuraFinalColumnasTitulos.length > 0">
               <!-- Encabezado principal vacío para las filas -->
             </th>
-      
+
             <!-- Encabezados de columnas (basado en idTipo: 1) -->
-            <th scope="col" class="titulos-tabla align-middle" 
-                *ngFor="let columna of estructuraFinalColumnasTitulos"
-                [attr.colspan]="columna.hijos.length > 0 ? columna.hijos.length : 1" 
-                [attr.rowspan]="columna.hijos.length === 0 ? 2 : 1">
+            <th scope="col" class="titulos-tabla align-middle" *ngFor="let columna of estructuraFinalColumnasTitulos"
+              [attr.colspan]="columna.hijos.length > 0 ? columna.hijos.length : 1"
+              [attr.rowspan]="columna.hijos.length === 0 ? 2 : 1">
               {{ columna.categoria }} <br>
               (Subcategorías: {{ columna.hijos.length }})
             </th>
@@ -65,47 +103,46 @@
             </ng-container>
           </tr>
         </thead>
-      
+
         <tbody>
           <!-- Iterar sobre las categorías de las filas (idTipo: 2) -->
           <ng-container *ngFor="let fila of estructuraFinalFilasTitulos; let i = index">
             <tr>
               <!-- Encabezado de categoría general en las filas -->
-              <th class="align-middle text-center titulos-tabla" id="padre"
-                  [attr.rowspan]="fila.hijos.length"
-                  *ngIf="estructuraFinalFilasTitulos[i - 1]?.categoria !== fila?.categoria">
+              <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="fila.hijos.length"
+                *ngIf="estructuraFinalFilasTitulos[i - 1]?.categoria !== fila?.categoria">
                 {{ fila?.categoria }} (Subcategorías: {{ fila.hijos.length }})
               </th>
-      
+
               <!-- Primera subcategoría de la fila -->
               <th class="subtitulos-tabla align-middle text-center">
                 {{ fila.hijos[0]?.subCategoria }}
               </th>
-      
+
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos">
                 <th class="contenido-tabla">
                   <!-- Aquí van los datos de intersección, si hay -->
-                  <app-burbujas *ngIf="datosInterseccion(fila.hijos[0]?.idEstructura, columna?.idEstructura)" 
-                                [bubbleData]="datosInterseccion(fila.hijos[0]?.idEstructura, columna?.idEstructura)">
+                  <app-burbujas *ngIf="datosInterseccion(fila.hijos[0]?.idEstructura, columna?.idEstructura)"
+                    [bubbleData]="datosInterseccion(fila.hijos[0]?.idEstructura, columna?.idEstructura)">
                   </app-burbujas>
                 </th>
               </ng-container>
             </tr>
-      
+
             <!-- Subcategorías adicionales dentro de la misma categoría -->
             <ng-container *ngFor="let subcategoria of fila.hijos.slice(1)">
               <tr>
                 <th class="subtitulos-tabla align-middle text-center">
                   {{ subcategoria?.subCategoria }}
                 </th>
-      
+
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos">
                   <th class="contenido-tabla">
                     <!-- Aquí van los datos de intersección, si hay -->
-                    <app-burbujas *ngIf="datosInterseccion(subcategoria?.idEstructura, columna?.idEstructura)" 
-                                  [bubbleData]="datosInterseccion(subcategoria?.idEstructura, columna?.idEstructura)">
+                    <app-burbujas *ngIf="datosInterseccion(subcategoria?.idEstructura, columna?.idEstructura)"
+                      [bubbleData]="datosInterseccion(subcategoria?.idEstructura, columna?.idEstructura)">
                     </app-burbujas>
                   </th>
                 </ng-container>
@@ -114,9 +151,9 @@
           </ng-container>
         </tbody>
       </table>
-      
+
     </div>
   </div>
-  
-  
+
+
 </div>

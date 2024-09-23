@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,7 +16,7 @@ import {
   templateUrl: './listar-panel.component.html',
   styleUrls: ['./listar-panel.component.scss']
 })
-export class PanelResultadosComponent {
+export class PanelResultadosComponent implements OnInit {
   id:number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -40,17 +40,18 @@ export class PanelResultadosComponent {
 
 
   //Nueva ODT
-  selectedCategoria: string = '';
-  selectedSubcategoria: string = '';
+  selectedCategoriaFila: string = '';
+  selectedSubcategoriaFila: string = '';
+
+  selectedCategoriaColumna: string = '';
+  selectedSubcategoriaColumna: string = '';
   
 
-  categorias = [
-    { id: '1', nombre: 'Categoría 1' },
-    { id: '2', nombre: 'Categoría 2' },
-    { id: '3', nombre: 'Categoría 3' }
-  ];
-  subcategorias: { id: string; nombre: string }[] = [];
+  categoriasFilas: any;
+  subcategoriasFilas: any;
 
+  categoriasColumnas: any;
+  subcategoriasColumnas: any;
 
   subcategoriasPorCategoria: { [key: string]: { id: string; nombre: string }[] } = {
     '1': [
@@ -77,11 +78,131 @@ export class PanelResultadosComponent {
       nombre: [''],
       objetivos: [''],
       resumen: [''],
-      categoria: [''],
-      subcategoria: [''],
+      categoriaFila: [''],
+      subcategoriaFila: [''],
+      categoriasColumna: [''],
+      subcategoriasColumna: [''],
     });
 
     this.cargaEstructuraPanelResultados();
+  }
+  ngOnInit(): void {
+    this.filtrosCategoriasFilas();
+    this.filtrosSubcategoriasFilas();
+    this.filtrosCategoriasColumnas();
+    this.filtrosSubcategoriasColumnas();
+    this.escucharCambiosSelect();
+  }
+
+  escucharCambiosSelect() {
+   this.generales.get('categoriaFila')?.valueChanges.subscribe((value) => {
+      this.selectedCategoriaFila = value;
+      console.log('selectedCategoria:', this.selectedCategoriaFila);
+      this.filtrosCategoriasFilas(parseInt(value), 0);
+      this.filtrosSubcategoriasFilas(parseInt(value), 0);
+   })
+   this.generales.get('subcategoriaFila')?.valueChanges.subscribe((value) => {
+    console.log('selectedSubcategoria:', value);
+    this.selectedSubcategoriaFila = value;
+    this.filtrosSubcategoriasFilas(parseInt(this.selectedCategoriaFila), parseInt(value));
+   })
+
+
+   this.generales.get('categoriasColumna')?.valueChanges.subscribe((value) => {
+    console.log('selectedCategoria:', value);
+    this.filtrosCategoriasColumnas(parseInt(value), 0);
+    this.filtrosSubcategoriasColumnas(parseInt(value), 0);
+   });
+
+    this.generales.get('subcategoriasColumna')?.valueChanges.subscribe((value) => {
+      console.log('selectedSubcategoria:', value);
+      this.filtrosSubcategoriasColumnas(parseInt(this.generales.get('categoriasColumna')?.value), parseInt(value));
+    });
+
+  }
+
+  filtrosCategoriasFilas(idCategoria: number = 0, idSubcategoria: number = 0) {
+    console.log('idCategoria:', idCategoria);
+    console.log('idSubcategoria:', idSubcategoria);
+    let datosEnvio = {
+      idMbe: this.idmbe,
+      idTipo: 2,
+      categorias: idCategoria !== 0 ? [idCategoria] : null,
+      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
+    };
+
+    this.gmbservices.filtroCategoria(datosEnvio).subscribe(
+      res => {
+        console.log('Categorias obtenidas:', res);
+        this.categoriasFilas = res;
+      },
+      err => {
+        console.error('Error al obtener categorías:', err);
+      }
+    );
+  }
+
+  filtrosSubcategoriasFilas(idCategoria: number = 0, idSubcategoria: number = 0) {
+    console.log('idCategoria:', idCategoria);
+    console.log('idSubcategoria:', idSubcategoria);
+    let datosEnvio = {
+      idMbe: this.idmbe,
+      idTipo: 2,
+      categorias: idCategoria !== 0 ? [idCategoria] : null,
+      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
+    };
+
+    this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
+      res => {
+        console.log('Subcategorias obtenidas:', res);
+        this.subcategoriasFilas = res;
+      },
+      err => {
+        console.error('Error al obtener subcategorías:', err);
+      }
+    );
+  }
+
+  filtrosCategoriasColumnas(idCategoria: number = 0, idSubcategoria: number = 0) {
+    console.log('idCategoria:', idCategoria);
+    console.log('idSubcategoria:', idSubcategoria);
+    let datosEnvio = {
+      idMbe: this.idmbe,
+      idTipo: 1,
+      categorias: idCategoria !== 0 ? [idCategoria] : null,
+      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
+    };
+
+    this.gmbservices.filtroCategoria(datosEnvio).subscribe(
+      res => {
+        console.log('Categorias obtenidas:', res);
+        this.categoriasColumnas = res;
+      },
+      err => {
+        console.error('Error al obtener categorías:', err);
+      }
+    );
+  }
+
+  filtrosSubcategoriasColumnas(idCategoria: number = 0, idSubcategoria: number = 0) {
+    console.log('idCategoria:', idCategoria);
+    console.log('idSubcategoria:', idSubcategoria);
+    let datosEnvio = {
+      idMbe: this.idmbe,
+      idTipo: 1,
+      categorias: idCategoria !== 0 ? [idCategoria] : null,
+      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
+    };
+
+    this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
+      res => {
+        console.log('Subcategorias obtenidas:', res);
+        this.subcategoriasColumnas = res;
+      },
+      err => {
+        console.error('Error al obtener subcategorías:', err);
+      }
+    );
   }
 
   anchoDinamico(){
@@ -198,10 +319,16 @@ datosInterseccion(columna: number, fila: number) {
 
 
 
-onCategoriaChange(event: any) {
+onCategoriaChangeFilas(event: any, idSeccion: number) {
   const categoriaId = event.target.value;
-  this.subcategorias = this.subcategoriasPorCategoria[categoriaId] || [];
-  this.selectedSubcategoria = '';
+  this.subcategoriasFilas = this.subcategoriasPorCategoria[categoriaId] || [];
+  this.selectedSubcategoriaFila = '';
+}
+
+onCategoriaChangeColumnas(event: any) {
+  const categoriaId = event.target.value;
+  this.subcategoriasFilas = this.subcategoriasPorCategoria[categoriaId] || [];
+  this.selectedSubcategoriaFila = '';
 }
 
 getTotalColumnas(): number {
