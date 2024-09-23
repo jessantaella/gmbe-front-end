@@ -36,6 +36,8 @@ export class PanelResultadosComponent {
   faX = faX;
   faCheck = faCheck;
 
+  idmbe: number = 0;
+
 
   //Nueva ODT
   selectedCategoria: string = '';
@@ -68,6 +70,9 @@ export class PanelResultadosComponent {
   constructor(private route: ActivatedRoute, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
+    this.route.queryParams.subscribe(params => {
+      this.idmbe= params['idMbe'];
+    });
     this.generales = this.fb.group({
       nombre: [''],
       objetivos: [''],
@@ -98,7 +103,7 @@ export class PanelResultadosComponent {
   
   cargaEstructuraPanelResultados() {
     const datosEnvio = {
-      idMbe: 4,
+      idMbe: this.idmbe,
       idCategoriasFilas: null,
       idSubcategoriasFilas: null,
       idCategoriasColumnas: null,

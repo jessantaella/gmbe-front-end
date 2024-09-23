@@ -159,6 +159,9 @@ export class BurbujasComponent implements AfterViewInit {
     
     let x = Math.random() * (chartWidth);
     let y = Math.random() * (chartHeight);
+
+    console.log(x)
+    console.log(y)
     
     console.log(`Bubble data: x=${x}, y=${y}, zArray=${zArray}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
     

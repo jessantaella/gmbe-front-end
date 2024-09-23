@@ -115,6 +115,12 @@ export class InicioComponent implements OnInit {
     }
   }
 
+  informacionMBEPublico(publico:any){
+    console.log("MBE",publico)
+    //Envia por URL el id del MBE
+    this.router.navigate(['/panel'], {queryParams: {idMbe: publico.idMbe} });
+  }
+
   obtenerMbesPublicos() {
     let token_gmbe = this.storage.getItem('token-gmbe');
       this.info.obtenerMBEPublicado().subscribe(

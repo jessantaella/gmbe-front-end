@@ -31,6 +31,10 @@ export class AuthGuard implements CanActivate {
     {
       ruta: 'crear-gmbe',
       idRol: [1, 2, 4],
+    },
+    {
+      ruta: 'panel',
+      idRol: [1, 2, 3, 4],
     }
   ]
 

@@ -7,6 +7,7 @@ import {
   faFloppyDisk,
   faPlus,
   faTrash,
+  faPencil,
 } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GmbeServicesService } from '../services/gmbe-services.service';
@@ -27,6 +28,7 @@ export class CrearGmbeComponent implements OnInit {
   faRotateLeft = faRotateLeft;
   faFloppyDisk = faFloppyDisk;
   faPlus = faPlus;
+  faPencil = faPencil;
   faTrash = faTrash;
   bloquearBotonGuardar = false;
   SelectCatelogirasForm!: FormGroup;
@@ -89,7 +91,9 @@ export class CrearGmbeComponent implements OnInit {
     });
 
     this.categoriaForm = this.fb.group({
-      nombre:['',Validators.required]
+      nombre:['',Validators.required],
+      descripcion:['', Validators.required],
+      url: ['', [Validators.required, Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
     })
     this.subcategoriaForm = this.fb.group({
       categoria:[null],
@@ -602,7 +606,9 @@ clearImage(): void {
   open(content: TemplateRef<any>,tipo :string) {
     if(tipo=== 'categoria'){
       this.categoriaForm = this.fb.group({
-        nombre:['',Validators.required]
+        nombre:['',Validators.required],
+        descripcion:['', Validators.required],
+        url: ['', [Validators.required, Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
       });
     }
 
@@ -625,11 +631,15 @@ clearImage(): void {
     //Si el nombre esta vacio no se puede crear la categoria o comienza con espacio
 
     let nombre = this.categoriaForm.get('nombre')?.value;
+    let descripcion = this.categoriaForm.get('descripcion')?.value;
+    let url = this.categoriaForm.get('url')?.value;
     nombre = nombre.trim();
+    descripcion = descripcion.trim();
+    url = url.trim();
 
     if (nombre !== '' ) {
       console.log(nombre);
-      this.gmbeservice.crearCategoria(nombre).subscribe(
+      this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
         res => {
           swal.fire({
             title: '',

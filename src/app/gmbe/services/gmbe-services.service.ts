@@ -54,14 +54,32 @@ export class GmbeServicesService {
     return this.http.get<any>(url);
   }
 
-  crearCategoria(nombre:string):Observable<any>{
+  crearCategoria(nombre:string, descripcion:string, complemento: string):Observable<any>{
     let urlCrear=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/crear';
     let categoria = {
       tipoCatalogo:'CATEGORIAS',
       catalogo:nombre,
+      descripcion:descripcion,
+      complemento:complemento,
       idRelacionCatalogo:null
     };
     return this.http.post<any>(urlCrear,categoria,{});
+  }
+
+  consultarCatalogo(id:number):Observable<any>{
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/editar?idCatalogo='+id;
+    return this.http.get<any>(url);
+  }
+
+  editarCategoria(id:number,nombre:string, descripcion:string, complemento: string):Observable<any>{
+    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/actualizar';
+    let categoria = {
+      idCatalogo:id,
+      catalogo:nombre,
+      descripcion:descripcion,
+      complemento:complemento
+    };
+    return this.http.put<any>(urlEditar,categoria,{});
   }
 
   crearSubcategoria(nombre:string,idRelacion:number):Observable<any>{
