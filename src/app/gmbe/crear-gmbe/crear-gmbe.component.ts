@@ -67,8 +67,13 @@ export class CrearGmbeComponent implements OnInit {
   padreAnterior = 0;
   ver = false;
 
+  tipoSeleccionado: boolean = false;
+
+  puedeEditar = false;
+
   imageUrl: string | ArrayBuffer | null | undefined = null;
   imageFile: File | null = null;
+  esEditado: boolean = false;
 
 
   constructor(
@@ -93,11 +98,13 @@ export class CrearGmbeComponent implements OnInit {
     this.categoriaForm = this.fb.group({
       nombre:['',Validators.required],
       descripcion:['', Validators.required],
-      url: ['', [Validators.required, Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
     })
     this.subcategoriaForm = this.fb.group({
       categoria:[null],
-      nombre:['']
+      nombre:['', Validators.required],
+      descripcion:['', Validators.required],
+      url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
     })
 
     this.SelectCatelogirasForm = this.fb.group({
@@ -108,6 +115,34 @@ export class CrearGmbeComponent implements OnInit {
   ngOnInit(): void {
     this.SelectTipoCat1();
     this.reiniciarSelect();
+    this.detectarSelect();
+    this.detectarTipo();
+  }
+
+  detectarTipo(){
+    this.SelectCatelogirasForm.get('selectTipo')?.valueChanges.subscribe(
+      (valor) => {
+        console.log(valor);
+        if (Number(valor) === 2) {
+          this.tipoSeleccionado = true;
+        } else {
+          this.tipoSeleccionado = false;
+        }
+      }
+    );
+  }
+
+  detectarSelect(){
+    this.SelectCatelogirasForm.get('selectCategoria')?.valueChanges.subscribe(
+      (valor) => {
+        console.log(valor);
+        if (valor !== '') {
+          this.puedeEditar = true;
+        } else {
+          this.puedeEditar = false;
+        }
+      }
+    );
   }
   
   SelectTipoCat1(){
@@ -605,18 +640,46 @@ clearImage(): void {
 
   open(content: TemplateRef<any>,tipo :string) {
     if(tipo=== 'categoria'){
+      this.esEditado = false;
       this.categoriaForm = this.fb.group({
         nombre:['',Validators.required],
         descripcion:['', Validators.required],
-        url: ['', [Validators.required, Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+        url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
       });
     }
 
     if(tipo==='subcategoria'){
+      this.esEditado = false;
       this.subcategoriaForm = this.fb.group({
         categoria:[null,Validators.required],
-        nombre:['',Validators.required]
-      })
+        nombre:['',Validators.required],
+        descripcion:['', Validators.required],
+        url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      });
+    }
+
+    if (tipo === 'categoriaEditar'){
+      this.esEditado = true;
+      let id = Number(this.SelectCatelogirasForm.get('selectCategoria')?.value);
+      let categoria = this.arregloCategorias.find((e) => e.idCatalogo === id);
+      this.categoriaForm = this.fb.group({
+        nombre:[categoria.catalogo,Validators.required],
+        descripcion:[categoria.descripcion, ],
+        url: [categoria.complemento, [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      });
+      
+    }
+
+    if (tipo === 'subcategoriaEditar'){
+      this.esEditado = true;
+      let id = Number(this.SelectCatelogirasForm.get('selectCategoria')?.value);
+      let subcategoria = this.subCategorias.find((e) => e.idCatalogo === id);
+      this.subcategoriaForm = this.fb.group({
+        categoria:[subcategoria.idRelacion,Validators.required],
+        nombre:[subcategoria.catalogo,Validators.required],
+        descripcion:[subcategoria.descripcion, Validators.required],
+        url: [subcategoria.complemento, [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      });
     }
 
     this.modalRef = this.modalService.open(content, {
@@ -637,42 +700,84 @@ clearImage(): void {
     descripcion = descripcion.trim();
     url = url.trim();
 
-    if (nombre !== '' ) {
+    if (nombre !== '' || nombre !== '' || url !== '') {
       console.log(nombre);
-      this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
-        res => {
-          swal.fire({
-            title: '',
-            text: 'Registro creado exitosamente',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            customClass: {
-              popup: 'custom-swal-popup',
-              confirmButton: 'custom-swal-confirm-button'
+      if (!this.esEditado) {
+        this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
+          res => {
+            swal.fire({
+              title: '',
+              text: 'Registro creado exitosamente',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              customClass: {
+                popup: 'custom-swal-popup',
+                confirmButton: 'custom-swal-confirm-button'
+              }
+            });
+            if (this.modalRef) {
+              //limpia el select de categorias
+              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+              this.modalRef.close();
+              this.obtenerCategorias();
             }
-          });
-          if (this.modalRef) {
-            this.modalRef.close();
-            this.obtenerCategorias();
+          },
+          err => {
+            // Manejo de errores
+            console.log(err.error);
+            // Cerrar la animación de carga
+            swal.close();
+            // Mostrar mensaje de error
+            swal.fire({
+              icon: 'error',
+              text: err.error.messaje,
+              confirmButtonText: 'OK',
+              customClass: {
+                htmlContainer: 'titulo-swal',
+                confirmButton: 'ok-swal',
+              }
+            })
           }
-        },
-        err => {
-          // Manejo de errores
-          console.log(err.error);
-          // Cerrar la animación de carga
-          swal.close();
-          // Mostrar mensaje de error
-          swal.fire({
-            icon: 'error',
-            text: err.error.messaje,
-            confirmButtonText: 'OK',
-            customClass: {
-              htmlContainer: 'titulo-swal',
-              confirmButton: 'ok-swal',
+        ); 
+      } else {
+        let id = Number(this.SelectCatelogirasForm.get('selectCategoria')?.value);
+        this.gmbeservice.editarCategoria(id,nombre,descripcion,url).subscribe(
+          res => {
+            swal.fire({
+              title: '',
+              text: 'Registro editado exitosamente',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              customClass: {
+                popup: 'custom-swal-popup',
+                confirmButton: 'custom-swal-confirm-button'
+              }
+            });
+            if (this.modalRef) {
+              //limpia el select de categorias
+              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+              this.modalRef.close();
+              this.obtenerCategorias();
             }
-          })
-        }
-      );
+          },
+          err => {
+            // Manejo de errores
+            console.log(err.error);
+            // Cerrar la animación de carga
+            swal.close();
+            // Mostrar mensaje de error
+            swal.fire({
+              icon: 'error',
+              text: 'Error al editar la categoria',
+              confirmButtonText: 'OK',
+              customClass: {
+                htmlContainer: 'titulo-swal',
+                confirmButton: 'ok-swal',
+              }
+            })
+          }
+        );
+      }
     } else {
         swal.fire({
           title: '',
@@ -691,42 +796,80 @@ clearImage(): void {
   crearSubcategoria(){
 
     let nombre = this.subcategoriaForm.get('nombre')?.value;
+    let descripcion = this.subcategoriaForm.get('descripcion')?.value;
+    let url = this.subcategoriaForm.get('url')?.value;
     nombre = nombre.trim();
-    if (nombre !== '' ) {
-
-    this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value).subscribe(
-      res => {
-        swal.fire({
-          title: '',
-          text: 'Registro creado exitosamente',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-        if (this.modalRef) {
-          this.modalRef.close();
-          if(this.padreActual != 0){
-            this.obtenerSubCategoriasConid(this.padreActual);
+    descripcion = descripcion.trim();
+    url = url.trim();
+    if (nombre !== '' || nombre !== '' || url !== '') {
+      if (!this.esEditado) {
+        this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value,descripcion,url).subscribe(
+          res => {
+            swal.fire({
+              title: '',
+              text: 'Registro creado exitosamente',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            });
+            if (this.modalRef) {
+              this.modalRef.close();
+              if(this.padreActual != 0){
+                this.obtenerSubCategoriasConid(this.padreActual);
+              }
+            }
+           
+          },
+          err=>{
+            console.log(err.error);
+            // Cerrar la animación de carga
+            swal.close();
+            // Mostrar mensaje de error
+            swal.fire({
+              icon: 'error',
+              text: err.error.messaje,
+              confirmButtonText: 'OK',
+              customClass: {
+                htmlContainer: 'titulo-swal',
+                confirmButton: 'ok-swal',
+              }
+            })
+    
           }
-        }
-       
-      },
-      err=>{
-        console.log(err.error);
-        // Cerrar la animación de carga
-        swal.close();
-        // Mostrar mensaje de error
-        swal.fire({
-          icon: 'error',
-          text: err.error.messaje,
-          confirmButtonText: 'OK',
-          customClass: {
-            htmlContainer: 'titulo-swal',
-            confirmButton: 'ok-swal',
+        )
+      } else {
+        let id = Number(this.SelectCatelogirasForm.get('selectCategoria')?.value);
+        this.gmbeservice.editarCategoria(id,nombre,descripcion,url).subscribe(
+          res => {
+            swal.fire({
+              title: '',
+              text: 'Registro editado exitosamente',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            });
+            if (this.modalRef) {
+              this.modalRef.close();
+              if(this.padreActual != 0){
+                this.obtenerSubCategoriasConid(this.padreActual);
+              }
+            }
+          },
+          err=>{
+            console.log(err.error);
+            // Cerrar la animación de carga
+            swal.close();
+            // Mostrar mensaje de error
+            swal.fire({
+              icon: 'error',
+              text: err.error.messaje,
+              confirmButtonText: 'OK',
+              customClass: {
+                htmlContainer: 'titulo-swal',
+                confirmButton: 'ok-swal',
+              }
+            })
           }
-        })
-
+        )
       }
-    )
   }else{
     swal.fire({
       title: '',
