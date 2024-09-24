@@ -69,11 +69,12 @@ export class CrearGmbeComponent implements OnInit {
 
   tipoSeleccionado: boolean = false;
 
-  puedeEditar = false;
+  puedeEditarCategoria = false;
 
   imageUrl: string | ArrayBuffer | null | undefined = null;
   imageFile: File | null = null;
   esEditado: boolean = false;
+  puedeEditarSubCategoria: boolean = false;
 
 
   constructor(
@@ -137,9 +138,9 @@ export class CrearGmbeComponent implements OnInit {
       (valor) => {
         console.log(valor);
         if (valor !== '') {
-          this.puedeEditar = true;
+          this.puedeEditarCategoria = true;
         } else {
-          this.puedeEditar = false;
+          this.puedeEditarCategoria = false;
         }
       }
     );
@@ -206,6 +207,14 @@ clearImage(): void {
         (elemento) => elemento.idCatalogo !== sub.idCatalogo
       );
       this.subcategoriasAgregadas = nuevoArreglo;
+    }
+
+    //Si el arreglo de subcategorias agregadas tiene un elemento con seleccionado puede editar subcategoria, si tiene mas de uno no puede editar
+    console.log(this.subcategoriasAgregadas);
+    if (this.subcategoriasAgregadas.length === 1) {
+      this.puedeEditarSubCategoria = true;
+    } else {
+      this.puedeEditarSubCategoria = false;
     }
   }
 
@@ -672,8 +681,8 @@ clearImage(): void {
 
     if (tipo === 'subcategoriaEditar'){
       this.esEditado = true;
-      let id = Number(this.SelectCatelogirasForm.get('selectCategoria')?.value);
-      let subcategoria = this.subCategorias.find((e) => e.idCatalogo === id);
+      console.log(this.subcategoriasAgregadas[0]);
+      let subcategoria = this.subcategoriasAgregadas[0]
       this.subcategoriaForm = this.fb.group({
         categoria:[subcategoria.idRelacion,Validators.required],
         nombre:[subcategoria.catalogo,Validators.required],

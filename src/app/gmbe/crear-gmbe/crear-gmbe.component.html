@@ -105,9 +105,9 @@
                   <div class="col-sm-2 text-center p-0">
                     <fa-icon [icon]="faPlus" class="btnOtrasAcciones mx-1"
                       (click)="open(crearCategoriaModal,'categoria')"></fa-icon>
-                    <fa-icon *ngIf="this.puedeEditar"  [icon]="faPencil" class="btnOtrasAcciones mx-1"
+                    <fa-icon *ngIf="this.puedeEditarCategoria"  [icon]="faPencil" class="btnOtrasAcciones mx-1"
                       (click)="open(crearCategoriaModal,'categoriaEditar')"></fa-icon>
-                      <fa-icon *ngIf="!this.puedeEditar"  [icon]="faPencil" class=" mx-1 btn-acciones-inabil"></fa-icon>
+                      <fa-icon *ngIf="!this.puedeEditarCategoria"  [icon]="faPencil" class=" mx-1 btn-acciones-inabil"></fa-icon>
                   </div>
                 </div>
               </div>
@@ -128,9 +128,9 @@
                 <div class="col-md-1 col-sm-12 text-center">
                   <fa-icon [icon]="faPlus" class="btnOtrasAcciones"
                     (click)="open(crearSubcategoriaModal,'subcategoria')"></fa-icon>
-                  <fa-icon *ngIf="this.puedeEditar"  [icon]="faPencil" class="btnOtrasAcciones mx-1"
-                    (click)="open(crearCategoriaModal,'categoriaEditar')"></fa-icon>
-                  <fa-icon *ngIf="!this.puedeEditar"  [icon]="faPencil" class=" mx-1 btn-acciones-inabil"></fa-icon>
+                  <fa-icon *ngIf="this.puedeEditarSubCategoria"  [icon]="faPencil" class="btnOtrasAcciones mx-1"
+                    (click)="open(crearSubcategoriaModal,'subcategoriaEditar')"></fa-icon>
+                  <fa-icon *ngIf="!this.puedeEditarSubCategoria"  [icon]="faPencil" class=" mx-1 btn-acciones-inabil"></fa-icon>
                 </div>
               </div>
               <div class="text-center">

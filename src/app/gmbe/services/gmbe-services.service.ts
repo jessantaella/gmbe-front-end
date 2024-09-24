@@ -74,7 +74,7 @@ export class GmbeServicesService {
   editarCategoria(id:number,nombre:string, descripcion:string, complemento: string):Observable<any>{
     let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe/api/catalogo/editar-categoria-subcategoria';
     let categoria = {
-      idTipoCatalogo: 3,
+      idTipoCatalogo: 2,
       idCatalogo:id,
       catalogo:nombre,
       descripcion:descripcion,
