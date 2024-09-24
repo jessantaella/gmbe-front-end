@@ -5,6 +5,7 @@ import {
   ElementRef,
   Inject,
   Input,
+  OnDestroy,
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
@@ -19,27 +20,27 @@ declare var ApexCharts: any;
 export class BurbujasComponent implements AfterViewInit {
   @ViewChild("chartContainer", { static: false }) chartContainer: ElementRef | undefined;
   @Input() chartId: string | undefined;
+  @Input() chartTitle: string | undefined;
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
   w: number = 100;
   h: number = 50;
 
   public chartOptions: any;
+  valorZguardado: any;
   isBrowser = false;
+  zArrayGuardado: any;
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
   ngAfterViewInit(): void {
-    console.log("Bubble data provided");
-    console.log(this.bubbleData);
+    console.log("Bubble data");
+    console.log(this.chartTitle);
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.bubbleData && this.bubbleData.length > 0) {
       this.chartOptions = this.getCharOptions();
-      console.log("Bubble data provided");
-      console.log(this.chartOptions);
       if (this.isBrowser) {
         setTimeout(() => {
-          console.log("Rendering chart");
           const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
           chart.render();
         }, 0);
@@ -50,7 +51,7 @@ export class BurbujasComponent implements AfterViewInit {
   }
 
   getCharOptions() {
-    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData([bubble.count], bubble.nombreGpo, bubble.colorBubble));
+    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData([bubble.count], bubble.nombreGpo, bubble.colorBubble,this.chartTitle || ''));
 
     console.log("Series data"); 
     console.log(seriesData);
@@ -150,38 +151,62 @@ export class BurbujasComponent implements AfterViewInit {
     };
   }
 
-  generateBubbleData(zArray: number[], nombreGpo: string, colorBubble: string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
-    
+  generateBubbleData(zArray: number[], nombreGpo: string, colorBubble: string, titulo:string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
     const chartWidth = this.w;
     const chartHeight = this.h;
 
-    console.log(`Chart width=${chartWidth}, height=${chartHeight}`);
-    
-    let x = Math.random() * (chartWidth);
-    let y = Math.random() * (chartHeight);
+    // Generate random x and y coordinates within the chart dimensions
+    const x = Math.random() * chartWidth;
+    const y = Math.random() * chartHeight;
 
-    console.log(x)
-    console.log(y)
-    
-    console.log(`Bubble data: x=${x}, y=${y}, zArray=${zArray}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
-    
-    // Encuentra el valor máximo de zArray
-    const maxZ = Math.max(...zArray);
+    console.log("titulo");
+    console.log(titulo);
 
-    console.log(`Max Z=${maxZ}`);
+    switch (titulo) {
+      case "GraficaPrincipal":
+        //Almacena todos los valores de z que vayan llegando en un array en local storage sin perder los valores anteriores
+        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado") || "[]");
+        this.zArrayGuardado.push(zArray[0]);
+        localStorage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
+        break;
+      case "GraficaModal1":
+        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado2") || "[]");
+        this.zArrayGuardado.push(zArray[0]);
+        localStorage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
+        break;
+      case "GraficaModal2":
+        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado3") || "[]");
+        this.zArrayGuardado.push(zArray[0]);
+        localStorage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
+        break;
+      
+    }
 
-    // Ajustamos el valor de z tomando el último valor de zArray (por ejemplo) y normalizándolo
-    const z = zArray[zArray.length - 1]; // O elige otro valor según sea necesario
-    const zAdjusted: number = (z / maxZ) * 15;
+    //Cuando termine de cargar la página, se obtiene el valor de zArrayGuardado y se buscara el valor máximo
+    let maxZ = Math.max(...this.zArrayGuardado, 0);
+    let minZ = Math.min(...this.zArrayGuardado, 1);
 
-    console.log(`Z adjusted=${zAdjusted}`);
+    // Ajuste del tamaño máximo de burbuja
+    let bubbleSizeFactor; // Ajusta este factor según lo necesites
 
-    console.log(`Bubble data: x=${x}, y=${y}, z=${zAdjusted}, nombreGpo=${nombreGpo}, colorBubble=${colorBubble}`);
-    
-    // Validar que x, y, y z sean números válidos
-    x = isNaN(x) ? 0 : x;
-    y = isNaN(y) ? 0 : y;
-  
-    return { x, y, z: zAdjusted, nombreGpo, colorBubble };
+    //Si el valor de zArray[0] es igual al valor máximo de zArrayGuardado, entonces la escala de las burbujas será 30 y si no, será 55
+    if (maxZ ==  zArray[0])  {
+      bubbleSizeFactor = 22;
+    } else {
+      if (minZ == zArray[0])  {
+        bubbleSizeFactor = 120;
+      } else {
+        bubbleSizeFactor = 22;
+      }
+    }
+
+    // Ajusta el tamaño de la burbuja según el valor de z donde z es el tamaño de la burbuja y maxZ es el valor máximo de z
+    const zAdjusted = zArray[0] / maxZ * bubbleSizeFactor;
+
+    // Ensure x, y, and z are valid numbers
+    const validX = isNaN(x) ? 0 : x;
+    const validY = isNaN(y) ? 0 : y;
+    const validZ = isNaN(zAdjusted) ? 0 : zAdjusted;
+    return { x: validX, y: validY, z: validZ, nombreGpo, colorBubble };
   }
 }

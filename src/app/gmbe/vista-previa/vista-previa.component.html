@@ -81,7 +81,7 @@
 
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
               <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                <app-burbujas [chartId]="'chart-' + i + j"
+                <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
                   [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                   *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
               </th>
@@ -203,7 +203,7 @@
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
                       <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                        <app-burbujas [chartId]="'chart-' + i + j"
+                        <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaModal1'"
                           [bubbleData]="datosInterseccion(this.revisionDos[i].idFila,this.revisionDos[i].idColumna)"
                           *ngIf="datosInterseccion(this.revisionDos[i].idFila,this.revisionDos[i].idColumna)"></app-burbujas>
                       </th>
@@ -258,7 +258,7 @@
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
                       <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                        <app-burbujas [chartId]="'chart-' + i + j"
+                        <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaModal2'"
                           [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                           *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
                       </th>

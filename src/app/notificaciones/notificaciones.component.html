@@ -6,7 +6,9 @@
             <button type="button" class="btn-close" (click)="this.clickEliminarNotificacion()" ></button>
         </div>
         <div class="toast-body" >
-            <textarea class="w-100" style="height: 60px; overflow: auto; resize: none;" readonly>{{alerta.notificacion}}</textarea>
+            <div style="height: 60px; overflow: auto; resize: none;" >
+                <span class="w-100" readonly>{{alerta.notificacion}}</span>
+            </div>
         </div>
     </div>
 </div>

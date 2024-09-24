@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -21,7 +21,7 @@ declare var swal: any;
   templateUrl: './vista-previa.component.html',
   styleUrls: ['./vista-previa.component.scss']
 })
-export class VistaPreviaComponent {
+export class VistaPreviaComponent implements OnInit {
   id:number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -80,9 +80,14 @@ export class VistaPreviaComponent {
     this.cargarRevisonDos();  
     //this.cargarDatosMbe();
   }
+  ngOnInit(): void {
+    localStorage.removeItem("zArrayGuardado");
+    localStorage.removeItem("zArrayGuardado2");
+    localStorage.removeItem("zArrayGuardado3");
+  }
 
   cargarRevisonDos(){
-    this.gmbservices.obtenerDatosGMBE(this.id,1).subscribe(
+    this.gmbservices.obtenerDatosGMBE(this.id,2).subscribe(
       res=>{
         console.log('datos',res)
         this.revisionDos = res;
@@ -255,6 +260,8 @@ export class VistaPreviaComponent {
   }
 
   cerraModal(){
+    localStorage.removeItem("zArrayGuardado2");
+    localStorage.removeItem("zArrayGuardado3");
     this.modalService.dismissAll();
   }
 
@@ -297,6 +304,7 @@ export class VistaPreviaComponent {
   }
 
 cargarEstructuraMbe(){
+  localStorage.removeItem("zArrayGuardado");
   this.gmbservices.obtenerEstructuraGMBE(this.id).subscribe(
     res=>{
       console.log(res);
