@@ -87,7 +87,7 @@ export class VistaPreviaComponent implements OnInit {
   }
 
   cargarRevisonDos(){
-    this.gmbservices.obtenerDatosGMBE(this.id,2).subscribe(
+    this.gmbservices.obtenerDatosGMBE(this.id,1).subscribe(
       res=>{
         console.log('datos',res)
         this.revisionDos = res;
@@ -410,9 +410,19 @@ regresaValorSinSubcategoria(padre:any,hijo:any){
 }
 
 datosInterseccion(columna:number,fila:number){
+
   let respuesta =  this.datosIntersecciones.find(
     obj => obj.idFila === columna && obj.idColumna === fila
   );
+  return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
+}
+
+datosInterseccion2(columna:number,fila:number){
+
+  let respuesta =  this.revisionDos.find(
+    (obj:any) => obj.idFila === columna && obj.idColumna === fila
+  );
+ 
   return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
 }
 

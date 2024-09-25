@@ -36,6 +36,7 @@ export class BurbujasComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     console.log("Bubble data");
     console.log(this.chartTitle);
+    console.log(this.bubbleData);
     this.isBrowser = isPlatformBrowser(this.platformId);
     if (this.bubbleData && this.bubbleData.length > 0) {
       this.chartOptions = this.getCharOptions();
@@ -168,16 +169,22 @@ export class BurbujasComponent implements AfterViewInit {
         this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado") || "[]");
         this.zArrayGuardado.push(zArray[0]);
         localStorage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
+        console.log("zArrayGuardado");
+        console.log(this.zArrayGuardado);
         break;
       case "GraficaModal1":
         this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado2") || "[]");
         this.zArrayGuardado.push(zArray[0]);
         localStorage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
+        console.log("zArrayGuardado2");
+        console.log(this.zArrayGuardado);
         break;
       case "GraficaModal2":
         this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado3") || "[]");
         this.zArrayGuardado.push(zArray[0]);
         localStorage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
+        console.log("zArrayGuardado3");
+        console.log(this.zArrayGuardado);
         break;
       
     }
