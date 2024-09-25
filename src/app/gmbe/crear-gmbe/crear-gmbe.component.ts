@@ -83,6 +83,7 @@ export class CrearGmbeComponent implements OnInit {
   puedeEditarSubCategoria: boolean = false;
   editarNombre: any;
   subCategoriasEditado: any;
+  editarNombreSubcategoria: any;
 
 
   constructor(
@@ -123,7 +124,7 @@ export class CrearGmbeComponent implements OnInit {
     })
     this.editarSubcategoriaForm = this.fb.group({
       categoria:[''],
-      subCategoria:[''],
+      subCategoria:['', Validators.required],
       descripcion:['', Validators.required],
       url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
     })
@@ -586,7 +587,7 @@ clearImage(): void {
         console.log(res);
         this.subCategoriasEditado = res;
       });
-    this.editarNombre = this.categoria.catalogo;
+    this.editarNombreSubcategoria = this.categoria.catalogo;
     this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
     this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
   }
@@ -867,6 +868,7 @@ clearImage(): void {
               confirmButtonText: 'OK'
             });
             if (this.modalRef) {
+              this.subCategorias = [];
               this.modalRef.close();
               if(this.padreActual != 0){
                 this.obtenerSubCategoriasConid(this.padreActual);
@@ -904,7 +906,7 @@ clearImage(): void {
   editarSubcategoria(){
     let id = Number(this.editarSubcategoriaForm.get('categoria')?.value);
     let idSub = Number(this.editarSubcategoriaForm.get('subCategoria')?.value);
-    let nombre = this.editarSubcategoriaForm.get('nombre')?.value;
+    let nombre = this.editarNombreSubcategoria;
     let descripcion = this.editarSubcategoriaForm.get('descripcion')?.value;
     let url = this.editarSubcategoriaForm.get('url')?.value;
 
@@ -925,7 +927,8 @@ clearImage(): void {
             this.editarSubcategoriaForm.get('descripcion')?.setValue('');
             this.editarSubcategoriaForm.get('url')?.setValue('');
             //Vuelve a cargar las subcategorias
-            this.obtenerSubCategoriasConid(id);
+            this.subCategoriasEditado = [];
+            this.obtenerCategorias();
             this.modalRef.close();
           }
         },
@@ -964,6 +967,8 @@ clearImage(): void {
   }
 
   cerrarModalSubCatalgo(){
+    //limpia el arreglo de subcategorias agregadas y los checkboxes
+    this.subCategoriasEditado = [];
     this.editarSubcategoriaForm.get('categoria')?.setValue('');
     this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.editarSubcategoriaForm.get('descripcion')?.setValue('');
