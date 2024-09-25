@@ -51,7 +51,7 @@ export class VistaPreviaComponent implements OnInit {
   publicado: number = 174;
   pendiente: number = 175;
   rechazado: number = 176;
-  validado: number = 200;
+  validado: number = 0;
 
   usuario: any;
 
@@ -59,6 +59,7 @@ export class VistaPreviaComponent implements OnInit {
   existeOtraRevision: boolean = false;
   idEstatus: any;
   idMBE: any;
+  mostrarMensajeRevisiones: boolean = false;
 
   constructor(private route: ActivatedRoute, private cifrado:CifradoService, private storage:StorageService, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -81,6 +82,7 @@ export class VistaPreviaComponent implements OnInit {
     //this.cargarDatosMbe();
   }
   ngOnInit(): void {
+    this.estatusVdalidado();
     localStorage.removeItem("zArrayGuardado");
     localStorage.removeItem("zArrayGuardado2");
     localStorage.removeItem("zArrayGuardado3");
@@ -175,7 +177,7 @@ export class VistaPreviaComponent implements OnInit {
           return false;
         }
       case 'validar':
-        if ((this.idEstatus === this.creado) || (this.idEstatus === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) {
+        if (((this.idEstatus === this.creado) || (this.idEstatus === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) && this.mostrarMensajeRevisiones) {
           return true;
         } else {
           return false;
@@ -183,6 +185,18 @@ export class VistaPreviaComponent implements OnInit {
       default:
         return false;
     }
+  }
+
+  estatusVdalidado() {
+    this.gmbservices.estatusValidacion().subscribe(
+      res => {
+        console.log(res);
+        this.validado = res.data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   cambiarEstatusMBE(idEstatus:number){
@@ -270,6 +284,11 @@ export class VistaPreviaComponent implements OnInit {
       res=>{
         this.versionMaxima = res?.data === null ? 1 : res?.data;
         this.existeOtraRevision = this.versionMaxima > 1 ? true : false;
+        if (res?.data !== null) {
+          this.mostrarMensajeRevisiones = true;
+        } else {
+          this.mostrarMensajeRevisiones = false;
+        }
         this.cargarDatosMbe();
         console.log('version maxima',this.versionMaxima);
         console.log('existe otra revision',this.existeOtraRevision);

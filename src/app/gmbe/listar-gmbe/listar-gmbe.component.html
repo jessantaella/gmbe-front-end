@@ -34,10 +34,10 @@
                   <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
                 </button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,200)" >Aprobar</button>
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'enviar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,175)" >Enviar a validar</button>
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'rechazar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,176)">Rechazar</button>
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'publicar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,174)">Publicar</button>
+                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.validado)" >Aprobar</button>
+                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'enviar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.pendiente)" >Enviar a validar</button>
+                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'rechazar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.rechazado)">Rechazar</button>
+                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'publicar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.publicado)">Publicar</button>
                 </div>
               </div>
             </td>
@@ -71,7 +71,7 @@
   
                 <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="((!mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==4 &&  this.idRol() !==2) && mbe.idEstatus.idCatalogo !== this.publicado"
                   (click)="eliminarGmbe(mbe?.idMbe)"></fa-icon>
-                <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado)"></fa-icon>
+                <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado) && mbe.idEstatus.idCatalogo !== this.publicado"></fa-icon>
   
                 <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(!mbe?.bloqueado) && (this.idRol() ===3 || this.idRol() ===4 || this.idRol() ===2) || mbe.idEstatus.idCatalogo === this.publicado"></fa-icon>
             </td>

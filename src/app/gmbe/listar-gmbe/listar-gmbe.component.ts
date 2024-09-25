@@ -69,7 +69,8 @@ export class ListarGmbeComponent implements OnInit {
   publicado: number = 174;
   pendiente: number = 175;
   rechazado: number = 176;
-  validado: number = 200;
+  validado: number = 0;
+  mostrarMensajeRevisionesAcciones: boolean = false;
 
   constructor(private titulos: TitulosService,
     private modalService: NgbModal,
@@ -88,6 +89,7 @@ export class ListarGmbeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.estatusVdalidado();
     this.ObjetoUser = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     console.log(this.ObjetoUser);
     this.idUsuario = this.ObjetoUser.idUsuario;
@@ -99,6 +101,18 @@ export class ListarGmbeComponent implements OnInit {
       console.log('Cambio en mostrarNotificaciones:', mostrar);
       this.mostrarNotificaciones = mostrar;
     });
+  }
+
+  estatusVdalidado() {
+    this.gmbeServices.estatusValidacion().subscribe(
+      res => {
+        console.log(res);
+        this.validado = res.data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   validarAcciones(idCatalogo:number, accion:string):boolean {
@@ -143,10 +157,12 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   validarBotones(idCatalogo:number, revisiones: number):boolean {
-    if (revisiones > 0) {
-      this.mostrarMensajeRevisiones = true;
+    if (revisiones > 0 && revisiones !== null ) {
+      console.log("Es mayor a 0");
+      this.mostrarMensajeRevisionesAcciones = true;
     } else {
-      this.mostrarMensajeRevisiones = false; 
+      console.log("Es menor a 0");
+      this.mostrarMensajeRevisionesAcciones = false; 
     }
     //Roles
     //1.- ADMIN
@@ -155,8 +171,8 @@ export class ListarGmbeComponent implements OnInit {
     //4.- PUBLICADOR
     switch (idCatalogo) {
       case this.creado:
-        console.log(this.mostrarMensajeRevisiones);
-        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisiones) {
+        console.log(this.mostrarMensajeRevisionesAcciones);
+        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisionesAcciones) {
           return true;
         } else {
           return false;
@@ -170,8 +186,8 @@ export class ListarGmbeComponent implements OnInit {
         }
         break;
       case this.rechazado:
-        console.log(this.mostrarMensajeRevisiones);
-        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1)  && this.mostrarMensajeRevisiones) {
+        console.log(this.mostrarMensajeRevisionesAcciones);
+        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1)  && this.mostrarMensajeRevisionesAcciones) {
           return true;
         } else {
           return false;
@@ -234,9 +250,11 @@ export class ListarGmbeComponent implements OnInit {
   }
 
   masRevisones(mbe: any = '') {
-    if (mbe?.maxRevision > 0) {
+    if (mbe?.maxRevision > 0 && mbe?.maxRevisiones !== null ) {
+      console.log("Es mayor a 0");
       this.mostrarMensajeRevisiones = true;
     } else {
+      console.log("Es menor a 0");
       this.mostrarMensajeRevisiones = false; 
     }
   }

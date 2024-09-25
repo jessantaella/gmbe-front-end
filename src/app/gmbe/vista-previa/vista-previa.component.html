@@ -102,19 +102,19 @@
       <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
       Descargar datos
     </button>
-    <button *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(176)" class="btn btn-primary mx-2 border-0 rechazar">
+    <button *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" class="btn btn-primary mx-2 border-0 rechazar">
       <fa-icon [icon]="faX" class="btnOtrasAcciones"></fa-icon>
       Rechazar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(200)" class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(this.validado)" class="btn btn-primary mx-2 border-0 aprobar">
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Aprobar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(175)" class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(this.pendiente)" class="btn btn-primary mx-2 border-0 aprobar">
       <!-- <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon> -->
       Enviar a validar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(174)" class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(this.publicado)" class="btn btn-primary mx-2 border-0 aprobar">
       <!-- <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon> -->
       Publicar
     </button>
