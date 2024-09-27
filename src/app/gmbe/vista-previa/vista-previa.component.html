@@ -133,12 +133,12 @@
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
           <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100" [ngbTooltip]="this.mostrarObjetivosModal">
-            <input formControlName="anterior" class="form-control" type="text" readonly>
+            <input  class="form-control" type="text" formControlName="anterior">
           </div>
 
           <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
           <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100" [ngbTooltip]="this.mostrarObjetivos">
-            <input formControlName="actual" class="form-control" type="text" readonly>
+            <input  class="form-control" type="text" formControlName="actual" >
           </div>
         </form>
       </div>

@@ -206,3 +206,9 @@
   --bs-btn-active-bg: #21409a !important;
   --bs-btn-active-color: white;
 }
+
+
+/* Clase para eliminar el borde de enfoque */
+.form-control:focus {
+  border-color: transparent; /* Elimina el borde visible */
+}

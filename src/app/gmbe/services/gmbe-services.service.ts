@@ -87,7 +87,7 @@ export class GmbeServicesService {
     let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe/api/catalogo/editar-categoria-subcategoria';
     let categoria = {
       idTipoCatalogo: 3,
-      idCatalogo:id,
+      idCatalogo:idSub,
       catalogo:nombre,
       descripcion:descripcion,
       complemento:complemento

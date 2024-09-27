@@ -116,7 +116,7 @@ export class CrearGmbeComponent implements OnInit {
       url: ['']
     })
     this.subcategoriaForm = this.fb.group({
-      categoria:[null],
+      categoria:[0,Validators.required],
       nombre:['', Validators.required],
       descripcion:[''],
       url: ['']
@@ -534,6 +534,7 @@ clearImage(): void {
     this.gmbeservice.listarCatalogo(2).subscribe(
       (res) => {
         this.arregloCategorias = res;
+        console.log(res);
         this.activarAgregar = false;
       },
       (err) => {}
@@ -727,7 +728,7 @@ clearImage(): void {
     if(tipo==='subcategoria'){
       this.esEditado = false;
       this.subcategoriaForm = this.fb.group({
-        categoria:[null,Validators.required],
+        categoria:[0,Validators.required],
         nombre:['',Validators.required],
         descripcion:[''],
         url: ['']
@@ -741,6 +742,10 @@ clearImage(): void {
     });
   }
 
+
+  imprimeAlgo(){
+    console.log(this.subcategoriaForm.value)
+  }
 
   crearCategoria() {
     //Si el nombre esta vacio no se puede crear la categoria o comienza con espacio
@@ -981,6 +986,9 @@ clearImage(): void {
     descripcion = descripcion.trim();
     console.log(url);
     url = url !== null ? url.trim() : '';
+
+
+    console.log(idSub)
 
     if(this.tipoSeleccionado && url.length>0){
       if(!this.urlPattern.test(url)){

@@ -254,6 +254,7 @@
           <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
           <div class="col-sm-6">
             <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria">
+              <option disabled [value]="0">Seleccione una opción</option>
               <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}
               </option>
             </select>
@@ -270,7 +271,7 @@
         <div class="mb-3 row">
           <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Descripción:</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion">
+            <input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion" (change)="imprimeAlgo()">
           </div>
         </div>
 

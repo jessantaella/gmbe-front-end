@@ -153,6 +153,9 @@ export class VistaPreviaComponent implements OnInit {
             anterior: [res?.revisionTwo.objetivo],
             actual: [res?.revisionOne.objetivo],
           });
+          this.modalRevisionesForm.get('anterior')?.disable();  // Deshabilitar el campo dinámicamente
+          this.modalRevisionesForm.get('actual')?.disable();  // Deshabilitar el campo dinámicamente
+
         } else {
           this.existeSegundaRevision = false;
         }
