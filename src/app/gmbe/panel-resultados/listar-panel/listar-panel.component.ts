@@ -83,16 +83,17 @@ export class PanelResultadosComponent implements OnInit {
       categoriasColumna: [''],
       subcategoriasColumna: [''],
     });
+    this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
   }
   ngOnInit(): void {
+    localStorage.removeItem('zArrayGuardado');
     this.filtrosCategoriasFilas();
     this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
     this.filtrosSubcategoriasColumnas();
     this.escucharCambiosSelect();
     this.obtenerVersionMax();
-    this.cargarDatosMbe();
   }
   obtenerVersionMax() {
     this.gmbservices.obtenerVersionMaximaMBE(this.idmbe).subscribe(
@@ -106,7 +107,7 @@ export class PanelResultadosComponent implements OnInit {
   cargarDatosMbe() {
     console.log('id:', this.idmbe);
     console.log('version:', this.versionMaxima);
-    this.gmbservices.obtenerDatosGMBE(this.idmbe, this.versionMaxima).subscribe(
+    this.gmbservices.obtenerDatosGMBEBurbujas(this.idmbe, this.versionMaxima).subscribe(
       res => {
         console.log('datos:', res);
         this.datosIntersecciones = res;
@@ -344,13 +345,33 @@ export class PanelResultadosComponent implements OnInit {
   }
 
   datosInterseccion(columna: number, fila: number) {
-    console.log('columna:', columna);
-    console.log('fila:', fila);
     let respuesta = this.datosIntersecciones.find(
       obj => obj.idFila === columna && obj.idColumna === fila
     );
-    console.log('respuesta:', respuesta);
-    return respuesta?.arrConteoDisenioEval.length < 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval;
+    let conteoTipoEvaluacion = respuesta?.conteoTipoEvaluacion ?? '';
+    let idGpo = 0;
+    let nombreGpo = '';
+    let colorBubble = '';
+    let count = 0;
+
+    if (conteoTipoEvaluacion) {
+      const parts = conteoTipoEvaluacion.split(':');
+      if (parts.length === 4) {
+      idGpo = parseInt(parts[0]);
+      nombreGpo = parts[1];
+      colorBubble = parts[2];
+      count = parseInt(parts[3]);
+      }
+    }
+    let objetoBurbuja = [
+      {
+      idGpo: Number(idGpo),
+      nombreGpo: nombreGpo,
+      colorBubble: colorBubble,
+      count: Number(count)
+      }
+    ];
+    return objetoBurbuja;
   }
 
 

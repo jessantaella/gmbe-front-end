@@ -122,6 +122,19 @@ export class GmbeServicesService {
     let url=this.serverConfigService.getServerConfig()+'api/gmbe/api/datos-mbe/vista-previa?idMbe='+idMbe+'&revision='+revision;
     return this.http.get<any>(url);
   }
+
+  obtenerDatosGMBEBurbujas(idMbe:number,revision:number):Observable<any>{
+    let url=this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/estructura-mbe-panel-resultados-burbuja';
+    let objeto = {
+      idMbe:idMbe,
+      revision:revision,
+      idCategoriasFilas:null,
+      idSubcategoriasFilas:null,
+      idCategoriasColumnas:null,
+      idSubcategoriasColumnas:null
+    }
+    return this.http.post<any>(url,objeto);
+  }
   
   crearImagen(imagen:any,nombre:string){
     const formData = new FormData();
