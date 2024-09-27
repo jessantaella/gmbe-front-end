@@ -122,11 +122,11 @@
 
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos">
-                <th class="contenido-tabla">
+                <th class="contenido-tabla" *ngFor="let hijo of columna.hijos; let j = index">
                   <!-- Aquí van los datos de intersección, si hay -->
-                  <app-burbujas *ngIf="datosInterseccion(fila?.idEstructura, columna?.idEstructura)"
-                    [bubbleData]="datosInterseccion(fila?.idEstructura, columna?.idEstructura)">
-                  </app-burbujas>
+                  <app-burbujas= [chartTitle]="'GraficaPrincipal'"
+                  [bubbleData]="datosInterseccion(fila?.idEstructura,regresaValorSinSubcategoria(columna,hijo?.idEstructura))"
+                  *ngIf="datosInterseccion(fila?.idEstructura,regresaValorSinSubcategoria(columna,hijo?.idEstructura))"></app-burbujas>
                 </th>
               </ng-container>
             </tr>
