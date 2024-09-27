@@ -60,6 +60,7 @@ export class VistaPreviaComponent implements OnInit {
   idEstatus: any;
   idMBE: any;
   mostrarMensajeRevisiones: boolean = false;
+  faRotate = faRotateLeft;
 
   constructor(private route: ActivatedRoute, private cifrado:CifradoService, private storage:StorageService, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
     this.titulos.changeBienvenida(this.textoBienvenida);
