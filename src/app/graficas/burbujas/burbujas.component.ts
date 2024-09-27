@@ -196,14 +196,20 @@ export class BurbujasComponent implements AfterViewInit {
     // Ajuste del tamaño máximo de burbuja
     let bubbleSizeFactor; // Ajusta este factor según lo necesites
 
+    console.log("zArrayGuardado");
+    console.log(this.zArrayGuardado);
+
     //Si el valor de zArray[0] es igual al valor máximo de zArrayGuardado, entonces la escala de las burbujas será 30 y si no, será 55
-    if (maxZ ==  zArray[0])  {
-      bubbleSizeFactor = 22;
+    if (maxZ ==  zArray[0] && zArray[0] > 3) {
+      console.log("maxZ");
+      bubbleSizeFactor = 16;
     } else {
-      if (minZ == zArray[0])  {
+      if (minZ == zArray[0] && zArray[0] > 3)  {
+        console.log("minZ");
         bubbleSizeFactor = 120;
       } else {
-        bubbleSizeFactor = 22;
+        console.log("else");
+        bubbleSizeFactor = 10;
       }
     }
 
