@@ -24,6 +24,11 @@ declare var swal: any;
   styleUrls: ['./crear-gmbe.component.scss'],
 })
 export class CrearGmbeComponent implements OnInit {
+
+  private urlPattern = new RegExp('^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(\/\S*)?$');
+
+
+
   textoBienvenida = 'Crear MBE';
   faX = faX;
   faRotateLeft = faRotateLeft;
@@ -107,26 +112,26 @@ export class CrearGmbeComponent implements OnInit {
 
     this.categoriaForm = this.fb.group({
       nombre:['',Validators.required],
-      descripcion:['', Validators.required],
-      url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      descripcion:[''],
+      url: ['']
     })
     this.subcategoriaForm = this.fb.group({
       categoria:[null],
       nombre:['', Validators.required],
-      descripcion:['', Validators.required],
-      url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      descripcion:[''],
+      url: ['']
     })
 
     this.editarCategoriaForm = this.fb.group({
-      categoria:[''],
-      descripcion:['', Validators.required],
-      url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      categoria:['',Validators.required],
+      descripcion:[''],
+      url: ['']
     })
     this.editarSubcategoriaForm = this.fb.group({
       categoria:[''],
       subCategoria:['', Validators.required],
-      descripcion:['', Validators.required],
-      url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+      descripcion:[''],
+      url: ['']
     })
 
     this.SelectCatelogirasForm = this.fb.group({
@@ -588,8 +593,16 @@ clearImage(): void {
         this.subCategoriasEditado = res;
       });
     this.editarNombreSubcategoria = this.categoria.catalogo;
-    this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
-    this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
+    //this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
+    //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
+  }
+
+  changeSubcategoria(idCatalogo:any){
+    let selectElement = idCatalogo.target as HTMLSelectElement;
+    let selectedValue = Number(selectElement.value);
+    let sub = this.subCategoriasEditado.find((e: any)=>e.idCatalogo === selectedValue)
+     this.editarSubcategoriaForm.get('descripcion')?.setValue(sub.descripcion);
+    this.editarSubcategoriaForm.get('url')?.setValue(sub.complemento);
   }
 
   obtenerSubCategoriasConid(idPadre: number) {
@@ -699,12 +712,15 @@ clearImage(): void {
   }
 
   open(content: TemplateRef<any>,tipo :string) {
+
+    this.obtenerCategorias();
+
     if(tipo=== 'categoria'){
       this.esEditado = false;
       this.categoriaForm = this.fb.group({
         nombre:['',Validators.required],
-        descripcion:['', Validators.required],
-        url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+        descripcion:[''],
+        url: ['']
       });
     }
 
@@ -713,8 +729,8 @@ clearImage(): void {
       this.subcategoriaForm = this.fb.group({
         categoria:[null,Validators.required],
         nombre:['',Validators.required],
-        descripcion:['', Validators.required],
-        url: ['', [ Validators.pattern('(https?://)?(www.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?')]]
+        descripcion:[''],
+        url: ['']
       });
     }
 
@@ -735,6 +751,22 @@ clearImage(): void {
     nombre = nombre.trim();
     descripcion = descripcion.trim();
     url = url.trim();
+
+    if(this.tipoSeleccionado && url.length>0){
+      if(!this.urlPattern.test(url)){
+        swal.fire({
+          title: '',
+          text: 'Ingresa una URL',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
+          }
+        });
+        return;
+      }
+    }
 
     if (nombre !== '' || descripcion !== '' || url !== '') {
       console.log(nombre);
@@ -797,6 +829,24 @@ clearImage(): void {
 
     descripcion = descripcion.trim();
     url = url.trim();
+
+    if(this.tipoSeleccionado && url.length>0){
+      if(!this.urlPattern.test(url)){
+        swal.fire({
+          title: '',
+          text: 'Ingresa una URL',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
+          }
+        });
+        return;
+      }
+    }
+
+
     if (descripcion !== '' || url !== '') {
       this.gmbeservice.editarCategoria(id,nombre,descripcion,url).subscribe(
         res => {
@@ -858,6 +908,24 @@ clearImage(): void {
     nombre = nombre.trim();
     descripcion = descripcion.trim();
     url = url.trim();
+
+
+    if(this.tipoSeleccionado && url.length>0){
+      if(!this.urlPattern.test(url)){
+        swal.fire({
+          title: '',
+          text: 'Ingresa una URL',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
+          }
+        });
+        return;
+      }
+    }
+
     if (nombre !== '' || nombre !== '' || url !== '') {
         this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value,descripcion,url).subscribe(
           res => {
@@ -911,8 +979,25 @@ clearImage(): void {
     let url = this.editarSubcategoriaForm.get('url')?.value;
 
     descripcion = descripcion.trim();
-    url = url.trim();
-    if (descripcion !== '' || url !== '') {
+    console.log(url);
+    url = url !== null ? url.trim() : '';
+
+    if(this.tipoSeleccionado && url.length>0){
+      if(!this.urlPattern.test(url)){
+        swal.fire({
+          title: '',
+          text: 'Ingresa una URL',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
+          }
+        });
+        return;
+      }
+    }
+
       this.gmbeservice.editarSubcategoria(id,nombre,idSub,descripcion,url).subscribe(
         res => {
           swal.fire({
@@ -928,6 +1013,7 @@ clearImage(): void {
             this.editarSubcategoriaForm.get('url')?.setValue('');
             //Vuelve a cargar las subcategorias
             this.subCategoriasEditado = [];
+            this.subCategorias = [];
             this.obtenerCategorias();
             this.modalRef.close();
           }
@@ -949,14 +1035,6 @@ clearImage(): void {
   
         }
       );
-    } else {
-      swal.fire({
-        title: '',
-        text: 'El campo no puede estar vacío',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-    }
   }
 
   cerrarModalCatalgo(){

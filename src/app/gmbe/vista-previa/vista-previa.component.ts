@@ -8,39 +8,41 @@ import {
   faRotateLeft,
   faDownload,
   faX,
-  faCheck
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { StorageService } from 'src/app/services/storage-service.service';
+import { Router } from '@angular/router';
+
 declare var swal: any;
 
 @Component({
   selector: 'app-vista-previa',
   templateUrl: './vista-previa.component.html',
-  styleUrls: ['./vista-previa.component.scss']
+  styleUrls: ['./vista-previa.component.scss'],
 })
 export class VistaPreviaComponent implements OnInit {
-  id:number = 0;
+  id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
   modalRevisionesForm: FormGroup;
   imageUrl: SafeUrl | null = null;
-  textoBienvenida = "Vista previa";
+  textoBienvenida = 'Vista previa';
 
-  estructuraFinalColumnasTitulos:any[] = [];
-  estructuraFinalFilasTitulos:any[] = [];
-  estructuraFinalFilasSubitulos:any[] = [];
-  datosIntersecciones:any [] = [];
+  estructuraFinalColumnasTitulos: any[] = [];
+  estructuraFinalFilasTitulos: any[] = [];
+  estructuraFinalFilasSubitulos: any[] = [];
+  datosIntersecciones: any[] = [];
 
-  mostrarNombre:string = '';
-  mostrarObjetivos:string = '';
+  mostrarNombre: string = '';
+  mostrarObjetivos: string = '';
 
-  revisionDos:any;
+  revisionDos: any;
 
-  mostrarNombreModal:string = '';
-  mostrarObjetivosModal:string = '';
+  mostrarNombreModal: string = '';
+  mostrarObjetivosModal: string = '';
 
   faRotaLeft = faRotateLeft;
   faDownload = faDownload;
@@ -55,16 +57,28 @@ export class VistaPreviaComponent implements OnInit {
 
   usuario: any;
 
-  existeSegundaRevision:boolean = false;
+  existeSegundaRevision: boolean = false;
   existeOtraRevision: boolean = false;
   idEstatus: any;
   idMBE: any;
   mostrarMensajeRevisiones: boolean = false;
 
-  constructor(private route: ActivatedRoute, private cifrado:CifradoService, private storage:StorageService, private modalService: NgbModal, private gmbservices:GmbeServicesService,private fb: FormBuilder,private sanitizer: DomSanitizer,private titulos: TitulosService){
+  constructor(
+    private route: ActivatedRoute,
+    private cifrado: CifradoService,
+    private storage: StorageService,
+    private modalService: NgbModal,
+    private gmbservices: GmbeServicesService,
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer,
+    private titulos: TitulosService,
+    private router: Router
+  ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
-    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+    this.usuario = JSON.parse(
+      this.cifrado.descifrar(this.storage.getItem('usr')!)
+    );
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.generales = this.fb.group({
       nombre: [''],
@@ -78,53 +92,51 @@ export class VistaPreviaComponent implements OnInit {
     this.cargaMBE();
     this.obtenerVersionMax();
     this.cargarEstructuraMbe();
-    this.cargarRevisonDos();  
+    this.cargarRevisonDos();
     //this.cargarDatosMbe();
   }
   ngOnInit(): void {
     this.estatusVdalidado();
-    localStorage.removeItem("zArrayGuardado");
-    localStorage.removeItem("zArrayGuardado2");
-    localStorage.removeItem("zArrayGuardado3");
+    localStorage.removeItem('zArrayGuardado');
+    localStorage.removeItem('zArrayGuardado2');
+    localStorage.removeItem('zArrayGuardado3');
   }
 
-  cargarRevisonDos(){
-    this.gmbservices.obtenerDatosGMBE(this.id,1).subscribe(
-      res=>{
-        console.log('datos',res)
+  cargarRevisonDos() {
+    this.gmbservices.obtenerDatosGMBE(this.id, 1).subscribe(
+      (res) => {
+        console.log('datos', res);
         this.revisionDos = res;
       },
-      err=>{}
+      (err) => {}
     );
   }
 
-  abrirModal(content: any){
-    this.modalService.open(content,{
+  abrirModal(content: any) {
+    this.modalService.open(content, {
       centered: true,
       backdrop: 'static',
       keyboard: false,
-      size: 'lg'
+      size: 'lg',
     });
   }
 
-  abrirModalGraficas(contentGraficas: any){
-    this.modalService.open(contentGraficas,{
+  abrirModalGraficas(contentGraficas: any) {
+    this.modalService.open(contentGraficas, {
       centered: true,
       backdrop: 'static',
       keyboard: false,
-      size: 'xl'
+      size: 'xl',
     });
 
-    
-
-    console.log('datos',this.datosIntersecciones);
+    console.log('datos', this.datosIntersecciones);
   }
 
-  cargaMBE(){
+  cargaMBE() {
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
-      res=>{
+      (res) => {
         this.idEstatus = res.revisionOne.idEstatus.idCatalogo;
-        console.log('estatus',this.idEstatus);
+        console.log('estatus', this.idEstatus);
         this.mostrarNombre = res.revisionOne.nombre;
         this.idMBE = res.revisionOne.idMbe;
         this.mostrarObjetivos = res.revisionOne.objetivo;
@@ -147,37 +159,54 @@ export class VistaPreviaComponent implements OnInit {
         this.generales.disable();
         this.obtenerImagen(res.revisionOne.ruta);
       },
-      err=>{}
-    )
+      (err) => {}
+    );
   }
 
   idRol() {
     return this.usuario?.rolUsuario?.idRol;
   }
 
-  validarBotonesAcciones(estatus:string):boolean{
+  validarBotonesAcciones(estatus: string): boolean {
     switch (estatus) {
       case 'rechazado':
-        if (((this.idEstatus === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1 ) )
-          || (this.idEstatus === this.validado && (this.idRol() === 4 || this.idRol() === 1 ) ))) {
-            return true;
-          } else {
-            return false;
-          }
+        if (
+          (this.idEstatus === this.pendiente &&
+            (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1)) ||
+          (this.idEstatus === this.validado &&
+            (this.idRol() === 4 || this.idRol() === 1))
+        ) {
+          return true;
+        } else {
+          return false;
+        }
       case 'aprobado':
-        if (this.idEstatus === this.pendiente && (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1  ) ) {
+        if (
+          this.idEstatus === this.pendiente &&
+          (this.idRol() === 4 || this.idRol() === 3 || this.idRol() === 1)
+        ) {
           return true;
         } else {
           return false;
         }
       case 'publicado':
-        if ((this.idEstatus === this.validado) && (this.idRol() === 4 || this.idRol() === 1)  ) {
+        if (
+          this.idEstatus === this.validado &&
+          (this.idRol() === 4 || this.idRol() === 1)
+        ) {
           return true;
         } else {
           return false;
         }
       case 'validar':
-        if (((this.idEstatus === this.creado) || (this.idEstatus === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) && this.mostrarMensajeRevisiones) {
+        if (
+          (this.idEstatus === this.creado ||
+            (this.idEstatus === this.rechazado &&
+              (this.idRol() === 2 ||
+                this.idRol() === 4 ||
+                this.idRol() === 1))) &&
+          this.mostrarMensajeRevisiones
+        ) {
           return true;
         } else {
           return false;
@@ -189,296 +218,346 @@ export class VistaPreviaComponent implements OnInit {
 
   estatusVdalidado() {
     this.gmbservices.estatusValidacion().subscribe(
-      res => {
+      (res) => {
         console.log(res);
         this.validado = res.data;
       },
-      err => {
+      (err) => {
         console.log(err);
       }
     );
   }
 
-  cambiarEstatusMBE(idEstatus:number){
+  cambiarEstatusMBE(idEstatus: number) {
     let idRol = this.usuario.rolUsuario.idRol;
     let estatus;
     switch (idEstatus) {
       case this.publicado:
-        estatus = 'publicar'
+        estatus = 'publicar';
         break;
       case this.pendiente:
-        estatus = 'enviar a validar'
+        estatus = 'enviar a validar';
         break;
       case this.rechazado:
-        estatus = 'rechazar'
+        estatus = 'rechazar';
         break;
       case this.validado:
-        estatus = 'aprobar'
+        estatus = 'aprobar';
         break;
     }
 
     //Mandar una alerta para cambiar el estatus
-    swal.fire({
-      icon: 'warning',
-      text: '¿Está seguro de que quiere '+estatus+' este MBE? ',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
-      reverseButtons: true,
-      customClass: {
-        htmlContainer: 'titulo-swal',
-        confirmButton: 'guardar-swal',
-        cancelButton: 'cancelar-swal'
-      }
-    }).then((result: { isConfirmed: any; }) => {
-      if (result.isConfirmed) {
-        this.gmbservices.estatusGmbe(this.idMBE, idEstatus,idRol).subscribe(
-          res => {
-            switch (idEstatus) {
-              case this.publicado:
-                swal.fire("", "Se ha publicado el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
-                  if (result.isConfirmed) {
-                    window.location.reload();
-                  }
-                });
-                break;
-              case this.pendiente:
-                swal.fire("", "Se ha enviado a validar el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
-                  if (result.isConfirmed) {
-                    window.location.reload();
-                  }
-                });
-                break;
-              case this.rechazado:
-                swal.fire("", "Se ha rechazado el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
-                  if (result.isConfirmed) {
-                    window.location.reload();
-                  }
-                });
-                break;
-              case this.validado:
-                swal.fire("", "Se ha aprobado el MBE con éxito", "success").then((result: { isConfirmed: any; }) => {
-                  if (result.isConfirmed) {
-                    window.location.reload();
-                  }
-                });
-                break;
-            }
-          }, err => {
-
-          });
-      }
-    });
+    swal
+      .fire({
+        icon: 'warning',
+        text: '¿Está seguro de que quiere ' + estatus + ' este MBE? ',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          htmlContainer: 'titulo-swal',
+          confirmButton: 'guardar-swal',
+          cancelButton: 'cancelar-swal',
+        },
+      })
+      .then((result: { isConfirmed: any }) => {
+        if (result.isConfirmed) {
+          this.gmbservices.estatusGmbe(this.idMBE, idEstatus, idRol).subscribe(
+            (res) => {
+              switch (idEstatus) {
+                case this.publicado:
+                  swal
+                    .fire('', 'Se ha publicado el MBE con éxito', 'success')
+                    .then((result: { isConfirmed: any }) => {
+                      if (result.isConfirmed) {
+                        this.router.navigate(['/gmbe']);
+                      }
+                    });
+                  break;
+                case this.pendiente:
+                  swal
+                    .fire(
+                      '',
+                      'Se ha enviado a validar el MBE con éxito',
+                      'success'
+                    )
+                    .then((result: { isConfirmed: any }) => {
+                      if (result.isConfirmed) {
+                        this.router.navigate(['/gmbe']);
+                      }
+                    });
+                  break;
+                case this.rechazado:
+                  swal
+                    .fire('', 'Se ha rechazado el MBE con éxito', 'success')
+                    .then((result: { isConfirmed: any }) => {
+                      if (result.isConfirmed) {
+                        this.router.navigate(['/gmbe']);
+                      }
+                    });
+                  break;
+                case this.validado:
+                  swal
+                    .fire('', 'Se ha aprobado el MBE con éxito', 'success')
+                    .then((result: { isConfirmed: any }) => {
+                      if (result.isConfirmed) {
+                        this.router.navigate(['/gmbe']);
+                      }
+                    });
+                  break;
+              }
+            },
+            (err) => {}
+          );
+        }
+      });
   }
 
-  cerraModal(){
-    localStorage.removeItem("zArrayGuardado2");
-    localStorage.removeItem("zArrayGuardado3");
+  cerraModal() {
+    localStorage.removeItem('zArrayGuardado2');
+    localStorage.removeItem('zArrayGuardado3');
     this.modalService.dismissAll();
   }
 
-  obtenerVersionMax(){
-    this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe(
-      res=>{
-        this.versionMaxima = res?.data === null ? 1 : res?.data;
-        this.existeOtraRevision = this.versionMaxima > 1 ? true : false;
-        if (res?.data !== null) {
-          this.mostrarMensajeRevisiones = true;
-        } else {
-          this.mostrarMensajeRevisiones = false;
-        }
-        this.cargarDatosMbe();
-        console.log('version maxima',this.versionMaxima);
-        console.log('existe otra revision',this.existeOtraRevision);
-        console.log(res);
+  obtenerVersionMax() {
+    this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe((res) => {
+      this.versionMaxima = res?.data === null ? 1 : res?.data;
+      this.existeOtraRevision = this.versionMaxima > 1 ? true : false;
+      if (res?.data !== null) {
+        this.mostrarMensajeRevisiones = true;
+      } else {
+        this.mostrarMensajeRevisiones = false;
       }
-    )
+      this.cargarDatosMbe();
+      console.log('version maxima', this.versionMaxima);
+      console.log('existe otra revision', this.existeOtraRevision);
+      console.log(res);
+    });
   }
 
-  obtenerImagen(ruta:string){
+  obtenerImagen(ruta: string) {
     this.gmbservices.getImage(ruta).subscribe(
-      res=>{
+      (res) => {
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(res);
-    },
-      err=>{}
+      },
+      (err) => {}
     );
   }
 
-  anchoDinamico(){
+  anchoDinamico() {
     if (window.innerWidth >= 920) {
-      if(this.estructuraFinalColumnasTitulos.length  <= 2 && this.estructuraFinalColumnasTitulos.some(c => c.hijos.length <= 3)){
+      if (
+        this.estructuraFinalColumnasTitulos.length <= 2 &&
+        this.estructuraFinalColumnasTitulos.some((c) => c.hijos.length <= 3)
+      ) {
         return '60';
-      }else{
-        if(this.estructuraFinalColumnasTitulos.length  <= 4){
+      } else {
+        if (this.estructuraFinalColumnasTitulos.length <= 4) {
           return '90';
-        }else{
+        } else {
           return '100';
         }
-      } 
-    }else{
+      }
+    } else {
       return '100';
     }
   }
 
-cargarEstructuraMbe(){
-  localStorage.removeItem("zArrayGuardado");
-  this.gmbservices.obtenerEstructuraGMBE(this.id).subscribe(
-    res=>{
-      console.log(res);
-      //obtiene categorias filas
-      this.estructuraFinalColumnasTitulos = this.filtrarCategoriasUnicas(this.obtenerTipo(res,1));
+  cargarEstructuraMbe() {
+    localStorage.removeItem('zArrayGuardado');
+    this.gmbservices.obtenerEstructuraGMBE(this.id).subscribe(
+      (res) => {
+        console.log(res);
+        //obtiene categorias filas
+        this.estructuraFinalColumnasTitulos = this.filtrarCategoriasUnicas(
+          this.obtenerTipo(res, 1)
+        );
 
-      this.estructuraFinalColumnasTitulos.forEach(c=>{
-        c.hijos = [];
-        res.forEach((e: { idSubCategoria: { idRelacion: any; }; idTipo: { idCatalogo: number; }; })=>{
-          if(e?.idSubCategoria?.idRelacion ===c.idCatalogo && e?.idTipo?.idCatalogo == 1){
-           c.hijos.push(e);
-          }
+        this.estructuraFinalColumnasTitulos.forEach((c) => {
+          c.hijos = [];
+          res.forEach(
+            (e: {
+              idSubCategoria: { idRelacion: any };
+              idTipo: { idCatalogo: number };
+            }) => {
+              if (
+                e?.idSubCategoria?.idRelacion === c.idCatalogo &&
+                e?.idTipo?.idCatalogo == 1
+              ) {
+                c.hijos.push(e);
+              }
+            }
+          );
         });
-      });    
-      
-      //Creación de hijos auxiliares para mantener espacios
-      for(let a=0;a<this.estructuraFinalColumnasTitulos.length;a++){
-        if(this.estructuraFinalColumnasTitulos[a].hijos.length<1){
-          this.estructuraFinalColumnasTitulos[a].hijos.push({auxiliar:true})
-        }
-      }
 
-      console.log('valores columnas',this.estructuraFinalColumnasTitulos);
-
-      //obtiene categorias de columnas
-      this.estructuraFinalFilasTitulos = this.filtrarCategoriasUnicas(this.obtenerTipo(res,2));
-
-      this.estructuraFinalFilasTitulos.forEach(c=>{
-        c.hijos = [];
-        res.forEach((e: { idSubCategoria: { idRelacion: any; }; idTipo: { idCatalogo: number; }; })=>{
-          if(e?.idSubCategoria?.idRelacion ===c.idCatalogo && e?.idTipo?.idCatalogo == 2){
-           c.hijos.push(e);
-          }
-        });
-      });  
-
-      console.log('filas Procesadas Titulos', this.estructuraFinalFilasTitulos);
-
-      //Creación de hijos auxiliares para mantener espacios
-
-      for(let a=0;a<this.estructuraFinalFilasTitulos.length;a++){
-        if(this.estructuraFinalFilasTitulos[a].hijos.length<1){
-          this.estructuraFinalFilasTitulos[a].hijos.push(
-            {
-              auxiliar:true,
-              countSubCats:1,
-              idCategoria:{
-                idCatalogo:this.estructuraFinalFilasTitulos[a].idCatalogo,
-                catalogo:this.estructuraFinalFilasTitulos[a].catalogo
-              },
-              idEstructura:this.estructuraFinalFilasTitulos[a].idEstructura
+        //Creación de hijos auxiliares para mantener espacios
+        for (let a = 0; a < this.estructuraFinalColumnasTitulos.length; a++) {
+          if (this.estructuraFinalColumnasTitulos[a].hijos.length < 1) {
+            this.estructuraFinalColumnasTitulos[a].hijos.push({
+              auxiliar: true,
             });
+          }
+        }
+
+        console.log('valores columnas', this.estructuraFinalColumnasTitulos);
+
+        //obtiene categorias de columnas
+        this.estructuraFinalFilasTitulos = this.filtrarCategoriasUnicas(
+          this.obtenerTipo(res, 2)
+        );
+
+        this.estructuraFinalFilasTitulos.forEach((c) => {
+          c.hijos = [];
+          res.forEach(
+            (e: {
+              idSubCategoria: { idRelacion: any };
+              idTipo: { idCatalogo: number };
+            }) => {
+              if (
+                e?.idSubCategoria?.idRelacion === c.idCatalogo &&
+                e?.idTipo?.idCatalogo == 2
+              ) {
+                c.hijos.push(e);
+              }
+            }
+          );
+        });
+
+        console.log(
+          'filas Procesadas Titulos',
+          this.estructuraFinalFilasTitulos
+        );
+
+        //Creación de hijos auxiliares para mantener espacios
+
+        for (let a = 0; a < this.estructuraFinalFilasTitulos.length; a++) {
+          if (this.estructuraFinalFilasTitulos[a].hijos.length < 1) {
+            this.estructuraFinalFilasTitulos[a].hijos.push({
+              auxiliar: true,
+              countSubCats: 1,
+              idCategoria: {
+                idCatalogo: this.estructuraFinalFilasTitulos[a].idCatalogo,
+                catalogo: this.estructuraFinalFilasTitulos[a].catalogo,
+              },
+              idEstructura: this.estructuraFinalFilasTitulos[a].idEstructura,
+            });
+          }
+        }
+
+        for (let a = 0; a < this.estructuraFinalFilasTitulos.length; a++) {
+          this.estructuraFinalFilasSubitulos =
+            this.estructuraFinalFilasSubitulos.concat(
+              this.estructuraFinalFilasTitulos[a].hijos
+            );
+        }
+        //console.log('Columnas',this.estructuraFinalColumnasTitulos)
+        //console.log('subtitulos',this.estructuraFinalFilasSubitulos);
+        // console.log('hijos filas',this.estructuraFinalFilasTitulos)
+      },
+      (err) => {}
+    );
+  }
+
+  cargarDatosMbe() {
+    this.gmbservices.obtenerDatosGMBE(this.id, this.versionMaxima).subscribe(
+      (res) => {
+        this.datosIntersecciones = res;
+        console.log('datos', this.datosIntersecciones);
+      },
+      (err) => {}
+    );
+  }
+
+  obtenerTipo(arreglo: any, tipo: number) {
+    let salida = [];
+    salida = arreglo.filter((e: any) => e.idTipo?.idCatalogo === tipo);
+    return salida;
+  }
+
+  filtrarCategoriasUnicas(arreglo: any) {
+    const categoriasMap = new Map<number, any>();
+    arreglo.forEach(
+      (obj: { idCategoria: any; idEstructura: any; countSubCats: any }) => {
+        const categoria = obj.idCategoria;
+        categoria.idEstructura = obj.idEstructura;
+        if (categoriasMap.has(categoria.idCatalogo)) {
+          categoriasMap.get(categoria.idCatalogo)!.countSubCats! =
+            obj.countSubCats;
+        } else {
+          categoria.countSubCats = obj.countSubCats;
+          categoriasMap.set(categoria.idCatalogo, categoria);
         }
       }
-      
-      for(let a=0;a<this.estructuraFinalFilasTitulos.length;a++){
-        this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.estructuraFinalFilasTitulos[a].hijos);
-      }
-      //console.log('Columnas',this.estructuraFinalColumnasTitulos)
-      //console.log('subtitulos',this.estructuraFinalFilasSubitulos);
-     // console.log('hijos filas',this.estructuraFinalFilasTitulos)
-    },
-    err=>{}
-  )
-}
+    );
 
-cargarDatosMbe(){
-  this.gmbservices.obtenerDatosGMBE(this.id,this.versionMaxima).subscribe(
-    res=>{
-      this.datosIntersecciones = res;
-      console.log('datos',this.datosIntersecciones)
-    },
-    err=>{}
-  );
-}
+    return Array.from(categoriasMap.values());
+  }
 
-obtenerTipo(arreglo:any,tipo:number){
-  let salida = [];
-  salida = arreglo.filter((e: any )=>e.idTipo?.idCatalogo ===tipo);
-  return salida;
-}
+  regresaValorSinSubcategoria(padre: any, hijo: any) {
+    return hijo !== undefined ? hijo : padre?.idEstructura;
+  }
 
-filtrarCategoriasUnicas(arreglo: any){
-  const categoriasMap = new Map<number, any>();
-  arreglo.forEach((obj: { idCategoria: any; idEstructura: any; countSubCats: any; }) => {
-    const categoria = obj.idCategoria;
-    categoria.idEstructura = obj.idEstructura;
-    if (categoriasMap.has(categoria.idCatalogo)) {
-      categoriasMap.get(categoria.idCatalogo)!.countSubCats! = obj.countSubCats;
-    } else {
-      categoria.countSubCats = obj.countSubCats;
-      categoriasMap.set(categoria.idCatalogo, categoria);
-    }
-  });
+  datosInterseccion(columna: number, fila: number) {
+    let respuesta = this.datosIntersecciones.find(
+      (obj) => obj.idFila === columna && obj.idColumna === fila
+    );
+    return respuesta?.arrConteoDisenioEval.length < 1
+      ? respuesta?.arrConteoTipoEval
+      : respuesta?.arrConteoDisenioEval;
+  }
 
-  return Array.from(categoriasMap.values());
-}
+  datosInterseccion2(columna: number, fila: number) {
+    let respuesta = this.revisionDos.find(
+      (obj: any) => obj.idFila === columna && obj.idColumna === fila
+    );
 
+    return respuesta?.arrConteoDisenioEval.length < 1
+      ? respuesta?.arrConteoTipoEval
+      : respuesta?.arrConteoDisenioEval;
+  }
 
-regresaValorSinSubcategoria(padre:any,hijo:any){
- return hijo !== undefined ? hijo : padre?.idEstructura;
-
-}
-
-datosInterseccion(columna:number,fila:number){
-
-  let respuesta =  this.datosIntersecciones.find(
-    obj => obj.idFila === columna && obj.idColumna === fila
-  );
-  return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
-}
-
-datosInterseccion2(columna:number,fila:number){
-
-  let respuesta =  this.revisionDos.find(
-    (obj:any) => obj.idFila === columna && obj.idColumna === fila
-  );
- 
-  return respuesta?.arrConteoDisenioEval.length< 1 ? respuesta?.arrConteoTipoEval : respuesta?.arrConteoDisenioEval
-}
-
-descargar(){
-  swal.fire({
-    title: 'Descargando',
-    timerProgressBar: true,
-    didOpen: () => {
-      swal.showLoading();
-    }
-  });
-  this.gmbservices.descargarReporteDatos(this.id,this.versionMaxima).subscribe(
-    (res: HttpResponse<ArrayBuffer>) => {
-      if(res.body!.byteLength>0){
-        const file = new Blob([res!.body!], { type: 'application/xlsx' });
-        const fileURL = URL.createObjectURL(file);
-        var link = document.createElement('a');
-        link.href = fileURL;
-        swal.close();
-        swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
-        link.download = 'DatosMBE_' + this.generales.get('nombre')!.value.replace(/\s+/g, '') + '.xlsx';
-        link.click();
-      }else{
-        swal.fire({
-          icon: 'error',
-          title: '<center> Error </center>',
-          text: 'Sin información',
-        })
-      }
-    },
-    err=>{
-      swal.fire({
-        icon: 'error',
-        title: '<center> Error </center>',
-        text: 'Sin información',
-      })
-    })
-}
-
+  descargar() {
+    swal.fire({
+      title: 'Descargando',
+      timerProgressBar: true,
+      didOpen: () => {
+        swal.showLoading();
+      },
+    });
+    this.gmbservices
+      .descargarReporteDatos(this.id, this.versionMaxima)
+      .subscribe(
+        (res: HttpResponse<ArrayBuffer>) => {
+          if (res.body!.byteLength > 0) {
+            const file = new Blob([res!.body!], { type: 'application/xlsx' });
+            const fileURL = URL.createObjectURL(file);
+            var link = document.createElement('a');
+            link.href = fileURL;
+            swal.close();
+            swal.fire('', '¡Descarga con éxito!', 'success').then(() => {});
+            link.download =
+              'DatosMBE_' +
+              this.generales.get('nombre')!.value.replace(/\s+/g, '') +
+              '.xlsx';
+            link.click();
+          } else {
+            swal.fire({
+              icon: 'error',
+              title: '<center> Error </center>',
+              text: 'Sin información',
+            });
+          }
+        },
+        (err) => {
+          swal.fire({
+            icon: 'error',
+            title: '<center> Error </center>',
+            text: 'Sin información',
+          });
+        }
+      );
+  }
 }

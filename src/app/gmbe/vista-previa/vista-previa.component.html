@@ -111,11 +111,11 @@
       Aprobar
     </button>
     <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(this.pendiente)" class="btn btn-primary mx-2 border-0 aprobar">
-      <!-- <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon> -->
+      <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Enviar a validar
     </button>
     <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(this.publicado)" class="btn btn-primary mx-2 border-0 aprobar">
-      <!-- <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon> -->
+      <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Publicar
     </button>
   </div>

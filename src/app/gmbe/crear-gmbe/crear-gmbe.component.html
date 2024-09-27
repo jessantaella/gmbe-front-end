@@ -216,16 +216,16 @@
             </div>
           </div>
           <div class="row my-1">
-            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">* Descripción:</label>
+            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Descripción:</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion">
             </div>
           </div>
           <div class="row my-1" *ngIf="this.tipoSeleccionado" >
-            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">* Página de Interés:</label>
+            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Página de Interés:</label>
             <div class="col-sm-8">
               <input type="url" id="website" name="website" class="form-control" id="nombre" placeholder="Página de Interés" formControlName="url">
-                <span *ngIf="!categoriaForm.get('url')?.value" class="text-danger">Ingresa una URL</span>
+                <!--span *ngIf="!categoriaForm.get('url')?.value" class="text-danger">Ingresa una URL</!--span-->
             </div>
           </div>
         </div>
@@ -251,7 +251,7 @@
     <div class="modal-body">
       <form [formGroup]="subcategoriaForm">
         <div class="mb-3 row">
-          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Categoría:</label>
+          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
           <div class="col-sm-6">
             <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria">
               <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}
@@ -261,24 +261,24 @@
         </div>
 
         <div class="mb-3 row">
-          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre:</label>
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre subcategoría:</label>
           <div class="col-sm-6">
             <input type="text" class="form-control" id="nombre" placeholder="Sub-categoría" formControlName="nombre">
           </div>
         </div>
 
         <div class="mb-3 row">
-          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Descripción:</label>
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Descripción:</label>
           <div class="col-sm-6">
             <input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion">
           </div>
         </div>
 
         <div class="mb-3 row" *ngIf="this.tipoSeleccionado">
-          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Página de Interés:</label>
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Página de Interés:</label>
           <div class="col-sm-6">
             <input type="url" id="website" name="website" class="form-control" id="nombre" placeholder="Página de Interés" formControlName="url">
-            <span class="text-danger">Ingresa una URL</span>
+            <!--span class="text-danger">Ingresa una URL</!--span-->
           </div>
         </div>
       </form>
@@ -303,7 +303,7 @@
     <div class="modal-body">
       <form [formGroup]="editarSubcategoriaForm">
         <div class="mb-3 row">
-          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Categoría:</label>
+          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
           <div class="col-sm-6">
             <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria" (change)="obtenerSubCategoriasEditado($event)">
               <option value="" disabled >Seleccione una opción</option>
@@ -314,9 +314,9 @@
         </div>
 
         <div class="mb-3 row">
-          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Subcategoría:</label>
+          <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre subcategoría:</label>
           <div class="col-sm-6">
-            <select class="form-select" aria-label="Seleccione una opción" formControlName="subCategoria">
+            <select class="form-select" aria-label="Seleccione una opción" formControlName="subCategoria" (change)="changeSubcategoria($event)">
               <option value="" disabled >Seleccione una opción</option>
               <option [value]="categoria.idCatalogo" *ngFor="let categoria of subCategoriasEditado">{{categoria.catalogo}}
               </option>
@@ -325,17 +325,17 @@
         </div>
 
         <div class="mb-3 row">
-          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Descripción:</label>
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Descripción:</label>
           <div class="col-sm-6">
             <input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion">
           </div>
         </div>
 
         <div class="mb-3 row" *ngIf="this.tipoSeleccionado">
-          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">* Página de Interés:</label>
+          <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Página de Interés:</label>
           <div class="col-sm-6">
             <input type="url" id="website" name="website" class="form-control" id="nombre" placeholder="Página de Interés" formControlName="url">
-            <span class="text-danger">Ingresa una URL</span>
+            <!--span class="text-danger">Ingresa una URL</!--span-->
           </div>
         </div>
       </form>
@@ -361,7 +361,7 @@
       <form [formGroup]="editarCategoriaForm">
         <div class="mb-3 row align-items-center">
           <div class="row my-1">
-            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Categoría:</label>
+            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Nombre categoría:</label>
             <div class="col-sm-8">
               <select class="form-select" formControlName="categoria" 
               (change)="this.escucharSelectEditado($event)" >
@@ -373,16 +373,16 @@
           </div>
 
           <div class="row my-1">
-            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">* Descripción:</label>
+            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Descripción:</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion">
             </div>
           </div>
           <div class="row my-1" *ngIf="this.tipoSeleccionado" >
-            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">* Página de Interés:</label>
+            <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Página de Interés:</label>
             <div class="col-sm-8">
               <input type="url" id="website" name="website" class="form-control" id="nombre" placeholder="Página de Interés" formControlName="url">
-                <span *ngIf="!categoriaForm.get('url')?.value" class="text-danger">Ingresa una URL</span>
+                <!--span *ngIf="!categoriaForm.get('url')?.value" class="text-danger">Ingresa una URL</!--span-->
             </div>
           </div>
         </div>
