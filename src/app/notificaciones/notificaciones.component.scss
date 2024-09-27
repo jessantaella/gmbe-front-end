@@ -20,3 +20,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.btn-close{
+  background-color: transparent;
+  border: none;
+  opacity: 1; /* Asegura que sea completamente visible */
+}

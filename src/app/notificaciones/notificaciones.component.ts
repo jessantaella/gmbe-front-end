@@ -114,25 +114,24 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
     });
   };
 
-  clickEliminarNotificacion() {
-    //Cuando se elimina una notificación informativa, se debe de eliminar de la lista de notificaciones y hasta que se elimine la última notificación de la lista, se debe de mostrar la siguientes 5 notificación.
-    const notificacionEliminada = this.cincoPrimerasNotificaciones.shift();
-
-    //Se elimina la notificación de la lista de notificaciones que tenga la propiedad informativa en true.
-
+  clickEliminarNotificacion(index: number) {
+    const notificacionEliminada = this.cincoPrimerasNotificaciones.splice(index, 1)[0];
+  
+    // Verifica si la notificación eliminada es informativa y elimina del backend si es necesario
     if (notificacionEliminada.informativa) {
       this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
         console.log('Notificación Eliminada:', res);
-      }) 
+      });
     }
-    
-
-    //Hasta que se elimine la última notificación de la lista, se debe de mostrar las siguientes 5 notificaciones.
+  
+    // Si ya no quedan notificaciones visibles, muestra las siguientes 5
     if (this.cincoPrimerasNotificaciones.length === 0) {
       this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
     }
+    
     console.log('Notificación Eliminada:', notificacionEliminada);
   }
+  
 
   clickEliminarUnadeCinco() {
     //Elimina una notificación de las 5 mostradas.

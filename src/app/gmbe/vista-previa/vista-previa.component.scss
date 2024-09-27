@@ -207,8 +207,9 @@
   --bs-btn-active-color: white;
 }
 
-
-/* Clase para eliminar el borde de enfoque */
-.form-control:focus {
-  border-color: transparent; /* Elimina el borde visible */
+.regresar{
+  background-color: #21409A !important;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
 }

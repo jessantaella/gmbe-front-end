@@ -106,48 +106,49 @@
 
         <tbody>
           <!-- Iterar sobre las categorías de las filas (idTipo: 2) -->
-          <ng-container *ngFor="let fila of estructuraFinalFilasTitulos; let i = index">
+          <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos; let i = index">
             <tr>
               <!-- Encabezado de categoría general en las filas -->
-              <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="fila.hijos.length"
-                *ngIf="estructuraFinalFilasTitulos[i - 1]?.categoria !== fila?.categoria">
-                {{ fila?.categoria }} (Subcategorías: {{ fila.hijos.length }})
+              <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="estructuraFinalFilasSubitulos.length"
+              [attr.colspan]="estructuraFinalFilasSubitulos.length === 1 && estructuraFinalFilasSubitulos.length <1 ? 2 : 1"
+                *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
+                {{ fila?.categoria }} (Subcategorías: {{ estructuraFinalFilasSubitulos.length }})
               </th>
 
               <!-- Primera subcategoría de la fila -->
-              <th class="subtitulos-tabla align-middle text-center">
-                {{ fila.hijos[0]?.subCategoria }}
+              <th class="subtitulos-tabla align-middle text-center" scope="row" >
+                {{ fila?.subCategoria }}
               </th>
 
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos">
-                <th class="contenido-tabla">
+                <th class="contenido-tabla" *ngFor="let hijo of columna.hijos; let j = index">
                   <!-- Aquí van los datos de intersección, si hay -->
-                  <app-burbujas *ngIf="datosInterseccion(fila.hijos[0]?.idEstructura, columna?.idEstructura)"
-                    [bubbleData]="datosInterseccion(fila.hijos[0]?.idEstructura, columna?.idEstructura)">
-                  </app-burbujas>
+                  <app-burbujas= [chartTitle]="'GraficaPrincipal'"
+                  [bubbleData]="datosInterseccion(fila?.idEstructura,regresaValorSinSubcategoria(columna,hijo?.idEstructura))"
+                  *ngIf="datosInterseccion(fila?.idEstructura,regresaValorSinSubcategoria(columna,hijo?.idEstructura))"></app-burbujas>
                 </th>
               </ng-container>
             </tr>
-
-            <!-- Subcategorías adicionales dentro de la misma categoría -->
+<!-- 
+            Subcategorías adicionales dentro de la misma categoría
             <ng-container *ngFor="let subcategoria of fila.hijos.slice(1)">
               <tr>
                 <th class="subtitulos-tabla align-middle text-center">
                   {{ subcategoria?.subCategoria }}
                 </th>
 
-                <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
+                Iterar columnas para la subcategoría actual (idTipo: 1)
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos">
                   <th class="contenido-tabla">
-                    <!-- Aquí van los datos de intersección, si hay -->
+                    Aquí van los datos de intersección, si hay
                     <app-burbujas *ngIf="datosInterseccion(subcategoria?.idEstructura, columna?.idEstructura)"
                       [bubbleData]="datosInterseccion(subcategoria?.idEstructura, columna?.idEstructura)">
                     </app-burbujas>
                   </th>
                 </ng-container>
               </tr>
-            </ng-container>
+            </ng-container> -->
           </ng-container>
         </tbody>
       </table>

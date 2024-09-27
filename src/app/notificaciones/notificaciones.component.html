@@ -1,9 +1,9 @@
-<div class="toast-container position-fixed bottom-0 end-0 p-3" [ngStyle]="{'margin-bottom': (150 * i) + 'px'}" *ngFor="let alerta of cincoPrimerasNotificaciones; let i = index">
+<div class="toast-container position-fixed top-0 end-0 p-3" [ngStyle]="{'margin-top': (i * 150) + 'px'}" *ngFor="let alerta of cincoPrimerasNotificaciones; let i = index">
     <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <i class="bi bi-exclamation-triangle mx-2"></i>
             <strong class="me-auto ">¡Aviso!</strong>
-            <button type="button" class="btn-close" (click)="this.clickEliminarNotificacion()" ></button>
+            <button type="button" class="btn-close btn-close-white" (click)="clickEliminarNotificacion(i)"></button>
         </div>
         <div class="toast-body" >
             <div style="height: 60px; overflow: auto; resize: none;" >

@@ -62,6 +62,7 @@ export class VistaPreviaComponent implements OnInit {
   idEstatus: any;
   idMBE: any;
   mostrarMensajeRevisiones: boolean = false;
+  faRotate = faRotateLeft;
 
   constructor(
     private route: ActivatedRoute,
