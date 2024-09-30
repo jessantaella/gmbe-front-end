@@ -30,6 +30,7 @@ export class BurbujasComponent implements AfterViewInit {
   valorZguardado: any;
   isBrowser = false;
   zArrayGuardado: any;
+  valorMaximoZ: number = 0;
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
@@ -63,9 +64,24 @@ export class BurbujasComponent implements AfterViewInit {
     const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
 
     // Encuentra el valor máximo de z (tamaño de burbuja)
-    const maxZ = Math.max(...seriesData.map(d => d.z), 0);
+    console.log("valorMaximoZ");
+    console.log(this.valorMaximoZ);
+    const maxZ = this.valorMaximoZ;
     // Ajuste del tamaño máximo de burbuja
-    const bubbleSizeFactor = 20; // Ajusta este factor según lo necesites
+    let bubbleSizeFactor = 30; // Ajusta este factor según lo necesites
+
+    if (this.valorMaximoZ > 3) {
+      console.log("maxZ");
+      bubbleSizeFactor = 16;
+    } else {
+      if (this.valorMaximoZ > 3)  {
+        console.log("minZ");
+        bubbleSizeFactor = 120;
+      } else {
+        console.log("else");
+        bubbleSizeFactor = 10;
+      }
+    }
 
     return {
       grid: {
@@ -137,18 +153,32 @@ export class BurbujasComponent implements AfterViewInit {
       legend: {
         show: true,
       },
-      tooltip: {
-        enabled: true,
-        y: {
-          formatter: function (val: number, opts: any) {
-            return opts.w.config.series[0].data[opts.dataPointIndex].nombreGpo;
-          },
+      markers: {
+        size: seriesData.map(d => d.z / this.valorMaximoZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
+        colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
+        hover: {
+          sizeOffset: 20 // Aumenta el área de interacción al pasar el mouse
         },
       },
-      markers: {
-        size: seriesData.map(d => d.z / maxZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
-        colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
+      plotOptions: {
+        bubble: {
+          minBubbleRadius: 5, // Ajusta el radio mínimo
+          maxBubbleRadius: 50, // Ajusta el radio máximo para una mayor área de interacción
+        }
       },
+      tooltip: {
+        enabled: true,
+        custom: function({ series, seriesIndex, dataPointIndex, w }: { series: any; seriesIndex: number; dataPointIndex: number; w: any }) {
+          const bubbleData = w.config.series[seriesIndex].data[dataPointIndex];
+          console.log("Bubble data");
+          console.log(bubbleData);
+          return `<div class="tooltip-content">
+                    <span><strong>Grupo: </strong>${bubbleData.nombreGpo}</span><br>
+                    <span><strong>Número de la evaluación:</strong></span><br>
+                    <span><strong>Valor: </strong>${bubbleData.z}</span>
+                  </div>`;
+        }
+      }
     };
   }
 
@@ -192,6 +222,8 @@ export class BurbujasComponent implements AfterViewInit {
     //Cuando termine de cargar la página, se obtiene el valor de zArrayGuardado y se buscara el valor máximo
     let maxZ = Math.max(...this.zArrayGuardado, 0);
     let minZ = Math.min(...this.zArrayGuardado, 1);
+
+    this.valorMaximoZ = maxZ;
 
     // Ajuste del tamaño máximo de burbuja
     let bubbleSizeFactor; // Ajusta este factor según lo necesites

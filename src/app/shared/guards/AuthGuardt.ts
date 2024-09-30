@@ -35,7 +35,11 @@ export class AuthGuard implements CanActivate {
     {
       ruta: 'panel',
       idRol: [1, 2, 3, 4],
-    }
+    },
+    {
+      ruta: 'evaluacion',
+      idRol: [1, 2, 3, 4],
+    },
   ]
 
   constructor(private storage: StorageService, private router: Router, private cifrado: CifradoService) { }

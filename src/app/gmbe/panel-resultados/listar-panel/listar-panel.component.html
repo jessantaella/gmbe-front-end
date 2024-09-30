@@ -196,7 +196,7 @@
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
                 <th class="contenido-tabla" *ngFor="let hijo of columna.hijos; let j = index">
                   <!-- Aquí van los datos de intersección, si hay -->
-                  <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
+                  <app-burbujas (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"  [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
                   [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
                   *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
                 </th>

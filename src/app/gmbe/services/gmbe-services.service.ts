@@ -271,5 +271,10 @@ export class GmbeServicesService {
       let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/filtros/filtro-panel-resultados-subcategoria';
       return this.http.post<any>(url,datosEnviados,{});
     }
+
+    datosEvaluacion(idMbe:number,idFila: number, idColumna:number, idEvaluacion: number):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/intersecciones-columna-fila?idMbe='+idMbe+'&fila='+idFila+'&columna='+idColumna+'&idEval='+idEvaluacion;
+      return this.http.get<any>(url);
+    }
      
 }

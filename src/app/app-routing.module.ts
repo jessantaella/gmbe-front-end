@@ -10,6 +10,7 @@ import { VistaPreviaComponent } from "./gmbe/vista-previa/vista-previa.component
 import { PanelResultadosComponent } from "./gmbe/panel-resultados/listar-panel/listar-panel.component";
 import { EditarGmbeComponent } from "./gmbe/editar-gmbe/editar-gmbe.component";
 import { AuthGuard } from "./shared/guards/AuthGuardt";
+import { EvaluacionComponent } from "./gmbe/evaluacion/evaluacion.component";
 const routes: Routes = [
   { path: "", redirectTo: "inicio", pathMatch: "full" },
   { path: "inicio", component: InicioComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: "editar-gmbe/:id", component: EditarGmbeComponent, canActivate: [AuthGuard]},
   { path: "vista-previa/:id", component: VistaPreviaComponent, canActivate: [AuthGuard]},
   { path: "grafica", component: BurbujasComponent, canActivate: [AuthGuard]},
+  { path: "evaluacion", component: EvaluacionComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

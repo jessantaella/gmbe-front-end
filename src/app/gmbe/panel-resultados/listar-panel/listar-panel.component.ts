@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GmbeServicesService } from '../../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -74,7 +74,7 @@ export class PanelResultadosComponent implements OnInit {
   informacionCategoriaModal: any = '';
   urlModal: any = '';
 
-  constructor(private route: ActivatedRoute, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
+  constructor(private route: ActivatedRoute, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.route.queryParams.subscribe(params => {
@@ -102,6 +102,25 @@ export class PanelResultadosComponent implements OnInit {
     //this.filtrosSubcategoriasColumnas();
     this.cargarChechbox();
     //this.escucharCambiosSelect();
+  }
+
+  tablaEvaluacion(fila: number, columna: number) {
+    console.log('entra');
+    console.log('fila:', fila);
+    console.log('columna:', columna);
+
+    let datos = this.datosIntersecciones.find(
+      obj => obj.idFila === fila && obj.idColumna === columna
+    );
+
+    let eva = datos?.conteoTipoEvaluacion === null ? datos?.conteoDisenioEval : datos?.conteoTipoEvaluacion;
+    let idGpo = eva?.split(':');
+    console.log('idGpo:', idGpo[0]);
+
+
+    console.log('datos:', datos);
+
+    this.router.navigate(['/evaluacion'], { queryParams: { idMbe: this.idmbe, idFila: fila, idColumna: columna, idEva: idGpo[0]} });
   }
 
   cerraModal() {

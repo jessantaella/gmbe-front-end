@@ -29,7 +29,9 @@ import { VistaPreviaComponent } from './gmbe/vista-previa/vista-previa.component
 import { EditarGmbeComponent } from './gmbe/editar-gmbe/editar-gmbe.component';
 import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 import { PanelResultadosComponent } from './gmbe/panel-resultados/listar-panel/listar-panel.component';
+
 import { FormsModule } from '@angular/forms'; 
+import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
 
 
 
@@ -51,7 +53,8 @@ import { FormsModule } from '@angular/forms';
     EditarGmbeComponent,
     BurbujasComponent,
     VistaPreviaComponent,
-    PanelResultadosComponent
+    PanelResultadosComponent,
+    EvaluacionComponent
   ],
   imports: [
     BrowserModule,
