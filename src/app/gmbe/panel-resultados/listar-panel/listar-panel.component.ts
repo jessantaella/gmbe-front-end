@@ -99,14 +99,13 @@ export class PanelResultadosComponent implements OnInit {
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
     this.datosAyuda();
-  }
-  ngOnInit(): void {
-    localStorage.removeItem('zArrayGuardado');
     this.filtrosCategoriasFilas();
     //this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
     //this.filtrosSubcategoriasColumnas();
-    this.cargarChechbox();
+  }
+  ngOnInit(): void {
+    localStorage.removeItem('zArrayGuardado');
     //this.escucharCambiosSelect();
     this.abrirAyuda();
   }
@@ -159,6 +158,7 @@ export class PanelResultadosComponent implements OnInit {
   }
 
   cargarChechbox() {
+    console.log('categoriasFilas:', this.categoriasFilas);
     this.categoriasFilas?.forEach(() => {
       console.log('entra');
       this.categoriaSeleccionadaFila.push(false);
@@ -276,6 +276,7 @@ export class PanelResultadosComponent implements OnInit {
         console.log('Categorias obtenidas:', res);
         this.categoriasFilas = res;
         this.cargarChechbox();
+        //this.cargarChechbox();
       },
       err => {
         console.error('Error al obtener categorías:', err);
@@ -286,7 +287,7 @@ export class PanelResultadosComponent implements OnInit {
   filtrosSubcategoriasFilas(idCategorias : any = null) {
     console.log('idCategoria:', idCategorias);
     let datosEnvio;
-    if (idCategorias.length === 0) {
+    if (idCategorias?.length === 0) {
       this.subcategoriasFilas = [];
     } else {
       datosEnvio = {
@@ -332,7 +333,7 @@ export class PanelResultadosComponent implements OnInit {
 
   filtrosSubcategoriasColumnas(idCategoria: any = null) {
     let datosEnvio;
-    if (idCategoria.length === 0) {
+    if (idCategoria?.length === 0) {
       this.subcategoriasColumnas = [];
     } else {
       datosEnvio = {
@@ -560,7 +561,7 @@ export class PanelResultadosComponent implements OnInit {
       this.subcategoriaSeleccionadaFilas,
       this.filtrosSubcategoriasFilas.bind(this),
       this.cargaEstructuraPanelResultados.bind(this),
-      this.cargarChechboxSubFila.bind(this)
+      //this.cargarChechboxSubFila.bind(this)
     );
     console.log('categoriaSeleccionada:', this.categoriaSeleccionadaFilas);
   }
@@ -582,7 +583,8 @@ export class PanelResultadosComponent implements OnInit {
       this.categoriaSeleccionadaColumnas,
       this.subcategoriaSeleccionadaColumnas,
       this.filtrosSubcategoriasColumnas.bind(this),
-      this.cargaEstructuraPanelResultados.bind(this)
+      this.cargaEstructuraPanelResultados.bind(this),
+      //this.cargaEstructuraPanelResultados.bind(this)
     );
     console.log('categoriaSeleccionada:', this.categoriaSeleccionadaColumnas);
   }
@@ -608,8 +610,7 @@ export class PanelResultadosComponent implements OnInit {
       idSubcategoriaFilas: any,
       idCategoriaColumnas: any,
       idSubcategoriaColumnas: any
-    ) => void,
-    reloadCheckboxFunction: (() => void) | null = null
+    ) => void
   ) {
     const index = mainArray.indexOf(idSeccion);
     if (index === -1) {
@@ -626,7 +627,6 @@ export class PanelResultadosComponent implements OnInit {
       this.categoriaSeleccionadaColumnas,
       this.subcategoriaSeleccionadaColumnas
     );
-    if (mainArray.length > 2 && reloadCheckboxFunction) reloadCheckboxFunction();
   }
 
   getTotalColumnas(): number {

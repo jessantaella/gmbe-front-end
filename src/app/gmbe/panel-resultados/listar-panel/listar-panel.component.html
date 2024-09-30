@@ -17,7 +17,7 @@
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let categoria of categoriasFilas let i = index">
                       <div class="form-check">
-                        <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
+                        <input  class="form-check-input" type="checkbox"
                           [checked]="categoriaSeleccionadaFila[i]"
                           (click)="onCategoriaChangeFilas(categoria?.idCategoria)" />
                         <label class="form-check-label colorLabel">{{categoria?.categoria}}</label>
@@ -40,7 +40,7 @@
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas; let i = index">
                       <div class="form-check">
-                        <input formControlName="subcategoriaFila" class="form-check-input" type="checkbox"
+                        <input class="form-check-input" type="checkbox"
                           [checked]="subcategoriaSeleccionadaFila[i]"
                           (click)="onSubCategoriaChangeFilas(subcategoria?.idSubcategoria)" />
                         <label class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
@@ -72,7 +72,7 @@
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let categoria of categoriasColumnas let i = index">
                       <div class="form-check">
-                        <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
+                        <input class="form-check-input" type="checkbox"
                           [checked]="categoriaSeleccionadaColumna[i]"
                           (click)="onCategoriaChangeColumnas(categoria?.idCategoria)" />
                         <label class="form-check-label colorLabel">{{categoria?.categoria}}</label>
@@ -95,7 +95,7 @@
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let subcategoria of subcategoriasColumnas; let i = index">
                       <div class="form-check">
-                        <input formControlName="subcategoriaFila" class="form-check-input" type="checkbox"
+                        <input  class="form-check-input" type="checkbox"
                           [checked]="subcategoriaSeleccionadaColumna[i]"
                           (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria)" />
                         <label class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
@@ -253,7 +253,7 @@
       </button>
   
     </div>
-    <div>
+    <div class="d-flex justify-content-center align-items-center">
       <button class="btn mx-2 border-0 descargar" (click)="this.descargar()" >
         Descargar datos
       </button>
