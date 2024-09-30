@@ -54,53 +54,47 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
 
   mostrarCincoPrimerasNotificaciones(notificaciones: any) {
     console.log('Notificaciones:', notificaciones);
-    if (this.cincoPrimerasNotificaciones.length <= notificaciones.length) {
-      console.log('Notificaciones:', notificaciones);
-      this.cincoPrimerasNotificaciones = this.notificacionesCache.length >= 5 ? this.notificacionesCache.slice(this.indice, this.indice + 5) : this.notificacionesCache.slice(this.indice, this.notificacionesCache.length);
-      console.log('Cinco Primeras Notificaciones:', this.cincoPrimerasNotificaciones);
-      console.log('Indice:', this.indice);
-      if (this.notificacionesCache.length >= 5 && (this.indice >= this.notificacionesCache.length)) {
-        this.cincoPrimerasNotificaciones = [];
-        this.indice = 0;
-        this.termino = true;
-        clearInterval(this.intervalo);
-
-        //Se reinicia el intervalo para mostrar las notificaciones informativas.
-        if (!this.banderaBucle) {
-          this.banderaBucle = true;
-          this.notificacionesCache = this.notificacionesInformativas;
-          //Se elimina los objetos de los ID de las notificaciones que se eliminaron al dar click del arreglo de notificacionesInformativas.
-          console.log('Notificaciones Informativas:', this.notificacionesInformativas);
-          this.eliminarNotificacionesNoInformativas(this.guardarNotificaciones);
-          this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
-        }
-        
-      } else {
-        if (this.indice >= this.notificacionesCache.length) {
-          console.log('Indice:', this.indice);
-          this.cincoPrimerasNotificaciones = [];
-          this.indice = 0;
-          this.termino = true;
-          clearInterval(this.intervalo);
-          //Se reinicia el intervalo para mostrar las notificaciones informativas.
-          if (!this.banderaBucle) {
-            this.banderaBucle = true;
-            this.notificacionesCache = this.notificacionesInformativas;
-            console.log('Notificaciones Informativas:', this.notificacionesInformativas);
-            this.eliminarNotificacionesNoInformativas(this.guardarNotificaciones);
-            this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
-          }
-        } else {
-          //Alamacena todas las notificaciones que no sean informativas.
-          this.indice += 5;
-        }
-      }
-
-      console.log('Notificaciones Informativas:', this.notificacionesInformativas);
-
-      console.log('Current Chunk:', this.cincoPrimerasNotificaciones);
+  
+    if (this.indice >= this.notificacionesCache.length && this.notificacionesCache.length > 0) {
+      console.log('No hay más notificaciones para mostrar.');
+      return;
     }
+  
+    this.cincoPrimerasNotificaciones = this.notificacionesCache.length >= 5 
+      ? this.notificacionesCache.slice(this.indice, this.indice + 5) 
+      : this.notificacionesCache.slice(this.indice, this.notificacionesCache.length);
+    
+    console.log('Cinco Primeras Notificaciones:', this.cincoPrimerasNotificaciones);
+    console.log('Indice:', this.indice);
+  
+    if (this.cincoPrimerasNotificaciones.length === 0 && this.notificacionesCache.length === 0) {
+      console.log('No hay más notificaciones para mostrar.');
+      return; 
+    }
+  
+    if (this.notificacionesCache.length >= 5 && (this.indice >= this.notificacionesCache.length)) {
+      this.cincoPrimerasNotificaciones = [];
+      this.indice = 0;
+      this.termino = true;
+      clearInterval(this.intervalo);
+  
+      // Verificar si no se está en bucle
+      if (!this.banderaBucle && this.notificacionesInformativas.length > 0) {
+        this.banderaBucle = true;
+        this.notificacionesCache = this.notificacionesInformativas;
+        console.log('Notificaciones Informativas:', this.notificacionesInformativas);
+        this.eliminarNotificacionesNoInformativas(this.guardarNotificaciones);
+        this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
+      }
+    } else {
+      this.indice += 5;
+    }
+  
+    console.log('Notificaciones Informativas:', this.notificacionesInformativas);
+    console.log('Current Chunk:', this.cincoPrimerasNotificaciones);
   }
+  
+  
 
   eliminarNotificacionesNoInformativas(notificaciones: any) {
     //Almacena unicamete los ID de las notificaciones que no sean informativas y se eliminan todos.

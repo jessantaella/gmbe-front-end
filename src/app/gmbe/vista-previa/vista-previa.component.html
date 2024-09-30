@@ -95,7 +95,7 @@
   </div>
   <div class="d-flex justify-content-center mt-5 mb-2">
     <button class="btn btn-primary mx-2 border-0 regresar" [routerLink]="['/gmbe']">
-      <fa-icon [icon]="faRotaLeft" class="btnOtrasAcciones"></fa-icon>
+      <fa-icon [icon]="faRotaLeft" class="btnOtrasAcciones "></fa-icon>
       Regresar
     </button>
     <button class="btn btn-primary mx-2 border-0 descargar" (click)="descargar()">
@@ -129,6 +129,7 @@
       </h4>
     </div>
     <div class="modal-body d-flex flex-column">
+      <h4 class="text-center my-2"><strong>Objetivos</strong></h4>
       <div class="justify-content-center w-50">
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
@@ -144,7 +145,9 @@
       </div>
     </div>
     <div class="modal-footer d-flex justify-content-center align-items-center">
-      <button class="btn boton-gris-modal regresar" (click)="this.cerraModal()" type="button"><fa-icon [icon]="faRotate"></fa-icon>Regresar</button>
+      <button class="btn btn-cancelar regresar" (click)="this.cerraModal()" type="button">
+        <fa-icon [icon]="faRotate" class="me-1"></fa-icon>Regresar
+      </button>
     </div>
   </div>
 </ng-template>
@@ -159,6 +162,7 @@
     </div>
     <div class="modal-body d-flex flex-column">
       <div class="justify-content-center">
+        <h4 class="text-center my-2"><strong>Gráfica</strong></h4>
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
           <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-75">
@@ -276,7 +280,9 @@
       </div>
     </div>
     <div class="modal-footer d-flex justify-content-center align-items-center">
-      <button class="btn boton-gris-modal regresar" (click)="this.cerraModal()" type="button"><fa-icon [icon]="faRotate"></fa-icon>Regresar</button>
+      <button class="btn btn-cancelar regresar" (click)="this.cerraModal()" type="button">
+        <fa-icon [icon]="faRotate" style="margin-right: 4px;"></fa-icon>Regresar
+      </button>
     </div>
   </div>
 </ng-template>
