@@ -40,7 +40,17 @@
   font-family: Arial, Helvetica, sans-serif !important;
 }
 
-ul{
+ul, li{
+  background-color: #2E3E97;
+  color: white;
+}
+
+.dropdown-item:hover{
+  background-color: #2E3E97;
+  color: white;
+}
+
+ul:hover{
   background-color: #2E3E97;
   color: white;
 }
