@@ -70,6 +70,10 @@ export class PanelResultadosComponent implements OnInit {
   colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
   colorSeleccionado = '';
 
+  tituloCategoriaModal: string = '';
+  informacionCategoriaModal: any = '';
+  urlModal: any = '';
+
   constructor(private route: ActivatedRoute, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
@@ -85,6 +89,7 @@ export class PanelResultadosComponent implements OnInit {
       categoriasColumna: [''],
       subcategoriasColumna: [''],
     });
+
     this.obtenerVersionMax();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
@@ -99,29 +104,33 @@ export class PanelResultadosComponent implements OnInit {
     //this.escucharCambiosSelect();
   }
 
+  cerraModal() {
+    this.modalService.dismissAll();
+  }
+
   cargarChechbox() {
-    this.categoriasFilas.forEach(() => {
+    this.categoriasFilas?.forEach(() => {
       console.log('entra');
       this.categoriaSeleccionadaFila.push(false);
     });
   }
 
   cargarChechboxSubFila() {
-    this.subcategoriasFilas.forEach(() => {
+    this.subcategoriasFilas?.forEach(() => {
       console.log('entra');
       this.subcategoriaSeleccionadaFila.push(false);
     });
   }
 
   cargarChechboxColumnas() {
-    this.categoriasColumnas.forEach(() => {
+    this.categoriasColumnas?.forEach(() => {
       console.log('entra');
       this.categoriaSeleccionadaColumna.push(false);
     });
   }
 
   cargarChechboxSubColumnas() {
-    this.subcategoriasColumnas.forEach(() => {
+    this.subcategoriasColumnas?.forEach(() => {
       console.log('entra');
       this.subcategoriaSeleccionadaColumna.push(false);
     });
@@ -149,8 +158,32 @@ export class PanelResultadosComponent implements OnInit {
     );
   }
 
-  abrirModal(content:any){
-    this.modalService.open(content, { size: 'lg' });
+  abrirModal(content:any, informacion: any, titulo: string) {
+    this.modalService.open(content,{
+      centered: true,
+      keyboard: false,
+      size: 'md'
+    });
+    console.log('informacion:', informacion);
+
+    switch (titulo) {
+      case 'categoria':
+        this.tituloCategoriaModal = informacion.categoria;
+        this.informacionCategoriaModal = informacion.descripcion;
+        this.urlModal = informacion.complemento;
+        break;
+      case 'subcategoria':
+        this.tituloCategoriaModal = informacion.subCategoria;
+        this.informacionCategoriaModal = informacion.descripcionSubcategoria;
+        this.urlModal = informacion.complementoSubcategoria;
+        break;
+      default:
+        break
+    }
+  }
+
+  masInformacion() {
+    window.open(this.urlModal, '_blank');
   }
 
   // escucharCambiosSelect() {
