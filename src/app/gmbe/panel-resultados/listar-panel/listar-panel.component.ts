@@ -11,6 +11,8 @@ import {
   faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
+declare var swal: any;
 
 @Component({
   selector: 'app-listar-panel',
@@ -58,12 +60,15 @@ export class PanelResultadosComponent implements OnInit {
   selectedCategoriaColumna: string = '';
   selectedSubcategoriaColumna: string = '';
 
+  abrirToastAyuda: boolean = false;
+
 
   categoriasFilas: any;
   subcategoriasFilas: any;
 
   categoriasColumnas: any;
   subcategoriasColumnas: any;
+  tiposDatosAyuda: any;
 
   conteoCategorias: any;
 
@@ -93,6 +98,7 @@ export class PanelResultadosComponent implements OnInit {
     this.obtenerVersionMax();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
+    this.datosAyuda();
   }
   ngOnInit(): void {
     localStorage.removeItem('zArrayGuardado');
@@ -102,6 +108,31 @@ export class PanelResultadosComponent implements OnInit {
     //this.filtrosSubcategoriasColumnas();
     this.cargarChechbox();
     //this.escucharCambiosSelect();
+    this.abrirAyuda();
+  }
+
+  datosAyuda(){
+    this.gmbservices.obtenerDatosAyuda(this.idmbe).subscribe(
+      res => {
+        console.log('datosAyuda:', res);
+        this.tiposDatosAyuda = res;
+      },
+      err => {
+        console.error('Error al obtener datos de ayuda:', err);
+      }
+    );
+  }
+
+  abrirAyuda(){
+    //Se abre el modal de ayuda solo por 10 segundos
+    this.abrirToastAyuda = true;
+    setTimeout(() => {
+      this.abrirToastAyuda = false;
+    }, 10000);
+  }
+
+  cerrarAyuda(){
+    this.abrirToastAyuda = false;
   }
 
   tablaEvaluacion(fila: number, columna: number) {
@@ -600,6 +631,42 @@ export class PanelResultadosComponent implements OnInit {
 
   getTotalColumnas(): number {
     return this.estructuraFinalColumnasTitulos.reduce((acc, col) => acc + col.hijos.length, 0);
+  }
+
+  descargar(){
+    swal.fire({
+      title: 'Descargando',
+      timerProgressBar: true,
+      didOpen: () => {
+        swal.showLoading();
+      }
+    });
+    this.gmbservices.descargarReporteDatos(this.idmbe,this.versionMaxima).subscribe(
+      (res: HttpResponse<ArrayBuffer>) => {
+        if(res.body!.byteLength>0){
+          const file = new Blob([res!.body!], { type: 'application/xlsx' });
+          const fileURL = URL.createObjectURL(file);
+          var link = document.createElement('a');
+          link.href = fileURL;
+          swal.close();
+          swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
+          link.download = 'DatosMBE_' + this.generales.get('nombre')!.value.replace(/\s+/g, '') + '.xlsx';
+          link.click();
+        }else{
+          swal.fire({
+            icon: 'error',
+            title: '<center> Error </center>',
+            text: 'Sin información',
+          })
+        }
+      },
+      err=>{
+        swal.fire({
+          icon: 'error',
+          title: '<center> Error </center>',
+          text: 'Sin información',
+        })
+      })
   }
 
 

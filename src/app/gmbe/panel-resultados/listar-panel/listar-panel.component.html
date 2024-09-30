@@ -29,7 +29,8 @@
             </div>
 
             <div class="dropdown w-100 mx-2">
-              <button [disabled]="!subcategoriasFilas?.length" class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button [disabled]="!subcategoriasFilas?.length"
+                class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
@@ -83,7 +84,8 @@
             </div>
 
             <div class="dropdown w-100 mx-2">
-              <button [disabled]="!subcategoriasColumnas?.length" class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button [disabled]="!subcategoriasColumnas?.length"
+                class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
@@ -111,7 +113,7 @@
     </div>
   </form>
   <div class="d-flex align-items-center">
-    <div class="table-responsive tabladatos" >
+    <div class="table-responsive tabladatos">
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <thead class="sticky-header">
@@ -122,18 +124,21 @@
             </th>
 
             <!-- Encabezados de columnas (basado en idTipo: 1) -->
-            <th scope="col" class="titulos-tabla align-middle" 
-            *ngFor="let columna of estructuraFinalColumnasTitulos ; let i = index"
-            [ngStyle]="{'width': (columna.length === 0 ? 150 : columna.length* 100) + 'px'}"
+            <th scope="col" class="titulos-tabla align-middle"
+              *ngFor="let columna of estructuraFinalColumnasTitulos ; let i = index"
+              [ngStyle]="{'width': (columna.length === 0 ? 150 : columna.length* 100) + 'px'}"
               [attr.colspan]="columna.hijos.length > 0 ? columna.hijos.length : 1"
               [attr.rowspan]="columna.hijos.length === 0 ? 2 : 1">
               {{ columna.categoria }} <br>
               (Subcategorías: {{ columna.hijos.length }})
-              <div class="text-end" *ngIf="columna.hijos[i].subCategoria === null && (columna.hijos[i].descripcionSubcategoria !== null && columna.hijos[i].complementoSubcategoria !== null)">
-                <button class="btn p-0" (click)="this.abrirModal(content,columna.hijos[i],'categoria' )" >
-                  <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+              <div class="text-end"
+                *ngIf="columna.hijos[i].subCategoria === null && (columna.hijos[i].descripcionSubcategoria !== null && columna.hijos[i].complementoSubcategoria !== null)">
+                <button class="btn p-0" (click)="this.abrirModal(content,columna.hijos[i],'categoria' )">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                    fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                   </svg>
                 </button>
               </div>
@@ -145,11 +150,14 @@
               <ng-container *ngFor="let hijo of subcolumna.hijos">
                 <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo">
                   {{ hijo.subCategoria }}
-                  <div class="text-end" *ngIf="hijo?.idSubCategoria !== 0 && (hijo?.descripcionSubcategoria !== null && hijo?.complementoSubcategoria != null)">
+                  <div class="text-end"
+                    *ngIf="hijo?.idSubCategoria !== 0 && (hijo?.descripcionSubcategoria !== null && hijo?.complementoSubcategoria != null)">
                     <button class="btn p-0" (click)="this.abrirModal(content,hijo,'subcategoria' )">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
+                        class="bi bi-plus-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                       </svg>
                     </button>
                   </div>
@@ -164,29 +172,36 @@
           <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos; let i = index">
             <tr>
               <!-- Encabezado de categoría general en las filas -->
-              <th class="align-middle text-center" id="padre" [ngStyle]="{'background-color' :  this.colorFila(fila.count), 'color':'white'}"
-              [attr.rowspan]="fila.count"
-              [attr.colspan]="fila.length === 1 && fila.length <1 ? 2 : 1"
+              <th class="align-middle text-center" id="padre"
+                [ngStyle]="{'background-color' :  this.colorFila(fila.count), 'color':'white'}"
+                [attr.rowspan]="fila.count" [attr.colspan]="fila.length === 1 && fila.length <1 ? 2 : 1"
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
                 {{ fila?.categoria }} (Subcategorías: {{ fila.count }})
-                <div class="text-end" *ngIf="fila?.idSubCategoria === 0 && (fila.descripcion !== null && fila.complemento )">
+                <div class="text-end"
+                  *ngIf="fila?.idSubCategoria === 0 && (fila.descripcion !== null && fila.complemento )">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria')">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                      fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                     </svg>
                   </button>
                 </div>
               </th>
 
               <!-- Primera subcategoría de la fila -->
-              <th class="subtitulos-tabla align-middle text-center" scope="row" [ngStyle]="{'background-color' : this.colorFila(fila.count), 'color':'white'}" >
+              <th class="subtitulos-tabla align-middle text-center" scope="row"
+                [ngStyle]="{'background-color' : this.colorFila(fila.count), 'color':'white'}">
                 {{ fila?.subCategoria }}
-                <div class="text-end" *ngIf="fila?.idSubCategoria !== 0 && (fila.descripcionSubcategoria !== null && fila.complementoSubcategoria )" >
+                <div class="text-end"
+                  *ngIf="fila?.idSubCategoria !== 0 && (fila.descripcionSubcategoria !== null && fila.complementoSubcategoria )">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria')">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                      fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                     </svg>
                   </button>
                 </div>
@@ -196,9 +211,10 @@
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
                 <th class="contenido-tabla" *ngFor="let hijo of columna.hijos; let j = index">
                   <!-- Aquí van los datos de intersección, si hay -->
-                  <app-burbujas (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"  [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
-                  [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
-                  *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
+                  <app-burbujas (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
+                    [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
+                    [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
+                    *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
                 </th>
               </ng-container>
             </tr>
@@ -209,7 +225,40 @@
     </div>
   </div>
 
-
+  <div class="d-flex justify-content-between w-100">
+    <div>
+      <div class="position-relative bottom-0 start-0 p-3" style="z-index: 11" *ngIf="this.abrirToastAyuda" >
+        <div id="liveToast" class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header d-flex justify-content-end">
+            <button (click)="this.cerrarAyuda()" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body textoToast">
+            <strong>Tipos de evaluación</strong>
+            <div class="d-flex">
+              <div *ngFor="let index of tiposDatosAyuda" class="d-flex" >
+                <i class="bi bi-circle-fill" [ngStyle]="{'color': index.complemento}" ></i>
+                <span class="mx-2">{{index.catalogo}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <button class="btn btn-p-0 color-icon" (click)="this.abrirAyuda()" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+          class="bi bi-info-circle-fill color-icon" viewBox="0 0 16 16">
+          <path class="color-icon"
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+        </svg>
+      </button>
+  
+    </div>
+    <div>
+      <button class="btn mx-2 border-0 descargar" (click)="this.descargar()" >
+        Descargar datos
+      </button>
+    </div>
+  </div>
 </div>
 
 <ng-template #content>
@@ -230,7 +279,8 @@
       </form>
     </div>
     <div class="modal-footer d-flex justify-content-center align-items-center">
-      <button class="btn btnMasInformacion" *ngIf="this.urlModal !== '' && this.urlModal !== null" (click)="this.masInformacion()" type="button">Más información</button>
+      <button class="btn btnMasInformacion" *ngIf="this.urlModal !== '' && this.urlModal !== null"
+        (click)="this.masInformacion()" type="button">Más información</button>
     </div>
   </div>
 </ng-template>

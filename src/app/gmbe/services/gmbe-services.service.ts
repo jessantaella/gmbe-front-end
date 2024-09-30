@@ -276,5 +276,10 @@ export class GmbeServicesService {
       let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/intersecciones-columna-fila?idMbe='+idMbe+'&fila='+idFila+'&columna='+idColumna+'&idEval='+idEvaluacion;
       return this.http.get<any>(url);
     }
+
+    obtenerDatosAyuda(idMbe:number):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/tipo-mbe-help?idMbe='+idMbe;
+      return this.http.get<any>(url);
+    }
      
 }
