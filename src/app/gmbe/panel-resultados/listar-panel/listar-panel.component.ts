@@ -28,6 +28,12 @@ export class PanelResultadosComponent implements OnInit {
   estructuraFinalFilasSubitulos: any[] = [];
   datosIntersecciones: any[] = [];
 
+  categoriaSeleccionadaColumnas: any[] = [];
+  subcategoriaSeleccionadaColumnas: any[] = [];
+  categoriaSeleccionadaFilas: any[] = [];
+  subcategoriaSeleccionadaFilas: any[] = [];
+
+
   mostrarNombre: string = '';
   mostrarObjetivos: string = '';
 
@@ -37,6 +43,11 @@ export class PanelResultadosComponent implements OnInit {
   faCheck = faCheck;
 
   idmbe: number = 0;
+
+  categoriaSeleccionadaFila: boolean [] = [];
+  subcategoriaSeleccionadaFila: boolean [] = [];
+  categoriaSeleccionadaColumna: boolean [] = [];
+  subcategoriaSeleccionadaColumna: boolean [] = [];
 
 
   //Nueva ODT
@@ -91,11 +102,41 @@ export class PanelResultadosComponent implements OnInit {
   ngOnInit(): void {
     localStorage.removeItem('zArrayGuardado');
     this.filtrosCategoriasFilas();
-    this.filtrosSubcategoriasFilas();
+    //this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
-    this.filtrosSubcategoriasColumnas();
-    this.escucharCambiosSelect();
+    //this.filtrosSubcategoriasColumnas();
+    this.cargarChechbox();
+    //this.escucharCambiosSelect();
   }
+
+  cargarChechbox() {
+    this.categoriasFilas.forEach(() => {
+      console.log('entra');
+      this.categoriaSeleccionadaFila.push(false);
+    });
+  }
+
+  cargarChechboxSubFila() {
+    this.subcategoriasFilas.forEach(() => {
+      console.log('entra');
+      this.subcategoriaSeleccionadaFila.push(false);
+    });
+  }
+
+  cargarChechboxColumnas() {
+    this.categoriasColumnas.forEach(() => {
+      console.log('entra');
+      this.categoriaSeleccionadaColumna.push(false);
+    });
+  }
+
+  cargarChechboxSubColumnas() {
+    this.subcategoriasColumnas.forEach(() => {
+      console.log('entra');
+      this.subcategoriaSeleccionadaColumna.push(false);
+    });
+  }
+
   obtenerVersionMax() {
     this.gmbservices.obtenerVersionMaximaMBE(this.idmbe).subscribe(
       res => {
@@ -118,47 +159,46 @@ export class PanelResultadosComponent implements OnInit {
     );
   }
 
-  escucharCambiosSelect() {
-    this.generales.get('categoriaFila')?.valueChanges.subscribe((value) => {
-      this.selectedCategoriaFila = value;
-      console.log('selectedCategoria:', this.selectedCategoriaFila);
-      this.filtrosCategoriasFilas(parseInt(value), 0);
-      this.filtrosSubcategoriasFilas(parseInt(value), 0);
-    })
-    this.generales.get('subcategoriaFila')?.valueChanges.subscribe((value) => {
-      console.log('selectedSubcategoria:', value);
-      this.selectedSubcategoriaFila = value;
-      this.filtrosSubcategoriasFilas(parseInt(this.selectedCategoriaFila), parseInt(value));
-    })
+  // escucharCambiosSelect() {
+  //   this.generales.get('categoriaFila')?.valueChanges.subscribe((value) => {
+  //     this.selectedCategoriaFila = value;
+  //     console.log('selectedCategoria:', this.selectedCategoriaFila);
+  //     this.filtrosCategoriasFilas(parseInt(value), 0);
+  //     this.filtrosSubcategoriasFilas(parseInt(value), 0);
+  //   })
+  //   this.generales.get('subcategoriaFila')?.valueChanges.subscribe((value) => {
+  //     console.log('selectedSubcategoria:', value);
+  //     this.selectedSubcategoriaFila = value;
+  //     this.filtrosSubcategoriasFilas(parseInt(this.selectedCategoriaFila), parseInt(value));
+  //   })
 
 
-    this.generales.get('categoriasColumna')?.valueChanges.subscribe((value) => {
-      console.log('selectedCategoria:', value);
-      this.filtrosCategoriasColumnas(parseInt(value), 0);
-      this.filtrosSubcategoriasColumnas(parseInt(value), 0);
-    });
+  //   this.generales.get('categoriasColumna')?.valueChanges.subscribe((value) => {
+  //     console.log('selectedCategoria:', value);
+  //     this.filtrosCategoriasColumnas(parseInt(value), 0);
+  //     this.filtrosSubcategoriasColumnas(parseInt(value), 0);
+  //   });
 
-    this.generales.get('subcategoriasColumna')?.valueChanges.subscribe((value) => {
-      console.log('selectedSubcategoria:', value);
-      this.filtrosSubcategoriasColumnas(parseInt(this.generales.get('categoriasColumna')?.value), parseInt(value));
-    });
+  //   this.generales.get('subcategoriasColumna')?.valueChanges.subscribe((value) => {
+  //     console.log('selectedSubcategoria:', value);
+  //     this.filtrosSubcategoriasColumnas(parseInt(this.generales.get('categoriasColumna')?.value), parseInt(value));
+  //   });
 
-  }
+  // }
 
-  filtrosCategoriasFilas(idCategoria: number = 0, idSubcategoria: number = 0) {
-    console.log('idCategoria:', idCategoria);
-    console.log('idSubcategoria:', idSubcategoria);
+  filtrosCategoriasFilas() {
     let datosEnvio = {
       idMbe: this.idmbe,
       idTipo: 2,
-      categorias: idCategoria !== 0 ? [idCategoria] : null,
-      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
+      categorias:  null,
+      subcategorias:  null,
     };
 
     this.gmbservices.filtroCategoria(datosEnvio).subscribe(
       res => {
         console.log('Categorias obtenidas:', res);
         this.categoriasFilas = res;
+        this.cargarChechbox();
       },
       err => {
         console.error('Error al obtener categorías:', err);
@@ -166,41 +206,46 @@ export class PanelResultadosComponent implements OnInit {
     );
   }
 
-  filtrosSubcategoriasFilas(idCategoria: number = 0, idSubcategoria: number = 0) {
-    console.log('idCategoria:', idCategoria);
-    console.log('idSubcategoria:', idSubcategoria);
-    let datosEnvio = {
-      idMbe: this.idmbe,
-      idTipo: 2,
-      categorias: idCategoria !== 0 ? [idCategoria] : null,
-      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
-    };
+  filtrosSubcategoriasFilas(idCategorias : any = null) {
+    console.log('idCategoria:', idCategorias);
+    let datosEnvio;
+    if (idCategorias.length === 0) {
+      this.subcategoriasFilas = [];
+    } else {
+      datosEnvio = {
+        idMbe: this.idmbe,
+        idTipo: 2,
+        categorias:idCategorias,
+        subcategorias: null,
+      }; 
 
-    this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
-      res => {
-        console.log('Subcategorias obtenidas:', res);
-        this.subcategoriasFilas = res;
-      },
-      err => {
-        console.error('Error al obtener subcategorías:', err);
-      }
-    );
+      this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
+        res => {
+          console.log('Subcategorias obtenidas:', res);
+          this.subcategoriasFilas = res;
+          this.cargarChechboxSubFila()
+        },
+        err => {
+          console.error('Error al obtener subcategorías:', err);
+        }
+      );
+    }
+
   }
 
-  filtrosCategoriasColumnas(idCategoria: number = 0, idSubcategoria: number = 0) {
-    console.log('idCategoria:', idCategoria);
-    console.log('idSubcategoria:', idSubcategoria);
+  filtrosCategoriasColumnas() {
     let datosEnvio = {
       idMbe: this.idmbe,
       idTipo: 1,
-      categorias: idCategoria !== 0 ? [idCategoria] : null,
-      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
+      categorias: null,
+      subcategorias: null,
     };
 
     this.gmbservices.filtroCategoria(datosEnvio).subscribe(
       res => {
         console.log('Categorias obtenidas:', res);
         this.categoriasColumnas = res;
+        this.cargarChechboxColumnas();
       },
       err => {
         console.error('Error al obtener categorías:', err);
@@ -208,25 +253,28 @@ export class PanelResultadosComponent implements OnInit {
     );
   }
 
-  filtrosSubcategoriasColumnas(idCategoria: number = 0, idSubcategoria: number = 0) {
-    console.log('idCategoria:', idCategoria);
-    console.log('idSubcategoria:', idSubcategoria);
-    let datosEnvio = {
-      idMbe: this.idmbe,
-      idTipo: 1,
-      categorias: idCategoria !== 0 ? [idCategoria] : null,
-      subcategorias: idSubcategoria !== 0 ? [idSubcategoria] : null,
-    };
+  filtrosSubcategoriasColumnas(idCategoria: any = null) {
+    let datosEnvio;
+    if (idCategoria.length === 0) {
+      this.subcategoriasColumnas = [];
+    } else {
+      datosEnvio = {
+        idMbe: this.idmbe,
+        idTipo: 1,
+        categorias: idCategoria,
+        subcategorias: null,
+      };
 
-    this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
-      res => {
-        console.log('Subcategorias obtenidas:', res);
-        this.subcategoriasColumnas = res;
-      },
-      err => {
-        console.error('Error al obtener subcategorías:', err);
-      }
-    );
+      this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
+        res => {
+          console.log('Subcategorias obtenidas:', res);
+          this.subcategoriasColumnas = res;
+          this.cargarChechboxSubColumnas();
+        },
+        err => {
+          console.error('Error al obtener subcategorías:', err);
+        }
+    )};
   }
 
   anchoDinamico() {
@@ -246,13 +294,22 @@ export class PanelResultadosComponent implements OnInit {
   }
 
 
-  cargaEstructuraPanelResultados() {
+  cargaEstructuraPanelResultados(idCateoriaFilas:any = null, idSubcategoriaFilas:any = null, idCategoriaColumnas:any = null, idSubcategoriaColumnas:any = null) {
+    console.log('idCateoriaFilas:', idCateoriaFilas);
+    console.log('idSubcategoriaFilas:', idSubcategoriaFilas);
+    console.log('idCategoriaColumnas:', idCategoriaColumnas);
+    console.log('idSubcategoriaColumnas:', idSubcategoriaColumnas);
+    //limpia los datos de la estructura
+    this.estructuraFinalColumnasTitulos = [];
+    this.estructuraFinalFilasTitulos = [];
+    this.estructuraFinalFilasSubitulos = [];
+
     const datosEnvio = {
       idMbe: this.idmbe,
-      idCategoriasFilas: null,
-      idSubcategoriasFilas: null,
-      idCategoriasColumnas: null,
-      idSubcategoriasColumnas: null
+      idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
+      idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
+      idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
+      idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
     };
 
     this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
@@ -400,16 +457,80 @@ export class PanelResultadosComponent implements OnInit {
 
 
 
-  onCategoriaChangeFilas(event: any, idSeccion: number) {
-    const categoriaId = event.target.value;
-    this.subcategoriasFilas = this.subcategoriasPorCategoria[categoriaId] || [];
-    this.selectedSubcategoriaFila = '';
+  onCategoriaChangeFilas(idSeccion: number) {
+    this.toggleSelection(
+      idSeccion,
+      this.categoriaSeleccionadaFilas,
+      this.subcategoriaSeleccionadaFilas,
+      this.filtrosSubcategoriasFilas.bind(this),
+      this.cargaEstructuraPanelResultados.bind(this),
+      this.cargarChechboxSubFila.bind(this)
+    );
+    console.log('categoriaSeleccionada:', this.categoriaSeleccionadaFilas);
   }
 
-  onCategoriaChangeColumnas(event: any) {
-    const categoriaId = event.target.value;
-    this.subcategoriasFilas = this.subcategoriasPorCategoria[categoriaId] || [];
-    this.selectedSubcategoriaFila = '';
+  onSubCategoriaChangeFilas(idSeccion: number) {
+    this.toggleSelection(
+      idSeccion,
+      this.subcategoriaSeleccionadaFilas,
+      null,
+      null,
+      this.cargaEstructuraPanelResultados.bind(this)
+    );
+    console.log('subcategoriaSeleccionada:', this.subcategoriaSeleccionadaFilas);
+  }
+
+  onCategoriaChangeColumnas(idSeccion: number) {
+    this.toggleSelection(
+      idSeccion,
+      this.categoriaSeleccionadaColumnas,
+      this.subcategoriaSeleccionadaColumnas,
+      this.filtrosSubcategoriasColumnas.bind(this),
+      this.cargaEstructuraPanelResultados.bind(this)
+    );
+    console.log('categoriaSeleccionada:', this.categoriaSeleccionadaColumnas);
+  }
+
+  onSubCategoriaChangeColumnas(idSeccion: number) {
+    this.toggleSelection( 
+      idSeccion,
+      this.subcategoriaSeleccionadaColumnas,
+      null,
+      null,
+      this.cargaEstructuraPanelResultados.bind(this)
+    );
+    console.log('subcategoriaSeleccionada:', this.subcategoriaSeleccionadaColumnas);
+  }
+
+  private toggleSelection(
+    idSeccion: number,
+    mainArray: any[],
+    subArray: any[] | null,
+    filterFunction: ((ids: any[]) => void) | null,
+    loadFunction: (
+      idCateoriaFilas: any,
+      idSubcategoriaFilas: any,
+      idCategoriaColumnas: any,
+      idSubcategoriaColumnas: any
+    ) => void,
+    reloadCheckboxFunction: (() => void) | null = null
+  ) {
+    const index = mainArray.indexOf(idSeccion);
+    if (index === -1) {
+      if (subArray) subArray.length = 0; // Clear subArray if it exists
+      mainArray.push(idSeccion);
+    } else {
+      if (subArray) subArray.length = 0; // Clear subArray if it exists
+      mainArray.splice(index, 1);
+    }
+    if (filterFunction) filterFunction(mainArray);
+    loadFunction(
+      this.categoriaSeleccionadaFilas,
+      this.subcategoriaSeleccionadaFilas,
+      this.categoriaSeleccionadaColumnas,
+      this.subcategoriaSeleccionadaColumnas
+    );
+    if (mainArray.length > 2 && reloadCheckboxFunction) reloadCheckboxFunction();
   }
 
   getTotalColumnas(): number {

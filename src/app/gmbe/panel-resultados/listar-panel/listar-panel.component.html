@@ -18,7 +18,8 @@
                     <div class="mx-2" *ngFor="let categoria of categoriasFilas let i = index">
                       <div class="form-check">
                         <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
-                          (click)="onCategoriaChangeFilas($event,categoria?.idCategoria)" />
+                          [checked]="categoriaSeleccionadaFila[i]"
+                          (click)="onCategoriaChangeFilas(categoria?.idCategoria)" />
                         <label class="form-check-label">{{categoria?.categoria}}</label>
                       </div>
                     </div>
@@ -36,10 +37,11 @@
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
                 <li class="text-justify">
                   <div class="dropdown-item textoFiltro">
-                    <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas">
-                      <div class="form-check" *ngIf="subcategoria?.subCategoria != null" >
-                        <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
-                          (click)="onCategoriaChangeFilas($event,subcategoria?.subcategoria?.idSubcategoria)" />
+                    <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas; let i = index">
+                      <div class="form-check">
+                        <input formControlName="subcategoriaFila" class="form-check-input" type="checkbox"
+                          [checked]="subcategoriaSeleccionadaFila[i]"
+                          (click)="onSubCategoriaChangeFilas(subcategoria?.idSubcategoria)" />
                         <label class="form-check-label">{{subcategoria?.subCategoria}}</label>
                       </div>
                     </div>
@@ -47,6 +49,8 @@
                 </li>
               </ul>
             </div>
+
+
           </div>
         </div>
       </div>
@@ -55,19 +59,52 @@
         <div class="mb-3">
           <label class="form-label">Búsqueda por resultados:</label>
           <div class="d-flex">
-            <select class="form-select me-2" formControlName="categoriasColumna"
-              (change)="onCategoriaChangeColumnas($event)">
-              <option value="" disabled selected>Categoría</option>
-              <option *ngFor="let categoria of categoriasColumnas" [value]="categoria.idCategoria">{{
-                categoria.categoria }}</option>
-            </select>
 
-            <select class="form-select" formControlName="subcategoriasColumna"
-              [disabled]="!subcategoriasColumnas?.length">
-              <option value="" disabled selected>Subcategoría</option>
-              <option *ngFor="let subcategoria of subcategoriasColumnas" [value]="subcategoria?.idSubCategoria">{{
-                subcategoria?.subCategoria }}</option>
-            </select>
+            <div class="dropdown w-100">
+              <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+                id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-text">Categoria</span>
+                <em class="bi bi-filter"></em>
+              </button>
+              <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
+                <li class="text-justify">
+                  <div class="dropdown-item textoFiltro">
+                    <div class="mx-2" *ngFor="let categoria of categoriasColumnas let i = index">
+                      <div class="form-check">
+                        <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
+                          [checked]="categoriaSeleccionadaColumna[i]"
+                          (click)="onCategoriaChangeColumnas(categoria?.idCategoria)" />
+                        <label class="form-check-label">{{categoria?.categoria}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="dropdown w-100 mx-2">
+              <button [disabled]="!subcategoriasColumnas?.length" class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+                id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-text">Subcategoría</span>
+                <em class="bi bi-filter"></em>
+              </button>
+              <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
+                <li class="text-justify">
+                  <div class="dropdown-item textoFiltro">
+                    <div class="mx-2" *ngFor="let subcategoria of subcategoriasColumnas; let i = index">
+                      <div class="form-check">
+                        <input formControlName="subcategoriaFila" class="form-check-input" type="checkbox"
+                          [checked]="subcategoriaSeleccionadaColumna[i]"
+                          (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria)" />
+                        <label class="form-check-label">{{subcategoria?.subCategoria}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+
           </div>
         </div>
       </div>
