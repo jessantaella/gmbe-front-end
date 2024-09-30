@@ -20,7 +20,7 @@
                         <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
                           [checked]="categoriaSeleccionadaFila[i]"
                           (click)="onCategoriaChangeFilas(categoria?.idCategoria)" />
-                        <label class="form-check-label">{{categoria?.categoria}}</label>
+                        <label class="form-check-label colorLabel">{{categoria?.categoria}}</label>
                       </div>
                     </div>
                   </div>
@@ -42,7 +42,7 @@
                         <input formControlName="subcategoriaFila" class="form-check-input" type="checkbox"
                           [checked]="subcategoriaSeleccionadaFila[i]"
                           (click)="onSubCategoriaChangeFilas(subcategoria?.idSubcategoria)" />
-                        <label class="form-check-label">{{subcategoria?.subCategoria}}</label>
+                        <label class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
                       </div>
                     </div>
                   </div>
@@ -74,7 +74,7 @@
                         <input formControlName="categoriaFila" class="form-check-input" type="checkbox"
                           [checked]="categoriaSeleccionadaColumna[i]"
                           (click)="onCategoriaChangeColumnas(categoria?.idCategoria)" />
-                        <label class="form-check-label">{{categoria?.categoria}}</label>
+                        <label class="form-check-label colorLabel">{{categoria?.categoria}}</label>
                       </div>
                     </div>
                   </div>
@@ -96,7 +96,7 @@
                         <input formControlName="subcategoriaFila" class="form-check-input" type="checkbox"
                           [checked]="subcategoriaSeleccionadaColumna[i]"
                           (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria)" />
-                        <label class="form-check-label">{{subcategoria?.subCategoria}}</label>
+                        <label class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
                       </div>
                     </div>
                   </div>
@@ -123,12 +123,20 @@
 
             <!-- Encabezados de columnas (basado en idTipo: 1) -->
             <th scope="col" class="titulos-tabla align-middle" 
-            *ngFor="let columna of estructuraFinalColumnasTitulos"
+            *ngFor="let columna of estructuraFinalColumnasTitulos ; let i = index"
             [ngStyle]="{'width': (columna.length === 0 ? 150 : columna.length* 100) + 'px'}"
               [attr.colspan]="columna.hijos.length > 0 ? columna.hijos.length : 1"
               [attr.rowspan]="columna.hijos.length === 0 ? 2 : 1">
               {{ columna.categoria }} <br>
               (Subcategorías: {{ columna.hijos.length }})
+              <div class="text-end" *ngIf="columna.hijos[i].subCategoria === null && (columna.hijos[i].descripcionSubcategoria !== null && columna.hijos[i].complementoSubcategoria)">
+                <button class="btn p-0" (click)="this.abrirModal(content)" >
+                  <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                  </svg>
+                </button>
+              </div>
             </th>
           </tr>
           <tr>
@@ -137,6 +145,14 @@
               <ng-container *ngFor="let hijo of subcolumna.hijos">
                 <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo">
                   {{ hijo.subCategoria }}
+                  <div class="text-end" *ngIf="hijo?.idSubCategoria !== 0 && (hijo?.descripcionSubcategoria !== null && hijo?.complementoSubcategoria)">
+                    <button class="btn p-0" (click)="this.abrirModal(content)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                      </svg>
+                    </button>
+                  </div>
                 </th>
               </ng-container>
             </ng-container>
@@ -148,16 +164,32 @@
           <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos; let i = index">
             <tr>
               <!-- Encabezado de categoría general en las filas -->
-              <th class="align-middle text-center titulos-tabla" id="padre" 
+              <th class="align-middle text-center" id="padre" [ngStyle]="{'background-color' :  this.colorFila(fila.count), 'color':'white'}"
               [attr.rowspan]="fila.count"
               [attr.colspan]="fila.length === 1 && fila.length <1 ? 2 : 1"
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
-                {{ fila?.categoria }} (Subcategorías: {{ estructuraFinalFilasSubitulos.length }})
+                {{ fila?.categoria }} (Subcategorías: {{ fila.count }})
+                <div class="text-end" *ngIf="fila?.idSubCategoria === 0 && (fila.descripcion !== null && fila.complemento )">
+                  <button class="btn p-0" (click)="this.abrirModal(content)">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                  </button>
+                </div>
               </th>
 
               <!-- Primera subcategoría de la fila -->
-              <th class="subtitulos-tabla align-middle text-center" scope="row" >
+              <th class="subtitulos-tabla align-middle text-center" scope="row" [ngStyle]="{'background-color' : this.colorFila(fila.count), 'color':'white'}" >
                 {{ fila?.subCategoria }}
+                <div class="text-end" *ngIf="fila?.idSubCategoria !== 0 && (fila.descripcionSubcategoria !== null && fila.complementoSubcategoria )" >
+                  <button class="btn p-0" (click)="this.abrirModal(content)">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                  </button>
+                </div>
               </th>
 
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
@@ -179,3 +211,18 @@
 
 
 </div>
+
+<ng-template #content>
+  <div class="modal-content">
+    <div class="modal-header d-flex justify-content-center modal-titulo">
+      <h4 class="modal-title">
+        <strong>Información</strong>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p class="text-center">
+        <strong>Seleccione una categoría y subcategoría para visualizar los resultados</strong>
+      </p>
+    </div>
+  </div>
+</ng-template>

@@ -10,6 +10,7 @@ import {
   faX,
   faCheck
 } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-listar-panel',
@@ -64,23 +65,12 @@ export class PanelResultadosComponent implements OnInit {
   categoriasColumnas: any;
   subcategoriasColumnas: any;
 
-  subcategoriasPorCategoria: { [key: string]: { id: string; nombre: string }[] } = {
-    '1': [
-      { id: '1-1', nombre: 'Subcategoría 1-1' },
-      { id: '1-2', nombre: 'Subcategoría 1-2' }
-    ],
-    '2': [
-      { id: '2-1', nombre: 'Subcategoría 2-1' },
-      { id: '2-2', nombre: 'Subcategoría 2-2' }
-    ],
-    '3': [
-      { id: '3-1', nombre: 'Subcategoría 3-1' },
-      { id: '3-2', nombre: 'Subcategoría 3-2' }
-    ]
-  };
   conteoCategorias: any;
 
-  constructor(private route: ActivatedRoute, private gmbservices: GmbeServicesService, private fb: FormBuilder, private sanitizer: DomSanitizer, private titulos: TitulosService) {
+  colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+  colorSeleccionado = '';
+
+  constructor(private route: ActivatedRoute, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.route.queryParams.subscribe(params => {
@@ -157,6 +147,10 @@ export class PanelResultadosComponent implements OnInit {
       },
       err => { }
     );
+  }
+
+  abrirModal(content:any){
+    this.modalService.open(content, { size: 'lg' });
   }
 
   // escucharCambiosSelect() {
@@ -364,6 +358,8 @@ export class PanelResultadosComponent implements OnInit {
         categoriasMap.set(categoria, {
           idEstructura: obj.idEstructura,
           categoria: obj.categoria,
+          descripcion: obj.descripcion,
+          complemento: obj.complemento,
           hijos: []
         });
       }
@@ -375,7 +371,10 @@ export class PanelResultadosComponent implements OnInit {
         idCategoria: obj.idCategoria,
         idEstructura: obj.idEstructura,
         idSubCategoria: obj.idSubCategoria,
-        subCategoria: obj.subCategoria
+        subCategoria: obj.subCategoria,
+        complementoSubcategoria: obj.complementoSubcategoria,
+        descripcionSubcategoria: obj.descripcionSubcategoria
+
       });
     });
 
@@ -455,6 +454,20 @@ export class PanelResultadosComponent implements OnInit {
     return objetoBurbuja;
   }
 
+  colorFila(idCategoria: number) {
+    if (!this.conteoCategorias) {
+      this.conteoCategorias = {};
+    }
+
+    if (!this.conteoCategorias[idCategoria]) {
+      this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+      this.colorSeleccionado = this.colores[Math.floor(Math.random() * this.colores.length)];
+      this.conteoCategorias[idCategoria] = this.colorSeleccionado;
+    }
+
+    return this.conteoCategorias[idCategoria];
+  }
+
 
 
   onCategoriaChangeFilas(idSeccion: number) {
@@ -517,10 +530,10 @@ export class PanelResultadosComponent implements OnInit {
   ) {
     const index = mainArray.indexOf(idSeccion);
     if (index === -1) {
-      if (subArray) subArray.length = 0; // Clear subArray if it exists
+      if (subArray) subArray.length = 0; 
       mainArray.push(idSeccion);
     } else {
-      if (subArray) subArray.length = 0; // Clear subArray if it exists
+      if (subArray) subArray.length = 0; 
       mainArray.splice(index, 1);
     }
     if (filterFunction) filterFunction(mainArray);
