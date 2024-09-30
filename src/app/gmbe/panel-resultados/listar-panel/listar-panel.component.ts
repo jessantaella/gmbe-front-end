@@ -67,6 +67,7 @@ export class PanelResultadosComponent implements OnInit {
       { id: '3-2', nombre: 'Subcategoría 3-2' }
     ]
   };
+  conteoCategorias: any;
 
   constructor(private route: ActivatedRoute, private gmbservices: GmbeServicesService, private fb: FormBuilder, private sanitizer: DomSanitizer, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -83,6 +84,7 @@ export class PanelResultadosComponent implements OnInit {
       categoriasColumna: [''],
       subcategoriasColumna: [''],
     });
+    this.obtenerVersionMax();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
   }
@@ -93,7 +95,6 @@ export class PanelResultadosComponent implements OnInit {
     this.filtrosCategoriasColumnas();
     this.filtrosSubcategoriasColumnas();
     this.escucharCambiosSelect();
-    this.obtenerVersionMax();
   }
   obtenerVersionMax() {
     this.gmbservices.obtenerVersionMaximaMBE(this.idmbe).subscribe(
@@ -265,6 +266,8 @@ export class PanelResultadosComponent implements OnInit {
           this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.estructuraFinalFilasTitulos[a].hijos);
         }
 
+        //Cuenta cuantas veces se repite el idSubCategoria y almacenar en una variable
+
         console.log('subFilas:', this.estructuraFinalFilasSubitulos);
         
 
@@ -279,9 +282,23 @@ export class PanelResultadosComponent implements OnInit {
 
   filtrarPorTipo(arreglo: any[], tipo: number) {
     const result = arreglo.filter(item => item.idTipo === tipo);
+    
+    let countSubCats =  result.reduce((contador, producto) => {
+      // Si la categoría ya existe en el contador, incrementamos su valor
+      if (contador[producto.idCategoria]) {
+        contador[producto.idCategoria]++;
+      } else {
+        // Si no existe, inicializamos el valor con 1
+        contador[producto.idCategoria] = 1;
+      }
+      return contador;
+    }, {});
+
+    console.log('countSubCats:', countSubCats);
 
     // Para agrupar por categoría
     const categoriasMap = new Map<number, any>();
+
 
     result.forEach((obj: any) => {
       const categoria = obj.idCategoria;
@@ -297,6 +314,7 @@ export class PanelResultadosComponent implements OnInit {
       // Agregar subcategorías
       categoriasMap.get(categoria).hijos.push({
         categoria: obj.categoria,
+        count: countSubCats[obj.idCategoria],
         idCategoria: obj.idCategoria,
         idEstructura: obj.idEstructura,
         idSubCategoria: obj.idSubCategoria,
@@ -348,7 +366,12 @@ export class PanelResultadosComponent implements OnInit {
     let respuesta = this.datosIntersecciones.find(
       obj => obj.idFila === columna && obj.idColumna === fila
     );
-    let conteoTipoEvaluacion = respuesta?.conteoTipoEvaluacion ?? '';
+
+
+    if (!respuesta) {
+      return [];
+    }
+    let conteoTipoEvaluacion = respuesta?.conteoDisenioEval !== null ? respuesta.conteoDisenioEval : respuesta.conteoTipoEvaluacion;
     let idGpo = 0;
     let nombreGpo = '';
     let colorBubble = '';
@@ -357,18 +380,19 @@ export class PanelResultadosComponent implements OnInit {
     if (conteoTipoEvaluacion) {
       const parts = conteoTipoEvaluacion.split(':');
       if (parts.length === 4) {
-      idGpo = parseInt(parts[0]);
-      nombreGpo = parts[1];
-      colorBubble = parts[2];
-      count = parseInt(parts[3]);
+        idGpo = parseInt(parts[0]);
+        nombreGpo = parts[1];
+        colorBubble = parts[2];
+        count = parseInt(parts[3]);
       }
     }
+
     let objetoBurbuja = [
       {
-      idGpo: Number(idGpo),
-      nombreGpo: nombreGpo,
-      colorBubble: colorBubble,
-      count: Number(count)
+        idGpo: idGpo,
+        nombreGpo: nombreGpo,
+        colorBubble: colorBubble,
+        count: count
       }
     ];
     return objetoBurbuja;
