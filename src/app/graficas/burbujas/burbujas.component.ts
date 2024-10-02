@@ -9,6 +9,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
+import { StorageService } from "src/app/services/storage-service.service";
 
 declare var ApexCharts: any;
 
@@ -32,7 +33,7 @@ export class BurbujasComponent implements AfterViewInit {
   zArrayGuardado: any;
   valorMaximoZ: number = 0;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: any, private storage:StorageService) {}
 
   ngAfterViewInit(): void {
     console.log("Bubble data");
@@ -196,23 +197,23 @@ export class BurbujasComponent implements AfterViewInit {
     switch (titulo) {
       case "GraficaPrincipal":
         //Almacena todos los valores de z que vayan llegando en un array en local storage sin perder los valores anteriores
-        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado") || "[]");
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado") || "[]");
         this.zArrayGuardado.push(zArray[0]);
-        localStorage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
+        this.storage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
         console.log("zArrayGuardado");
         console.log(this.zArrayGuardado);
         break;
       case "GraficaModal1":
-        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado2") || "[]");
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado2") || "[]");
         this.zArrayGuardado.push(zArray[0]);
-        localStorage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
+        this.storage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
         console.log("zArrayGuardado2");
         console.log(this.zArrayGuardado);
         break;
       case "GraficaModal2":
-        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado3") || "[]");
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado3") || "[]");
         this.zArrayGuardado.push(zArray[0]);
-        localStorage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
+        this.storage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
         console.log("zArrayGuardado3");
         console.log(this.zArrayGuardado);
         break;

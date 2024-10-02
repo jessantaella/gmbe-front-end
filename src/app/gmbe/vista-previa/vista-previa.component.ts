@@ -98,9 +98,9 @@ export class VistaPreviaComponent implements OnInit {
   }
   ngOnInit(): void {
     this.estatusVdalidado();
-    localStorage.removeItem('zArrayGuardado');
-    localStorage.removeItem('zArrayGuardado2');
-    localStorage.removeItem('zArrayGuardado3');
+    this.storage.removeItem('zArrayGuardado');
+    this.storage.removeItem('zArrayGuardado2');
+    this.storage.removeItem('zArrayGuardado3');
   }
 
   cargarRevisonDos() {
@@ -321,8 +321,8 @@ export class VistaPreviaComponent implements OnInit {
   }
 
   cerraModal() {
-    localStorage.removeItem('zArrayGuardado2');
-    localStorage.removeItem('zArrayGuardado3');
+    this.storage.removeItem('zArrayGuardado2');
+    this.storage.removeItem('zArrayGuardado3');
     this.modalService.dismissAll();
   }
 
@@ -371,7 +371,7 @@ export class VistaPreviaComponent implements OnInit {
   }
 
   cargarEstructuraMbe() {
-    localStorage.removeItem('zArrayGuardado');
+    this.storage.removeItem('zArrayGuardado');
     this.gmbservices.obtenerEstructuraGMBE(this.id).subscribe(
       (res) => {
         console.log(res);

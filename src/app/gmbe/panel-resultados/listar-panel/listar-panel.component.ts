@@ -12,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
+import { StorageService } from 'src/app/services/storage-service.service';
 declare var swal: any;
 
 @Component({
@@ -79,7 +80,7 @@ export class PanelResultadosComponent implements OnInit {
   informacionCategoriaModal: any = '';
   urlModal: any = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
+  constructor(private route: ActivatedRoute,private storage:StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.route.queryParams.subscribe(params => {
@@ -105,7 +106,7 @@ export class PanelResultadosComponent implements OnInit {
     //this.filtrosSubcategoriasColumnas();
   }
   ngOnInit(): void {
-    localStorage.removeItem('zArrayGuardado');
+    this.storage.removeItem('zArrayGuardado');
     //this.escucharCambiosSelect();
     this.abrirAyuda();
   }

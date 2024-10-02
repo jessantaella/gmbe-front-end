@@ -126,7 +126,7 @@ export class InicioComponent implements OnInit {
       this.info.obtenerMBEPublicado().subscribe(
         res => {
           console.log(res);
-          this.mbes = res.filter((mb:any) => mb.bloqueado === false);
+          this.mbes = res
         },
         err => { }
       )
