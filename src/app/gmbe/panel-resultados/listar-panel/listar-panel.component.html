@@ -9,7 +9,7 @@
             <div class="dropdown w-100">
               <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="selected-text">Categoria</span>
+                <span class="selected-text">Categoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
@@ -64,7 +64,7 @@
             <div class="dropdown w-100">
               <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="selected-text">Categoria</span>
+                <span class="selected-text">Categoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
@@ -254,6 +254,7 @@
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <button class="btn mx-2 border-0 descargar" (click)="this.descargar()" >
+        <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
         Descargar datos
       </button>
     </div>
