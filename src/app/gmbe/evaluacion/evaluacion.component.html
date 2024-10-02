@@ -1,38 +1,38 @@
 <div class="container-fluid texto">
-    <table class="table table-striped table-bordered my-3" >
-        <thead class="cabecera-tabla titulos"> 
-          <tr class="text-center ">
-            <th scope="col">Nombre de la Intervención</th>
-            <th scope="col">Título de la Evaluación</th>
-            <th scope="col">Año de la Evaluación</th>
-            <th scope="col">Tipo de Evaluación</th>
-            <th scope="col">Link de la Evaluación</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of this.datosEvaluacionTabla" >
-            <td class="text-center">{{item.nombreIntervencion}}</td>
-            <td class="text-center">{{item.tituloEvaluacion}}</td>
-            <td class="text-center">{{item.anioEval}}</td>
-            <td class="text-center">{{item.tipoEvaluacion}}</td>
-            <td class="text-center" style="word-break: break-all;">
-              <a class="w-25" (click)="this.abrirURL(item.link)" style="cursor: pointer; color: blue;" >{{item.link}}</a>
-            </td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="datosEvaluacionTabla?.length === 0">
-          <tr>
-            <td class="text-center align-middle" colspan="8">
-              Sin resultados
-            </td>
-            
-          </tr>
-        </tbody>
-      </table>
+  <table class="table table-striped table-bordered my-3">
+    <thead class="cabecera-tabla titulos"> 
+      <tr class="text-center">
+        <th scope="col">Nombre de la Intervención</th>
+        <th scope="col">Título de la Evaluación</th>
+        <th scope="col">Año de la Evaluación</th>
+        <th scope="col">Tipo de Evaluación</th>
+        <th scope="col">Link de la Evaluación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of this.datosEvaluacionTabla">
+        <td class="text-center">{{item.nombreIntervencion}}</td>
+        <td class="text-center">{{item.tituloEvaluacion}}</td>
+        <td class="text-center">{{item.anioEval}}</td>
+        <td class="text-center">{{item.tipoEvaluacion}}</td>
+        <td class="text-center" style="word-break: break-all;">
+          <a class="w-25" (click)="this.abrirURL(item.link)" style="cursor: pointer; color: blue;">{{item.link}}</a>
+        </td>
+      </tr>
+    </tbody>
+    <tbody *ngIf="datosEvaluacionTabla?.length === 0">
+      <tr>
+        <td class="text-center align-middle" colspan="8">
+          Sin resultados
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-      <div class="w-100 text-center" (click)="this.regresarPanelResultados()" >
-        <button class="btn btn-regresar regresar"><fa-icon [icon]="faRotate" style="margin-right: 4px;"></fa-icon>
-            Regresar
-        </button>
-      </div>
+  <div class="w-100 text-end mb-3" (click)="this.regresarPanelResultados()">
+    <button class="btn btn-regresar regresar">
+      <fa-icon [icon]="faRotate" style="margin-right: 4px;"></fa-icon>
+      Regresar
+    </button>
+  </div>
 </div>
