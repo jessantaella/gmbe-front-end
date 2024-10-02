@@ -89,6 +89,7 @@ export class CrearGmbeComponent implements OnInit {
   editarNombre: any;
   subCategoriasEditado: any;
   editarNombreSubcategoria: any;
+  mostrarErrorurl : boolean = false;
 
 
   constructor(
@@ -581,6 +582,10 @@ clearImage(): void {
   }
 
   obtenerSubCategoriasEditado(idPadre: any) {
+
+    this.editarSubcategoriaForm.get('descripcion')?.setValue('');
+
+
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
     this.padreActual = selectedValue;
@@ -713,7 +718,7 @@ clearImage(): void {
   }
 
   open(content: TemplateRef<any>,tipo :string) {
-
+    this.mostrarErrorurl = false;
     this.obtenerCategorias();
 
     if(tipo=== 'categoria'){
@@ -742,9 +747,35 @@ clearImage(): void {
     });
   }
 
+//1:CREAR 2:EDITAR 3:CREAR CAT 4:EDITAR CAT
+  validaUrl(form:number){
+    let url;
 
-  imprimeAlgo(){
-    console.log(this.subcategoriaForm.value)
+    switch(form){
+      case 1:
+        url = this.categoriaForm.get('url')?.value;
+        break;
+      case 2:
+        url = this.editarCategoriaForm.get('url')?.value;
+        break;
+      case 3:
+        url = this.subcategoriaForm.get('url')?.value;     
+        break;
+      case 4:
+          url = this.editarSubcategoriaForm.get('url')?.value;     
+        break;
+    }
+
+    if(this.tipoSeleccionado && url.length>0){
+      if(!this.urlPattern.test(url)){
+        this.mostrarErrorurl = true;
+      }else{
+        this.mostrarErrorurl = false;
+      }
+    }else{
+      this.mostrarErrorurl = false;
+    }
+    console.log(this.mostrarErrorurl);
   }
 
   crearCategoria() {
@@ -756,22 +787,6 @@ clearImage(): void {
     nombre = nombre.trim();
     descripcion = descripcion.trim();
     url = url.trim();
-
-    if(this.tipoSeleccionado && url.length>0){
-      if(!this.urlPattern.test(url)){
-        swal.fire({
-          title: '',
-          text: 'Ingresa una URL',
-          icon: 'error',
-          confirmButtonText: 'OK',
-          customClass: {
-            popup: 'custom-swal-popup',
-            confirmButton: 'custom-swal-confirm-button'
-          }
-        });
-        return;
-      }
-    }
 
     if (nombre !== '' || descripcion !== '' || url !== '') {
       console.log(nombre);
@@ -943,7 +958,8 @@ clearImage(): void {
             if (this.modalRef) {
               this.subCategorias = [];
               this.modalRef.close();
-              if(this.padreActual != 0){
+              console.log(this.SelectCatelogirasForm.get('selectCategoria')!.value !== '');
+              if(this.SelectCatelogirasForm.get('selectCategoria')!.value){
                 this.obtenerSubCategoriasConid(this.padreActual);
               }
             }
