@@ -670,5 +670,9 @@ export class PanelResultadosComponent implements OnInit {
       })
   }
 
+  closeModal() {
+    this.modalService.dismissAll();
+  }
+
 
 }

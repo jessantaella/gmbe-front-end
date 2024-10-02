@@ -130,7 +130,6 @@
               [attr.colspan]="columna.hijos.length > 0 ? columna.hijos.length : 1"
               [attr.rowspan]="columna.hijos.length === 0 ? 2 : 1">
               {{ columna.categoria }} <br>
-              (Subcategorías: {{ columna.hijos.length }})
               <div class="text-end"
                 *ngIf="columna?.hijos[i]?.subCategoria === null && (columna?.hijos[i]?.descripcionSubcategoria !== null && columna?.hijos[i]?.complementoSubcategoria !== null)">
                 <button class="btn p-0" (click)="this.abrirModal(content,columna.hijos[i],'categoria' )">
@@ -176,7 +175,7 @@
                 [ngStyle]="{'background-color' :  this.colorFila(fila.count), 'color':'white'}"
                 [attr.rowspan]="fila.count" [attr.colspan]="fila.length === 1 && fila.length <1 ? 2 : 1"
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
-                {{ fila?.categoria }} (Subcategorías: {{ fila.count }})
+                {{ fila?.categoria }} 
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria === 0 && (fila?.descripcion !== null && fila?.complemento !== null )">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria')">
@@ -263,24 +262,32 @@
 
 <ng-template #content>
   <div class="modal-content">
-    <div class="modal-header d-flex justify-content-center modal-titulo">
-      <h4 class="modal-title">
+    <div class="modal-header modal-titulo">
+      <h4 class="modal-title fuente ">
         <strong>Descripción de la evidencia</strong>
       </h4>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" 
+        (click)="closeModal()" 
+        style="position: absolute; top: 10px; right: 10px;">
+      </button>
     </div>
     <div class="modal-body">
       <form class="d-flex flex-column">
         <div class="d-flex flex-column">
-          <span><strong>{{this.tituloCategoriaModal}}</strong></span>
+          <span class="fuente colorletra"><strong>{{tituloCategoriaModal}}</strong></span>
         </div>
-        <div class="d-flex flex-column">
-          <p>{{this.informacionCategoriaModal}}</p>
+        <div class="d-flex flex-column ">
+          <p class="fuente colorletra">{{informacionCategoriaModal}}</p>
         </div>
       </form>
     </div>
     <div class="modal-footer d-flex justify-content-center align-items-center">
-      <button class="btn btnMasInformacion" *ngIf="this.urlModal !== '' && this.urlModal !== null"
-        (click)="this.masInformacion()" type="button">Más información</button>
+      <button class="btn btnMasInformacion" *ngIf="urlModal !== '' && urlModal !== null"
+        (click)="masInformacion()" type="button">Más información</button>
     </div>
   </div>
 </ng-template>
+
+
+
+
