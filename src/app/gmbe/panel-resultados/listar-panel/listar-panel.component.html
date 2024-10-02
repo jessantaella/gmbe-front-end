@@ -7,7 +7,7 @@
           <div class="d-flex">
 
             <div class="dropdown w-100">
-              <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Categoria</span>
                 <em class="bi bi-filter"></em>
@@ -30,7 +30,7 @@
 
             <div class="dropdown w-100 mx-2">
               <button [disabled]="!subcategoriasFilas?.length"
-                class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+                class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
@@ -62,7 +62,7 @@
           <div class="d-flex">
 
             <div class="dropdown w-100">
-              <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Categoria</span>
                 <em class="bi bi-filter"></em>
@@ -85,7 +85,7 @@
 
             <div class="dropdown w-100 mx-2">
               <button [disabled]="!subcategoriasColumnas?.length"
-                class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+                class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
@@ -177,7 +177,7 @@
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
                 {{ fila?.categoria }} 
                 <div class="text-end"
-                  *ngIf="fila?.idSubCategoria === 0 && (fila?.descripcion !== null && fila?.complemento !== null )">
+                  >
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -244,10 +244,8 @@
       </div>
   
       <button class="btn btn-p-0 color-icon" (click)="this.abrirAyuda()" >
-        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
-          class="bi bi-info-circle-fill color-icon" viewBox="0 0 16 16">
-          <path class="color-icon"
-            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-question-circle-fill color-icon" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
         </svg>
       </button>
   

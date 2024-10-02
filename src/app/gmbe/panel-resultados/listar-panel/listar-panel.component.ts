@@ -219,11 +219,13 @@ export class PanelResultadosComponent implements OnInit {
 
     switch (titulo) {
       case 'categoria':
+        console.log('entra');
         this.tituloCategoriaModal = informacion.categoria;
-        this.informacionCategoriaModal = informacion.descripcion;
-        this.urlModal = informacion.complemento;
+        this.informacionCategoriaModal = informacion.descripcionSubcategoria;
+        this.urlModal = informacion.complementoSubcategoria;
         break;
       case 'subcategoria':
+        console.log('entra'); 
         this.tituloCategoriaModal = informacion.subCategoria;
         this.informacionCategoriaModal = informacion.descripcionSubcategoria;
         this.urlModal = informacion.complementoSubcategoria;
@@ -545,8 +547,11 @@ export class PanelResultadosComponent implements OnInit {
     }
 
     if (!this.conteoCategorias[idCategoria]) {
-      this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
-      this.colorSeleccionado = this.colores[Math.floor(Math.random() * this.colores.length)];
+      if (this.colores.length === 0) {
+        // Reset the colors array if all colors have been used
+        this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+      }
+      this.colorSeleccionado = this.colores.splice(Math.floor(Math.random() * this.colores.length), 1)[0];
       this.conteoCategorias[idCategoria] = this.colorSeleccionado;
     }
 
