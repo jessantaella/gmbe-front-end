@@ -109,3 +109,21 @@ ul:hover{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
 }
+
+.mensaje-flotante {
+  position: fixed; /* Centra el mensaje horizontalmente */
+  transform: translateX(-50%); /* Ajusta el centrado relativo */
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none; /* Evita que interfiera con el mouseover */
+}
+
+.textoVertical{
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}

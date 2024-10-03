@@ -25,7 +25,7 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
   w: number = 100;
-  h: number = 50;
+  h: number = 100;
 
   public chartOptions: any;
   valorZguardado: any;
@@ -158,13 +158,19 @@ export class BurbujasComponent implements AfterViewInit {
         size: seriesData.map(d => d.z / this.valorMaximoZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
         colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
         hover: {
-          sizeOffset: 20 // Aumenta el área de interacción al pasar el mouse
+          sizeOffset: 100 // Aumenta el área de interacción al pasar el mouse
         },
       },
       plotOptions: {
         bubble: {
           minBubbleRadius: 5, // Ajusta el radio mínimo
-          maxBubbleRadius: 50, // Ajusta el radio máximo para una mayor área de interacción
+          maxBubbleRadius: 80, // Ajusta el radio máximo para una mayor área de interacción
+        },
+        marker: {
+          hover: {
+            size: undefined, // para evitar que cambie el tamaño
+            sizeOffset: 0, // para evitar cualquier cambio de tamaño o brillo
+          }
         }
       },
       tooltip: {
@@ -178,6 +184,13 @@ export class BurbujasComponent implements AfterViewInit {
                     <span><strong>Número de la evaluación:</strong></span><br>
                     <span><strong>Valor: </strong>${bubbleData.z}</span>
                   </div>`;
+        }
+      },
+      states: {
+        hover: {
+          filter: {
+            type: 'none' // Desactiva el filtro de hover (el resalte)
+          }
         }
       }
     };

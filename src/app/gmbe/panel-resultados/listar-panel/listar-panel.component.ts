@@ -79,6 +79,11 @@ export class PanelResultadosComponent implements OnInit {
   tituloCategoriaModal: string = '';
   informacionCategoriaModal: any = '';
   urlModal: any = '';
+  nombreGPOFlotante: any;
+  countFlotante: any;
+  mensajeFlotanteFuera: boolean = false;
+  figuraActivaId: string | null = null;
+  esperaSegundos: boolean = true;
 
   constructor(private route: ActivatedRoute,private storage:StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -96,8 +101,8 @@ export class PanelResultadosComponent implements OnInit {
       subcategoriasColumna: [''],
     });
 
-    this.obtenerVersionMax();
     this.cargarDatosMbe();
+    this.obtenerVersionMax();
     this.cargaEstructuraPanelResultados();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
@@ -128,6 +133,7 @@ export class PanelResultadosComponent implements OnInit {
     this.abrirToastAyuda = true;
     setTimeout(() => {
       this.abrirToastAyuda = false;
+      this.esperaSegundos = false;
     }, 10000);
   }
 
@@ -237,6 +243,29 @@ export class PanelResultadosComponent implements OnInit {
 
   masInformacion() {
     window.open(this.urlModal, '_blank');
+  }
+
+  mensajeFlotante(fila:number, columna:number){
+    let datos = this.datosIntersecciones.find(
+      obj => obj.idFila === fila && obj.idColumna === columna
+    );
+    let eva = datos?.conteoTipoEvaluacion === null ? datos?.conteoDisenioEval : datos?.conteoTipoEvaluacion;
+    let idGpo = eva?.split(':');
+    let nombreGpo = idGpo[1];
+    let count = idGpo[3];
+
+    this.figuraActivaId = fila + '-' + columna;
+
+    this.mensajeFlotanteFuera = true;
+
+    this.nombreGPOFlotante = nombreGpo;
+    this.countFlotante = count;
+    
+  }
+
+  mensajeFuera(){
+    this.figuraActivaId = null;
+    this.mensajeFlotanteFuera = false;
   }
 
   // escucharCambiosSelect() {
@@ -506,11 +535,10 @@ export class PanelResultadosComponent implements OnInit {
   }
 
   datosInterseccion(columna: number, fila: number) {
+
     let respuesta = this.datosIntersecciones.find(
       obj => obj.idFila === columna && obj.idColumna === fila
     );
-
-
     if (!respuesta) {
       return [];
     }

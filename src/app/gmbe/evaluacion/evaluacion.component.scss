@@ -12,6 +12,11 @@ th{
      color: #ffffff !important;
      font-family: Arial, Helvetica, sans-serif;
     }
+    .table-striped>tbody>tr:nth-child(odd)>td, 
+    .table-striped>tbody>tr:nth-child(odd)>th {
+       background-color: #21409a50; // Choose your own color here
+     }
+    
 
 .texto{
     font-size: 16px;
