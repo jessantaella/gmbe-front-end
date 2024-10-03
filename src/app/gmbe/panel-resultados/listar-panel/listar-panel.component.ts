@@ -106,9 +106,9 @@ export class PanelResultadosComponent implements OnInit {
     this.cargaEstructuraPanelResultados();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
-    //this.filtrosSubcategoriasFilas();
+    this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
-    //this.filtrosSubcategoriasColumnas();
+    this.filtrosSubcategoriasColumnas();
   }
   ngOnInit(): void {
     this.storage.removeItem('zArrayGuardado');
@@ -324,7 +324,7 @@ export class PanelResultadosComponent implements OnInit {
     } else {
       datosEnvio = {
         idMbe: this.idmbe,
-        idTipo: 2,
+        idTipo: 3,
         categorias:idCategorias,
         subcategorias: null,
       }; 
@@ -355,6 +355,7 @@ export class PanelResultadosComponent implements OnInit {
       res => {
         console.log('Categorias obtenidas:', res);
         this.categoriasColumnas = res;
+
         this.cargarChechboxColumnas();
       },
       err => {
@@ -370,7 +371,7 @@ export class PanelResultadosComponent implements OnInit {
     } else {
       datosEnvio = {
         idMbe: this.idmbe,
-        idTipo: 1,
+        idTipo: 3,
         categorias: idCategoria,
         subcategorias: null,
       };
@@ -379,6 +380,8 @@ export class PanelResultadosComponent implements OnInit {
         res => {
           console.log('Subcategorias obtenidas:', res);
           this.subcategoriasColumnas = res;
+          //Saca el idCategoria del primer dato de la subcategoria y marca el checkbox de la categoria
+          this.categoriaSeleccionadaColumnas = [];
           this.cargarChechboxSubColumnas();
         },
         err => {
@@ -424,6 +427,7 @@ export class PanelResultadosComponent implements OnInit {
 
     this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
       res => {
+        this.sinResultados(res);
         console.log('Estructura obtenida:', res);
         // Filtrar las columnas y las filas por tipo
         this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
@@ -445,6 +449,29 @@ export class PanelResultadosComponent implements OnInit {
         console.error('Error al obtener estructura del panel:', err);
       }
     );
+  }
+
+  sinResultados(res: any) {
+    if (res.length === 0) {
+      swal.fire({
+        icon: 'error',
+        title: '<center> Error </center>',
+        text: 'Sin resultados',
+      })
+    }
+  }
+
+  borraFiltros() {
+    this.categoriaSeleccionadaFilas = [];
+    this.subcategoriaSeleccionadaFilas = [];
+    this.categoriaSeleccionadaColumnas = [];
+    this.subcategoriaSeleccionadaColumnas = [];
+    //limpia los checkbox
+    this.categoriaSeleccionadaFila = [];
+    this.subcategoriaSeleccionadaFila = [];
+    this.categoriaSeleccionadaColumna = [];
+    this.subcategoriaSeleccionadaColumna = [];
+    this.cargaEstructuraPanelResultados();
   }
 
   filtrarPorTipo(arreglo: any[], tipo: number) {
@@ -593,7 +620,8 @@ export class PanelResultadosComponent implements OnInit {
       idSeccion,
       this.categoriaSeleccionadaFilas,
       this.subcategoriaSeleccionadaFilas,
-      this.filtrosSubcategoriasFilas.bind(this),
+      null,
+      //this.filtrosSubcategoriasFilas.bind(this),
       this.cargaEstructuraPanelResultados.bind(this),
       //this.cargarChechboxSubFila.bind(this)
     );
@@ -616,7 +644,8 @@ export class PanelResultadosComponent implements OnInit {
       idSeccion,
       this.categoriaSeleccionadaColumnas,
       this.subcategoriaSeleccionadaColumnas,
-      this.filtrosSubcategoriasColumnas.bind(this),
+      null,
+      //this.filtrosSubcategoriasColumnas.bind(this),
       this.cargaEstructuraPanelResultados.bind(this),
       //this.cargaEstructuraPanelResultados.bind(this)
     );
@@ -648,10 +677,8 @@ export class PanelResultadosComponent implements OnInit {
   ) {
     const index = mainArray.indexOf(idSeccion);
     if (index === -1) {
-      if (subArray) subArray.length = 0; 
       mainArray.push(idSeccion);
     } else {
-      if (subArray) subArray.length = 0; 
       mainArray.splice(index, 1);
     }
     if (filterFunction) filterFunction(mainArray);

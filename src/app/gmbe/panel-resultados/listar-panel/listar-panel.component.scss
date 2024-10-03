@@ -127,3 +127,9 @@ ul:hover{
   writing-mode: vertical-rl;
   transform: rotate(180deg);
 }
+
+.listaFiltros{
+  height: auto;
+  max-height: 300px;
+  overflow-y: auto;
+}

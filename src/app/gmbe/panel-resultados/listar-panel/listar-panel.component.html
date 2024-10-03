@@ -1,7 +1,7 @@
 <div class="container mt-4 fuente">
   <form [formGroup]="generales">
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-5">
         <div class="mb-3">
           <label class="form-label">Búsqueda por intervenciones:</label>
           <div class="d-flex">
@@ -13,7 +13,7 @@
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let categoria of categoriasFilas let i = index">
                       <div class="form-check">
@@ -29,14 +29,14 @@
             </div>
 
             <div class="dropdown w-100 mx-2">
-              <button [disabled]="!subcategoriasFilas?.length"
+              <button 
                 class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas; let i = index">
                       <div class="form-check">
@@ -56,19 +56,19 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-5">
         <div class="mb-3">
           <label class="form-label">Búsqueda por resultados:</label>
           <div class="d-flex">
 
-            <div class="dropdown w-100">
+            <div class="dropdown w-100 mx-2">
               <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Categoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let categoria of categoriasColumnas let i = index">
                       <div class="form-check">
@@ -84,14 +84,14 @@
             </div>
 
             <div class="dropdown w-100 mx-2">
-              <button [disabled]="!subcategoriasColumnas?.length"
+              <button 
                 class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let subcategoria of subcategoriasColumnas; let i = index">
                       <div class="form-check">
@@ -106,9 +106,12 @@
               </ul>
             </div>
 
-
           </div>
         </div>
+      </div>
+      
+      <div class="col-12 col-md-2 my-1 d-flex justify-content-center align-items-end" style="vertical-align: middle;">
+        <button (click)="this.borraFiltros()" class="btn btn-Categorias mb-3">Borrar filtros</button>
       </div>
     </div>
   </form>
@@ -212,7 +215,7 @@
 
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
-                <th class="contenido-tabla" *ngFor="let hijo of columna.hijos; let j = index">
+                <th class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
                   <!-- Aquí van los datos de intersección, si hay -->
                   <app-burbujas (mouseover)="this.mensajeFlotante(fila.idEstructura,hijo.idEstructura)" (mouseout)="this.mensajeFuera()" (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
                     [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
