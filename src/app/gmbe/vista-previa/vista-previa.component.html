@@ -206,7 +206,7 @@
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-                      <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                      <th id="contenidoFila" class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
                         <app-burbujas 
                           [chartId]="'chart-modal1-' + i + '-' + j" 
                           [chartTitle]="'GraficaModal1'" 

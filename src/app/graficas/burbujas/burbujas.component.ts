@@ -180,9 +180,9 @@ export class BurbujasComponent implements AfterViewInit {
           console.log("Bubble data");
           console.log(bubbleData);
           return `<div class="tooltip-content">
-                    <span><strong>Grupo: </strong>${bubbleData.nombreGpo}</span><br>
-                    <span><strong>Número de la evaluación:</strong></span><br>
-                    <span><strong>Valor: </strong>${bubbleData.z}</span>
+                    <span><strong>${bubbleData.nombreGpo}</strong></span><br>
+                    <span>Número de la evaluación:</span><br>
+                    <span><strong></strong>${bubbleData.z}</span>
                   </div>`;
         }
       },
