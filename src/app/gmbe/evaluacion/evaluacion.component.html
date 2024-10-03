@@ -11,11 +11,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of this.datosEvaluacionTabla">
-        <td class="text-center">{{item.nombreIntervencion}}</td>
-        <td class="text-center">{{item.tituloEvaluacion}}</td>
+        <td  class="text-center">{{item.nombreIntervencion}}</td>
+        <td  class="text-center">{{item.tituloEvaluacion}}</td>
         <td class="text-center">{{item.anioEval}}</td>
-        <td class="text-center">{{item.tipoEvaluacion}}</td>
-        <td class="text-center" style="word-break: break-all;">
+        <td  class="text-center">{{item.tipoEvaluacion}}</td>
+        <td  class="text-center" style="word-break: break-all;">
           <a class="w-25" (click)="this.abrirURL(item.link)" style="cursor: pointer; color: blue;">{{item.link}}</a>
         </td>
       </tr>

@@ -101,8 +101,8 @@ export class PanelResultadosComponent implements OnInit {
       subcategoriasColumna: [''],
     });
 
-    this.cargarDatosMbe();
     this.obtenerVersionMax();
+    this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
@@ -111,9 +111,23 @@ export class PanelResultadosComponent implements OnInit {
     this.filtrosSubcategoriasColumnas();
   }
   ngOnInit(): void {
-    this.storage.removeItem('zArrayGuardado');
+    this.storage.removeItem('zArrayGuardado4');
+    this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirAyuda();
+  }
+
+  pantallaCargando(){
+    swal.fire({
+      title: 'Cargando',
+      timerProgressBar: true,
+      didOpen: () => {
+        swal.showLoading();
+      }
+    });
+    setTimeout(() => {
+      swal.close();
+    }, 2000);
   }
 
   datosAyuda(){

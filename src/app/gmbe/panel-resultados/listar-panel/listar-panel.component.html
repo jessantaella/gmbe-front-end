@@ -218,7 +218,7 @@
                 <th class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
                   <!-- Aquí van los datos de intersección, si hay -->
                   <app-burbujas (mouseover)="this.mensajeFlotante(fila.idEstructura,hijo.idEstructura)" (mouseout)="this.mensajeFuera()" (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
-                    [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
+                    [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPanel'"
                     [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
                     *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
                 </th>
@@ -236,7 +236,7 @@
       <div class="position-relative bottom-0 start-0 p-3" style="z-index: 11" *ngIf="this.abrirToastAyuda" >
         <div id="liveToast" class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header d-flex justify-content-end" *ngIf="!this.esperaSegundos" >
-            <button (click)="this.cerrarAyuda()" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button (click)="this.cerrarAyuda()"  type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
           <div class="toast-body textoToast">
             <strong>Tipos de evaluación</strong>

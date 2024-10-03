@@ -44,15 +44,19 @@ export class EvaluacionComponent implements OnInit {
   }
 
   datosEvaluacion(){
-    console.log("idMbe: " + this.idMbe);
-    console.log("fila: " + this.fila);
-    console.log("columna: " + this.columna);
-    console.log("idEvaluacion: " + this.idEvaluacion);
 
     this.gmbeService.datosEvaluacion(this.idMbe, this.fila, this.columna, this.idEvaluacion).subscribe(
       data => {
         console.log(data);
         this.datosEvaluacionTabla = data;
+        // if (this.datosEvaluacionTabla.every((item: any) => 
+        //   item.nombreIntervencion === null &&
+        //   item.tituloEvaluacion === null &&
+        //   item.anioEval === 0 &&
+        //   item.tipoEvaluacion === null &&
+        //   item.link === null)) {
+        //   this.datosEvaluacionTabla = [];
+        // }
       },
       error => {
         console.log(error);

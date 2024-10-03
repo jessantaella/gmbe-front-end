@@ -230,6 +230,13 @@ export class BurbujasComponent implements AfterViewInit {
         console.log("zArrayGuardado3");
         console.log(this.zArrayGuardado);
         break;
+      case "GraficaPanel":
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado4") || "[]");
+        this.zArrayGuardado.push(zArray[0]);
+        this.storage.setItem("zArrayGuardado4", JSON.stringify(this.zArrayGuardado));
+        console.log("zArrayGuardado4");
+        console.log(this.zArrayGuardado);
+        break;
       
     }
 
@@ -246,11 +253,11 @@ export class BurbujasComponent implements AfterViewInit {
     console.log(this.zArrayGuardado);
 
     //Si el valor de zArray[0] es igual al valor máximo de zArrayGuardado, entonces la escala de las burbujas será 30 y si no, será 55
-    if (maxZ ==  zArray[0] && zArray[0] > 3) {
+    if (maxZ ==  zArray[0] && zArray[0] >= 3) {
       console.log("maxZ");
       bubbleSizeFactor = 16;
     } else {
-      if (minZ == zArray[0] && zArray[0] > 3)  {
+      if (minZ == zArray[0] && zArray[0] >= 3)  {
         console.log("minZ");
         bubbleSizeFactor = 120;
       } else {
