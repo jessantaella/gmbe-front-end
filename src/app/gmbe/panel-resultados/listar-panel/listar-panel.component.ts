@@ -570,29 +570,16 @@ export class PanelResultadosComponent implements OnInit {
       return [];
     }
     let conteoTipoEvaluacion = respuesta?.conteoDisenioEval !== null ? respuesta.conteoDisenioEval : respuesta.conteoTipoEvaluacion;
-    let idGpo = 0;
-    let nombreGpo = '';
-    let colorBubble = '';
-    let count = 0;
-
-    if (conteoTipoEvaluacion) {
-      const parts = conteoTipoEvaluacion.split(':');
-      if (parts.length === 4) {
-        idGpo = parseInt(parts[0]);
-        nombreGpo = parts[1];
-        colorBubble = parts[2];
-        count = parseInt(parts[3]);
-      }
-    }
-
-    let objetoBurbuja = [
-      {
-        idGpo: idGpo,
-        nombreGpo: nombreGpo,
-        colorBubble: colorBubble,
-        count: count
-      }
-    ];
+    let evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
+    let objetoBurbuja = evaluaciones.map((eva:any) => {
+      let parts = eva.split(':');
+      return {
+        idGpo: parseInt(parts[0]),
+        nombreGpo: parts[1],
+        colorBubble: parts[2],
+        count: parseInt(parts[3])
+      };
+    });
     return objetoBurbuja;
   }
 
