@@ -9,6 +9,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from "@angular/core";
+import { StorageService } from "src/app/services/storage-service.service";
 
 declare var ApexCharts: any;
 
@@ -24,7 +25,7 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
   w: number = 100;
-  h: number = 50;
+  h: number = 100;
 
   public chartOptions: any;
   valorZguardado: any;
@@ -32,7 +33,7 @@ export class BurbujasComponent implements AfterViewInit {
   zArrayGuardado: any;
   valorMaximoZ: number = 0;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: any, private storage:StorageService) {}
 
   ngAfterViewInit(): void {
     console.log("Bubble data");
@@ -157,13 +158,19 @@ export class BurbujasComponent implements AfterViewInit {
         size: seriesData.map(d => d.z / this.valorMaximoZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
         colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
         hover: {
-          sizeOffset: 20 // Aumenta el área de interacción al pasar el mouse
+          sizeOffset: 100 // Aumenta el área de interacción al pasar el mouse
         },
       },
       plotOptions: {
         bubble: {
           minBubbleRadius: 5, // Ajusta el radio mínimo
-          maxBubbleRadius: 50, // Ajusta el radio máximo para una mayor área de interacción
+          maxBubbleRadius: 80, // Ajusta el radio máximo para una mayor área de interacción
+        },
+        marker: {
+          hover: {
+            size: undefined, // para evitar que cambie el tamaño
+            sizeOffset: 0, // para evitar cualquier cambio de tamaño o brillo
+          }
         }
       },
       tooltip: {
@@ -173,10 +180,17 @@ export class BurbujasComponent implements AfterViewInit {
           console.log("Bubble data");
           console.log(bubbleData);
           return `<div class="tooltip-content">
-                    <span><strong>Grupo: </strong>${bubbleData.nombreGpo}</span><br>
-                    <span><strong>Número de la evaluación:</strong></span><br>
-                    <span><strong>Valor: </strong>${bubbleData.z}</span>
+                    <span><strong>${bubbleData.nombreGpo}</strong></span><br>
+                    <span>Número de la evaluación:</span><br>
+                    <span><strong></strong>${bubbleData.z}</span>
                   </div>`;
+        }
+      },
+      states: {
+        hover: {
+          filter: {
+            type: 'none' // Desactiva el filtro de hover (el resalte)
+          }
         }
       }
     };
@@ -196,23 +210,23 @@ export class BurbujasComponent implements AfterViewInit {
     switch (titulo) {
       case "GraficaPrincipal":
         //Almacena todos los valores de z que vayan llegando en un array en local storage sin perder los valores anteriores
-        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado") || "[]");
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado") || "[]");
         this.zArrayGuardado.push(zArray[0]);
-        localStorage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
+        this.storage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
         console.log("zArrayGuardado");
         console.log(this.zArrayGuardado);
         break;
       case "GraficaModal1":
-        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado2") || "[]");
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado2") || "[]");
         this.zArrayGuardado.push(zArray[0]);
-        localStorage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
+        this.storage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
         console.log("zArrayGuardado2");
         console.log(this.zArrayGuardado);
         break;
       case "GraficaModal2":
-        this.zArrayGuardado = JSON.parse(localStorage.getItem("zArrayGuardado3") || "[]");
+        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado3") || "[]");
         this.zArrayGuardado.push(zArray[0]);
-        localStorage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
+        this.storage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
         console.log("zArrayGuardado3");
         console.log(this.zArrayGuardado);
         break;

@@ -281,5 +281,10 @@ export class GmbeServicesService {
       let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/tipo-mbe-help?idMbe='+idMbe;
       return this.http.get<any>(url);
     }
+
+    existeCategoriaSubcategoria(idCategoria: number):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/exist-categoria-subcategoria?idCatSub='+idCategoria;
+      return this.http.get<any>(url);
+    }
      
 }

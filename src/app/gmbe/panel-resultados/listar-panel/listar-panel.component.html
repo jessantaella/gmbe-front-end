@@ -1,19 +1,19 @@
 <div class="container mt-4 fuente">
   <form [formGroup]="generales">
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-5">
         <div class="mb-3">
           <label class="form-label">Búsqueda por intervenciones:</label>
           <div class="d-flex">
 
             <div class="dropdown w-100">
-              <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="selected-text">Categoria</span>
+                <span class="selected-text">Categoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let categoria of categoriasFilas let i = index">
                       <div class="form-check">
@@ -29,14 +29,14 @@
             </div>
 
             <div class="dropdown w-100 mx-2">
-              <button [disabled]="!subcategoriasFilas?.length"
-                class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button 
+                class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas; let i = index">
                       <div class="form-check">
@@ -56,19 +56,19 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-5">
         <div class="mb-3">
           <label class="form-label">Búsqueda por resultados:</label>
           <div class="d-flex">
 
-            <div class="dropdown w-100">
-              <button class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+            <div class="dropdown w-100 mx-2">
+              <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="selected-text">Categoria</span>
+                <span class="selected-text">Categoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let categoria of categoriasColumnas let i = index">
                       <div class="form-check">
@@ -84,14 +84,14 @@
             </div>
 
             <div class="dropdown w-100 mx-2">
-              <button [disabled]="!subcategoriasColumnas?.length"
-                class="btn w-100 d-flex justify-content-between align-content-center border" type="button"
+              <button 
+                class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
                 id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="selected-text">Subcategoría</span>
                 <em class="bi bi-filter"></em>
               </button>
               <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
-                <li class="text-justify">
+                <li class="text-justify listaFiltros">
                   <div class="dropdown-item textoFiltro">
                     <div class="mx-2" *ngFor="let subcategoria of subcategoriasColumnas; let i = index">
                       <div class="form-check">
@@ -106,9 +106,12 @@
               </ul>
             </div>
 
-
           </div>
         </div>
+      </div>
+      
+      <div class="col-12 col-md-2 my-1 d-flex justify-content-center align-items-end" style="vertical-align: middle;">
+        <button (click)="this.borraFiltros()" class="btn btn-Categorias mb-3">Borrar filtros</button>
       </div>
     </div>
   </form>
@@ -121,6 +124,10 @@
             <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
               *ngIf="estructuraFinalColumnasTitulos.length > 0">
               <!-- Encabezado principal vacío para las filas -->
+               <div class="d-flex justify-content-around w-100">
+                <span class="w-50 h-100" >Categoría General</span>
+                <span class="w-50 h-100" *ngIf="this.estructuraFinalFilasTitulos[0].hijos[0].idSubCategoria !== 0" >Tipo de apoyo</span>
+               </div>
             </th>
 
             <!-- Encabezados de columnas (basado en idTipo: 1) -->
@@ -130,9 +137,8 @@
               [attr.colspan]="columna.hijos.length > 0 ? columna.hijos.length : 1"
               [attr.rowspan]="columna.hijos.length === 0 ? 2 : 1">
               {{ columna.categoria }} <br>
-              (Subcategorías: {{ columna.hijos.length }})
               <div class="text-end"
-                *ngIf="columna.hijos[i].subCategoria === null && (columna.hijos[i].descripcionSubcategoria !== null && columna.hijos[i].complementoSubcategoria !== null)">
+                *ngIf="columna?.hijos[i]?.subCategoria === null && (columna?.hijos[i]?.descripcionSubcategoria !== null && columna?.hijos[i]?.complementoSubcategoria !== null)">
                 <button class="btn p-0" (click)="this.abrirModal(content,columna.hijos[i],'categoria' )">
                   <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                     fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -176,9 +182,9 @@
                 [ngStyle]="{'background-color' :  this.colorFila(fila.count), 'color':'white'}"
                 [attr.rowspan]="fila.count" [attr.colspan]="fila.length === 1 && fila.length <1 ? 2 : 1"
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
-                {{ fila?.categoria }} (Subcategorías: {{ fila.count }})
+                <span class="my-2" [ngClass]="{'textoVertical':this.estructuraFinalFilasTitulos[0].hijos[0].idSubCategoria !== 0}" >{{ fila?.categoria }} </span>
                 <div class="text-end"
-                  *ngIf="fila?.idSubCategoria === 0 && (fila.descripcion !== null && fila.complemento )">
+                *ngIf="fila?.idCategoria !== 0 && fila.descripcion !== null && fila.complemento !== null">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -195,7 +201,7 @@
                 [ngStyle]="{'background-color' : this.colorFila(fila.count), 'color':'white'}">
                 {{ fila?.subCategoria }}
                 <div class="text-end"
-                  *ngIf="fila?.idSubCategoria !== 0 && (fila.descripcionSubcategoria !== null && fila.complementoSubcategoria )">
+                  *ngIf="fila?.idSubCategoria !== 0 && (fila?.descripcionSubcategoria !== null && fila?.complementoSubcategoria !== null )">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -209,9 +215,9 @@
 
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
-                <th class="contenido-tabla" *ngFor="let hijo of columna.hijos; let j = index">
+                <th class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
                   <!-- Aquí van los datos de intersección, si hay -->
-                  <app-burbujas (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
+                  <app-burbujas (mouseover)="this.mensajeFlotante(fila.idEstructura,hijo.idEstructura)" (mouseout)="this.mensajeFuera()" (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
                     [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
                     [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
                     *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
@@ -229,7 +235,7 @@
     <div>
       <div class="position-relative bottom-0 start-0 p-3" style="z-index: 11" *ngIf="this.abrirToastAyuda" >
         <div id="liveToast" class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header d-flex justify-content-end">
+          <div class="toast-header d-flex justify-content-end" *ngIf="!this.esperaSegundos" >
             <button (click)="this.cerrarAyuda()" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
           <div class="toast-body textoToast">
@@ -245,16 +251,15 @@
       </div>
   
       <button class="btn btn-p-0 color-icon" (click)="this.abrirAyuda()" >
-        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
-          class="bi bi-info-circle-fill color-icon" viewBox="0 0 16 16">
-          <path class="color-icon"
-            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-question-circle-fill color-icon" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
         </svg>
       </button>
   
     </div>
     <div class="d-flex justify-content-center align-items-center">
       <button class="btn mx-2 border-0 descargar" (click)="this.descargar()" >
+        <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
         Descargar datos
       </button>
     </div>
@@ -263,24 +268,32 @@
 
 <ng-template #content>
   <div class="modal-content">
-    <div class="modal-header d-flex justify-content-center modal-titulo">
-      <h4 class="modal-title">
+    <div class="modal-header modal-titulo">
+      <h4 class="modal-title fuente ">
         <strong>Descripción de la evidencia</strong>
       </h4>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" 
+        (click)="closeModal()" 
+        style="position: absolute; top: 10px; right: 10px;">
+      </button>
     </div>
     <div class="modal-body">
       <form class="d-flex flex-column">
         <div class="d-flex flex-column">
-          <span><strong>{{this.tituloCategoriaModal}}</strong></span>
+          <span class="fuente colorletra"><strong>{{tituloCategoriaModal}}</strong></span>
         </div>
-        <div class="d-flex flex-column">
-          <p>{{this.informacionCategoriaModal}}</p>
+        <div class="d-flex flex-column ">
+          <p class="fuente colorletra">{{informacionCategoriaModal}}</p>
         </div>
       </form>
     </div>
     <div class="modal-footer d-flex justify-content-center align-items-center">
-      <button class="btn btnMasInformacion" *ngIf="this.urlModal !== '' && this.urlModal !== null"
-        (click)="this.masInformacion()" type="button">Más información</button>
+      <button class="btn btnMasInformacion" *ngIf="urlModal !== '' && urlModal !== null"
+        (click)="masInformacion()" type="button">Más información</button>
     </div>
   </div>
 </ng-template>
+
+
+
+

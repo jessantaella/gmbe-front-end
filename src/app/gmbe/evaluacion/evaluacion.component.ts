@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { TitulosService } from 'src/app/services/titulos.services';
+import {
+  faRotateLeft,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-evaluacion',
@@ -16,6 +19,8 @@ export class EvaluacionComponent implements OnInit {
   idEvaluacion = 0;
 
   textoBienvenida = "Evaluación";
+  faRotate = faRotateLeft;
+
 
   datosEvaluacionTabla: any;
 
