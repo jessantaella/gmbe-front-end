@@ -266,6 +266,6 @@ export class BurbujasComponent implements AfterViewInit {
     const validX = isNaN(x) ? 0 : x;
     const validY = isNaN(y) ? 0 : y;
     const validZ = isNaN(zAdjusted) ? 0 : zAdjusted;
-    return { x: validX, y: validY, z: validZ, nombreGpo, colorBubble };
+    return { x: validX, y: validY, z: zArray[0], nombreGpo, colorBubble };
   }
 }
