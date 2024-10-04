@@ -449,11 +449,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
         }
 
         //Cuenta cuantas veces se repite el idSubCategoria y almacenar en una variable
-
-
-
-
-
+        console.log('estructuraFinalFilasTitulos', this.estructuraFinalFilasTitulos);
+        console.log('estructuraFinalColumnasTitulos', this.estructuraFinalColumnasTitulos);
+        console.log('estructuraFinalFilasSubitulos', this.estructuraFinalFilasSubitulos);
+        
 
       },
       err => {

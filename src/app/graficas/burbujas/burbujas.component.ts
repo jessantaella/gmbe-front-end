@@ -24,8 +24,8 @@ export class BurbujasComponent implements AfterViewInit {
   @Input() chartTitle: string | undefined;
   @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
 
-  w: number = 100;
-  h: number = 100;
+  w: number = 200;
+  h: number = 200;
 
   public chartOptions: any;
   valorZguardado: any;
@@ -180,9 +180,7 @@ export class BurbujasComponent implements AfterViewInit {
           console.log("Bubble data");
           console.log(bubbleData);
           return `<div class="tooltip-content">
-                    <span><strong>${bubbleData.nombreGpo}</strong></span><br>
-                    <span>Número de la evaluación:</span><br>
-                    <span><strong></strong>${bubbleData.z}</span>
+                    <span><strong>${bubbleData.nombreGpo}: ${bubbleData.z}</strong></span><br>
                   </div>`;
         }
       },
