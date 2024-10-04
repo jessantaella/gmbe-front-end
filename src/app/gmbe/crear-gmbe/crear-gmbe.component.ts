@@ -808,6 +808,7 @@ clearImage(): void {
               this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
               this.modalRef.close();
               this.obtenerCategorias();
+              this.subCategorias = [];
             }
           },
           err => {

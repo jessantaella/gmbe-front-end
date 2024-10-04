@@ -39,6 +39,7 @@ export class VistaPreviaComponent implements OnInit {
   mostrarNombre: string = '';
   mostrarObjetivos: string = '';
 
+  revision1:any
   revisionDos: any;
 
   mostrarNombreModal: string = '';
@@ -55,6 +56,7 @@ export class VistaPreviaComponent implements OnInit {
   rechazado: number = 176;
   validado: number = 0;
 
+  revision2 : any ;
   usuario: any;
 
   existeSegundaRevision: boolean = false;
@@ -63,6 +65,10 @@ export class VistaPreviaComponent implements OnInit {
   idMBE: any;
   mostrarMensajeRevisiones: boolean = false;
   faRotate = faRotateLeft;
+
+tipoModalVerant:number = 1;
+imagenPrevia:any;
+imagenNueva:any;
 
   constructor(
     private route: ActivatedRoute,
@@ -113,7 +119,15 @@ export class VistaPreviaComponent implements OnInit {
     );
   }
 
-  abrirModal(content: any) {
+  abrirModal(content: any,actual:string,anterior:string,tipo:number) {
+    this.tipoModalVerant = tipo;
+      this.modalRevisionesForm = this.fb.group({
+            anterior: [actual],
+            actual: [anterior],
+          });
+          this.modalRevisionesForm.get('anterior')?.disable();  // Deshabilitar el campo dinámicamente
+          this.modalRevisionesForm.get('actual')?.disable();  // Deshabilitar el campo dinámicamente
+
     this.modalService.open(content, {
       centered: true,
       backdrop: 'static',
@@ -146,14 +160,36 @@ export class VistaPreviaComponent implements OnInit {
           objetivos: [res?.revisionOne.objetivo],
           resumen: [res?.revisionOne.resumen],
         });
+        
+        console.log('1ra versión',res.revisionOne);
+        console.log('2da versión',res.revisionTwo);
 
         if (res.revisionTwo !== null) {
+          this.revision1 = res.revisionOne;
+          this.revision2 = res.revisionTwo;
           this.existeSegundaRevision = true;
           this.mostrarObjetivosModal = res.revisionTwo.objetivo;
-          this.modalRevisionesForm = this.fb.group({
+
+          this.gmbservices.getImage(res.revisionTwo.ruta).subscribe(
+            (res) => {
+              this.imagenPrevia = this.sanitizer.bypassSecurityTrustUrl(res);
+            },
+            (err) => {}
+          );
+
+          this.gmbservices.getImage(res.revisionOne.ruta).subscribe(
+            (res) => {
+              this.imagenNueva= this.sanitizer.bypassSecurityTrustUrl(res);
+            },
+            (err) => {}
+          );
+
+
+
+          /*this.modalRevisionesForm = this.fb.group({
             anterior: [res?.revisionTwo.objetivo],
             actual: [res?.revisionOne.objetivo],
-          });
+          });*/
           this.modalRevisionesForm.get('anterior')?.disable();  // Deshabilitar el campo dinámicamente
           this.modalRevisionesForm.get('actual')?.disable();  // Deshabilitar el campo dinámicamente
 
