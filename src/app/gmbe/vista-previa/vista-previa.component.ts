@@ -203,14 +203,7 @@ export class VistaPreviaComponent implements OnInit {
           return false;
         }
       case 'validar':
-        if (
-          (this.idEstatus === this.creado ||
-            (this.idEstatus === this.rechazado &&
-              (this.idRol() === 2 ||
-                this.idRol() === 4 ||
-                this.idRol() === 1))) &&
-          this.mostrarMensajeRevisiones
-        ) {
+        if (((this.idEstatus === this.creado) || (this.idEstatus === this.rechazado)) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   ) && this.mostrarMensajeRevisiones){
           return true;
         } else {
           return false;
