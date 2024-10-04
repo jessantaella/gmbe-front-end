@@ -22,7 +22,7 @@ export class BurbujasComponent implements AfterViewInit {
   @ViewChild("chartContainer", { static: false }) chartContainer: ElementRef | undefined;
   @Input() chartId: string | undefined;
   @Input() chartTitle: string | undefined;
-  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
+  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto:number; ancho:number }[] = [];
 
   w: number = 200;
   h: number = 200;
@@ -54,20 +54,37 @@ export class BurbujasComponent implements AfterViewInit {
   }
 
   getCharOptions() {
-    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData([bubble.count], bubble.nombreGpo, bubble.colorBubble,this.chartTitle || ''));
+    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData([bubble.count], bubble.nombreGpo, bubble.colorBubble,this.chartTitle || '', bubble.alto, bubble.ancho));
 
     console.log("Series data"); 
     console.log(seriesData);
 
-    const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
-    const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
-    const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
-    const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
+    const maxX = Math.max(...seriesData.map(d => d.x + d.valorOriginalZ), 0);
+    const maxY = Math.max(...seriesData.map(d => d.y + d.valorOriginalZ), 0);
+    const minX = Math.min(...seriesData.map(d => d.x - d.valorOriginalZ), 0);
+    const minY = Math.min(...seriesData.map(d => d.y - d.valorOriginalZ), 0);
+    const alto = Math.max(...seriesData.map(d => d.alto + 40), 0);
+    const ancho = Math.max(...seriesData.map(d => d.ancho), 0);
+    const valorMaximoZ = Math.max(...seriesData.map(d => d.valorMaximoZ), 0);
 
-    // Encuentra el valor máximo de z (tamaño de burbuja)
+    console.log("maxX");
+    console.log(maxX);
+    console.log("maxY");
+    console.log(maxY);
+    console.log("minX");
+    console.log(minX);
+    console.log("minY");
+    console.log(minY);
+
     console.log("valorMaximoZ");
-    console.log(this.valorMaximoZ);
-    const maxZ = this.valorMaximoZ;
+    console.log(valorMaximoZ);
+    console.log("z");
+    const intermediateMaxZ = seriesData.map(d => d.z);
+    console.log("Intermediate Max Z");
+    console.log(intermediateMaxZ);
+    console.log(seriesData.map(d => d.z));
+
+
     // Ajuste del tamaño máximo de burbuja
     let bubbleSizeFactor = 30; // Ajusta este factor según lo necesites
 
@@ -105,8 +122,8 @@ export class BurbujasComponent implements AfterViewInit {
       ],
       chart: {
         responsive: true,
-        height: this.h,
-        width: this.w,
+        height: alto,
+        width: ancho,
         type: "bubble",
         toolbar: {
           show: false,
@@ -155,7 +172,7 @@ export class BurbujasComponent implements AfterViewInit {
         show: true,
       },
       markers: {
-        size: seriesData.map(d => d.z / this.valorMaximoZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
+        size: seriesData.map(d => d.z), // Escala el tamaño de las burbujas
         colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
         hover: {
           sizeOffset: 100 // Aumenta el área de interacción al pasar el mouse
@@ -163,8 +180,8 @@ export class BurbujasComponent implements AfterViewInit {
       },
       plotOptions: {
         bubble: {
-          minBubbleRadius: 5, // Ajusta el radio mínimo
-          maxBubbleRadius: 80, // Ajusta el radio máximo para una mayor área de interacción
+          minBubbleRadius: intermediateMaxZ, // Ajusta el radio mínimo
+          maxBubbleRadius: valorMaximoZ, // Ajusta el radio máximo para una mayor área de interacción
         },
         marker: {
           hover: {
@@ -180,7 +197,7 @@ export class BurbujasComponent implements AfterViewInit {
           console.log("Bubble data");
           console.log(bubbleData);
           return `<div class="tooltip-content">
-                    <span><strong>${bubbleData.nombreGpo}: ${bubbleData.z}</strong></span><br>
+                    <span><strong>${bubbleData.nombreGpo}: ${bubbleData.valorOriginalZ}</strong></span><br>
                   </div>`;
         }
       },
@@ -194,13 +211,13 @@ export class BurbujasComponent implements AfterViewInit {
     };
   }
 
-  generateBubbleData(zArray: number[], nombreGpo: string, colorBubble: string, titulo:string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
-    const chartWidth = this.w;
-    const chartHeight = this.h;
+  generateBubbleData(zArray: number[], nombreGpo: string, colorBubble: string, titulo:string, alto:number, ancho:number): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string, alto:number, ancho:number, valorOriginalZ: number, valorMaximoZ: number } {
+    const chartWidth = ancho;
+    const chartHeight = alto;
 
     // Generate random x and y coordinates within the chart dimensions
-    const x = Math.random() * chartWidth;
-    const y = Math.random() * chartHeight;
+    const x = Math.max(0, Math.min(Math.random() * chartWidth, chartWidth));
+    const y = Math.max(0, Math.min(Math.random() * chartHeight, chartHeight));
 
     console.log("titulo");
     console.log(titulo);
@@ -240,37 +257,26 @@ export class BurbujasComponent implements AfterViewInit {
 
     //Cuando termine de cargar la página, se obtiene el valor de zArrayGuardado y se buscara el valor máximo
     let maxZ = Math.max(...this.zArrayGuardado, 0);
-    let minZ = Math.min(...this.zArrayGuardado, 1);
 
     this.valorMaximoZ = maxZ;
 
     // Ajuste del tamaño máximo de burbuja
-    let bubbleSizeFactor; // Ajusta este factor según lo necesites
+    let bubbleSizeFactor = 40; // Ajusta este factor según lo necesites
 
-    console.log("zArrayGuardado");
-    console.log(this.zArrayGuardado);
-
-    //Si el valor de zArray[0] es igual al valor máximo de zArrayGuardado, entonces la escala de las burbujas será 30 y si no, será 55
-    if (maxZ ==  zArray[0] && zArray[0] >= 3) {
-      console.log("maxZ");
-      bubbleSizeFactor = 16;
-    } else {
-      if (minZ == zArray[0] && zArray[0] >= 3)  {
-        console.log("minZ");
-        bubbleSizeFactor = 120;
-      } else {
-        console.log("else");
-        bubbleSizeFactor = 10;
-      }
-    }
+    console.log("maxZ");
+    console.log(maxZ);
+    console.log("Array");
+    console.log(zArray[0]);
+    console.log("bubbleSizeFactor");
+    console.log(bubbleSizeFactor);
 
     // Ajusta el tamaño de la burbuja según el valor de z donde z es el tamaño de la burbuja y maxZ es el valor máximo de z
-    const zAdjusted = zArray[0] / maxZ * bubbleSizeFactor;
+    const zAdjusted = (zArray[0] / maxZ) * bubbleSizeFactor;
 
     // Ensure x, y, and z are valid numbers
     const validX = isNaN(x) ? 0 : x;
     const validY = isNaN(y) ? 0 : y;
     const validZ = isNaN(zAdjusted) ? 0 : zAdjusted;
-    return { x: validX, y: validY, z: zArray[0], nombreGpo, colorBubble };
+    return { x: validX, y: validY, z: validZ, nombreGpo, colorBubble, alto, ancho, valorOriginalZ: zArray[0], valorMaximoZ: maxZ };
   }
 }

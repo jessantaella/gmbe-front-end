@@ -185,7 +185,7 @@
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
                 <span class="my-2" [ngClass]="{'textoVertical':this.estructuraFinalFilasTitulos[0].hijos[0].idSubCategoria !== 0}" >{{ fila?.categoria }} </span>
                 <div class="text-end"
-                *ngIf="fila?.idCategoria !== 0 && fila.descripcion !== null && fila.complemento !== null">
+                *ngIf="fila?.idSubCategoria === 0 && fila.descripcion !== null && fila.complemento !== null">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -216,7 +216,7 @@
 
               <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
-                <th class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
+                <th id="thElemento" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
                   <!-- Aquí van los datos de intersección, si hay -->
                   <app-burbujas (mouseover)="this.mensajeFlotante(fila.idEstructura,hijo.idEstructura)" (mouseout)="this.mensajeFuera()" (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
                     [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPanel'"
