@@ -11,18 +11,18 @@
 }
 
 .subtitulos-tabla {
-  background-color: #BEDBFE;
-  color: black;
+  background-color: #305496;
+  color: white;
 }
 
 .tabladatos {
-  height: 100%;
+  height: 50rem;
   width: 100%;
   overflow-y: auto;
 }
 
 #tituloTablaColumna {
-  width: 300px;
+  width: 180px;
 }
 
 #contenidoFila {
@@ -132,4 +132,14 @@ ul:hover{
   height: auto;
   max-height: 300px;
   overflow-y: auto;
+}
+
+.btn-close{
+  color: white !important;
+  font-size: 1rem !important;
+  opacity: 1 !important;
+}
+
+.negritas{
+  font-weight: bold !important;
 }

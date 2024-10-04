@@ -130,7 +130,7 @@ export class ListarGmbeComponent implements OnInit {
         }
         break;
       case "enviar":
-        if ((idCatalogo === this.creado) || (idCatalogo === this.rechazado) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) {
+        if (((idCatalogo === this.creado) || (idCatalogo === this.rechazado)) && (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1   )) {
           return true;
         } else {
           return false;
