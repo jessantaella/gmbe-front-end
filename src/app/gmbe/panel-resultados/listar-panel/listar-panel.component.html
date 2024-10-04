@@ -111,7 +111,7 @@
       </div>
       
       <div class="col-12 col-md-2 my-1 d-flex justify-content-center align-items-end" style="vertical-align: middle;">
-        <button (click)="this.borraFiltros()" class="btn btn-Categorias mb-3">Borrar filtros</button>
+        <button (click)="this.borraFiltros()" class="btn btn-Categorias mb-3 abajo">Borrar filtros</button>
       </div>
     </div>
   </form>
@@ -269,22 +269,23 @@
 
 <ng-template #content>
   <div class="modal-content">
-    <div class="modal-header modal-titulo">
-      <h4 class="modal-title fuente ">
+    <div class="modal-header modal-titulo d-flex justify-content-center">
+      <h4 class="modal-title fuente text-center w-100">
         <strong>Descripción de la evidencia</strong>
       </h4>
       <button type="button" class="btn-close btn-close-white" aria-label="Close" 
         (click)="closeModal()" 
-        style="position: absolute; top: 10px; right: 10px;">
+        style="position: absolute; top: 10px; right: 10px;"
+        tabindex="-1">
       </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" >
       <form class="d-flex flex-column">
         <div class="d-flex flex-column">
-          <span class="fuente colorletra"><strong>{{tituloCategoriaModal}}</strong></span>
+          <span class="fuente colorletra tamanio"><strong>{{tituloCategoriaModal}}</strong></span>
         </div>
-        <div class="d-flex flex-column ">
-          <p class="fuente colorletra">{{informacionCategoriaModal}}</p>
+        <div class="d-flex flex-column">
+          <p class="fuente colorletra" >{{informacionCategoriaModal}}</p>
         </div>
       </form>
     </div>
@@ -294,6 +295,7 @@
     </div>
   </div>
 </ng-template>
+
 
 
 

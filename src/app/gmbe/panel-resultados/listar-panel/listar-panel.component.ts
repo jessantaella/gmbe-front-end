@@ -14,7 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
 import { StorageService } from 'src/app/services/storage-service.service';
 declare var swal: any;
-
+import {  ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-listar-panel',
   templateUrl: './listar-panel.component.html',
@@ -73,7 +73,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
 
   conteoCategorias: any;
 
-  colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+  colores = ['#80C080', '#8080FF', '#C080C0', '#ffb6c1', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
   colorSeleccionado = '';
 
   tituloCategoriaModal: string = '';
@@ -84,6 +84,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   mensajeFlotanteFuera: boolean = false;
   figuraActivaId: string | null = null;
   esperaSegundos: boolean = true;
+  @ViewChild('contenidoModal') contenidoModal!: ElementRef;
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -116,7 +117,12 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirAyuda();
+    setTimeout(() => {
+      this.contenidoModal.nativeElement.focus();
+    }, 0);
+    
   }
+  
 
   pantallaCargando() {
     swal.fire({
@@ -606,7 +612,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     if (!this.conteoCategorias[idCategoria]) {
       if (this.colores.length === 0) {
         // Reset the colors array if all colors have been used
-        this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+        this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffb6c1', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
       }
       this.colorSeleccionado = this.colores.splice(Math.floor(Math.random() * this.colores.length), 1)[0];
       this.conteoCategorias[idCategoria] = this.colorSeleccionado;
