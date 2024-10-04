@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GmbeServicesService } from '../../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -20,7 +20,7 @@ declare var swal: any;
   templateUrl: './listar-panel.component.html',
   styleUrls: ['./listar-panel.component.scss']
 })
-export class PanelResultadosComponent implements OnInit {
+export class PanelResultadosComponent implements OnInit, OnDestroy {
   id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -48,10 +48,10 @@ export class PanelResultadosComponent implements OnInit {
 
   idmbe: number = 0;
 
-  categoriaSeleccionadaFila: boolean [] = [];
-  subcategoriaSeleccionadaFila: boolean [] = [];
-  categoriaSeleccionadaColumna: boolean [] = [];
-  subcategoriaSeleccionadaColumna: boolean [] = [];
+  categoriaSeleccionadaFila: boolean[] = [];
+  subcategoriaSeleccionadaFila: boolean[] = [];
+  categoriaSeleccionadaColumna: boolean[] = [];
+  subcategoriaSeleccionadaColumna: boolean[] = [];
 
 
   //Nueva ODT
@@ -73,7 +73,7 @@ export class PanelResultadosComponent implements OnInit {
 
   conteoCategorias: any;
 
-  colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+  colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
   colorSeleccionado = '';
 
   tituloCategoriaModal: string = '';
@@ -85,7 +85,7 @@ export class PanelResultadosComponent implements OnInit {
   figuraActivaId: string | null = null;
   esperaSegundos: boolean = true;
 
-  constructor(private route: ActivatedRoute,private storage:StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
+  constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.route.queryParams.subscribe(params => {
@@ -103,21 +103,22 @@ export class PanelResultadosComponent implements OnInit {
 
     this.obtenerVersionMax();
     this.cargarDatosMbe();
-    this.cargaEstructuraPanelResultados();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
     this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
     this.filtrosSubcategoriasColumnas();
   }
-  ngOnInit(): void {
+  ngOnDestroy(): void {
     this.storage.removeItem('zArrayGuardado4');
+  }
+  ngOnInit(): void {
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirAyuda();
   }
 
-  pantallaCargando(){
+  pantallaCargando() {
     swal.fire({
       title: 'Cargando',
       timerProgressBar: true,
@@ -130,10 +131,9 @@ export class PanelResultadosComponent implements OnInit {
     }, 2000);
   }
 
-  datosAyuda(){
+  datosAyuda() {
     this.gmbservices.obtenerDatosAyuda(this.idmbe).subscribe(
       res => {
-        console.log('datosAyuda:', res);
         this.tiposDatosAyuda = res;
       },
       err => {
@@ -142,7 +142,7 @@ export class PanelResultadosComponent implements OnInit {
     );
   }
 
-  abrirAyuda(){
+  abrirAyuda() {
     //Se abre el modal de ayuda solo por 10 segundos
     this.abrirToastAyuda = true;
     setTimeout(() => {
@@ -151,14 +151,11 @@ export class PanelResultadosComponent implements OnInit {
     }, 10000);
   }
 
-  cerrarAyuda(){
+  cerrarAyuda() {
     this.abrirToastAyuda = false;
   }
 
   tablaEvaluacion(fila: number, columna: number) {
-    console.log('entra');
-    console.log('fila:', fila);
-    console.log('columna:', columna);
 
     let datos = this.datosIntersecciones.find(
       obj => obj.idFila === fila && obj.idColumna === columna
@@ -166,12 +163,12 @@ export class PanelResultadosComponent implements OnInit {
 
     let eva = datos?.conteoTipoEvaluacion === null ? datos?.conteoDisenioEval : datos?.conteoTipoEvaluacion;
     let idGpo = eva?.split(':');
-    console.log('idGpo:', idGpo[0]);
 
 
-    console.log('datos:', datos);
 
-    this.router.navigate(['/evaluacion'], { queryParams: { idMbe: this.idmbe, idFila: fila, idColumna: columna, idEva: idGpo[0]} });
+
+
+    this.router.navigate(['/evaluacion'], { queryParams: { idMbe: this.idmbe, idFila: fila, idColumna: columna, idEva: idGpo[0] } });
   }
 
   cerraModal() {
@@ -179,30 +176,26 @@ export class PanelResultadosComponent implements OnInit {
   }
 
   cargarChechbox() {
-    console.log('categoriasFilas:', this.categoriasFilas);
+
     this.categoriasFilas?.forEach(() => {
-      console.log('entra');
       this.categoriaSeleccionadaFila.push(false);
     });
   }
 
   cargarChechboxSubFila() {
     this.subcategoriasFilas?.forEach(() => {
-      console.log('entra');
       this.subcategoriaSeleccionadaFila.push(false);
     });
   }
 
   cargarChechboxColumnas() {
     this.categoriasColumnas?.forEach(() => {
-      console.log('entra');
       this.categoriaSeleccionadaColumna.push(false);
     });
   }
 
   cargarChechboxSubColumnas() {
     this.subcategoriasColumnas?.forEach(() => {
-      console.log('entra');
       this.subcategoriaSeleccionadaColumna.push(false);
     });
   }
@@ -211,41 +204,44 @@ export class PanelResultadosComponent implements OnInit {
     this.gmbservices.obtenerVersionMaximaMBE(this.idmbe).subscribe(
       res => {
         this.versionMaxima = res?.data === null ? 1 : res?.data;
-        console.log(res);
+
       }
     )
   }
 
   cargarDatosMbe() {
-    console.log('id:', this.idmbe);
-    console.log('version:', this.versionMaxima);
+
+
     this.gmbservices.obtenerDatosGMBEBurbujas(this.idmbe, this.versionMaxima).subscribe(
       res => {
-        console.log('datos:', res);
+
         this.datosIntersecciones = res;
-        console.log('datos', this.datosIntersecciones)
+        console.log('datos', this.datosIntersecciones);
+        setTimeout(() => {
+          this.cargaEstructuraPanelResultados();
+        }, 1000);
       },
       err => { }
     );
   }
 
-  abrirModal(content:any, informacion: any, titulo: string) {
-    this.modalService.open(content,{
+  abrirModal(content: any, informacion: any, titulo: string) {
+    this.modalService.open(content, {
       centered: true,
       keyboard: false,
       size: 'md'
     });
-    console.log('informacion:', informacion);
+
 
     switch (titulo) {
       case 'categoria':
-        console.log('entra');
+
         this.tituloCategoriaModal = informacion.categoria;
         this.informacionCategoriaModal = informacion.descripcionSubcategoria;
         this.urlModal = informacion.complementoSubcategoria;
         break;
       case 'subcategoria':
-        console.log('entra'); 
+
         this.tituloCategoriaModal = informacion.subCategoria;
         this.informacionCategoriaModal = informacion.descripcionSubcategoria;
         this.urlModal = informacion.complementoSubcategoria;
@@ -259,7 +255,7 @@ export class PanelResultadosComponent implements OnInit {
     window.open(this.urlModal, '_blank');
   }
 
-  mensajeFlotante(fila:number, columna:number){
+  mensajeFlotante(fila: number, columna: number) {
     let datos = this.datosIntersecciones.find(
       obj => obj.idFila === fila && obj.idColumna === columna
     );
@@ -274,10 +270,10 @@ export class PanelResultadosComponent implements OnInit {
 
     this.nombreGPOFlotante = nombreGpo;
     this.countFlotante = count;
-    
+
   }
 
-  mensajeFuera(){
+  mensajeFuera() {
     this.figuraActivaId = null;
     this.mensajeFlotanteFuera = false;
   }
@@ -285,25 +281,25 @@ export class PanelResultadosComponent implements OnInit {
   // escucharCambiosSelect() {
   //   this.generales.get('categoriaFila')?.valueChanges.subscribe((value) => {
   //     this.selectedCategoriaFila = value;
-  //     console.log('selectedCategoria:', this.selectedCategoriaFila);
+  //     
   //     this.filtrosCategoriasFilas(parseInt(value), 0);
   //     this.filtrosSubcategoriasFilas(parseInt(value), 0);
   //   })
   //   this.generales.get('subcategoriaFila')?.valueChanges.subscribe((value) => {
-  //     console.log('selectedSubcategoria:', value);
+  //     
   //     this.selectedSubcategoriaFila = value;
   //     this.filtrosSubcategoriasFilas(parseInt(this.selectedCategoriaFila), parseInt(value));
   //   })
 
 
   //   this.generales.get('categoriasColumna')?.valueChanges.subscribe((value) => {
-  //     console.log('selectedCategoria:', value);
+  //     
   //     this.filtrosCategoriasColumnas(parseInt(value), 0);
   //     this.filtrosSubcategoriasColumnas(parseInt(value), 0);
   //   });
 
   //   this.generales.get('subcategoriasColumna')?.valueChanges.subscribe((value) => {
-  //     console.log('selectedSubcategoria:', value);
+  //     
   //     this.filtrosSubcategoriasColumnas(parseInt(this.generales.get('categoriasColumna')?.value), parseInt(value));
   //   });
 
@@ -313,13 +309,13 @@ export class PanelResultadosComponent implements OnInit {
     let datosEnvio = {
       idMbe: this.idmbe,
       idTipo: 2,
-      categorias:  null,
-      subcategorias:  null,
+      categorias: null,
+      subcategorias: null,
     };
 
     this.gmbservices.filtroCategoria(datosEnvio).subscribe(
       res => {
-        console.log('Categorias obtenidas:', res);
+
         this.categoriasFilas = res;
         this.cargarChechbox();
         //this.cargarChechbox();
@@ -330,8 +326,8 @@ export class PanelResultadosComponent implements OnInit {
     );
   }
 
-  filtrosSubcategoriasFilas(idCategorias : any = null) {
-    console.log('idCategoria:', idCategorias);
+  filtrosSubcategoriasFilas(idCategorias: any = null) {
+
     let datosEnvio;
     if (idCategorias?.length === 0) {
       this.subcategoriasFilas = [];
@@ -339,13 +335,13 @@ export class PanelResultadosComponent implements OnInit {
       datosEnvio = {
         idMbe: this.idmbe,
         idTipo: 3,
-        categorias:idCategorias,
+        categorias: idCategorias,
         subcategorias: null,
-      }; 
+      };
 
       this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
         res => {
-          console.log('Subcategorias obtenidas:', res);
+
           this.subcategoriasFilas = res;
           this.cargarChechboxSubFila()
         },
@@ -360,16 +356,16 @@ export class PanelResultadosComponent implements OnInit {
   filtrosCategoriasColumnas() {
     let datosEnvio = {
       idMbe: this.idmbe,
-      idTipo: 1,
+      idTipo: 2,
       categorias: null,
       subcategorias: null,
     };
 
     this.gmbservices.filtroCategoria(datosEnvio).subscribe(
       res => {
-        console.log('Categorias obtenidas:', res);
-        this.categoriasColumnas = res;
 
+        this.categoriasColumnas = res;
+        console.log('categoriasColumnas', this.categoriasColumnas);
         this.cargarChechboxColumnas();
       },
       err => {
@@ -392,7 +388,7 @@ export class PanelResultadosComponent implements OnInit {
 
       this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
         res => {
-          console.log('Subcategorias obtenidas:', res);
+
           this.subcategoriasColumnas = res;
           //Saca el idCategoria del primer dato de la subcategoria y marca el checkbox de la categoria
           this.categoriaSeleccionadaColumnas = [];
@@ -401,7 +397,8 @@ export class PanelResultadosComponent implements OnInit {
         err => {
           console.error('Error al obtener subcategorías:', err);
         }
-    )};
+      )
+    };
   }
 
   anchoDinamico() {
@@ -421,11 +418,11 @@ export class PanelResultadosComponent implements OnInit {
   }
 
 
-  cargaEstructuraPanelResultados(idCateoriaFilas:any = null, idSubcategoriaFilas:any = null, idCategoriaColumnas:any = null, idSubcategoriaColumnas:any = null) {
-    console.log('idCateoriaFilas:', idCateoriaFilas);
-    console.log('idSubcategoriaFilas:', idSubcategoriaFilas);
-    console.log('idCategoriaColumnas:', idCategoriaColumnas);
-    console.log('idSubcategoriaColumnas:', idSubcategoriaColumnas);
+  cargaEstructuraPanelResultados(idCateoriaFilas: any = null, idSubcategoriaFilas: any = null, idCategoriaColumnas: any = null, idSubcategoriaColumnas: any = null) {
+
+
+
+
     //limpia los datos de la estructura
     this.estructuraFinalColumnasTitulos = [];
     this.estructuraFinalFilasTitulos = [];
@@ -442,22 +439,22 @@ export class PanelResultadosComponent implements OnInit {
     this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
       res => {
         this.sinResultados(res);
-        console.log('Estructura obtenida:', res);
+
         // Filtrar las columnas y las filas por tipo
         this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
         this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
-        
-        for(let a=0;a<this.estructuraFinalFilasTitulos.length;a++){
+
+        for (let a = 0; a < this.estructuraFinalFilasTitulos.length; a++) {
           this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.estructuraFinalFilasTitulos[a].hijos);
         }
 
         //Cuenta cuantas veces se repite el idSubCategoria y almacenar en una variable
 
-        console.log('subFilas:', this.estructuraFinalFilasSubitulos);
-        
 
-        console.log('Columnas:', this.estructuraFinalColumnasTitulos);
-        console.log('Filas:', this.estructuraFinalFilasTitulos);
+
+
+
+
       },
       err => {
         console.error('Error al obtener estructura del panel:', err);
@@ -485,13 +482,18 @@ export class PanelResultadosComponent implements OnInit {
     this.subcategoriaSeleccionadaFila = [];
     this.categoriaSeleccionadaColumna = [];
     this.subcategoriaSeleccionadaColumna = [];
+    //vuelve a recargar los datos de los filtros
+    this.filtrosCategoriasFilas();
+    this.filtrosSubcategoriasFilas();
+    this.filtrosCategoriasColumnas();
+    this.filtrosSubcategoriasColumnas();
     this.cargaEstructuraPanelResultados();
   }
 
   filtrarPorTipo(arreglo: any[], tipo: number) {
     const result = arreglo.filter(item => item.idTipo === tipo);
-    
-    let countSubCats =  result.reduce((contador, producto) => {
+
+    let countSubCats = result.reduce((contador, producto) => {
       // Si la categoría ya existe en el contador, incrementamos su valor
       if (contador[producto.idCategoria]) {
         contador[producto.idCategoria]++;
@@ -502,7 +504,7 @@ export class PanelResultadosComponent implements OnInit {
       return contador;
     }, {});
 
-    console.log('countSubCats:', countSubCats);
+
 
     // Para agrupar por categoría
     const categoriasMap = new Map<number, any>();
@@ -541,22 +543,22 @@ export class PanelResultadosComponent implements OnInit {
   obtenerTipo(arreglo: any, tipo: number) {
     let salida = [];
     salida = arreglo.filter((e: any) => e.idTipo === tipo);
-    console.log('salida:', salida);
+
     return salida;
   }
 
   filtrarCategoriasUnicas(arreglo: any) {
     const categoriasMap = new Map<number, any>();
 
-    console.log('arreglo:', arreglo);
+
     arreglo.forEach((obj: any) => {
       const categoria = obj.idCategoria;
-      
+
       if (categoria && typeof categoria === 'number') {
         if (!categoriasMap.has(categoria)) {
           categoriasMap.set(categoria, { idCategoria: categoria, catalogo: obj.categoria, hijos: [] });
         }
-  
+
         // Agregar subcategorías a la categoría correspondiente
         categoriasMap.get(categoria).hijos.push({
           idSubCategoria: obj.idSubCategoria,
@@ -566,7 +568,7 @@ export class PanelResultadosComponent implements OnInit {
         console.error('Error: La categoría no es válida', categoria);
       }
     });
-  
+
     return Array.from(categoriasMap.values());
   }
 
@@ -585,7 +587,7 @@ export class PanelResultadosComponent implements OnInit {
     }
     let conteoTipoEvaluacion = respuesta?.conteoDisenioEval !== null ? respuesta.conteoDisenioEval : respuesta.conteoTipoEvaluacion;
     let evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
-    let objetoBurbuja = evaluaciones.map((eva:any) => {
+    let objetoBurbuja = evaluaciones.map((eva: any) => {
       let parts = eva.split(':');
       return {
         idGpo: parseInt(parts[0]),
@@ -605,7 +607,7 @@ export class PanelResultadosComponent implements OnInit {
     if (!this.conteoCategorias[idCategoria]) {
       if (this.colores.length === 0) {
         // Reset the colors array if all colors have been used
-        this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280' , '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+        this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffe0e5', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
       }
       this.colorSeleccionado = this.colores.splice(Math.floor(Math.random() * this.colores.length), 1)[0];
       this.conteoCategorias[idCategoria] = this.colorSeleccionado;
@@ -626,7 +628,7 @@ export class PanelResultadosComponent implements OnInit {
       this.cargaEstructuraPanelResultados.bind(this),
       //this.cargarChechboxSubFila.bind(this)
     );
-    console.log('categoriaSeleccionada:', this.categoriaSeleccionadaFilas);
+
   }
 
   onSubCategoriaChangeFilas(idSeccion: number) {
@@ -637,7 +639,7 @@ export class PanelResultadosComponent implements OnInit {
       null,
       this.cargaEstructuraPanelResultados.bind(this)
     );
-    console.log('subcategoriaSeleccionada:', this.subcategoriaSeleccionadaFilas);
+
   }
 
   onCategoriaChangeColumnas(idSeccion: number) {
@@ -650,18 +652,18 @@ export class PanelResultadosComponent implements OnInit {
       this.cargaEstructuraPanelResultados.bind(this),
       //this.cargaEstructuraPanelResultados.bind(this)
     );
-    console.log('categoriaSeleccionada:', this.categoriaSeleccionadaColumnas);
+
   }
 
   onSubCategoriaChangeColumnas(idSeccion: number) {
-    this.toggleSelection( 
+    this.toggleSelection(
       idSeccion,
       this.subcategoriaSeleccionadaColumnas,
       null,
       null,
       this.cargaEstructuraPanelResultados.bind(this)
     );
-    console.log('subcategoriaSeleccionada:', this.subcategoriaSeleccionadaColumnas);
+
   }
 
   private toggleSelection(
@@ -695,7 +697,7 @@ export class PanelResultadosComponent implements OnInit {
     return this.estructuraFinalColumnasTitulos.reduce((acc, col) => acc + col.hijos.length, 0);
   }
 
-  descargar(){
+  descargar() {
     swal.fire({
       title: 'Descargando',
       timerProgressBar: true,
@@ -703,9 +705,9 @@ export class PanelResultadosComponent implements OnInit {
         swal.showLoading();
       }
     });
-    this.gmbservices.descargarReporteDatos(this.idmbe,this.versionMaxima).subscribe(
+    this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
       (res: HttpResponse<ArrayBuffer>) => {
-        if(res.body!.byteLength>0){
+        if (res.body!.byteLength > 0) {
           const file = new Blob([res!.body!], { type: 'application/xlsx' });
           const fileURL = URL.createObjectURL(file);
           var link = document.createElement('a');
@@ -714,7 +716,7 @@ export class PanelResultadosComponent implements OnInit {
           swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
           link.download = 'DatosMBE_' + this.generales.get('nombre')!.value.replace(/\s+/g, '') + '.xlsx';
           link.click();
-        }else{
+        } else {
           swal.fire({
             icon: 'error',
             title: '<center> Error </center>',
@@ -722,7 +724,7 @@ export class PanelResultadosComponent implements OnInit {
           })
         }
       },
-      err=>{
+      err => {
         swal.fire({
           icon: 'error',
           title: '<center> Error </center>',
