@@ -1,1 +1,17 @@
-<div #chartContainer style="background-color: #f0f8ff;" [id]="chartId"  class="chart-container"></div>
+<div id="chart">
+    <apx-chart
+    [series]="chartOptions?.series"
+    [chart]="chartOptions?.chart"
+    [xaxis]="chartOptions?.xaxis"
+    [yaxis]="chartOptions?.yaxis"
+    [grid]="chartOptions?.grid"
+    [states]="chartOptions?.states"
+    [dataLabels]="chartOptions?.dataLabels"
+    [markers]="chartOptions?.markers"
+    [fill]="chartOptions?.fill"
+    [tooltip]="chartOptions?.tooltip"
+    [plotOptions]="chartOptions?.plotOptions"
+    >
+
+    </apx-chart>
+</div>

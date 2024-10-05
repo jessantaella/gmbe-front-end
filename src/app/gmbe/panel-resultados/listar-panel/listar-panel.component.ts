@@ -118,6 +118,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.storage.removeItem('zArrayGuardado4');
   }
   ngOnInit(): void {
+    this.storage.removeItem('zArrayGuardado4');
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirAyuda();
