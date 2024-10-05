@@ -138,8 +138,8 @@
               [attr.rowspan]="this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 2 : 1">
               {{ columna.categoria }} <br>
               <div class="text-end"
-                *ngIf="columna?.hijos[i]?.subCategoria === null && (columna?.hijos[i]?.descripcionSubcategoria !== null && columna?.hijos[i]?.complementoSubcategoria !== null)">
-                <button class="btn p-0" (click)="this.abrirModal(content,columna.hijos[i],'categoria' )">
+                *ngIf="columna?.hijos[i]?.idSubCategoria !== 0 && (columna?.hijos[i]?.descripcionSubcategoria !== null && columna?.hijos[i]?.complementoSubcategoria !== null)">
+                <button class="btn p-0" (click)="this.abrirModal(content,columna.hijos[i],'categoria','Columna' )">
                   <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                     fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -158,7 +158,7 @@
                   {{ hijo.subCategoria }}
                   <div class="text-end"
                     *ngIf="hijo?.idSubCategoria !== 0 && (hijo?.descripcionSubcategoria !== null && hijo?.complementoSubcategoria != null)">
-                    <button class="btn p-0" (click)="this.abrirModal(content,hijo,'subcategoria' )">
+                    <button class="btn p-0" (click)="this.abrirModal(content,hijo,'subcategoria','Columna' )">
                       <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                         class="bi bi-plus-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -183,10 +183,10 @@
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
-                <span class="my-2" [ngClass]="{'textoVertical':this.estructuraFinalFilasTitulos[0].hijos[0].idSubCategoria !== 0}" >{{ fila?.categoria }} </span>
+                <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}" >{{ fila?.categoria }} </span>
                 <div class="text-end"
-                *ngIf="fila?.idSubCategoria === 0 && fila.descripcion !== null && fila.complemento !== null">
-                  <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria')">
+                *ngIf="fila?.idSubCategoria === 0 && fila.descripcionSubcategoria !== null && fila.complementoSubcategoria !== null">
+                  <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -203,7 +203,7 @@
                 {{ fila?.subCategoria }}
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && (fila?.descripcionSubcategoria !== null && fila?.complementoSubcategoria !== null )">
-                  <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria')">
+                  <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                       <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -290,7 +290,7 @@
       </form>
     </div>
     <div class="modal-footer d-flex justify-content-center align-items-center">
-      <button class="btn btnMasInformacion" *ngIf="urlModal !== '' && urlModal !== null"
+      <button class="btn btnMasInformacion" *ngIf="urlModal !== '' && urlModal !== null && this.btnMasInformacion"
         (click)="masInformacion()" type="button">Más información</button>
     </div>
   </div>

@@ -85,9 +85,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   figuraActivaId: string | null = null;
   esperaSegundos: boolean = true;
 
+  nombreMBE: string = '';
+  btnMasInformacion: boolean = true;
+
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
+    this.nombreMBE = this.storage.getItem('MBENombre')!;
     this.route.queryParams.subscribe(params => {
       this.idmbe = Number(params['idMbe']);
     });
@@ -110,6 +114,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.filtrosSubcategoriasColumnas();
   }
   ngOnDestroy(): void {
+    this.storage.removeItem('MBENombre');
     this.storage.removeItem('zArrayGuardado4');
   }
   ngOnInit(): void {
@@ -225,12 +230,18 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     );
   }
 
-  abrirModal(content: any, informacion: any, titulo: string) {
+  abrirModal(content: any, informacion: any, titulo: string, seccion: string) {
     this.modalService.open(content, {
       centered: true,
       keyboard: false,
       size: 'md'
     });
+
+    if (seccion === 'Columna') {
+      this.btnMasInformacion = false;
+    }else{
+      this.btnMasInformacion = true;
+    }
 
 
     switch (titulo) {
@@ -719,7 +730,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
           link.href = fileURL;
           swal.close();
           swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
-          link.download = 'DatosMBE_' + this.generales.get('nombre')!.value.replace(/\s+/g, '') + '.xlsx';
+          link.download = 'DatosMBE_' + this.nombreMBE.replace(/\s+/g, '') + '.xlsx';
           link.click();
         } else {
           swal.fire({
