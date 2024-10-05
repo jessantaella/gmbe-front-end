@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GmbeServicesService } from '../../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -85,9 +85,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   figuraActivaId: string | null = null;
   esperaSegundos: boolean = true;
 
+  nombreMBE: string = '';
+  btnMasInformacion: boolean = true;
+
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
+    this.nombreMBE = this.storage.getItem('MBENombre')!;
     this.route.queryParams.subscribe(params => {
       this.idmbe = Number(params['idMbe']);
     });
@@ -110,9 +114,11 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.filtrosSubcategoriasColumnas();
   }
   ngOnDestroy(): void {
+    this.storage.removeItem('MBENombre');
     this.storage.removeItem('zArrayGuardado4');
   }
   ngOnInit(): void {
+    this.storage.removeItem('zArrayGuardado4');
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirAyuda();
@@ -225,12 +231,18 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     );
   }
 
-  abrirModal(content: any, informacion: any, titulo: string) {
+  abrirModal(content: any, informacion: any, titulo: string, seccion: string) {
     this.modalService.open(content, {
       centered: true,
       keyboard: false,
       size: 'md'
     });
+
+    if (seccion === 'Columna') {
+      this.btnMasInformacion = false;
+    }else{
+      this.btnMasInformacion = true;
+    }
 
 
     switch (titulo) {
@@ -452,7 +464,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
         console.log('estructuraFinalFilasTitulos', this.estructuraFinalFilasTitulos);
         console.log('estructuraFinalColumnasTitulos', this.estructuraFinalColumnasTitulos);
         console.log('estructuraFinalFilasSubitulos', this.estructuraFinalFilasSubitulos);
-        
+
 
       },
       err => {
@@ -586,13 +598,19 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     }
     let conteoTipoEvaluacion = respuesta?.conteoDisenioEval !== null ? respuesta.conteoDisenioEval : respuesta.conteoTipoEvaluacion;
     let evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
+
+    //Imprime el alto y ancho de la thElement para poder hacer el calculo de la posición de la burbuja
+    let thElemento = document.getElementById('thElemento');
+    const alto = thElemento?.clientHeight;
     let objetoBurbuja = evaluaciones.map((eva: any) => {
       let parts = eva.split(':');
       return {
         idGpo: parseInt(parts[0]),
         nombreGpo: parts[1],
         colorBubble: parts[2],
-        count: parseInt(parts[3])
+        count: parseInt(parts[3]),
+        alto: alto,
+        ancho: thElemento?.clientWidth,
       };
     });
     return objetoBurbuja;
@@ -713,7 +731,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
           link.href = fileURL;
           swal.close();
           swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
-          link.download = 'DatosMBE_' + this.generales.get('nombre')!.value.replace(/\s+/g, '') + '.xlsx';
+          link.download = 'DatosMBE_' + this.nombreMBE.replace(/\s+/g, '') + '.xlsx';
           link.click();
         } else {
           swal.fire({

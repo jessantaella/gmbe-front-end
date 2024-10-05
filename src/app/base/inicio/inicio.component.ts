@@ -118,6 +118,7 @@ export class InicioComponent implements OnInit {
   informacionMBEPublico(publico:any){
     console.log("MBE",publico)
     //Envia por URL el id del MBE
+    this.storage.setItem('MBENombre', publico.nombre);
     this.router.navigate(['/panel'], {queryParams: {idMbe: publico.idMbe} });
   }
 

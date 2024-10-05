@@ -26,3 +26,14 @@
   border: none;
   opacity: 1; /* Asegura que sea completamente visible */
 }
+
+.toast-body span {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.toast-container {
+  max-height: calc(100vh - 20px); 
+  overflow-y: auto;
+}
+

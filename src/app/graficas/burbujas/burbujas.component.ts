@@ -11,7 +11,38 @@ import {
 } from "@angular/core";
 import { StorageService } from "src/app/services/storage-service.service";
 
-declare var ApexCharts: any;
+import ApexCharts from 'apexcharts';
+
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexFill,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexYAxis,
+  ApexTitleSubtitle,
+  ApexGrid,
+  ApexStates,
+  ApexMarkers,
+  ApexTooltip,
+  ApexPlotOptions
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  title: ApexTitleSubtitle;
+  fill: ApexFill;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  states: ApexStates;
+  markers: ApexMarkers;
+  tooltip: ApexTooltip;
+  plotOptions: ApexPlotOptions
+};
 
 @Component({
   selector: "app-burbujas",
@@ -22,30 +53,29 @@ export class BurbujasComponent implements AfterViewInit {
   @ViewChild("chartContainer", { static: false }) chartContainer: ElementRef | undefined;
   @Input() chartId: string | undefined;
   @Input() chartTitle: string | undefined;
-  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number }[] = [];
+  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number }[] = [];
 
   w: number = 200;
   h: number = 200;
 
-  public chartOptions: any;
-  valorZguardado: any;
   isBrowser = false;
-  zArrayGuardado: any;
+  zArrayGuardado: number[] = [];
   valorMaximoZ: number = 0;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any, private storage:StorageService) {}
+  @ViewChild("chart") chart: ChartComponent | undefined;
+  chartOptions: Partial<ChartOptions> | undefined;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: any, private storage: StorageService) { }
 
   ngAfterViewInit(): void {
-    console.log("Bubble data");
-    console.log(this.chartTitle);
-    console.log(this.bubbleData);
     this.isBrowser = isPlatformBrowser(this.platformId);
+    console.log("bubbleData", this.bubbleData);
     if (this.bubbleData && this.bubbleData.length > 0) {
-      this.chartOptions = this.getCharOptions();
       if (this.isBrowser) {
         setTimeout(() => {
-          const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
-          chart.render();
+          // const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
+          // chart.render();
+          this.getChartOptions();
         }, 0);
       }
     } else {
@@ -53,224 +83,150 @@ export class BurbujasComponent implements AfterViewInit {
     }
   }
 
-  getCharOptions() {
-    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData([bubble.count], bubble.nombreGpo, bubble.colorBubble,this.chartTitle || ''));
-
-    console.log("Series data"); 
-    console.log(seriesData);
+  getChartOptions() {
+    const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble));
 
     const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
     const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
     const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
     const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
 
-    // Encuentra el valor máximo de z (tamaño de burbuja)
-    console.log("valorMaximoZ");
-    console.log(this.valorMaximoZ);
-    const maxZ = this.valorMaximoZ;
-    // Ajuste del tamaño máximo de burbuja
-    let bubbleSizeFactor = 30; // Ajusta este factor según lo necesites
+    const alto = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.alto), 0);
+    const ancho = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.ancho), 0);
+    this.valorMaximoZ = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.valorOriginalZ), 0);
 
-    if (this.valorMaximoZ > 3) {
-      console.log("maxZ");
-      bubbleSizeFactor = 16;
-    } else {
-      if (this.valorMaximoZ > 3)  {
-        console.log("minZ");
-        bubbleSizeFactor = 120;
-      } else {
-        console.log("else");
-        bubbleSizeFactor = 10;
-      }
-    }
+    console.log("seriesData", seriesData);
+    console.log("alto", alto);
+    console.log("ancho", ancho);
 
-    return {
+    this.chartOptions = {
       grid: {
-        xaxis: {
-          lines: {
-            show: false,
-          },
-        },
-        yaxis: {
-          lines: {
-            show: false,
-          },
-        },
+        xaxis: { lines: { show: false }  },
+        yaxis: { lines: { show: false } },
       },
-      series: [
-        {
-          name: "Burbujas",
-          data: seriesData,
-        },
-      ],
+      series: [{
+        data: seriesData 
+      }],
       chart: {
-        responsive: true,
-        height: this.h,
-        width: this.w,
+        height: alto + 120,
+        width: ancho,
         type: "bubble",
-        toolbar: {
-          show: false,
-        },
+        toolbar: { show: false },
         background: "transparent",
-        zoom: {
-          enabled: false,
-        },
+        zoom: { enabled: false },
+        offsetX: 0,  // Elimina el desplazamiento horizontal
+        offsetY: 0,
+      },
+      plotOptions: {
+        bubble: {
+          minBubbleRadius: 5,  // Tamaño mínimo para que no se corten
+          maxBubbleRadius: this.valorMaximoZ,  // Ajusta el tamaño máximo de las burbujas
+        }
       },
       dataLabels: {
         enabled: false,
       },
       fill: {
         opacity: 0.8,
+        colors: seriesData.map(bubble => bubble.fillColor),
       },
       title: {
-        text: "",
+        text: '',
       },
       xaxis: {
-        min: minX,
-        max: maxX,
-        labels: {
-          show: false,
-        },
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
+        tickAmount: 12,
+        type: "category",
+        max: maxX + 10,
+        min: 0,
+        labels: { show: false },
+        axisBorder: { show: false },
+        axisTicks: { show: false },
       },
+
       yaxis: {
-        min: minY,
-        max: maxY,
-        labels: {
-          show: false,
-        },
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
+        max: maxY + 10,
+        min: 0,
+        labels: { show: false },
+        axisBorder: { show: false },
+        axisTicks: { show: false },
       },
-      legend: {
-        show: true,
-      },
-      markers: {
-        size: seriesData.map(d => d.z / this.valorMaximoZ * bubbleSizeFactor), // Escala el tamaño de las burbujas
-        colors: seriesData.map(d => d.colorBubble), // Utiliza el color de cada burbuja
-        hover: {
-          sizeOffset: 100 // Aumenta el área de interacción al pasar el mouse
-        },
-      },
-      plotOptions: {
-        bubble: {
-          minBubbleRadius: 5, // Ajusta el radio mínimo
-          maxBubbleRadius: 80, // Ajusta el radio máximo para una mayor área de interacción
-        },
-        marker: {
-          hover: {
-            size: undefined, // para evitar que cambie el tamaño
-            sizeOffset: 0, // para evitar cualquier cambio de tamaño o brillo
-          }
-        }
+      states: {
+        hover: { filter: { type: 'none' } },
       },
       tooltip: {
         enabled: true,
-        custom: function({ series, seriesIndex, dataPointIndex, w }: { series: any; seriesIndex: number; dataPointIndex: number; w: any }) {
+        custom: ({ series, seriesIndex, dataPointIndex, w }: { series: any; seriesIndex: number; dataPointIndex: number; w: any }) => {
           const bubbleData = w.config.series[seriesIndex].data[dataPointIndex];
-          console.log("Bubble data");
-          console.log(bubbleData);
-          return `<div class="tooltip-content">
-                    <span><strong>${bubbleData.nombreGpo}: ${bubbleData.z}</strong></span><br>
-                  </div>`;
-        }
-      },
-      states: {
-        hover: {
-          filter: {
-            type: 'none' // Desactiva el filtro de hover (el resalte)
-          }
-        }
+          return `<div class="tooltip-content"><span><strong>${bubbleData.nombreGpo}: ${bubbleData.valorOriginalZ}</strong></span><br></div>`;
+        },
       }
     };
   }
 
-  generateBubbleData(zArray: number[], nombreGpo: string, colorBubble: string, titulo:string): { x: number; y: number; z: number; nombreGpo: string; colorBubble: string } {
-    const chartWidth = this.w;
-    const chartHeight = this.h;
+  generateBubbleData(bubble: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number }) {
+    const { count, nombreGpo, colorBubble, alto, ancho } = bubble;
+    const chartWidth = ancho;
+    const chartHeight = alto;
 
-    // Generate random x and y coordinates within the chart dimensions
-    const x = Math.random() * chartWidth;
-    const y = Math.random() * chartHeight;
+    console.log("z", count);
 
-    console.log("titulo");
-    console.log(titulo);
+    this.actualizarZArrayGuardado(count);
 
-    switch (titulo) {
-      case "GraficaPrincipal":
-        //Almacena todos los valores de z que vayan llegando en un array en local storage sin perder los valores anteriores
-        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado") || "[]");
-        this.zArrayGuardado.push(zArray[0]);
-        this.storage.setItem("zArrayGuardado", JSON.stringify(this.zArrayGuardado));
-        console.log("zArrayGuardado");
-        console.log(this.zArrayGuardado);
-        break;
-      case "GraficaModal1":
-        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado2") || "[]");
-        this.zArrayGuardado.push(zArray[0]);
-        this.storage.setItem("zArrayGuardado2", JSON.stringify(this.zArrayGuardado));
-        console.log("zArrayGuardado2");
-        console.log(this.zArrayGuardado);
-        break;
-      case "GraficaModal2":
-        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado3") || "[]");
-        this.zArrayGuardado.push(zArray[0]);
-        this.storage.setItem("zArrayGuardado3", JSON.stringify(this.zArrayGuardado));
-        console.log("zArrayGuardado3");
-        console.log(this.zArrayGuardado);
-        break;
-      case "GraficaPanel":
-        this.zArrayGuardado = JSON.parse(this.storage.getItem("zArrayGuardado4") || "[]");
-        this.zArrayGuardado.push(zArray[0]);
-        this.storage.setItem("zArrayGuardado4", JSON.stringify(this.zArrayGuardado));
-        console.log("zArrayGuardado4");
-        console.log(this.zArrayGuardado);
-        break;
-      
-    }
-
-    //Cuando termine de cargar la página, se obtiene el valor de zArrayGuardado y se buscara el valor máximo
-    let maxZ = Math.max(...this.zArrayGuardado, 0);
-    let minZ = Math.min(...this.zArrayGuardado, 1);
-
+    const maxZ = Math.max(...this.zArrayGuardado, 0) || 1;
+    console.log("maxZ", maxZ);
     this.valorMaximoZ = maxZ;
 
-    // Ajuste del tamaño máximo de burbuja
-    let bubbleSizeFactor; // Ajusta este factor según lo necesites
+    const bubbleSizeFactor = maxZ;
 
-    console.log("zArrayGuardado");
-    console.log(this.zArrayGuardado);
+    const minBubbleSize = 5; // Minimum bubble size to ensure visibility
+    const zAdjusted = ((count / maxZ) * (bubbleSizeFactor - minBubbleSize)) + minBubbleSize;
 
-    //Si el valor de zArray[0] es igual al valor máximo de zArrayGuardado, entonces la escala de las burbujas será 30 y si no, será 55
-    if (maxZ ==  zArray[0] && zArray[0] >= 3) {
-      console.log("maxZ");
-      bubbleSizeFactor = 16;
-    } else {
-      if (minZ == zArray[0] && zArray[0] >= 3)  {
-        console.log("minZ");
-        bubbleSizeFactor = 120;
-      } else {
-        console.log("else");
-        bubbleSizeFactor = 10;
-      }
+    // Asegura que la posición x no haga que la burbuja se salga por los lados
+  const x = Math.min(
+    Math.max(Math.random() * chartWidth, zAdjusted / 2),
+    chartWidth - zAdjusted / 2
+  );
+
+  // Asegura que la posición y no haga que la burbuja se salga por arriba o por abajo
+  const y = Math.min(
+    Math.max(Math.random() * chartHeight, zAdjusted / 2),
+    chartHeight - zAdjusted / 2
+  );
+
+    console.log("zAdjusted", zAdjusted);
+
+    return {
+      x: isNaN(x) ? 0 : x,
+      y: isNaN(y) ? 0 : y,
+      z: isNaN(zAdjusted) ? 0 : zAdjusted,
+      fillColor: colorBubble,
+      nombreGpo: nombreGpo,
+      alto,
+      ancho,
+      valorOriginalZ: count,
+      valorMaximoZ: maxZ,
+    };
+  }
+
+  actualizarZArrayGuardado(z: number) {
+    const storageKey = this.titulosStorage(this.chartTitle);
+    this.zArrayGuardado = JSON.parse(this.storage.getItem(storageKey) || "[]");
+    this.zArrayGuardado.push(z);
+    this.storage.setItem(storageKey, JSON.stringify(this.zArrayGuardado));
+  }
+
+  titulosStorage(title: string | undefined): string {
+    switch (title) {
+      case "GraficaPrincipal":
+        return "zArrayGuardado";
+      case "GraficaModal1":
+        return "zArrayGuardado2";
+      case "GraficaModal2":
+        return "zArrayGuardado3";
+      case "GraficaPanel":
+        return "zArrayGuardado4";
+      default:
+        return "";
     }
-
-    // Ajusta el tamaño de la burbuja según el valor de z donde z es el tamaño de la burbuja y maxZ es el valor máximo de z
-    const zAdjusted = zArray[0] / maxZ * bubbleSizeFactor;
-
-    // Ensure x, y, and z are valid numbers
-    const validX = isNaN(x) ? 0 : x;
-    const validY = isNaN(y) ? 0 : y;
-    const validZ = isNaN(zAdjusted) ? 0 : zAdjusted;
-    return { x: validX, y: validY, z: zArray[0], nombreGpo, colorBubble };
   }
 }

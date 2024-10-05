@@ -94,6 +94,9 @@ export class AuthGuard implements CanActivate {
         }
       } else if (routePath === 'vista-previa' && idAutorizados?.includes(idParam)) {
         return true;
+      } else if (routePath === 'panel' || routePath === 'evaluacion') {
+        return true;
+        
       }
 
       this.router.navigate(['/inicio']);
