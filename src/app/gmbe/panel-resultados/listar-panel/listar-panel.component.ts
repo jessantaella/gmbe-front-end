@@ -88,6 +88,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   nombreMBE: string = '';
   btnMasInformacion: boolean = true;
 
+  cadenaDatosBurbujas: any = [];
+  valorMasAltoBurbuja: number = 0;
+  valorMasBajoBurbuja: number = 0;
+
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
@@ -116,8 +120,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.storage.removeItem('MBENombre');
     this.storage.removeItem('zArrayGuardado4');
+    this.storage.removeItem('ValoresMaximosMinimos');
   }
   ngOnInit(): void {
+    this.storage.removeItem('ValoresMaximosMinimos');
     this.storage.removeItem('zArrayGuardado4');
     this.pantallaCargando();
     //this.escucharCambiosSelect();
@@ -222,7 +228,14 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       res => {
 
         this.datosIntersecciones = res;
-        console.log('datos', this.datosIntersecciones);
+        //Crea una variable que saque conteoDisenioEval y conteoTipoEvaluacion, si conteoTipoEvaluacion es null, entonces se le asigna conteoDisenioEval
+        this.datosIntersecciones.forEach((element: any) => {
+          let cadena = element.conteoTipoEvaluacion === null ? element.conteoDisenioEval : element.conteoTipoEvaluacion;
+          this.cadenaDatosBurbujas.push(cadena);
+        });
+        console.log('cadenaDatosBurbujas', this.cadenaDatosBurbujas);
+        this.valorMasAltoBurbuja = Math.max(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
+        this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));  
         setTimeout(() => {
           this.cargaEstructuraPanelResultados();
         }, 1000);
@@ -609,6 +622,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
         nombreGpo: parts[1],
         colorBubble: parts[2],
         count: parseInt(parts[3]),
+        valorMaximoZ: this.valorMasAltoBurbuja,
+        valorMinimoZ: this.valorMasBajoBurbuja,
         alto: alto,
         ancho: thElemento?.clientWidth,
       };

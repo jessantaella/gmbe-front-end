@@ -53,7 +53,7 @@ export class BurbujasComponent implements AfterViewInit {
   @ViewChild("chartContainer", { static: false }) chartContainer: ElementRef | undefined;
   @Input() chartId: string | undefined;
   @Input() chartTitle: string | undefined;
-  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number }[] = [];
+  @Input() bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number, valorMinimoZ:number, valorMaximoZ:number }[] = [];
 
   w: number = 200;
   h: number = 200;
@@ -61,6 +61,7 @@ export class BurbujasComponent implements AfterViewInit {
   isBrowser = false;
   zArrayGuardado: number[] = [];
   valorMaximoZ: number = 0;
+  valorMinimoZ: number = 0;
 
   @ViewChild("chart") chart: ChartComponent | undefined;
   chartOptions: Partial<ChartOptions> | undefined;
@@ -75,6 +76,7 @@ export class BurbujasComponent implements AfterViewInit {
         setTimeout(() => {
           // const chart = new ApexCharts(this.chartContainer?.nativeElement, this.chartOptions);
           // chart.render();
+          this.valorMaximoMinimoZ(this.bubbleData);
           this.getChartOptions();
         }, 0);
       }
@@ -83,16 +85,20 @@ export class BurbujasComponent implements AfterViewInit {
     }
   }
 
+  valorMaximoMinimoZ(bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number, valorMinimoZ: number, valorMaximoZ: number }[]) {
+    this.valorMaximoZ = bubbleData[0]?.valorMaximoZ;
+    this.valorMinimoZ = bubbleData[0]?.valorMinimoZ;
+  }
+
   getChartOptions() {
     const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble));
 
     const alto = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.alto), 0);
     const ancho = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.ancho), 0);
-    this.valorMaximoZ = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.valorOriginalZ), 0);
 
-    console.log("seriesData", seriesData);
-    console.log("alto", alto);
-    console.log("ancho", ancho);
+    //Crea una constante que cuente el numero de burbujas que se van a mostrar
+    const numeroBurbujas = seriesData.length;
+    console.log("numeroBurbujas", numeroBurbujas);
 
     this.chartOptions = {
       grid: {
@@ -106,7 +112,8 @@ export class BurbujasComponent implements AfterViewInit {
       }],
       chart: {
         type: "bubble",
-        height: alto + 50,
+        height: alto > 100 ? alto  : alto + 50, // Ensure a minimum height for better visibility
+        width: ancho, 
         toolbar: { show: false },
         background: "transparent",
         zoom: { enabled: false },
@@ -130,11 +137,14 @@ export class BurbujasComponent implements AfterViewInit {
       },
       plotOptions: {
         bubble: {
+          //El valor maxBubbleRadius es el tamaño maximo de la burbuja, el valor minBubbleRadius es el tamaño minimo de la burbuja que acepta el grafico
+          //El valor es 25 para no salirse del grafico
           maxBubbleRadius: 25,
           minBubbleRadius: 5,
         }
       },
       xaxis: {
+        //El valor min es donde empieza el eje x, el valor max es donde termina el eje tomando en cuenta el ancho del th
         min: 0,
         max: ancho,
         type: 'numeric',
@@ -144,6 +154,7 @@ export class BurbujasComponent implements AfterViewInit {
       },
 
       yaxis: {
+        //El valor min es donde empieza el eje y, el valor max es donde termina el eje tomando en cuenta el alto del th
         min: 0,
         max: alto,
         labels: { show: false },
@@ -163,7 +174,7 @@ export class BurbujasComponent implements AfterViewInit {
     };
   }
 
-  generateBubbleData(bubble: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number }) {
+  generateBubbleData(bubble: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number, valorMinimoZ: number, valorMaximoZ: number }) {
     const { count, nombreGpo, colorBubble, alto, ancho } = bubble;
     const chartWidth = ancho;
     const chartHeight = alto;
@@ -171,26 +182,29 @@ export class BurbujasComponent implements AfterViewInit {
     console.log("z", count);
 
     this.actualizarZArrayGuardado(count);
-
-    const maxZ = Math.max(...this.zArrayGuardado, 0);
-    console.log("maxZ", maxZ);
-    this.valorMaximoZ = maxZ;
-
-    const bubbleSizeFactor = 23;
-
-    const minBubbleSize = 7; // Minimum bubble size to ensure visibility
-    const zAdjusted = Math.floor((bubbleSizeFactor * count) / 25) + minBubbleSize;
+    //El valor de z primero se multiplica por el factor de tamaño de burbuja y luego se divide por 25, luego se le suma el valor minimo de tamaño de burbuja
+    //El valor minimo es igual al valor minimo aceptado mas dos puntos para que no se salga del grafico
+    //El valor maximo es igual al valor maximo aceptado descontando dos puntos para que no se salga del grafico
+    const zAdjusted = Math.floor(count); 
 
     // Asegura que la posición x no haga que la burbuja se salga por los lados
-  const x = Math.floor(Math.random() * (chartWidth - 50 + 1)) + 25;
+  //Toma un valor aleatorio y lo multiplica por el valor mas grande ancho del grafico y el valor mas pequeño ancho del grafico, luego solo se le suma el valor mas pequeño del grafico
+  let x = Math.floor(Math.random() * (chartWidth - 50 + 1)) + 25;
 
   // Asegura que la posición y no haga que la burbuja se salga por arriba o por abajo
-  const y = Math.floor(Math.random() * (chartHeight - 60 + 1)) + 30;
+  //Toma un valor aleatorio y lo multiplica por el valor mas grande alto del grafico y el valor mas pequeño alto del grafico, luego solo se le suma el valor mas pequeño del grafico
+  let y = Math.floor(Math.random() * (chartHeight - 60 + 1)) + 30;
 
-  console.log("x", x);
-  console.log("y", y);
+  //Guarda en localStorage el valor en array de x y y como coordenadas, despues lo compara con el valor de x y y para que no se repitan
+  //Si se repiten se vuelve a generar un valor aleatorio
+  const storageKey = this.titulosStorage('coordenadas');
+  let xArrayGuardado = JSON.parse(this.storage.getItem(storageKey) || "[]");
+  let yArrayGuardado = JSON.parse(this.storage.getItem(storageKey) || "[]");
 
-    console.log("zAdjusted", zAdjusted);
+  while (xArrayGuardado.includes(x) && yArrayGuardado.includes(y)) {
+    x = Math.floor(Math.random() * (chartWidth - 50 + 1)) + 25;
+    y = Math.floor(Math.random() * (chartHeight - 60 + 1)) + 30;
+  }  
 
     return {
       x: x,
@@ -201,7 +215,8 @@ export class BurbujasComponent implements AfterViewInit {
       alto,
       ancho,
       valorOriginalZ: count,
-      valorMaximoZ: maxZ,
+      valorMinimoZ: bubble.valorMinimoZ,
+      valorMaximoZ: bubble.valorMaximoZ
     };
   }
 
@@ -222,6 +237,10 @@ export class BurbujasComponent implements AfterViewInit {
         return "zArrayGuardado3";
       case "GraficaPanel":
         return "zArrayGuardado4";
+      case "ValoresMaximosMinimos":
+        return "ValoresMaximosMinimos";
+      case "coordenadas":
+        return "coordenadas";
       default:
         return "";
     }

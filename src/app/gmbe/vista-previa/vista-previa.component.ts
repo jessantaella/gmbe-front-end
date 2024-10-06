@@ -70,6 +70,11 @@ tipoModalVerant:number = 1;
 imagenPrevia:any;
 imagenNueva:any;
 
+valorMaximoZ: number = 0;
+valorMinimoZ: number = 0;
+
+arrayValoresBurbujas: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private cifrado: CifradoService,
@@ -114,6 +119,17 @@ imagenNueva:any;
       (res) => {
         console.log('datos', res);
         this.revisionDos = res;
+
+        this.revisionDos.forEach((element: any) => {
+          let valor = element.conteoTipoEval === null ? element.conteoDisenioEval: element.conteoTipoEval;
+          console.log('valor', valor);
+          this.arrayValoresBurbujas.push(valor)
+        });
+        console.log('array valores', this.arrayValoresBurbujas);
+        this.valorMaximoZ = Math.max(...this.arrayValoresBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
+        this.valorMinimoZ = Math.min(...this.arrayValoresBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
+        console.log('valor maximo', this.valorMaximoZ);
+        console.log('valor minimo', this.valorMinimoZ);
       },
       (err) => {}
     );
@@ -537,9 +553,25 @@ imagenNueva:any;
     let respuesta = this.datosIntersecciones.find(
       (obj) => obj.idFila === columna && obj.idColumna === fila
     );
-    return respuesta?.arrConteoDisenioEval.length < 1
+
+    respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;
+    
+     //Al objeto agregale el valor mas alto de z y el valor mas bajo de z
+     let thElemento = document.getElementById('thElemento');
+     const alto = thElemento?.clientHeight;
+     const ancho = thElemento?.clientWidth;
+     
+     //Agrega dentro del objeto el valor de alto y ancho
+      respuesta?.forEach((element: any) => {
+        element.valorMaximoZ = this.valorMaximoZ,
+        element.valorMinimoZ = this.valorMinimoZ,
+        element.alto = alto ? (alto + 10) : 0,
+        element.ancho = ancho
+      }) 
+
+    return respuesta;
   }
 
   datosInterseccion2(columna: number, fila: number) {
@@ -547,9 +579,25 @@ imagenNueva:any;
       (obj: any) => obj.idFila === columna && obj.idColumna === fila
     );
 
-    return respuesta?.arrConteoDisenioEval.length < 1
+    respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;
+    
+     //Al objeto agregale el valor mas alto de z y el valor mas bajo de z
+     let thElemento = document.getElementById('thElemento');
+     const alto = thElemento?.clientHeight;
+     const ancho = thElemento?.clientWidth;
+     
+     //Agrega dentro del objeto el valor de alto y ancho
+      respuesta?.forEach((element: any) => {
+        element.valorMaximoZ = this.valorMaximoZ,
+        element.valorMinimoZ = this.valorMinimoZ,
+        element.alto = alto ? (alto + 20) : 0,
+        element.ancho = ancho
+      }) 
+
+    return respuesta;
+    
   }
 
   descargar() {
