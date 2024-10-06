@@ -112,7 +112,7 @@ export class BurbujasComponent implements AfterViewInit {
       }],
       chart: {
         type: "bubble",
-        height: alto > 100 ? alto  : alto + 50, // Ensure a minimum height for better visibility
+        height: alto > 100 ? alto  : alto + 100, // Ensure a minimum height for better visibility
         width: ancho, 
         toolbar: { show: false },
         background: "transparent",

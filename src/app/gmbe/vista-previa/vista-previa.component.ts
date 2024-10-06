@@ -23,7 +23,7 @@ declare var swal: any;
   templateUrl: './vista-previa.component.html',
   styleUrls: ['./vista-previa.component.scss'],
 })
-export class VistaPreviaComponent implements OnInit {
+export class VistaPreviaComponent implements OnInit, OnDestroy {
   id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -106,6 +106,11 @@ arrayValoresBurbujas: any[] = [];
     this.cargarEstructuraMbe();
     this.cargarRevisonDos();
     //this.cargarDatosMbe();
+  }
+  ngOnDestroy(): void {
+    this.storage.removeItem('zArrayGuardado');
+    this.storage.removeItem('zArrayGuardado2');
+    this.storage.removeItem('zArrayGuardado3');
   }
   ngOnInit(): void {
     this.estatusVdalidado();
