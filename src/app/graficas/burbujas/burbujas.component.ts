@@ -172,14 +172,14 @@ export class BurbujasComponent implements AfterViewInit {
 
     this.actualizarZArrayGuardado(count);
 
-    const maxZ = Math.max(...this.zArrayGuardado, 0) || 1;
+    const maxZ = Math.max(...this.zArrayGuardado, 0);
     console.log("maxZ", maxZ);
     this.valorMaximoZ = maxZ;
 
     const bubbleSizeFactor = 23;
 
-    const minBubbleSize = 5; // Minimum bubble size to ensure visibility
-    const zAdjusted = Math.floor(((count / maxZ) * (bubbleSizeFactor - minBubbleSize)) + minBubbleSize);
+    const minBubbleSize = 7; // Minimum bubble size to ensure visibility
+    const zAdjusted = Math.floor((bubbleSizeFactor * count) / 25) + minBubbleSize;
 
     // Asegura que la posición x no haga que la burbuja se salga por los lados
   const x = Math.floor(Math.random() * (chartWidth - 50 + 1)) + 25;
