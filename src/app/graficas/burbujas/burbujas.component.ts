@@ -86,11 +86,6 @@ export class BurbujasComponent implements AfterViewInit {
   getChartOptions() {
     const seriesData = this.bubbleData.map(bubble => this.generateBubbleData(bubble));
 
-    const maxX = Math.max(...seriesData.map(d => d.x + d.z), 0);
-    const maxY = Math.max(...seriesData.map(d => d.y + d.z), 0);
-    const minX = Math.min(...seriesData.map(d => d.x - d.z), 0);
-    const minY = Math.min(...seriesData.map(d => d.y - d.z), 0);
-
     const alto = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.alto), 0);
     const ancho = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.ancho), 0);
     this.valorMaximoZ = seriesData.reduce((acc, bubble) => Math.max(acc, bubble.valorOriginalZ), 0);
@@ -101,6 +96,8 @@ export class BurbujasComponent implements AfterViewInit {
 
     this.chartOptions = {
       grid: {
+        
+        padding: { top: 0, right: 0, bottom: 0, left: 0 },
         xaxis: { lines: { show: false }  },
         yaxis: { lines: { show: false } },
       },
@@ -108,20 +105,13 @@ export class BurbujasComponent implements AfterViewInit {
         data: seriesData 
       }],
       chart: {
-        height: alto + 120,
-        width: ancho,
         type: "bubble",
+        height: alto + 50,
         toolbar: { show: false },
         background: "transparent",
         zoom: { enabled: false },
         offsetX: 0,  // Elimina el desplazamiento horizontal
         offsetY: 0,
-      },
-      plotOptions: {
-        bubble: {
-          minBubbleRadius: 5,  // Tamaño mínimo para que no se corten
-          maxBubbleRadius: this.valorMaximoZ,  // Ajusta el tamaño máximo de las burbujas
-        }
       },
       dataLabels: {
         enabled: false,
@@ -133,19 +123,29 @@ export class BurbujasComponent implements AfterViewInit {
       title: {
         text: '',
       },
+      markers: {
+        size : 0,
+        hover: { sizeOffset: 0 },
+
+      },
+      plotOptions: {
+        bubble: {
+          maxBubbleRadius: 25,
+          minBubbleRadius: 5,
+        }
+      },
       xaxis: {
-        tickAmount: 12,
-        type: "category",
-        max: maxX + 10,
         min: 0,
+        max: ancho,
+        type: 'numeric',
         labels: { show: false },
         axisBorder: { show: false },
         axisTicks: { show: false },
       },
 
       yaxis: {
-        max: maxY + 10,
         min: 0,
+        max: alto,
         labels: { show: false },
         axisBorder: { show: false },
         axisTicks: { show: false },
@@ -176,29 +176,26 @@ export class BurbujasComponent implements AfterViewInit {
     console.log("maxZ", maxZ);
     this.valorMaximoZ = maxZ;
 
-    const bubbleSizeFactor = maxZ;
+    const bubbleSizeFactor = 23;
 
     const minBubbleSize = 5; // Minimum bubble size to ensure visibility
-    const zAdjusted = ((count / maxZ) * (bubbleSizeFactor - minBubbleSize)) + minBubbleSize;
+    const zAdjusted = Math.floor(((count / maxZ) * (bubbleSizeFactor - minBubbleSize)) + minBubbleSize);
 
     // Asegura que la posición x no haga que la burbuja se salga por los lados
-  const x = Math.min(
-    Math.max(Math.random() * chartWidth, zAdjusted / 2),
-    chartWidth - zAdjusted / 2
-  );
+  const x = Math.floor(Math.random() * (chartWidth - 50 + 1)) + 25;
 
   // Asegura que la posición y no haga que la burbuja se salga por arriba o por abajo
-  const y = Math.min(
-    Math.max(Math.random() * chartHeight, zAdjusted / 2),
-    chartHeight - zAdjusted / 2
-  );
+  const y = Math.floor(Math.random() * (chartHeight - 60 + 1)) + 30;
+
+  console.log("x", x);
+  console.log("y", y);
 
     console.log("zAdjusted", zAdjusted);
 
     return {
-      x: isNaN(x) ? 0 : x,
-      y: isNaN(y) ? 0 : y,
-      z: isNaN(zAdjusted) ? 0 : zAdjusted,
+      x: x,
+      y: y,
+      z: zAdjusted,
       fillColor: colorBubble,
       nombreGpo: nombreGpo,
       alto,
