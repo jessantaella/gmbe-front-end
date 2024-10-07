@@ -113,7 +113,7 @@ export class BurbujasComponent implements AfterViewInit {
       chart: {
         type: "bubble",
         height: alto > 100 ? alto  : alto + 100, // Ensure a minimum height for better visibility
-        width: ancho, 
+        width: ancho - 15, 
         toolbar: { show: false },
         background: "transparent",
         zoom: { enabled: false },
@@ -171,9 +171,8 @@ export class BurbujasComponent implements AfterViewInit {
             return `<div class="tooltip-content" style="text-align: center;">
             <div style="display: flex; align-items: center; margin: 5px;">
                   <span style="width: 15px; height: 15px; background-color: ${bubbleData.fillColor}; border-radius: 50%; margin-right: 8px; display: inline-block;"></span>
-                  <span><strong>${bubbleData.nombreGpo}</strong></span><br>
+                  <span><strong>${bubbleData.nombreGpo}: ${bubbleData.valorOriginalZ}</strong></span><br>
             </div>
-            <span>${bubbleData.valorOriginalZ}</span><br>
             </div>`;
         },
       }

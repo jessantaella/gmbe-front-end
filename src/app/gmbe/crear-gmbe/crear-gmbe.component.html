@@ -232,7 +232,7 @@
       </form>
     </div>
     <div class="modal-footer justify-content-center">
-      <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+      <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModal()">
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
       </button>
@@ -285,7 +285,7 @@
       </form>
     </div>
     <div class="modal-footer justify-content-center">
-      <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+      <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModal()">
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
       </button>
@@ -308,7 +308,7 @@
           <div class="col-sm-6">
             <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria" (change)="obtenerSubCategoriasEditado($event)">
               <option value="" disabled >Seleccione una opción</option>
-              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">{{categoria.catalogo}}
+              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">{{categoria.catalogo}}
               </option>
             </select>
           </div>
@@ -367,7 +367,7 @@
               <select class="form-select" formControlName="categoria" 
               (change)="this.escucharSelectEditado($event)" >
                       <option value="" disabled >Seleccione una opción</option>
-                      <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">
+                      <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">
                         {{categoria.catalogo}}</option>
                     </select>
             </div>

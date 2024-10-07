@@ -92,6 +92,9 @@ export class CrearGmbeComponent implements OnInit {
   mostrarErrorurl : boolean = false;
   existeCategoria: boolean = false;
 
+  volverCargarBandera: boolean = false;
+  arregloCategoriasEditado: any;
+
 
   constructor(
     private titulos: TitulosService,
@@ -373,6 +376,10 @@ clearImage(): void {
             acc.concat(item.subcategorias),
           []
         );
+
+        this.subcategoriasAgregadas = [];
+
+        this.activarAgregar = false;
     } else {
       console.log('Columnas');
 
@@ -472,6 +479,10 @@ clearImage(): void {
               []
             );
 
+            //limpiar el arreglo de subcategorias agregadas
+            this.subcategoriasAgregadas = [];
+            this.activarAgregar = false;
+
       }
 
      
@@ -537,7 +548,19 @@ clearImage(): void {
       (res) => {
         this.arregloCategorias = res;
         console.log(res);
-        this.activarAgregar = false;
+        if (!this.volverCargarBandera) {
+          this.activarAgregar = false; 
+        }
+      },
+      (err) => {}
+    );
+  }
+
+  obtenerCategoriasEditado() {
+    this.gmbeservice.listarCatalogo(2).subscribe(
+      (res) => {
+        this.arregloCategoriasEditado = res;
+        console.log(res);
       },
       (err) => {}
     );
@@ -718,9 +741,15 @@ clearImage(): void {
     )
   }
 
+  cerrarModal() {
+    this.volverCargarBandera = false;
+    this.modalService.dismissAll();
+  }
+
   open(content: TemplateRef<any>,tipo :string) {
     this.mostrarErrorurl = false;
-    this.obtenerCategorias();
+    this.volverCargarBandera = true;
+    this.obtenerCategoriasEditado();
 
     if(tipo=== 'categoria'){
       this.esEditado = false;
@@ -1072,8 +1101,6 @@ clearImage(): void {
                   this.editarSubcategoriaForm.get('descripcion')?.setValue('');
                   this.editarSubcategoriaForm.get('url')?.setValue('');
                   //Vuelve a cargar las subcategorias
-                  this.subCategoriasEditado = [];
-                  this.subCategorias = [];
                   this.obtenerCategorias();
                   this.modalRef.close();
                 }
@@ -1116,6 +1143,7 @@ clearImage(): void {
   }
 
   cerrarModalCatalgo(){
+    this.volverCargarBandera = false;
     this.editarCategoriaForm.get('categoria')?.setValue('');
     this.editarCategoriaForm.get('descripcion')?.setValue('');
     this.editarCategoriaForm.get('url')?.setValue('');
@@ -1124,6 +1152,7 @@ clearImage(): void {
 
   cerrarModalSubCatalgo(){
     //limpia el arreglo de subcategorias agregadas y los checkboxes
+    this.volverCargarBandera = false;
     this.subCategoriasEditado = [];
     this.editarSubcategoriaForm.get('categoria')?.setValue('');
     this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
