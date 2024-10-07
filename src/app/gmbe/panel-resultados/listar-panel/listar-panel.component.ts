@@ -118,11 +118,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.filtrosSubcategoriasColumnas();
   }
   ngOnDestroy(): void {
+    this.storage.removeItem('coordenadas');
     this.storage.removeItem('MBENombre');
     this.storage.removeItem('zArrayGuardado4');
     this.storage.removeItem('ValoresMaximosMinimos');
   }
   ngOnInit(): void {
+    this.storage.removeItem('coordenadas');
     this.storage.removeItem('ValoresMaximosMinimos');
     this.storage.removeItem('zArrayGuardado4');
     this.pantallaCargando();

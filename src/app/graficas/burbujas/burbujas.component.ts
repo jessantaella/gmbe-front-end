@@ -168,7 +168,13 @@ export class BurbujasComponent implements AfterViewInit {
         enabled: true,
         custom: ({ series, seriesIndex, dataPointIndex, w }: { series: any; seriesIndex: number; dataPointIndex: number; w: any }) => {
           const bubbleData = w.config.series[seriesIndex].data[dataPointIndex];
-          return `<div class="tooltip-content"><span><strong>${bubbleData.nombreGpo}: ${bubbleData.valorOriginalZ}</strong></span><br></div>`;
+            return `<div class="tooltip-content" style="text-align: center;">
+            <div style="display: flex; align-items: center; margin: 5px;">
+                  <span style="width: 15px; height: 15px; background-color: ${bubbleData.fillColor}; border-radius: 50%; margin-right: 8px; display: inline-block;"></span>
+                  <span><strong>${bubbleData.nombreGpo}</strong></span><br>
+            </div>
+            <span>${bubbleData.valorOriginalZ}</span><br>
+            </div>`;
         },
       }
     };
@@ -195,16 +201,22 @@ export class BurbujasComponent implements AfterViewInit {
   //Toma un valor aleatorio y lo multiplica por el valor mas grande alto del grafico y el valor mas pequeño alto del grafico, luego solo se le suma el valor mas pequeño del grafico
   let y = Math.floor(Math.random() * (chartHeight - 60 + 1)) + 30;
 
-  //Guarda en localStorage el valor en array de x y y como coordenadas, despues lo compara con el valor de x y y para que no se repitan
-  //Si se repiten se vuelve a generar un valor aleatorio
-  const storageKey = this.titulosStorage('coordenadas');
-  let xArrayGuardado = JSON.parse(this.storage.getItem(storageKey) || "[]");
-  let yArrayGuardado = JSON.parse(this.storage.getItem(storageKey) || "[]");
+  // Guarda las coordenadas en localStorage
+  const coordStorageKey = this.titulosStorage('coordenadas');
+  let coordArrayGuardado = JSON.parse(this.storage.getItem(coordStorageKey) || "[]");
 
-  while (xArrayGuardado.includes(x) && yArrayGuardado.includes(y)) {
-    x = Math.floor(Math.random() * (chartWidth - 50 + 1)) + 25;
-    y = Math.floor(Math.random() * (chartHeight - 60 + 1)) + 30;
-  }  
+  // Genera nuevas coordenadas si ya existen en el almacenamiento
+  while (coordArrayGuardado.some((coord: [number, number]) => coord[0] === x && coord[1] === y)) {
+    const bubbleDiameter = zAdjusted * 2; // Assuming zAdjusted represents the radius of the bubble
+    console.log("Entro al while");
+    x = Math.floor(Math.random() * (chartWidth - bubbleDiameter + 1)) + bubbleDiameter / 2;
+    y = Math.floor(Math.random() * (chartHeight - bubbleDiameter + 1)) + bubbleDiameter / 2;
+  }
+
+  // Almacena las nuevas coordenadas
+  coordArrayGuardado.push([x, y]);
+  console.log("coordArrayGuardado", coordArrayGuardado);
+  this.storage.setItem(coordStorageKey, JSON.stringify(coordArrayGuardado));
 
     return {
       x: x,
