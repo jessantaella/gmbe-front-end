@@ -75,6 +75,8 @@ valorMinimoZ: number = 0;
 
 arrayValoresBurbujas: any[] = [];
 
+idUsuario:number = 0;
+
   constructor(
     private route: ActivatedRoute,
     private cifrado: CifradoService,
@@ -282,6 +284,19 @@ arrayValoresBurbujas: any[] = [];
     );
   }
 
+  validarAccesos(idUsuario: number) {
+    this.gmbservices.consultarAccesos(idUsuario).subscribe(
+      res => {
+        console.log(res);
+        //Actualizar el localStorage de los accesos del usuario
+        this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
   cambiarEstatusMBE(idEstatus: number) {
     let idRol = this.usuario.rolUsuario.idRol;
     let estatus;
@@ -327,6 +342,7 @@ arrayValoresBurbujas: any[] = [];
                     .fire('', 'Se ha publicado el MBE con éxito', 'success')
                     .then((result: { isConfirmed: any }) => {
                       if (result.isConfirmed) {
+                        this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
                     });
@@ -340,6 +356,7 @@ arrayValoresBurbujas: any[] = [];
                     )
                     .then((result: { isConfirmed: any }) => {
                       if (result.isConfirmed) {
+                        this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
                     });
@@ -349,6 +366,7 @@ arrayValoresBurbujas: any[] = [];
                     .fire('', 'Se ha rechazado el MBE con éxito', 'success')
                     .then((result: { isConfirmed: any }) => {
                       if (result.isConfirmed) {
+                        this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
                     });
@@ -358,6 +376,7 @@ arrayValoresBurbujas: any[] = [];
                     .fire('', 'Se ha aprobado el MBE con éxito', 'success')
                     .then((result: { isConfirmed: any }) => {
                       if (result.isConfirmed) {
+                        this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
                     });

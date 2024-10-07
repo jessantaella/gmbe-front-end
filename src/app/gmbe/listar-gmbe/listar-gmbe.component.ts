@@ -71,6 +71,7 @@ export class ListarGmbeComponent implements OnInit {
   rechazado: number = 176;
   validado: number = 0;
   mostrarMensajeRevisionesAcciones: boolean = false;
+i: any;
 
   constructor(private titulos: TitulosService,
     private modalService: NgbModal,
@@ -356,6 +357,7 @@ export class ListarGmbeComponent implements OnInit {
                 swal.fire("", "Se ha aprobado el MBE con éxito", "success");
                 break;
             }
+            this.validarAccesos(this.idUsuario);
             this.cambiarPaginaGetAll(0, 10);
           }, err => {
 

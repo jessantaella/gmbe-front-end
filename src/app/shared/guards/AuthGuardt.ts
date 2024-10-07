@@ -74,7 +74,10 @@ export class AuthGuard implements CanActivate {
         return false;
       }
 
-      const idAutorizados = objetoIds?.map((obj: any) => parseInt(obj.idMbe));
+      const idAutorizados = objetoIds?.map((obj: any) => ({
+        idMbe: parseInt(obj.idMbe),
+        idStatus: parseInt(obj.idStatus)
+      }));
       const idParam = parseInt(route.params['id']);
 
       console.log('guard', idAutorizados);
@@ -86,7 +89,7 @@ export class AuthGuard implements CanActivate {
         return true;
       } else if (permisos && permisos.idRol.includes(idRol) && routePath !== 'editar-gmbe' && routePath !== 'vista-previa') {
         return true;
-      } else if ((routePath === 'editar-gmbe' && idAutorizados?.includes(idParam)) && (idRol !== 3)) {
+      } else if ((routePath === 'editar-gmbe' && idAutorizados?.some((obj: any) => obj.idMbe === idParam && obj.idStatus !== 174)) && (idRol !== 3)) {
         const autorizado = objetoIds.find((obj: any) => obj.idMbe === idParam);
         if (!autorizado.bloqueado) {
           return true;
