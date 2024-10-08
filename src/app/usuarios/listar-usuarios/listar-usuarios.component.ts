@@ -340,7 +340,13 @@ export class ListarUsuariosComponent implements OnInit {
     }).then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
         if (usuario?.mbesAsociados.length > 0) {
-          swal.fire("", "El usuario no se puede eliminar debido a que tiene MBEs asignados", "error");
+          this.usuariosService.desactivarUsuario(usuario?.idUsuario).subscribe(
+            (res) => {
+              swal.fire("", "Usuario eliminado exitosamente", "success");
+              this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
+            },
+            (err) => {}
+          );
         } else {
           this.usuariosService.eliminarUsuario(usuario?.idUsuario).subscribe(
             (res) => {

@@ -1,4 +1,4 @@
-<div class="container mt-4 fuente">
+<div class="container-fluid mt-4 fuente">
   <form [formGroup]="generales">
     <div class="row">
       <div class="col-12 col-md-6">
@@ -95,7 +95,7 @@
               subFilas?.idSubCategoria?.catalogo }} </th>
 
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-              <th id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+              <th  [ngStyle]="{'width' : '25vh', 'height' : '25vh'}" id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
                 <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
                   [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                   *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>

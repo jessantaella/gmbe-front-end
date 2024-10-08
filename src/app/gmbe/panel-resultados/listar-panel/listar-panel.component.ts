@@ -130,6 +130,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirAyuda();
+
+    window.addEventListener('resize', () => {
+      this.storage.removeItem('coordenadas');
+      this.storage.removeItem('MBENombre');
+      this.storage.removeItem('zArrayGuardado4');
+      this.storage.removeItem('ValoresMaximosMinimos');
+      this.pantallaCargando();
+      this.cargarDatosMbe();
+    });
   }
 
   pantallaCargando() {
@@ -142,7 +151,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     });
     setTimeout(() => {
       swal.close();
-    }, 2000);
+    }, 4000);
   }
 
   datosAyuda() {

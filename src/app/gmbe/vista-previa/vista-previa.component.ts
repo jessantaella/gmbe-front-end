@@ -104,8 +104,8 @@ idUsuario:number = 0;
       actual: [''],
     });
     this.cargaMBE();
-    this.obtenerVersionMax();
     this.cargarEstructuraMbe();
+    this.obtenerVersionMax();
     this.cargarRevisonDos();
     //this.cargarDatosMbe();
   }
@@ -115,11 +115,34 @@ idUsuario:number = 0;
     this.storage.removeItem('zArrayGuardado3');
   }
   ngOnInit(): void {
+    this.pantallaCargando();
     this.estatusVdalidado();
     this.storage.removeItem('zArrayGuardado');
     this.storage.removeItem('zArrayGuardado2');
     this.storage.removeItem('zArrayGuardado3');
+
+    window.addEventListener('resize', () => {
+      this.storage.removeItem('zArrayGuardado');
+      this.estructuraFinalFilasSubitulos = [];
+      this.pantallaCargando();
+      this.cargarDatosMbe();
+      this.cargarEstructuraMbe();
+    });
   }
+
+  pantallaCargando() {
+    swal.fire({
+      title: 'Cargando',
+      timerProgressBar: true,
+      didOpen: () => {
+        swal.showLoading();
+      }
+    });
+    setTimeout(() => {
+      swal.close();
+    }, 2000);
+  }
+
 
   cargarRevisonDos() {
     this.gmbservices.obtenerDatosGMBE(this.id, 1).subscribe(
@@ -581,7 +604,7 @@ idUsuario:number = 0;
     respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;
-    
+
      //Al objeto agregale el valor mas alto de z y el valor mas bajo de z
      let thElemento = document.getElementById('thElemento');
      const alto = thElemento?.clientHeight;
