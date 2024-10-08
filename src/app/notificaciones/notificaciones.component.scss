@@ -32,8 +32,15 @@
   white-space: normal;
 }
 
-.toast-container {
-  max-height: calc(100vh - 20px); 
-  overflow-y: auto;
+@media (max-width: 650px) {
+  .toast-container {
+    max-height: calc(100vh - 50px);
+  }
+
+  .toast-body {
+    max-height: 40px; 
+    overflow-y: auto;
+  }
 }
+
 

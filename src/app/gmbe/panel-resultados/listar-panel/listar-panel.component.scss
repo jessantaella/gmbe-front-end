@@ -13,6 +13,7 @@
 .subtitulos-tabla {
   background-color: #305496;
   color: white;
+  
 }
 
 .tabladatos {
@@ -152,4 +153,16 @@ ul:hover{
 
 .tamanio {
   font-size: 22px;
+}
+.boton-ayuda {
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.texto-justificado {
+  text-align: justify;
+}
+
+.subcategoria {
+  width: 250px !important; /* Fuerza el ancho */
 }

@@ -955,7 +955,7 @@ clearImage(): void {
         }else{
           swal.fire({
             title: '',
-            text: 'No se puede editar la categoría o subcategoría porque ya tiene asignado un MBE',
+            text: 'No se puede editar esta categoría ya que se encuentra relacionada a un MBE',
             icon: 'error',
             confirmButtonText: 'OK',
             customClass: {
@@ -1125,7 +1125,7 @@ clearImage(): void {
           }else{
             swal.fire({
               title: '',
-              text: 'No se puede editar la categoría o subcategoría porque ya tiene asignado un MBE',
+              text: 'No se puede editar esta subcategoría ya que se encuentra relacionada a un MBE',
               icon: 'error',
               confirmButtonText: 'OK',
               customClass: {
