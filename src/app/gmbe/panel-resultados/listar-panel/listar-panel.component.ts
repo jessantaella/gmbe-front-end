@@ -91,6 +91,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   cadenaDatosBurbujas: any = [];
   valorMasAltoBurbuja: number = 0;
   valorMasBajoBurbuja: number = 0;
+  isLoading: boolean = true;
+
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -142,6 +144,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   }
 
   pantallaCargando() {
+    this.isLoading = true;
     swal.fire({
       title: 'Cargando',
       timerProgressBar: true,
@@ -151,7 +154,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     });
     setTimeout(() => {
       swal.close();
-    }, 4000);
+      this.isLoading = false; 
+    }, 4000); 
   }
 
   datosAyuda() {

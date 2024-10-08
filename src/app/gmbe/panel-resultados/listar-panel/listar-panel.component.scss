@@ -166,3 +166,19 @@ ul:hover{
 .subcategoria {
   width: 250px !important; /* Fuerza el ancho */
 }
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 5;
+  border-right: 1px solid #ddd;
+}
+
+.sticky-left-sub {
+  position: sticky;
+  left: 150px; /* Ajusta el valor según el ancho de la primera columna */
+  background-color: white;
+  z-index: 4;
+  border-right: 1px solid #ddd;
+}
