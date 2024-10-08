@@ -33,6 +33,7 @@ import { PanelResultadosComponent } from './gmbe/panel-resultados/listar-panel/l
 import { FormsModule } from '@angular/forms'; 
 import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { NgChartjsModule } from 'ng-chartjs';
 
 
 
@@ -63,6 +64,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
     AppRoutingModule,
     NgbModule,
     FontAwesomeModule,
+    NgChartjsModule,
     NgApexchartsModule,
     HttpClientModule,
     ReactiveFormsModule,

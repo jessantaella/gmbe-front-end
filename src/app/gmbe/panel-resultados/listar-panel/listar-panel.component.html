@@ -117,7 +117,7 @@
       </div>
     </form>
     <div class="d-flex align-items-center">
-      <div class="table-responsive">
+      <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}">
         <table class="table table-bordered"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
           <thead class="sticky-header">
@@ -176,14 +176,14 @@
   
           <tbody>
             <!-- Iterar sobre las categorías de las filas (idTipo: 2) -->
-            <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos; let i = index">
+            <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos; let u = index">
               <tr>
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center" id="padre"
                   [ngStyle]="{'background-color' :  this.colorFila(fila.count), 'color':'white'}"
                   [attr.rowspan]="fila.count" 
                   [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
-                  *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria !== fila?.idCategoria">
+                  *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
                   <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}" >{{ fila?.categoria }} </span>
                   <div class="text-end"
                   *ngIf="fila?.idSubCategoria === 0 && (fila.descripcion !== null && fila.complemento!== null)">
@@ -217,10 +217,10 @@
   
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
-                  <th [ngStyle]="{ 'height' : '25vh'}" id="thElemento" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
+                  <th id="thElemento" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
-                    <app-burbujas (mouseover)="this.mensajeFlotante(fila.idEstructura,hijo.idEstructura)" (mouseout)="this.mensajeFuera()" (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
-                      [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPanel'"
+                    <app-burbujas (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
+                      [chartId]="'chart-' + u + i + j" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
                       *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
                   </th>
