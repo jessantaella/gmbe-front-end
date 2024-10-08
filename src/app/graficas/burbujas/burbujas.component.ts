@@ -45,6 +45,7 @@ export class BurbujasComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.isBrowser = isPlatformBrowser(this.platformId);
     //console.log("bubbleData", this.bubbleData);
+    this.altoAnchor(this.bubbleData);
     if (this.bubbleData && this.bubbleData.length > 0) {
       if (this.isBrowser) {
         setTimeout(() => {
@@ -52,10 +53,10 @@ export class BurbujasComponent implements AfterViewInit {
           // chart.render();
           //this.valorMaximoCount(this.bubbleData);
           //this.valorMaximoMinimoZ(this.bubbleData);
-          this.altoAnchor(this.bubbleData);
+          this.valorMaximoCount(this.bubbleData);
           this.chartBubbleData();
           this.chart.render();
-        }, 0);
+        }, 500);
       }
     } else {
       //console.warn("No bubble data provided");
@@ -113,14 +114,7 @@ export class BurbujasComponent implements AfterViewInit {
           line: {
             borderWidth: 0 // Desactivar cualquier borde o línea
           },
-          point: {
-            radius: function(context) {
-              const rValue = (context.raw as { r: number }).r;
-              const minSize = 0;
-              const maxSize = 25;
-              return Math.max(minSize, Math.min(rValue, maxSize));
-            }
-          }
+          
         }
       }
     });
@@ -128,16 +122,11 @@ export class BurbujasComponent implements AfterViewInit {
 
   valorMaximoCount(bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number, valorMinimoZ: number, valorMaximoZ: number }[]) {
     this.valorMaximoCountData = Math.max(...bubbleData.map(d => d.count), 0);
-    this.valorMinimoCountData = Math.min(...bubbleData.map(d => d.count), 0);
+    this.valorMinimoCountData = Math.min(...bubbleData.map(d => d.count), 1);
     this.lengthArreglo = bubbleData.length;
     console.log("minCount", this.valorMinimoCountData);
     console.log("maxCount", this.valorMaximoCountData);
     console.log("lengthArreglo", this.lengthArreglo);
-  }
-
-  valorMaximoMinimoZ(bubbleData: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number, valorMinimoZ: number, valorMaximoZ: number }[]) {
-    this.valorMaximoZ = bubbleData[0]?.valorMaximoZ;
-    this.valorMinimoZ = bubbleData[0]?.valorMinimoZ;
   }
 
   generateBubbleData(bubble: { idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number, valorMinimoZ: number, valorMaximoZ: number }) {
@@ -145,22 +134,17 @@ export class BurbujasComponent implements AfterViewInit {
     const chartWidth = ancho;
     const chartHeight = alto;
     let contador = count;
-    if (contador <= 1) {
-      contador = count + 4;
-    }else{
-      if (contador > 25) {
-        contador = 25;
-      }
-    }
 
-    let zAdjusted = contador;
+    //((z - minZ) / (maxZ - minZ)) * (maxRadius - minRadius) + minRadius;
+
+    let zAdjusted =  ((contador - bubble.valorMinimoZ) / (bubble.valorMaximoZ - bubble.valorMinimoZ)) * (15 - 0) + 10;
 
      //Toma un valor aleatorio y lo multiplica por el valor mas grande ancho del grafico y el valor mas pequeño ancho del grafico, luego solo se le suma el valor mas pequeño del grafico
-    let x = Math.floor( Math.random() * chartWidth - 50 + 1) + 25;
+    let x = Math.random() * chartWidth - 0 + 1 + 25;
 
     // Asegura que la posición y no haga que la burbuja se salga por arriba o por abajo
     //Toma un valor aleatorio y lo multiplica por el valor mas grande alto del grafico y el valor mas pequeño alto del grafico, luego solo se le suma el valor mas pequeño del grafico
-    let y = Math.floor(Math.random() * chartHeight - 60 + 1) + 30;
+    let y = Math.random() * chartHeight - 0 + 1 + 30;
     
 
     return {
