@@ -181,40 +181,40 @@
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center sticky-left" id="padre"
-                  [ngStyle]="{'background-color' : this.colorFila(fila.count), 'color':'white', 'left': '0px', 'z-index': 2}"
-                  [attr.rowspan]="fila.count" 
-                  [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
-                  *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
-                  <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}">{{ fila?.categoria }}</span>
-                  <div class="text-end"
-                  *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') && (fila.complemento!== null && fila.complemento!== ''))">
-                    <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
-                      <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
-                        fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                        <path
-                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                      </svg>
-                    </button>
-                  </div>
-                </th>
-
-                <!-- Primera subcategoría de la fila -->
-                <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="fila?.idSubCategoria !== 0"
-                [ngStyle]="{'background-color': this.colorFila(fila.count), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1}"> <!-- Ajusta el ancho aquí -->
+                [ngStyle]="{'background-color' : this.colorFila(fila.count), 'color':'white', 'left': '0px', 'z-index': 2}"
+                [attr.rowspan]="fila.count" 
+                [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
+                *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
+                <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}">{{ fila?.categoria }}</span>
+                <div class="text-end"
+                *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') && (fila.complemento!== null && fila.complemento!== ''))">
+                  <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                      fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                  </button>
+                </div>
+              </th>
+              
+              <!-- Primera subcategoría de la fila -->
+              <th class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="fila?.idSubCategoria !== 0"
+                [ngStyle]="{'background-color': this.colorFila(fila.count), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1}">
                 {{ fila?.subCategoria }}
                 <div class="text-end"
-                    *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) && (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
-                    <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
-                        <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
-                            fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                            <path
-                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                        </svg>
-                    </button>
+                  *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) && (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
+                  <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                      fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                  </button>
                 </div>
-            </th>
+              </th>
   
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
