@@ -92,7 +92,9 @@ export class BurbujasComponent implements AfterViewInit {
             const { datasetIndex, index } = item[0];
             const { idMbe, idFila, idColumna, idGpo } = bubbleData[index];
             
-            this.tablaEvaluacion(idMbe, idFila, idColumna, Number(idGpo));
+            if (!this.router.url.includes('vista-previa')) {
+              this.tablaEvaluacion(idMbe, idFila, idColumna, Number(idGpo));
+            }
 
           }
         },

@@ -191,6 +191,8 @@ idUsuario:number = 0;
       size: 'xl',
     });
 
+    this.pantallaCargando();
+
     console.log('datos', this.datosIntersecciones);
   }
 

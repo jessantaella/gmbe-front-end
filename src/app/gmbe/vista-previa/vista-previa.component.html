@@ -64,7 +64,7 @@
             <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
               *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
             <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-              [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 100) + 'px'}"
+              [ngStyle]="{'width': (columna.countSubCats === 0 ? 200 : columna.countSubCats * 200) + 'px'}"
               *ngFor="let columna of estructuraFinalColumnasTitulos"
               [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
               [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
@@ -182,7 +182,7 @@
         <h4 class="text-center my-2"><strong>Gráfica</strong></h4>
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
-          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-75">
+          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2" style="width: 60rem;" >
 
             <div class="table-responsive tabladatosModal">
               <table class="table table-bordered"
@@ -225,7 +225,7 @@
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
                       <th id="contenidoFila" class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
                         <app-burbujas 
-                          [chartId]="'chart-modal1-' + i + '-' + j" 
+                          [chartId]="'chart-modal1-' + (i + 100) + '-' + (j + 100) + '-' + u" 
                           [chartTitle]="'GraficaModal1'" 
                           [bubbleData]="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                         *ngIf="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))">
@@ -240,7 +240,7 @@
           </div>
 
           <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
-          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-75">
+          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2" style="width: 60rem;">
 
             <div class="table-responsive tabladatosModal">
               <table class="table table-bordered"
@@ -270,10 +270,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let i = index">
+                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
                     <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="subFilas?.countSubCats"
                       [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
-                      *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
+                      *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
                       {{ subFilas?.idCategoria?.catalogo }}
                     </th>
         
@@ -282,7 +282,7 @@
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
                       <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                      <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaModal2'"
+                      <app-burbujas [chartId]="'chart-' + (i + 1000) + '-' + (j + 1000) + '-' + u"  [chartTitle]="'GraficaModal2'"
                         [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                         *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
                       </th>
