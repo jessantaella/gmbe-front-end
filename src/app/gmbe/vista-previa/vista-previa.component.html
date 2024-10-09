@@ -55,7 +55,7 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}">
+    <div class="table-responsive tabladatos" >
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <caption class="text-center caption-original"></caption>
@@ -74,7 +74,7 @@
           <tr>
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
               <ng-container *ngFor="let hijo of subcolumna.hijos">
-                <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" style="border: 1px solid;"
+                <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center"
                   *ngIf="!hijo?.auxiliar">
                   {{ hijo?.idSubCategoria?.catalogo }}
                 </th>
@@ -95,7 +95,7 @@
               subFilas?.idSubCategoria?.catalogo }} </th>
 
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-              <th  [ngStyle]="{'width' : '25vh', 'height' : '25vh'}" id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+              <th  id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
                 <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
                   [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                   *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>

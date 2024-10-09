@@ -123,9 +123,10 @@ idUsuario:number = 0;
 
     window.addEventListener('resize', () => {
       this.storage.removeItem('zArrayGuardado');
+      this.estructuraFinalColumnasTitulos = [];
+      this.estructuraFinalFilasTitulos = [];
       this.estructuraFinalFilasSubitulos = [];
       this.pantallaCargando();
-      this.cargarDatosMbe();
       this.cargarEstructuraMbe();
     });
   }
@@ -449,7 +450,7 @@ idUsuario:number = 0;
         this.estructuraFinalColumnasTitulos.length <= 2 &&
         this.estructuraFinalColumnasTitulos.some((c) => c.hijos.length <= 3)
       ) {
-        return '60';
+        return '70';
       } else {
         if (this.estructuraFinalColumnasTitulos.length <= 4) {
           return '90';
@@ -601,6 +602,8 @@ idUsuario:number = 0;
       (obj) => obj.idFila === columna && obj.idColumna === fila
     );
 
+    let objeto = respuesta;
+
     respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;
@@ -612,11 +615,15 @@ idUsuario:number = 0;
      
      //Agrega dentro del objeto el valor de alto y ancho
       respuesta?.forEach((element: any) => {
+        element.idMbe = this.id,
+        element.idFila = objeto?.idFila,
+        element.idColumna = objeto?.idColumna,
+        element.idGpo = respuesta?.idGpo,
         element.valorMaximoZ = this.valorMaximoZ,
         element.valorMinimoZ = this.valorMinimoZ,
-        element.alto = alto ? (alto + 10) : 0,
-        element.ancho = ancho
-      }) 
+        element.alto = alto,
+        element.ancho = ancho ? (ancho + 100) : 0
+      })
 
     return respuesta;
   }

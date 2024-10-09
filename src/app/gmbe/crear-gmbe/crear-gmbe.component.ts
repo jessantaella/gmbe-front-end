@@ -134,7 +134,7 @@ export class CrearGmbeComponent implements OnInit {
     })
     this.editarSubcategoriaForm = this.fb.group({
       categoria:[''],
-      subCategoria:['', Validators.required],
+      subCategoria:[''],
       descripcion:[''],
       url: ['']
     })
@@ -616,6 +616,7 @@ clearImage(): void {
     this.categoria = this.arregloCategorias.find(
       (c) => c.idCatalogo === selectedValue
     );
+    console.log(this.categoria);
     this.gmbeservice
       .listarSubcategorias(this.categoria.idCatalogo)
       .subscribe((res) => {
@@ -623,8 +624,8 @@ clearImage(): void {
         this.subCategoriasEditado = res;
       });
     this.editarNombreSubcategoria = this.categoria.catalogo;
-    //this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
-    //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
+    this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
+    this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
   }
 
   changeSubcategoria(idCatalogo:any){
@@ -1059,15 +1060,19 @@ clearImage(): void {
   editarSubcategoria(){
     let id = Number(this.editarSubcategoriaForm.get('categoria')?.value);
     let idSub = Number(this.editarSubcategoriaForm.get('subCategoria')?.value);
+    let validarIdSub =  idSub === 0 ? id : idSub;
     let nombre = this.editarNombreSubcategoria;
     let descripcion = this.editarSubcategoriaForm.get('descripcion')?.value;
     let url = this.editarSubcategoriaForm.get('url')?.value;
 
+    console.log(validarIdSub);
+
     descripcion = descripcion.trim();
     console.log(url);
+    console.log(descripcion)
     url = url !== null ? url?.trim() : '';
 
-    this.gmbeservice.existeCategoriaSubcategoria(id).subscribe(
+    this.gmbeservice.existeCategoriaSubcategoria(validarIdSub).subscribe(
       res=>{
         console.log(res);
         if(res.data !== true){
@@ -1087,7 +1092,7 @@ clearImage(): void {
             }
           }
       
-            this.gmbeservice.editarSubcategoria(id,nombre,idSub,descripcion,url).subscribe(
+            this.gmbeservice.editarSubcategoria(id,nombre,validarIdSub,descripcion,url).subscribe(
               res => {
                 swal.fire({
                   title: '',

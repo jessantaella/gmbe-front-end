@@ -134,12 +134,12 @@
               <!-- Encabezados de columnas (basado en idTipo: 1) -->
               <th scope="col" class="titulos-tabla align-middle"
                 *ngFor="let columna of estructuraFinalColumnasTitulos ; let i = index"
-                [ngStyle]="{'width': (this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 150 : this.estructuraFinalColumnasTitulos[i].hijos.length * 150) + 'px'}"
+                [ngStyle]="{'width': (this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 200 : this.estructuraFinalColumnasTitulos[i].hijos.length * 200) + 'px'}"
                 [attr.colspan]="this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria !== 0 ? this.estructuraFinalColumnasTitulos[i].hijos.length : 1"
                 [attr.rowspan]="this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 2 : 1">
                 {{ columna.categoria }} <br>
                 <div class="text-end"
-                  *ngIf="columna?.hijos[i]?.idSubCategoria == 0 && (columna?.hijos[i]?.descripcion !== null && columna?.hijos[i]?.complemento !== null)">
+                  *ngIf="columna?.hijos[i]?.idSubCategoria == 0 && ((columna?.hijos[i]?.descripcion !== null && columna?.hijos[i]?.descripcion !== '') && (columna?.hijos[i]?.complemento !== null && columna?.hijos[i]?.complemento !== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content,columna,'categoria','Columna' )">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -153,12 +153,12 @@
             </tr>
             <tr>
               <!-- Subencabezados de columnas (basado en idTipo: 1) -->
-              <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
+              <ng-container style="width: 25rem;" *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
                 <ng-container *ngFor="let hijo of subcolumna.hijos">
                   <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
                     {{ hijo.subCategoria }}
                     <div class="text-end"
-                      *ngIf="hijo?.idSubCategoria !== 0 && (hijo?.descripcionSubcategoria !== null && hijo?.complementoSubcategoria != null)">
+                      *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ) && (hijo?.complementoSubcategoria != null && hijo?.complementoSubcategoria != ''))">
                       <button class="btn p-0" (click)="this.abrirModal(content,hijo,'subcategoria','Columna' )">
                         <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor"
                           class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -187,8 +187,8 @@
                   *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
                   <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}">{{ fila?.categoria }}</span>
                   <div class="text-end"
-                    *ngIf="fila?.idSubCategoria === 0 && (fila.descripcion !== null && fila.complemento !== null)">
-                    <button class="btn p-0" (click)="this.abrirModal(content, fila, 'categoria', 'Fila')">
+                  *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') && (fila.complemento!== null && fila.complemento!== ''))">
+                    <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
                       <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                         fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -200,28 +200,27 @@
                 </th>
 
                 <!-- Primera subcategoría de la fila -->
-                <th class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="fila?.idSubCategoria !== 0"
-                  [ngStyle]="{'background-color': this.colorFila(fila.count), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1}">
-                  {{ fila?.subCategoria }}
-                  <div class="text-end"
-                      *ngIf="fila?.idSubCategoria !== 0 && (fila?.descripcionSubcategoria !== null && fila?.complementoSubcategoria !== null)">
-                      <button class="btn p-0" (click)="this.abrirModal(content, fila, 'subcategoria', 'Fila')">
-                          <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
-                              fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                              <path
-                                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                          </svg>
-                      </button>
-                  </div>
-                </th>
-
+                <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="fila?.idSubCategoria !== 0"
+                [ngStyle]="{'background-color': this.colorFila(fila.count), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1}"> <!-- Ajusta el ancho aquí -->
+                {{ fila?.subCategoria }}
+                <div class="text-end"
+                    *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) && (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
+                    <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                            fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path
+                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg>
+                    </button>
+                </div>
+            </th>
   
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
                   <th id="thElemento" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
-                    <app-burbujas (click)="this.tablaEvaluacion(fila.idEstructura,hijo.idEstructura)"
+                    <app-burbujas
                       [chartId]="'chart-' + u + i + j" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
                       *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
@@ -236,11 +235,12 @@
           <div class="position-relative" >
             <div class="position-absolute  bottom-50 start-20 p-3" style="z-index: 11; width: max-content;" *ngIf="this.abrirToastAyuda" >
               <div id="liveToast" class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header d-flex justify-content-end" *ngIf="!this.esperaSegundos" >
-                  <button (click)="this.cerrarAyuda()"  type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                <div class="toast-header d-flex justify-content-between" >
+                  <strong *ngIf="this.tituloAcotaciones">Tipos de evaluación</strong>
+                  <strong *ngIf="!this.tituloAcotaciones">Diseño de evaluación</strong>
+                  <button *ngIf="!this.esperaSegundos" (click)="this.cerrarAyuda()"  type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body textoToast">
-                  <strong>Tipos de evaluación</strong>
                   <div class="d-flex">
                     <div *ngFor="let index of tiposDatosAyuda" class="d-flex" >
                       <i class="bi bi-circle-fill" [ngStyle]="{'color': index.complemento}" ></i>
@@ -251,7 +251,7 @@
               </div>
             </div>
         
-            <button class="btn btn-p-0 color-icon boton-ayuda" (click)="this.abrirAyuda()" >
+            <button class="btn p-0 color-icon boton-ayuda" (click)="this.abrirAyuda()" >
               <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-question-circle-fill color-icon" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
               </svg>
@@ -274,7 +274,8 @@
     <div class="modal-content">
       <div class="modal-header modal-titulo d-flex justify-content-center">
         <h4 class="modal-title fuente text-center w-100">
-          <strong>Descripción de la evidencia</strong>
+          <strong *ngIf="this.tituloModal" >Descripción de la evidencia</strong>
+          <strong *ngIf="!this.tituloModal" >Descripción del resultado</strong>
         </h4>
         <button type="button" class="btn-close btn-close-white" aria-label="Close" 
           (click)="closeModal()" 

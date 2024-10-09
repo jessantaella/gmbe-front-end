@@ -23,6 +23,7 @@ export class EvaluacionComponent implements OnInit {
 
 
   datosEvaluacionTabla: any;
+  tituloAcotaciones: any;
 
   
     constructor(private route: ActivatedRoute, private gmbeService: GmbeServicesService, private titulos: TitulosService, private router: Router) {
@@ -37,6 +38,20 @@ export class EvaluacionComponent implements OnInit {
      }
   ngOnInit(): void {
     this.datosEvaluacion();
+    this.tituloAcotacion();
+  }
+
+  tituloAcotacion() {
+    this.gmbeService.obtenerAcotaciones(this.idMbe).subscribe(
+      res => {
+        console.log('Acotación:', res);
+        this.tituloAcotaciones = res.tipoEvaluacion;
+        console.log('tituloAcotaciones', this.tituloAcotaciones);
+      },
+      err => {
+        console.error('Error al obtener acotación:', err);
+      }
+    );
   }
 
   abrirURL(url: string){

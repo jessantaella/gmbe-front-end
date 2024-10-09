@@ -92,6 +92,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   valorMasAltoBurbuja: number = 0;
   valorMasBajoBurbuja: number = 0;
   isLoading: boolean = true;
+  tituloModal: boolean = true;
+  tituloAcotaciones: any;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -130,8 +132,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.storage.removeItem('ValoresMaximosMinimos');
     this.storage.removeItem('zArrayGuardado4');
     this.pantallaCargando();
+    this.tituloAcotacion();
     //this.escucharCambiosSelect();
-    this.abrirAyuda();
+    this.abrirToastAyuda = true;
+    setTimeout(() => {
+      this.abrirToastAyuda = false;
+      this.esperaSegundos = false;
+    }, 10000);
 
     window.addEventListener('resize', () => {
       this.storage.removeItem('coordenadas');
@@ -141,6 +148,19 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       this.pantallaCargando();
       this.cargarDatosMbe();
     });
+  }
+
+  tituloAcotacion() {
+    this.gmbservices.obtenerAcotaciones(this.idmbe).subscribe(
+      res => {
+        console.log('Acotación:', res);
+        this.tituloAcotaciones = res.tipoEvaluacion;
+        console.log('tituloAcotaciones', this.tituloAcotaciones);
+      },
+      err => {
+        console.error('Error al obtener acotación:', err);
+      }
+    );
   }
 
   pantallaCargando() {
@@ -172,30 +192,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   abrirAyuda() {
     //Se abre el modal de ayuda solo por 10 segundos
     this.abrirToastAyuda = true;
-    setTimeout(() => {
-      this.abrirToastAyuda = false;
-      this.esperaSegundos = false;
-    }, 10000);
   }
 
   cerrarAyuda() {
     this.abrirToastAyuda = false;
-  }
-
-  tablaEvaluacion(fila: number, columna: number) {
-
-    let datos = this.datosIntersecciones.find(
-      obj => obj.idFila === fila && obj.idColumna === columna
-    );
-
-    let eva = datos?.conteoTipoEvaluacion === null ? datos?.conteoDisenioEval : datos?.conteoTipoEvaluacion;
-    let idGpo = eva?.split(':');
-
-
-
-
-
-    this.router.navigate(['/evaluacion'], { queryParams: { idMbe: this.idmbe, idFila: fila, idColumna: columna, idEva: idGpo[0] } });
   }
 
   cerraModal() {
@@ -243,6 +243,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       res => {
 
         this.datosIntersecciones = res;
+        console.log('datosIntersecciones', this.datosIntersecciones);
         //Crea una variable que saque conteoDisenioEval y conteoTipoEvaluacion, si conteoTipoEvaluacion es null, entonces se le asigna conteoDisenioEval
         this.datosIntersecciones.forEach((element: any) => {
           let cadena = element.conteoTipoEvaluacion === null ? element.conteoDisenioEval : element.conteoTipoEvaluacion;
@@ -268,8 +269,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
 
     if (seccion === 'Columna') {
       this.btnMasInformacion = false;
+      this.tituloModal = false;
     }else{
       this.btnMasInformacion = true;
+      this.tituloModal = true;
     }
 
     console.log('informacion', informacion);
@@ -637,6 +640,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     let objetoBurbuja = evaluaciones.map((eva: any) => {
       let parts = eva.split(':');
       return {
+        idMbe: this.idmbe,
+        idFila: respuesta.idFila,
+        idColumna: respuesta.idColumna,
         idGpo: parseInt(parts[0]),
         nombreGpo: parts[1],
         colorBubble: parts[2],

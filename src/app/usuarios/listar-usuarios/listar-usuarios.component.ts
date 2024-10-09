@@ -271,6 +271,7 @@ export class ListarUsuariosComponent implements OnInit {
     console.log(this.usuarioForm.valid)
     let usuarioObj = this.usuarioForm.getRawValue();
     usuarioObj.listaMBEs = this.mbeEditables;
+    console.log(usuarioObj);
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
       (res) => {
         swal.fire("", "Usuario creado exitosamente", "success");
@@ -321,6 +322,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   eliminar(usuario: any) {
+    console.log(usuario);
 
     swal.fire({
       icon: 'warning',
@@ -353,7 +355,15 @@ export class ListarUsuariosComponent implements OnInit {
               swal.fire("", "Usuario eliminado exitosamente", "success");
               this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
             },
-            (err) => {}
+            (err) => {
+              this.usuariosService.desactivarUsuario(usuario?.idUsuario).subscribe(
+                (res) => {
+                  swal.fire("", "Usuario eliminado exitosamente", "success");
+                  this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
+                },
+                (err) => {}
+              );
+            }
           );
         }
       }
