@@ -182,3 +182,11 @@ ul:hover{
   z-index: 4;
   border-right: 1px solid #ddd;
 }
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  background-color: white; /* Asegura que el fondo se vea correctamente */
+  z-index: 10; /* Asegura que se superponga a las celdas de datos */
+  border-right: 1px solid #dee2e6; /* O cualquier borde que prefieras */
+}
