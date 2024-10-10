@@ -60,53 +60,57 @@
     </div>
     <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}" >
       <table class="table table-bordered"
-        *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
-        <caption class="text-center caption-original"></caption>
-        <thead class="sticky-header">
-          <tr class="text-center ">
-            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
-              *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
-            <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-              [ngStyle]="{'width': (columna.countSubCats === 0 ? 200 : columna.countSubCats * 200) + 'px'}"
-              *ngFor="let columna of estructuraFinalColumnasTitulos"
-              [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
-              [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
-              {{ columna?.catalogo }}
-            </th>
-          </tr>
-          <tr>
-            <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
-              <ng-container *ngFor="let hijo of subcolumna.hijos">
-                <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center"
-                  *ngIf="!hijo?.auxiliar">
-                  {{ hijo?.idSubCategoria?.catalogo }}
-                </th>
-              </ng-container>
-            </ng-container>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
-            <th class="align-middle text-center titulos-tabla" id="padre" 
-            [attr.rowspan]="subFilas?.countSubCats"
-              [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
-              *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
-              {{ subFilas?.idCategoria?.catalogo }}
-            </th>
+      *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+  <caption class="text-center caption-original"></caption>
+  <thead class="sticky-header">
+    <tr class="text-center">
+      <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
+          *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
+      <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
+          [ngStyle]="{'width': (columna.countSubCats === 0 ? 200 : columna.countSubCats * 200) + 'px'}"
+          *ngFor="let columna of estructuraFinalColumnasTitulos"
+          [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
+          [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
+        {{ columna?.catalogo }}
+      </th>
+    </tr>
+    <tr>
+      <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
+        <ng-container *ngFor="let hijo of subcolumna.hijos">
+          <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" *ngIf="!hijo?.auxiliar">
+            {{ hijo?.idSubCategoria?.catalogo }}
+          </th>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
 
-            <th class="subtitulos-tabla align-middle text-center" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"> {{
-              subFilas?.idSubCategoria?.catalogo }} </th>
+      <th class="align-middle text-center titulos-tabla sticky-left" id="padre" 
+          [attr.rowspan]="subFilas?.countSubCats"
+          [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
+          *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo"
+          [ngStyle]="{'left': '0px', 'z-index': 2}">
+        {{ subFilas?.idCategoria?.catalogo }}
+      </th>
 
-            <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-              <th  id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
-                  [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                  *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
-              </th>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
+      <th class="subtitulos-tabla align-middle text-center sticky-left" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"
+          [ngStyle]="{'left': '100px', 'z-index': 1}">
+        {{ subFilas?.idSubCategoria?.catalogo }}
+      </th>
+
+      <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
+        <th id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+          <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
+                        [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
+                        *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+        </th>
+      </ng-container>
+    </tr>
+  </tbody>
+  
+</table>
     </div>
     <button *ngIf="this.existeOtraRevision" class="btn p-0 mx-2" (click)="this.abrirModalGraficas(contentGraficas)"><img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'"
         width="25px" height="25px" /></button>

@@ -216,3 +216,10 @@
   color:#ffffff;
   margin-left: 10px!important;
 }
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+
