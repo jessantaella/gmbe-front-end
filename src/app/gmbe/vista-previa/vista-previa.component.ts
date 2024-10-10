@@ -77,6 +77,8 @@ arrayValoresBurbujas: any[] = [];
 
 idUsuario:number = 0;
 
+modalTitulo: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private cifrado: CifradoService,
@@ -166,22 +168,30 @@ idUsuario:number = 0;
     );
   }
 
-  abrirModal(content: any,actual:string,anterior:string,tipo:number) {
+  abrirModal(content: any, actual: string, anterior: string, tipo: number, titulo: string) {
     this.tipoModalVerant = tipo;
-      this.modalRevisionesForm = this.fb.group({
-            anterior: [actual],
-            actual: [anterior],
-          });
-          this.modalRevisionesForm.get('anterior')?.disable();  // Deshabilitar el campo dinámicamente
-          this.modalRevisionesForm.get('actual')?.disable();  // Deshabilitar el campo dinámicamente
 
-    this.modalService.open(content, {
-      centered: true,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
+    // Asignar el título dinámico
+    this.modalTitulo = titulo;
+
+    // Configurar el formulario
+    this.modalRevisionesForm = this.fb.group({
+        anterior: [actual],
+        actual: [anterior],
     });
-  }
+
+    // Deshabilitar los campos dinámicamente
+    this.modalRevisionesForm.get('anterior')?.disable();
+    this.modalRevisionesForm.get('actual')?.disable();
+
+    // Abrir el modal con las opciones configuradas
+    this.modalService.open(content, {
+        centered: true,
+        backdrop: 'static',
+        keyboard: false,
+        size: 'lg',
+    });
+}
 
   abrirModalGraficas(contentGraficas: any) {
     this.modalService.open(contentGraficas, {

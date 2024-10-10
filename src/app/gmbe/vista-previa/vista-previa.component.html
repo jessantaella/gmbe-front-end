@@ -7,9 +7,10 @@
           <div class="d-flex">
             <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre"
             formControlName="nombre">
-            <button *ngIf="revision2 != null && revision1?.nombre !== revision2?.nombre" class="btn p-0 mx-2" (click)="this.abrirModal(content,revision1?.nombre,revision2?.nombre,1)">
-              <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
-            </button>
+            <button *ngIf="revision2 != null && revision1?.nombre !== revision2?.nombre" class="btn p-0 mx-2" 
+            (click)="abrirModal(content, revision1?.nombre, revision2?.nombre, 1, 'Nombre')">
+            <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
+          </button>
           </div>
         </div>
         <div class="mb-3">
@@ -17,16 +18,17 @@
           <div class="d-flex">
             <input [ngbTooltip]="this.mostrarObjetivos" type="text" class="form-control" id="objetivos"
               formControlName="objetivos">
-            <button *ngIf="revision2 != null && revision1?.objetivo !== revision2?.objetivo" class="btn p-0 mx-2" (click)="this.abrirModal(content,revision1?.objetivo,revision2.objetivo,1)">
+              <button *ngIf="revision2 != null && revision1?.objetivo !== revision2?.objetivo" class="btn p-0 mx-2" 
+              (click)="abrirModal(content, revision1?.objetivo, revision2?.objetivo, 1, 'Objetivos')">
               <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
-              </button>
+            </button>
           </div>
         </div>
         <div class="mb-3">
           <label for="imagen" class="form-label">Imagen:</label>
           <div class="p-2 bd-highlight">
             <img *ngIf="imageUrl" [src]="imageUrl" alt="Imagen MBE" class="img-thumbnail imagen">
-            <button *ngIf="revision2 != null && revision1?.ruta !== revision2?.ruta" class="btn p-0 mx-2" (click)="this.abrirModal(content,revision1?.resumen,revision2?.resumen,2)">
+            <button *ngIf="revision2 != null && revision1?.ruta !== revision2?.ruta" class="btn p-0 mx-2" (click)="this.abrirModal(content,revision1?.resumen,revision2?.resumen,2, 'Imagen')">
               <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
             </button>
           </div>
@@ -37,9 +39,10 @@
           <label for="resumen" class="form-label">Resumen con principales hallazgos:</label>
           <div class="d-flex">
             <textarea class="form-control" id="resumen" formControlName="resumen" rows="3"></textarea>
-            <button *ngIf="revision2 != null && revision1?.resumen !== revision2?.resumen" class="btn p-0 mx-2" (click)="this.abrirModal(content,revision1?.resumen,revision2?.resumen,1)">
-              <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
-              </button>
+            <button *ngIf="revision2 != null && revision1?.resumen !== revision2?.resumen" class="btn p-0 mx-2" 
+            (click)="abrirModal(content, revision1?.resumen, revision2?.resumen, 1, 'Resumen con principales hallazgos')">
+            <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
+          </button>
           </div>
         </div>
       </div>
@@ -144,23 +147,24 @@
       </h4>
     </div>
     <div class="modal-body d-flex flex-column">
-      <h4 class="text-center my-2"><strong>Objetivos</strong></h4>
+      <h4 class="text-center my-2"><strong>{{ modalTitulo }}</strong></h4>
       <div class="justify-content-center w-50">
-        <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm">    
+        <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm">
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
-          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100" [ngbTooltip]="this.mostrarObjetivosModal">
+          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100">
             <input class="form-control" type="text" formControlName="actual" *ngIf="tipoModalVerant === 1">
             <img [src]="imagenPrevia" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
-          </div>    
+          </div>
           <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
-          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100" [ngbTooltip]="this.mostrarObjetivos">
+          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100">
             <input class="form-control" type="text" formControlName="anterior" *ngIf="tipoModalVerant === 1">
             <img [src]="imagenNueva" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
           </div>
-    
+          
         </form>
       </div>
     </div>
+    
     
     <div class="modal-footer d-flex justify-content-center align-items-center">
       <button class="btn btn-cancelar regresar" (click)="this.cerraModal()" type="button">
