@@ -159,10 +159,8 @@ i: any;
 
   validarBotones(idCatalogo:number, revisiones: number):boolean {
     if (revisiones > 0 && revisiones !== null ) {
-      console.log("Es mayor a 0");
       this.mostrarMensajeRevisionesAcciones = true;
     } else {
-      console.log("Es menor a 0");
       this.mostrarMensajeRevisionesAcciones = false; 
     }
     //Roles
@@ -238,7 +236,7 @@ i: any;
   ) {
     this.listaMBE = [];
     this.gmbeServices
-      .listarGmbes(page, size,this.idUsuario)
+      .listarGmbes(page,size,this.idUsuario)
       .subscribe((data) => {
         console.log(data)
         this.listaMBE = data?.content!;

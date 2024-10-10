@@ -15,6 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 declare var swal: any;
 
@@ -79,6 +80,11 @@ idUsuario:number = 0;
 
 modalTitulo: string = '';
 
+subscriptions: Subscription[] = []; // Array to hold subscriptions
+
+estructuraCarga :any [] = [];
+
+
   constructor(
     private route: ActivatedRoute,
     private cifrado: CifradoService,
@@ -115,6 +121,9 @@ modalTitulo: string = '';
     this.storage.removeItem('zArrayGuardado');
     this.storage.removeItem('zArrayGuardado2');
     this.storage.removeItem('zArrayGuardado3');
+
+     // Unsubscribe from any active subscriptions
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   ngOnInit(): void {
     this.pantallaCargando();
@@ -123,14 +132,14 @@ modalTitulo: string = '';
     this.storage.removeItem('zArrayGuardado2');
     this.storage.removeItem('zArrayGuardado3');
 
-    window.addEventListener('resize', () => {
+    /*window.addEventListener('resize', () => {
+      this.pantallaCargando();
       this.storage.removeItem('zArrayGuardado');
       this.estructuraFinalColumnasTitulos = [];
       this.estructuraFinalFilasTitulos = [];
       this.estructuraFinalFilasSubitulos = [];
-      this.pantallaCargando();
       this.cargarEstructuraMbe();
-    });
+    });*/
   }
 
   pantallaCargando() {
@@ -141,9 +150,6 @@ modalTitulo: string = '';
         swal.showLoading();
       }
     });
-    setTimeout(() => {
-      swal.close();
-    }, 2000);
   }
 
 
@@ -207,6 +213,7 @@ modalTitulo: string = '';
   }
 
   cargaMBE() {
+    
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       (res) => {
         this.idEstatus = res.revisionOne.idEstatus.idCatalogo;
@@ -567,7 +574,7 @@ modalTitulo: string = '';
         // console.log('hijos filas',this.estructuraFinalFilasTitulos)
       },
       (err) => {}
-    );
+    ); 
   }
 
   cargarDatosMbe() {
@@ -575,6 +582,7 @@ modalTitulo: string = '';
       (res) => {
         this.datosIntersecciones = res;
         console.log('datos', this.datosIntersecciones);
+        swal.close();
       },
       (err) => {}
     );

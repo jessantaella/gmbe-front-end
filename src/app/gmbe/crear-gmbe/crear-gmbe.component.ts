@@ -134,14 +134,14 @@ export class CrearGmbeComponent implements OnInit {
     })
     this.editarSubcategoriaForm = this.fb.group({
       categoria:['',Validators.required],
-      subCategoria:[''],
+      subCategoria:['',Validators.required],
       descripcion:[''],
       url: ['']
     })
 
     this.SelectCatelogirasForm = this.fb.group({
       selectTipo: [''],
-      selectCategoria: [''],
+      selectCategoria: ['0'],
     });
   }
   ngOnInit(): void {
@@ -540,6 +540,9 @@ clearImage(): void {
     this.tipo = parseInt(valor.target.value);
     this.subCategorias = [];
     this.obtenerCategorias();
+    this.SelectCatelogirasForm = this.fb.group({
+      selectCategoria: ['0'],
+    });
     
   }
 
@@ -609,7 +612,7 @@ clearImage(): void {
 
     this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.editarSubcategoriaForm.get('descripcion')?.setValue('');
-
+    this.editarSubcategoriaForm.get('url')?.setValue('');
 
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
@@ -923,6 +926,8 @@ clearImage(): void {
                   this.editarCategoriaForm.get('url')?.setValue('');
                   this.modalRef.close();
                   this.obtenerCategorias();
+                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                  this.subCategorias = [];
                 }
               },
               err => {
@@ -1114,6 +1119,9 @@ clearImage(): void {
                   this.editarSubcategoriaForm.get('url')?.setValue('');
                   //Vuelve a cargar las subcategorias
                   this.obtenerCategorias();
+                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                  this.subCategorias = [];
+
                   this.modalService.dismissAll();
                 
               },

@@ -139,3 +139,15 @@ th{
       justify-content: center;
     }
   }
+
+
+  .table-responsive{
+    position: relative;
+    overflow: visible; /* Permitir que los elementos desborden el contenedor */
+  }
+
+
+  .ngbDropdownMenu {
+    position: absolute;
+    z-index: 1000; /* Eleva el z-index para asegurarse de que esté por encima de otros elementos */
+  }

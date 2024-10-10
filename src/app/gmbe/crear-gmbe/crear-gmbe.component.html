@@ -97,7 +97,7 @@
                   <div class="col-sm-6 p-0">
                     <select class="form-select" formControlName="selectCategoria" aria-label="Seleccione una opción"
                       (change)="obtenerSubCategorias($event)">
-                      <option value="" disabled selected>Seleccione una opción</option>
+                      <option value="0" disabled selected>Seleccione una opción</option>
                       <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategorias">
                         {{categoria.catalogo}}</option>
                     </select>
