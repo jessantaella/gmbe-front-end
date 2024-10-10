@@ -28,6 +28,11 @@
       </tr>
     </tbody>
   </table>
+  <nav class="d-flex justify-content-center" *ngIf="totalPage>1">
+    <ngb-pagination [(page)]="page" [collectionSize]="items" [maxSize]="10" [pageSize]="pageSize"
+      (pageChange)="loadPage($event)" [rotate]="true" [directionLinks]="true" [boundaryLinks]="false">
+    </ngb-pagination>
+  </nav>
 
   <div class="w-100 text-end mb-3" (click)="this.regresarPanelResultados()">
     <button class="btn btn-regresar regresar">

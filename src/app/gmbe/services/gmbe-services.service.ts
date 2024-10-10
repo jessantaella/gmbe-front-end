@@ -272,8 +272,8 @@ export class GmbeServicesService {
       return this.http.post<any>(url,datosEnviados,{});
     }
 
-    datosEvaluacion(idMbe:number,idFila: number, idColumna:number, idEvaluacion: number):Observable<any>{
-      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/intersecciones-columna-fila?idMbe='+idMbe+'&fila='+idFila+'&columna='+idColumna+'&idEval='+idEvaluacion;
+    datosEvaluacion(idMbe:number,idFila: number, idColumna:number, idEvaluacion: number, page:number, size: number):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/intersecciones-columna-fila?idMbe='+idMbe+'&fila='+idFila+'&columna='+idColumna+'&idEval='+idEvaluacion+'&page='+page+'&size='+size;
       return this.http.get<any>(url);
     }
 

@@ -111,7 +111,9 @@ export class BurbujasComponent implements AfterViewInit {
             display: false // Ocultar la leyenda si no es necesaria
           },
           tooltip: {
-            
+            /** Hay una forma de tomar el tooltip de manera de etiqueta de HTML pero sigue sin poder mostrarse bien ya que 
+             * se corta el texto ya que el canvas solo ocupa lo del th de la tabla
+             */
             position: 'average',
             callbacks: {
               label: function (context: any) {
@@ -120,8 +122,10 @@ export class BurbujasComponent implements AfterViewInit {
                 return `${nombreGpo} ${valorOriginalZ}`;
               }
             },
+            //Aqui tomas el estilo tamaño de la fuente del tooltip
+            /**Se probara con un font de 12, pero lo recomendable es 10, ya que hace que no se salga del canvas */
             bodyFont: {
-              size: 10
+              size: 12
             },
           },
         },
@@ -149,21 +153,18 @@ export class BurbujasComponent implements AfterViewInit {
 
     console.log("contador", contador);
 
-    //((z - minZ) / (maxZ - minZ)) * (maxRadius - minRadius) + minRadius;
-
-    console.log("bubble.valorMinimoZ", bubble.valorMinimoZ);
-    console.log("bubble.valorMaximoZ", bubble.valorMaximoZ);
+    /**ZAjusted es el calculo que toma a partir de los datos que llega del contador, basicamente solo tomo el maximo y minimo de los datos
+     * y hago una regla de tres para que los datos se ajusten a un rango de 0 a 15 que es el rango que se va a mostrar en la burbuja
+     * Tambien se le suma 1 a los valores para que no se divida entre 0 o sea infinito
+     */
     
 
-    let zAdjusted =  Math.floor(((contador + 1 - bubble.valorMinimoZ) / (bubble.valorMaximoZ - bubble.valorMinimoZ)) * (15 - 0) )+ 5;
+    let zAdjusted =  Math.floor(((contador + 1 - bubble.valorMinimoZ + 1) / (bubble.valorMaximoZ + 1 - bubble.valorMinimoZ + 1)) * (15 - 0) )+ 5;
 
     console.log("zAdjusted", zAdjusted);
 
-     //Toma un valor aleatorio y lo multiplica por el valor mas grande ancho del grafico y el valor mas pequeño ancho del grafico, luego solo se le suma el valor mas pequeño del grafico
     let x = Math.floor(Math.random() * chartWidth - 0 + 1) + 80;
 
-    // Asegura que la posición y no haga que la burbuja se salga por arriba o por abajo
-    //Toma un valor aleatorio y lo multiplica por el valor mas grande alto del grafico y el valor mas pequeño alto del grafico, luego solo se le suma el valor mas pequeño del grafico
     let y = Math.floor(Math.random() * chartHeight - 0 + 1) + 50;
     
 
@@ -183,31 +184,5 @@ export class BurbujasComponent implements AfterViewInit {
       valorMinimoZ: bubble.valorMinimoZ,
       valorMaximoZ: bubble.valorMaximoZ
     };
-  }
-
-  actualizarZArrayGuardado(z: number) {
-    const storageKey = this.titulosStorage('GraficaPanel');
-    this.zArrayGuardado = JSON.parse(this.storage.getItem(storageKey) || "[]");
-    this.zArrayGuardado.push(z);
-    this.storage.setItem(storageKey, JSON.stringify(this.zArrayGuardado));
-  }
-
-  titulosStorage(title: string | undefined): string {
-    switch (title) {
-      case "GraficaPrincipal":
-        return "zArrayGuardado";
-      case "GraficaModal1":
-        return "zArrayGuardado2";
-      case "GraficaModal2":
-        return "zArrayGuardado3";
-      case "GraficaPanel":
-        return "GraficaPanel";
-      case "ValoresMaximosMinimos":
-        return "ValoresMaximosMinimos";
-      case "coordenadas":
-        return "coordenadas";
-      default:
-        return "";
-    }
   }
 }

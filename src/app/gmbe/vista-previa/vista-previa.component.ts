@@ -624,6 +624,11 @@ modalTitulo: string = '';
      let thElemento = document.getElementById('thElemento');
      const alto = thElemento?.clientHeight;
      const ancho = thElemento?.clientWidth;
+
+     /**Todos estos datos se ocupan para dimensionar el alto y ancho que envia desde el TH, aparte mando la informacion para
+     * cuando se le da click a la burbuja y se abra la tabla de evaluaciones, tambien con ello mando el valor maximo y minimo
+     * de las burbujas para poder hacer el calculo de la burbuja
+     */
      
      //Agrega dentro del objeto el valor de alto y ancho
       respuesta?.forEach((element: any) => {

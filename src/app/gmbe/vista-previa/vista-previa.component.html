@@ -99,7 +99,7 @@
 
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
               <th  id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                <app-burbujas [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPrincipal'"
+                <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
                   [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                   *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
               </th>
@@ -224,7 +224,7 @@
                       {{ subFilas?.idCategoria?.catalogo }}
                     </th>
         
-                    <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="!subFilas?.auxiliar"> {{
+                    <th class="subtitulos-tabla align-middle text-center" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"> {{
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
@@ -282,7 +282,7 @@
                       {{ subFilas?.idCategoria?.catalogo }}
                     </th>
         
-                    <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="!subFilas?.auxiliar"> {{
+                    <th class="subtitulos-tabla align-middle text-center" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"> {{
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">

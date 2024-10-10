@@ -637,6 +637,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     //Imprime el alto y ancho de la thElement para poder hacer el calculo de la posición de la burbuja
     let thElemento = document.getElementById('thElemento');
     const alto = thElemento?.clientHeight;
+    /**Todos estos datos se ocupan para dimensionar el alto y ancho que envia desde el TH, aparte mando la informacion para
+     * cuando se le da click a la burbuja y se abra la tabla de evaluaciones, tambien con ello mando el valor maximo y minimo
+     * de las burbujas para poder hacer el calculo de la burbuja
+     */
     let objetoBurbuja = evaluaciones.map((eva: any) => {
       let parts = eva.split(':');
       return {
