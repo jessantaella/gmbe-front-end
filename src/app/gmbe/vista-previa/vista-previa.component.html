@@ -146,21 +146,22 @@
     <div class="modal-body d-flex flex-column">
       <h4 class="text-center my-2"><strong>Objetivos</strong></h4>
       <div class="justify-content-center w-50">
-        <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
+        <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm">    
           <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
           <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100" [ngbTooltip]="this.mostrarObjetivosModal">
-            <input  class="form-control" type="text" formControlName="anterior" *ngIf="tipoModalVerant === 1">
+            <input class="form-control" type="text" formControlName="actual" *ngIf="tipoModalVerant === 1">
             <img [src]="imagenPrevia" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
-          </div>
-
+          </div>    
           <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
           <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100" [ngbTooltip]="this.mostrarObjetivos">
-            <input  class="form-control" type="text" formControlName="actual" *ngIf="tipoModalVerant === 1">
+            <input class="form-control" type="text" formControlName="anterior" *ngIf="tipoModalVerant === 1">
             <img [src]="imagenNueva" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
           </div>
+    
         </form>
       </div>
     </div>
+    
     <div class="modal-footer d-flex justify-content-center align-items-center">
       <button class="btn btn-cancelar regresar" (click)="this.cerraModal()" type="button">
         <fa-icon [icon]="faRotate" class="me-1"></fa-icon>Regresar
