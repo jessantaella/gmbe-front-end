@@ -147,9 +147,17 @@ export class BurbujasComponent implements AfterViewInit {
     const chartHeight = alto;
     let contador = count;
 
+    console.log("contador", contador);
+
     //((z - minZ) / (maxZ - minZ)) * (maxRadius - minRadius) + minRadius;
 
-    let zAdjusted =  ((contador - bubble.valorMinimoZ) / (bubble.valorMaximoZ - bubble.valorMinimoZ)) * (15 - 0) + 5;
+    console.log("bubble.valorMinimoZ", bubble.valorMinimoZ);
+    console.log("bubble.valorMaximoZ", bubble.valorMaximoZ);
+    
+
+    let zAdjusted =  Math.floor(((contador + 1 - bubble.valorMinimoZ) / (bubble.valorMaximoZ - bubble.valorMinimoZ)) * (15 - 0) )+ 5;
+
+    console.log("zAdjusted", zAdjusted);
 
      //Toma un valor aleatorio y lo multiplica por el valor mas grande ancho del grafico y el valor mas pequeño ancho del grafico, luego solo se le suma el valor mas pequeño del grafico
     let x = Math.floor(Math.random() * chartWidth - 0 + 1) + 80;
