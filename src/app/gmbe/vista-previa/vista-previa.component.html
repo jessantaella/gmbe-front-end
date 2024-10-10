@@ -151,15 +151,15 @@
       </h4>
     </div>
     <div class="modal-body d-flex flex-column">
-      <h4 class="text-center my-2"><strong>{{ modalTitulo }}</strong></h4>
+      <h4 class="text-center my-2 fuente"><strong>{{ modalTitulo }}</strong></h4>
       <div class="justify-content-center w-50">
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm">
-          <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Anterior</span>
           <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100">
             <input class="form-control" type="text" formControlName="actual" *ngIf="tipoModalVerant === 1">
             <img [src]="imagenPrevia" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
           </div>
-          <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Actual</span>
           <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100">
             <input class="form-control" type="text" formControlName="anterior" *ngIf="tipoModalVerant === 1">
             <img [src]="imagenNueva" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
@@ -190,7 +190,7 @@
       <div class="justify-content-center">
         <h4 class="text-center my-2"><strong>Gráfica</strong></h4>
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
-          <span class="d-flex justify-content-center titulosActual-Anterior">Anterior</span>
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Anterior</span>
           <div id="pregunta-1" class="d-flex flex-column align-items-center my-2" style="width: 60rem;" >
 
             <div class="table-responsive tabladatosModal">
@@ -248,7 +248,7 @@
 
           </div>
 
-          <span class="d-flex justify-content-center titulosActual-Anterior">Actual</span>
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Actual</span>
           <div id="pregunta-15" class="d-flex flex-column align-items-center my-2" style="width: 60rem;">
 
             <div class="table-responsive tabladatosModal">
