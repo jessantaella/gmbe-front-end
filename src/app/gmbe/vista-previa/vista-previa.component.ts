@@ -452,7 +452,7 @@ idUsuario:number = 0;
         this.estructuraFinalColumnasTitulos.length <= 2 &&
         this.estructuraFinalColumnasTitulos.some((c) => c.hijos.length <= 3)
       ) {
-        return '70';
+        return '50';
       } else {
         if (this.estructuraFinalColumnasTitulos.length <= 4) {
           return '90';

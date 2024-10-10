@@ -55,7 +55,7 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos" >
+    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}" >
       <table class="table table-bordered"
         *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
         <caption class="text-center caption-original"></caption>
@@ -194,7 +194,7 @@
                     <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
                       *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
                     <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 100) + 'px'}"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 200) + 'px'}"
                       *ngFor="let columna of estructuraFinalColumnasTitulos"
                       [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
                       [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
@@ -252,7 +252,7 @@
                     <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
                       *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
                     <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 100) + 'px'}"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 200) + 'px'}"
                       *ngFor="let columna of estructuraFinalColumnasTitulos"
                       [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
                       [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
