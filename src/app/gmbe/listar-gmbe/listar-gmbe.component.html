@@ -8,85 +8,83 @@
       </button>
     </div>
   </div>
-  <div>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered">
-        <thead class="cabecera-tabla">
-          <tr class="text-center ">
-            <th scope="col">Ver</th>
-            <th scope="col">Acciones</th>
-            <th scope="col">MBE</th>
-            <th scope="col">Autor</th>
-            <th scope="col">Estatus</th>
-            <th scope="col">Fecha de creación</th>
-            <th scope="col">Fecha de publicación</th>
-            <th scope="col">Gestión</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let mbe of listaMBE" >
-            <td class="text-center">
-              <fa-icon [icon]="faEye" class="btn-acciones" [routerLink]="['/vista-previa',mbe.idMbe]"></fa-icon>
-            </td>
-            <td class="text-center">
-              <div ngbDropdown class="d-inline-block" *ngIf="this.validarBotones(mbe.idEstatus.idCatalogo, mbe.maxRevision)">
-                <button class="btn p-0" id="dropdownBasic1" ngbDropdownToggle >
-                  <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
-                </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.validado)" >Aprobar</button>
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'enviar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.pendiente)" >Enviar a validar</button>
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'rechazar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.rechazado)">Rechazar</button>
-                  <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'publicar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.publicado)">Publicar</button>
-                </div>
+  <div class="table-responsive h-100">
+    <table class="table table-striped table-bordered">
+      <thead class="cabecera-tabla">
+        <tr class="text-center ">
+          <th scope="col">Ver</th>
+          <th scope="col">Acciones</th>
+          <th scope="col">MBE</th>
+          <th scope="col">Autor</th>
+          <th scope="col">Estatus</th>
+          <th scope="col">Fecha de creación</th>
+          <th scope="col">Fecha de publicación</th>
+          <th scope="col">Gestión</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let mbe of listaMBE" >
+          <td class="text-center">
+            <fa-icon [icon]="faEye" class="btn-acciones" [routerLink]="['/vista-previa',mbe.idMbe]"></fa-icon>
+          </td>
+          <td class="text-center">
+            <div ngbDropdown class="d-inline-block" *ngIf="this.validarBotones(mbe.idEstatus.idCatalogo, mbe.maxRevision)">
+              <button class="btn p-0" id="dropdownBasic1" ngbDropdownToggle >
+                <fa-icon [icon]="faEllipsisVertical" class="btn-acciones"></fa-icon>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1" >
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'aprobar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.validado)" >Aprobar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'enviar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.pendiente)" >Enviar a validar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'rechazar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.rechazado)">Rechazar</button>
+                <button *ngIf="this.validarAcciones(mbe.idEstatus.idCatalogo, 'publicar')" ngbDropdownItem (click)="this.cambiarEstatusMBE(mbe.idMbe,this.publicado)">Publicar</button>
               </div>
-            </td>
-            <td class="text-start">
-              {{mbe?.nombre}}
-            </td>
-            <td class="text-center">{{mbe?.idUsuario?.nombre}}</td>
-            <td class="text-center">
-              {{mbe?.idEstatus.catalogo}}
-            </td>
-            <td class="text-center">{{ mbe?.created | date: 'dd-MM-yyyy' }}</td>
-            <td class="text-center">{{mbe?.fechaPublicacion | date: 'dd-MM-yyyy'}}</td>
-            <td class="text-center" >
-                <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado && this.acciones(mbe,1) && (mbe.idEstatus.idCatalogo === this.creado || mbe.idEstatus.idCatalogo === this.rechazado) && this.idRol() !==3"
-                  (click)="openCarga(cargaModal,mbe?.idMbe,mbe)"></fa-icon>
-                <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe,1) || (mbe.idEstatus.idCatalogo !== this.creado && mbe.idEstatus.idCatalogo !== this.rechazado) || this.idRol() ===3"></fa-icon>
-  
-  
-                <fa-icon [icon]="faPencil" class="btn-acciones m-2" [routerLink]="['/editar-gmbe',mbe?.idMbe]"
-                  *ngIf="!mbe?.bloqueado && this.acciones(mbe,2 ) && (mbe.idEstatus.idCatalogo === this.creado || mbe.idEstatus.idCatalogo === this.rechazado) && this.idRol() !==3 "></fa-icon>
-                <fa-icon [icon]="faPencil" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe,2) || (mbe.idEstatus.idCatalogo !== this.creado && mbe.idEstatus.idCatalogo !== this.rechazado) || this.idRol() ===3"></fa-icon>
-  
-                <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==2 &&  this.idRol() !==4" class="btn-acciones m-2 activo"
-                  (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
-  
-                <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==2 &&  this.idRol() !==4" class="btn-acciones m-2 inactivo"
-                  (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
-  
-                <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && (this.idRol() === 3 || this.idRol() ===2 || this.idRol() ===4)" class="btn-acciones-inabil m-2"></fa-icon>
-                <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && (this.idRol() === 3 || this.idRol() ===2 || this.idRol() ===4)" class="btn-acciones-inabil m-2"></fa-icon>
-  
-                <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="((!mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==4 &&  this.idRol() !==2) && mbe.idEstatus.idCatalogo !== this.publicado"
-                  (click)="eliminarGmbe(mbe?.idMbe)"></fa-icon>
-                <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado) && mbe.idEstatus.idCatalogo !== this.publicado"></fa-icon>
-  
-                <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(!mbe?.bloqueado) && (this.idRol() ===3 || this.idRol() ===4 || this.idRol() ===2) || mbe.idEstatus.idCatalogo === this.publicado"></fa-icon>
-            </td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="listaMBE.length<1">
-          <tr >
-            <td class="text-center align-middle" colspan="8">
-              Sin resultados
-            </td>
-            
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </div>
+          </td>
+          <td class="text-start">
+            {{mbe?.nombre}}
+          </td>
+          <td class="text-center">{{mbe?.idUsuario?.nombre}}</td>
+          <td class="text-center">
+            {{mbe?.idEstatus.catalogo}}
+          </td>
+          <td class="text-center">{{ mbe?.created | date: 'dd-MM-yyyy' }}</td>
+          <td class="text-center">{{mbe?.fechaPublicacion | date: 'dd-MM-yyyy'}}</td>
+          <td class="text-center" >
+              <fa-icon [icon]="faUpload" class="btn-acciones m-2" *ngIf="!mbe?.bloqueado && this.acciones(mbe,1) && (mbe.idEstatus.idCatalogo === this.creado || mbe.idEstatus.idCatalogo === this.rechazado) && this.idRol() !==3"
+                (click)="openCarga(cargaModal,mbe?.idMbe,mbe)"></fa-icon>
+              <fa-icon [icon]="faUpload" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe,1) || (mbe.idEstatus.idCatalogo !== this.creado && mbe.idEstatus.idCatalogo !== this.rechazado) || this.idRol() ===3"></fa-icon>
+
+
+              <fa-icon [icon]="faPencil" class="btn-acciones m-2" [routerLink]="['/editar-gmbe',mbe?.idMbe]"
+                *ngIf="!mbe?.bloqueado && this.acciones(mbe,2 ) && (mbe.idEstatus.idCatalogo === this.creado || mbe.idEstatus.idCatalogo === this.rechazado) && this.idRol() !==3 "></fa-icon>
+              <fa-icon [icon]="faPencil" class="btn-acciones-inabil m-2" *ngIf="mbe?.bloqueado || !this.acciones(mbe,2) || (mbe.idEstatus.idCatalogo !== this.creado && mbe.idEstatus.idCatalogo !== this.rechazado) || this.idRol() ===3"></fa-icon>
+
+              <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==2 &&  this.idRol() !==4" class="btn-acciones m-2 activo"
+                (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
+
+              <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==2 &&  this.idRol() !==4" class="btn-acciones m-2 inactivo"
+                (click)="bloquearMbe(mbe?.idMbe,mbe?.bloqueado)"></fa-icon>
+
+              <fa-icon [icon]="faCircleCheck" *ngIf="(!mbe?.bloqueado) && (this.idRol() === 3 || this.idRol() ===2 || this.idRol() ===4)" class="btn-acciones-inabil m-2"></fa-icon>
+              <fa-icon [icon]="faXmarkCircle" *ngIf="(mbe?.bloqueado) && (this.idRol() === 3 || this.idRol() ===2 || this.idRol() ===4)" class="btn-acciones-inabil m-2"></fa-icon>
+
+              <fa-icon [icon]="faTrashCan" class="btn-acciones m-2" *ngIf="((!mbe?.bloqueado) && this.idRol() !==3 &&  this.idRol() !==4 &&  this.idRol() !==2) && mbe.idEstatus.idCatalogo !== this.publicado"
+                (click)="eliminarGmbe(mbe?.idMbe)"></fa-icon>
+              <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(mbe?.bloqueado) && mbe.idEstatus.idCatalogo !== this.publicado"></fa-icon>
+
+              <fa-icon [icon]="faTrashCan" class="btn-acciones-inabil m-2" *ngIf="(!mbe?.bloqueado) && (this.idRol() ===3 || this.idRol() ===4 || this.idRol() ===2) || mbe.idEstatus.idCatalogo === this.publicado"></fa-icon>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="listaMBE.length<1">
+        <tr >
+          <td class="text-center align-middle" colspan="8">
+            Sin resultados
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
   </div>
   <nav class="d-flex justify-content-center" *ngIf="totalPage>1">
     <ngb-pagination [(page)]="page" [collectionSize]="items" [maxSize]="10" [pageSize]="pageSize"

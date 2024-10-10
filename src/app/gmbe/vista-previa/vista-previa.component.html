@@ -83,20 +83,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let i = index">
+          <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
             <th class="align-middle text-center titulos-tabla" id="padre" 
             [attr.rowspan]="subFilas?.countSubCats"
               [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
-              *ngIf="estructuraFinalFilasSubitulos[i - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
+              *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
               {{ subFilas?.idCategoria?.catalogo }}
             </th>
 
-            <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="!subFilas?.auxiliar"> {{
+            <th class="subtitulos-tabla align-middle text-center" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"> {{
               subFilas?.idSubCategoria?.catalogo }} </th>
 
             <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
               <th  id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                <app-burbujas [chartId]="'chart-' + i + j" [chartTitle]="'GraficaPrincipal'"
+                <app-burbujas [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPrincipal'"
                   [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
                   *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
               </th>
@@ -194,7 +194,7 @@
                     <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
                       *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
                     <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 200) + 'px'}"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 200 : columna.countSubCats * 200) + 'px'}"
                       *ngFor="let columna of estructuraFinalColumnasTitulos"
                       [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
                       [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">

@@ -133,7 +133,7 @@ export class CrearGmbeComponent implements OnInit {
       url: ['']
     })
     this.editarSubcategoriaForm = this.fb.group({
-      categoria:[''],
+      categoria:['',Validators.required],
       subCategoria:[''],
       descripcion:[''],
       url: ['']
@@ -607,6 +607,7 @@ clearImage(): void {
 
   obtenerSubCategoriasEditado(idPadre: any) {
 
+    this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.editarSubcategoriaForm.get('descripcion')?.setValue('');
 
 
@@ -624,8 +625,8 @@ clearImage(): void {
         this.subCategoriasEditado = res;
       });
     this.editarNombreSubcategoria = this.categoria.catalogo;
-    this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
-    this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
+    //this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
+    //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
   }
 
   changeSubcategoria(idCatalogo:any){
@@ -1100,15 +1101,21 @@ clearImage(): void {
                   icon: 'success',
                   confirmButtonText: 'OK'
                 });
-                if (this.modalRef) {
+                  this.subCategoriasEditado = [];
+                  //Se limpia los arrays de subcategorias agregadas y los checkboxes
+                  this.subcategoriasAgregadas = [];
+                  this.subCategorias = [];
+                  //La bandera de guardado se pone en false
+                  this.activarAgregar = false;
+                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
                   this.editarSubcategoriaForm.get('categoria')?.setValue('');
                   this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
                   this.editarSubcategoriaForm.get('descripcion')?.setValue('');
                   this.editarSubcategoriaForm.get('url')?.setValue('');
                   //Vuelve a cargar las subcategorias
                   this.obtenerCategorias();
-                  this.modalRef.close();
-                }
+                  this.modalService.dismissAll();
+                
               },
               err=>{
                 console.log(err.error);

@@ -623,7 +623,7 @@ idUsuario:number = 0;
         element.idGpo = respuesta?.idGpo,
         element.valorMaximoZ = this.valorMaximoZ,
         element.valorMinimoZ = this.valorMinimoZ,
-        element.alto = alto,
+        element.alto = (alto ?? 0) + 100,
         element.ancho = ancho ? (ancho + 100) : 0
       })
 
