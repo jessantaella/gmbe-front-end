@@ -38,7 +38,7 @@
         <div class="mb-3">
           <label for="resumen" class="form-label">Resumen con principales hallazgos:</label>
           <div class="d-flex">
-            <textarea class="form-control" id="resumen" formControlName="resumen" rows="3"></textarea>
+            <textarea class="form-control" id="resumen" formControlName="resumen" rows="3" [ngbTooltip]="this.generales.get('resumen')?.value"></textarea>
             <button *ngIf="revision2 != null && revision1?.resumen !== revision2?.resumen" class="btn p-0 mx-2" 
             (click)="abrirModal(content, revision1?.resumen, revision2?.resumen, 1, 'Resumen con principales hallazgos')">
             <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
@@ -159,12 +159,12 @@
         <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm">
           <span class="d-flex justify-content-center titulosActual-Anterior fuente">Anterior</span>
           <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100">
-            <input class="form-control" type="text" formControlName="actual" *ngIf="tipoModalVerant === 1">
+            <input class="form-control" type="text" formControlName="actual" *ngIf="tipoModalVerant === 1" [ngbTooltip]="modalRevisionesForm.get('actual')?.value">
             <img [src]="imagenPrevia" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
           </div>
           <span class="d-flex justify-content-center titulosActual-Anterior fuente">Actual</span>
           <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100">
-            <input class="form-control" type="text" formControlName="anterior" *ngIf="tipoModalVerant === 1">
+            <input class="form-control" type="text" formControlName="anterior" *ngIf="tipoModalVerant === 1" [ngbTooltip]="modalRevisionesForm.get('anterior')?.value">
             <img [src]="imagenNueva" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
           </div>
           
@@ -227,7 +227,7 @@
                   <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
                     <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="subFilas?.countSubCats"
                       [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
-                      *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
+                      *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo"  ng>
                       {{ subFilas?.idCategoria?.catalogo }}
                     </th>
         
