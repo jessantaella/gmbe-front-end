@@ -17,6 +17,7 @@
 }
 
 .tabladatos {
+  height: 50rem;
   width: 100%;
   overflow-y: auto;
 }
@@ -188,4 +189,11 @@ ul:hover{
   background-color: white; /* Asegura que el fondo se vea correctamente */
   z-index: 10; /* Asegura que se superponga a las celdas de datos */
   border-right: 1px solid #dee2e6; /* O cualquier borde que prefieras */
+}
+
+.sticky-corner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 30;
 }
