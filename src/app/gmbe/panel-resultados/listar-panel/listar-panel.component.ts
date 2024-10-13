@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GmbeServicesService } from '../../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -13,14 +13,16 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
 import { StorageService } from 'src/app/services/storage-service.service';
+import { debounceTime, fromEvent, Subscription } from 'rxjs';
 declare var swal: any;
 
 @Component({
   selector: 'app-listar-panel',
   templateUrl: './listar-panel.component.html',
-  styleUrls: ['./listar-panel.component.scss']
+  styleUrls: ['./listar-panel.component.scss'],
+  //changeDetection: ChangeDetectionStrategy.OnPush 
 })
-export class PanelResultadosComponent implements OnInit, OnDestroy {
+export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChecked {
   id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -94,6 +96,12 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   tituloModal: boolean = true;
   tituloAcotaciones: any;
+  subscripcionDatos: Subscription [] = [];
+  datosInsercciones: any;
+
+  esVisible: boolean[][] = [];
+  @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
+  elementosObservados = false;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -120,17 +128,21 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
     this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
     this.filtrosSubcategoriasColumnas();
+    this.cargarDatosMbe();
+    this.cargaEstructuraPanelResultados();
   }
+  ngAfterViewChecked(): void {
+    // Solo ejecutar el renderizado una vez que los elementos estén disponibles
+    if (!this.elementosObservados && this.thElements.length > 0) {
+      this.renderizado();
+      this.elementosObservados = true; // Marcar que ya se han observado los elementos
+    }
+  }
+
   ngOnDestroy(): void {
-    this.storage.removeItem('coordenadas');
-    this.storage.removeItem('MBENombre');
-    this.storage.removeItem('zArrayGuardado4');
-    this.storage.removeItem('ValoresMaximosMinimos');
+    this.subscripcionDatos.forEach(sub => sub.unsubscribe());
   }
   ngOnInit(): void {
-    this.storage.removeItem('coordenadas');
-    this.storage.removeItem('ValoresMaximosMinimos');
-    this.storage.removeItem('zArrayGuardado4');
     this.pantallaCargando();
     this.tituloAcotacion();
     //this.escucharCambiosSelect();
@@ -139,23 +151,40 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       this.abrirToastAyuda = false;
       this.esperaSegundos = false;
     }, 10000);
+  }
 
-    window.addEventListener('resize', () => {
-      this.storage.removeItem('coordenadas');
-      this.storage.removeItem('MBENombre');
-      this.storage.removeItem('zArrayGuardado4');
-      this.storage.removeItem('ValoresMaximosMinimos');
-      this.pantallaCargando();
-      this.cargarDatosMbe();
+  trackByFn(index: number, item: any): number {
+    return item.id; // o cualquier propiedad única
+  }
+
+  renderizado() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const [_, index, index2] = entry.target.id.split('-').map(Number);
+        if (entry.isIntersecting) {
+          if (!this.esVisible[index]) {
+            this.esVisible[index] = [];
+          }
+          if (!this.esVisible[index][index2]) {
+            this.esVisible[index][index2] = true;
+          }
+        }
+      });
+    }, {
+      rootMargin: '500px',
+    });
+
+    this.thElements.forEach(th => {
+      observer.observe(th.nativeElement);
     });
   }
 
   tituloAcotacion() {
     this.gmbservices.obtenerAcotaciones(this.idmbe).subscribe(
       res => {
-        console.log('Acotación:', res);
+        
         this.tituloAcotaciones = res.tipoEvaluacion;
-        console.log('tituloAcotaciones', this.tituloAcotaciones);
+        
       },
       err => {
         console.error('Error al obtener acotación:', err);
@@ -243,18 +272,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       res => {
 
         this.datosIntersecciones = res;
-        console.log('datosIntersecciones', this.datosIntersecciones);
+        
         //Crea una variable que saque conteoDisenioEval y conteoTipoEvaluacion, si conteoTipoEvaluacion es null, entonces se le asigna conteoDisenioEval
         this.datosIntersecciones.forEach((element: any) => {
           let cadena = element.conteoTipoEvaluacion === null ? element.conteoDisenioEval : element.conteoTipoEvaluacion;
           this.cadenaDatosBurbujas.push(cadena);
         });
-        console.log('cadenaDatosBurbujas', this.cadenaDatosBurbujas);
+        
         this.valorMasAltoBurbuja = Math.max(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
         this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));  
-        setTimeout(() => {
-          this.cargaEstructuraPanelResultados();
-        }, 1000);
       },
       err => { }
     );
@@ -275,7 +301,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       this.tituloModal = true;
     }
 
-    console.log('informacion', informacion);
+    
 
 
     switch (titulo) {
@@ -410,7 +436,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
       res => {
 
         this.categoriasColumnas = res;
-        console.log('categoriasColumnas', this.categoriasColumnas);
+        
         this.cargarChechboxColumnas();
       },
       err => {
@@ -464,10 +490,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
 
 
   cargaEstructuraPanelResultados(idCateoriaFilas: any = null, idSubcategoriaFilas: any = null, idCategoriaColumnas: any = null, idSubcategoriaColumnas: any = null) {
-
-
-
-
     //limpia los datos de la estructura
     this.estructuraFinalColumnasTitulos = [];
     this.estructuraFinalFilasTitulos = [];
@@ -489,15 +511,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
         this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
         this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
 
-        for (let a = 0; a < this.estructuraFinalFilasTitulos.length; a++) {
-          this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasSubitulos.concat(this.estructuraFinalFilasTitulos[a].hijos);
-        }
-
-        //Cuenta cuantas veces se repite el idSubCategoria y almacenar en una variable
-        console.log('estructuraFinalFilasTitulos', this.estructuraFinalFilasTitulos);
-        console.log('estructuraFinalColumnasTitulos', this.estructuraFinalColumnasTitulos);
-        console.log('estructuraFinalFilasSubitulos', this.estructuraFinalFilasSubitulos);
-
+        this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
 
       },
       err => {
@@ -537,14 +551,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
   filtrarPorTipo(arreglo: any[], tipo: number) {
     const result = arreglo.filter(item => item.idTipo === tipo);
 
-    let countSubCats = result.reduce((contador, producto) => {
-      // Si la categoría ya existe en el contador, incrementamos su valor
-      if (contador[producto.idCategoria]) {
-        contador[producto.idCategoria]++;
-      } else {
-        // Si no existe, inicializamos el valor con 1
-        contador[producto.idCategoria] = 1;
-      }
+    // Contar subcategorías por categoría
+    const countSubCats = result.reduce((contador, producto) => {
+      contador[producto.idCategoria] = (contador[producto.idCategoria] || 0) + 1;
       return contador;
     }, {});
 
@@ -623,41 +632,58 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
 
   }
 
-  datosInterseccion(columna: number, fila: number) {
-
-    let respuesta = this.datosIntersecciones.find(
+  datosInterseccion(columna: number, fila: number,u:number,i:number) {
+    const respuesta = this.datosIntersecciones.find(
       obj => obj.idFila === columna && obj.idColumna === fila
     );
+
     if (!respuesta) {
       return [];
     }
-    let conteoTipoEvaluacion = respuesta?.conteoDisenioEval !== null ? respuesta.conteoDisenioEval : respuesta.conteoTipoEvaluacion;
-    let evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
 
-    //Imprime el alto y ancho de la thElement para poder hacer el calculo de la posición de la burbuja
-    let thElemento = document.getElementById('thElemento');
-    const alto = thElemento?.clientHeight;
-    /**Todos estos datos se ocupan para dimensionar el alto y ancho que envia desde el TH, aparte mando la informacion para
-     * cuando se le da click a la burbuja y se abra la tabla de evaluaciones, tambien con ello mando el valor maximo y minimo
-     * de las burbujas para poder hacer el calculo de la burbuja
-     */
-    let objetoBurbuja = evaluaciones.map((eva: any) => {
-      let parts = eva.split(':');
+    const conteoTipoEvaluacion = respuesta.conteoDisenioEval ?? respuesta.conteoTipoEvaluacion;
+    const evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
+
+    return evaluaciones.map((eva:any) => {
+      const [idGpo, nombreGpo, colorBubble, count] = eva.split(':');
       return {
         idMbe: this.idmbe,
         idFila: respuesta.idFila,
         idColumna: respuesta.idColumna,
-        idGpo: parseInt(parts[0]),
-        nombreGpo: parts[1],
-        colorBubble: parts[2],
-        count: parseInt(parts[3]),
+        idGpo: parseInt(idGpo),
+        nombreGpo,
+        colorBubble,
+        count: parseInt(count),
+        valorMaximoZ: this.valorMasAltoBurbuja,
+        valorMinimoZ: this.valorMasBajoBurbuja,
+      };
+    });
+  }
+
+  insertadoEncontrados(respuesta: any,u:number,i:number) {
+    const conteoTipoEvaluacion = respuesta.conteoDisenioEval ?? respuesta.conteoTipoEvaluacion;
+    const evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
+
+    const thElemento = document.getElementById('thElemento-' + u + '-' + i);
+    const alto = thElemento?.clientHeight ?? 0;
+    const ancho = thElemento?.clientWidth ?? 0;
+
+    return evaluaciones.map((eva:any) => {
+      const [idGpo, nombreGpo, colorBubble, count] = eva.split(':');
+      return {
+        idMbe: this.idmbe,
+        idFila: respuesta.idFila,
+        idColumna: respuesta.idColumna,
+        idGpo: parseInt(idGpo),
+        nombreGpo,
+        colorBubble,
+        count: parseInt(count),
         valorMaximoZ: this.valorMasAltoBurbuja,
         valorMinimoZ: this.valorMasBajoBurbuja,
         alto: alto,
-        ancho: thElemento?.clientWidth,
+        ancho: ancho,
       };
     });
-    return objetoBurbuja;
   }
 
   colorFila(idCategoria: number) {
@@ -670,7 +696,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy {
         this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffb6c0', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
       }
       this.colorSeleccionado = this.colores.splice(Math.floor(Math.random() * this.colores.length), 1)[0];
-      console.log('colorSeleccionado', this.colorSeleccionado);
+      
       this.conteoCategorias[idCategoria] = this.colorSeleccionado;
     }
 

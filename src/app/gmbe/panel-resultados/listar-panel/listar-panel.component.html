@@ -139,7 +139,7 @@
                 [attr.rowspan]="this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 2 : 1">
                 {{ columna.categoria }} <br>
                 <div class="text-end"
-                  *ngIf="columna?.hijos[i]?.idSubCategoria == 0 && ((columna?.hijos[i]?.descripcion !== null && columna?.hijos[i]?.descripcion !== '') && (columna?.hijos[i]?.complemento !== null && columna?.hijos[i]?.complemento !== ''))">
+                  *ngIf="columna?.hijos[0]?.idSubCategoria == 0 && ((columna?.descripcion !== null && columna?.descripcion !== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content,columna,'categoria','Columna' )">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -158,7 +158,7 @@
                   <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
                     {{ hijo.subCategoria }}
                     <div class="text-end"
-                      *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ) && (hijo?.complementoSubcategoria != null && hijo?.complementoSubcategoria != ''))">
+                      *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ))">
                       <button class="btn p-0" (click)="this.abrirModal(content,hijo,'subcategoria','Columna' )">
                         <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor"
                           class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -217,13 +217,14 @@
               </th>
   
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
-                <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index;">
-                  <th id="thElemento" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index" style="background-color: #f0f8ff;">
+                <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index; trackBy: trackByFn">
+                  <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
                     <app-burbujas
-                      [chartId]="'chart-' + u + i + j" [chartTitle]="'GraficaPanel'"
-                      [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura)"
-                      *ngIf="datosInterseccion(fila.idEstructura,hijo.idEstructura)"></app-burbujas>
+                      *ngIf="this.esVisible[u]?.[i] && datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
+                      [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"
+                      [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
+                       ></app-burbujas>
                   </th>
                 </ng-container>
               </tr>

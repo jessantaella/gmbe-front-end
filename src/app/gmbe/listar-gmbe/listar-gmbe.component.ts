@@ -92,14 +92,14 @@ i: any;
   ngOnInit(): void {
     this.estatusVdalidado();
     this.ObjetoUser = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    console.log(this.ObjetoUser);
+    
     this.idUsuario = this.ObjetoUser.idUsuario;
 
     this.cambiarPaginaGetAll(0, 10);
     this.validarAccesos(this.idUsuario);
 
     this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
-      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      
       this.mostrarNotificaciones = mostrar;
     });
   }
@@ -107,11 +107,11 @@ i: any;
   estatusVdalidado() {
     this.gmbeServices.estatusValidacion().subscribe(
       res => {
-        console.log(res);
+        
         this.validado = res.data;
       },
       err => {
-        console.log(err);
+        
       }
     );
   }
@@ -170,7 +170,7 @@ i: any;
     //4.- PUBLICADOR
     switch (idCatalogo) {
       case this.creado:
-        console.log(this.mostrarMensajeRevisionesAcciones);
+        
         if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisionesAcciones) {
           return true;
         } else {
@@ -185,7 +185,7 @@ i: any;
         }
         break;
       case this.rechazado:
-        console.log(this.mostrarMensajeRevisionesAcciones);
+        
         if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1)  && this.mostrarMensajeRevisionesAcciones) {
           return true;
         } else {
@@ -211,12 +211,12 @@ i: any;
   validarAccesos(idUsuario: number) {
     this.gmbeServices.consultarAccesos(idUsuario).subscribe(
       res => {
-        console.log(res);
+        
         //Actualizar el localStorage de los accesos del usuario
         this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
       },
       err => {
-        console.log(err);
+        
       }
     );
   }
@@ -250,10 +250,10 @@ i: any;
 
   masRevisones(mbe: any = '') {
     if (mbe?.maxRevision > 0 && mbe?.maxRevisiones !== null ) {
-      console.log("Es mayor a 0");
+      
       this.mostrarMensajeRevisiones = true;
     } else {
-      console.log("Es menor a 0");
+      
       this.mostrarMensajeRevisiones = false; 
     }
   }
@@ -366,8 +366,8 @@ i: any;
 
   loadPage(e: number) {
     if (e !== this.currentPage) {
-      console.log('currentPage');
-      console.log(this.currentPage);
+      
+      
       this.cambiarPaginaGetAll(e - 1, this.pageSize);
     }
   }
@@ -467,7 +467,7 @@ i: any;
     setTimeout(() => {
       this.gmbeServices.cargarInformación(this.archivoCarga, this.idMbe).subscribe(
         res => {
-          console.log(res);
+          
           // Cerrar la animación de carga
           //swal.close();
           // Mostrar mensaje de éxito
@@ -484,7 +484,7 @@ i: any;
           this.modalRef?.close();
         },
         err => {
-          console.log(err.error);
+          
           // Cerrar la animación de carga
           swal.close();
           // Mostrar mensaje de error

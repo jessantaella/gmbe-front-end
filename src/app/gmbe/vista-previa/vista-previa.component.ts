@@ -115,7 +115,7 @@ estructuraCarga :any [] = [];
     this.cargarEstructuraMbe();
     this.obtenerVersionMax();
     this.cargarRevisonDos();
-    //this.cargarDatosMbe();
+    this.cargarDatosMbe();
   }
   ngOnDestroy(): void {
     this.storage.removeItem('zArrayGuardado');
@@ -128,18 +128,6 @@ estructuraCarga :any [] = [];
   ngOnInit(): void {
     this.pantallaCargando();
     this.estatusVdalidado();
-    this.storage.removeItem('zArrayGuardado');
-    this.storage.removeItem('zArrayGuardado2');
-    this.storage.removeItem('zArrayGuardado3');
-
-    /*window.addEventListener('resize', () => {
-      this.pantallaCargando();
-      this.storage.removeItem('zArrayGuardado');
-      this.estructuraFinalColumnasTitulos = [];
-      this.estructuraFinalFilasTitulos = [];
-      this.estructuraFinalFilasSubitulos = [];
-      this.cargarEstructuraMbe();
-    });*/
   }
 
   pantallaCargando() {
@@ -156,19 +144,19 @@ estructuraCarga :any [] = [];
   cargarRevisonDos() {
     this.gmbservices.obtenerDatosGMBE(this.id, 1).subscribe(
       (res) => {
-        console.log('datos', res);
+        
         this.revisionDos = res;
 
         this.revisionDos.forEach((element: any) => {
           let valor = element.conteoTipoEval === null ? element.conteoDisenioEval: element.conteoTipoEval;
-          console.log('valor', valor);
+          
           this.arrayValoresBurbujas.push(valor)
         });
-        console.log('array valores', this.arrayValoresBurbujas);
+        
         this.valorMaximoZ = Math.max(...this.arrayValoresBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
         this.valorMinimoZ = Math.min(...this.arrayValoresBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
-        console.log('valor maximo', this.valorMaximoZ);
-        console.log('valor minimo', this.valorMinimoZ);
+        
+        
       },
       (err) => {}
     );
@@ -209,7 +197,7 @@ estructuraCarga :any [] = [];
 
     this.pantallaCargando();
 
-    console.log('datos', this.datosIntersecciones);
+    
   }
 
   cargaMBE() {
@@ -217,7 +205,7 @@ estructuraCarga :any [] = [];
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       (res) => {
         this.idEstatus = res.revisionOne.idEstatus.idCatalogo;
-        console.log('estatus', this.idEstatus);
+        
         this.mostrarNombre = res.revisionOne.nombre;
         this.idMBE = res.revisionOne.idMbe;
         this.mostrarObjetivos = res.revisionOne.objetivo;
@@ -227,8 +215,8 @@ estructuraCarga :any [] = [];
           resumen: [res?.revisionOne.resumen],
         });
         
-        console.log('1ra versión',res.revisionOne);
-        console.log('2da versión',res.revisionTwo);
+        
+        
 
         if (res.revisionTwo !== null) {
           this.revision1 = res.revisionOne;
@@ -318,11 +306,11 @@ estructuraCarga :any [] = [];
   estatusVdalidado() {
     this.gmbservices.estatusValidacion().subscribe(
       (res) => {
-        console.log(res);
+        
         this.validado = res.data;
       },
       (err) => {
-        console.log(err);
+        
       }
     );
   }
@@ -330,12 +318,12 @@ estructuraCarga :any [] = [];
   validarAccesos(idUsuario: number) {
     this.gmbservices.consultarAccesos(idUsuario).subscribe(
       res => {
-        console.log(res);
+        
         //Actualizar el localStorage de los accesos del usuario
         this.storage.setItem("autorizadas", this.cifrado.cifrar(JSON.stringify(res)));
       },
       err => {
-        console.log(err);
+        
       }
     );
   }
@@ -447,10 +435,9 @@ estructuraCarga :any [] = [];
       } else {
         this.mostrarMensajeRevisiones = false;
       }
-      this.cargarDatosMbe();
-      console.log('version maxima', this.versionMaxima);
-      console.log('existe otra revision', this.existeOtraRevision);
-      console.log(res);
+      
+      
+      
     });
   }
 
@@ -486,102 +473,53 @@ estructuraCarga :any [] = [];
     this.storage.removeItem('zArrayGuardado');
     this.gmbservices.obtenerEstructuraGMBE(this.id).subscribe(
       (res) => {
-        console.log(res);
-        //obtiene categorias filas
-        this.estructuraFinalColumnasTitulos = this.filtrarCategoriasUnicas(
-          this.obtenerTipo(res, 1)
-        );
+        const categoriasFilas = this.obtenerTipo(res, 1);
+        const categoriasColumnas = this.obtenerTipo(res, 2);
 
-        this.estructuraFinalColumnasTitulos.forEach((c) => {
-          c.hijos = [];
-          res.forEach(
-            (e: {
-              idSubCategoria: { idRelacion: any };
-              idTipo: { idCatalogo: number };
-            }) => {
-              if (
-                e?.idSubCategoria?.idRelacion === c.idCatalogo &&
-                e?.idTipo?.idCatalogo == 1
-              ) {
-                c.hijos.push(e);
-              }
-            }
+        this.estructuraFinalColumnasTitulos = this.filtrarCategoriasUnicas(categoriasFilas);
+        this.estructuraFinalFilasTitulos = this.filtrarCategoriasUnicas(categoriasColumnas);
+
+        this.estructuraFinalColumnasTitulos.forEach((columna) => {
+          columna.hijos = res.filter(
+            (e:any) => e?.idSubCategoria?.idRelacion === columna.idCatalogo && e?.idTipo?.idCatalogo === 1
           );
-        });
-
-        //Creación de hijos auxiliares para mantener espacios
-        for (let a = 0; a < this.estructuraFinalColumnasTitulos.length; a++) {
-          if (this.estructuraFinalColumnasTitulos[a].hijos.length < 1) {
-            this.estructuraFinalColumnasTitulos[a].hijos.push({
-              auxiliar: true,
-            });
+          if (columna.hijos.length === 0) {
+            columna.hijos.push({ auxiliar: true });
           }
-        }
-
-        console.log('valores columnas', this.estructuraFinalColumnasTitulos);
-
-        //obtiene categorias de columnas
-        this.estructuraFinalFilasTitulos = this.filtrarCategoriasUnicas(
-          this.obtenerTipo(res, 2)
-        );
-
-        this.estructuraFinalFilasTitulos.forEach((c) => {
-          c.hijos = [];
-          res.forEach(
-            (e: {
-              idSubCategoria: { idRelacion: any };
-              idTipo: { idCatalogo: number };
-            }) => {
-              if (
-                e?.idSubCategoria?.idRelacion === c.idCatalogo &&
-                e?.idTipo?.idCatalogo == 2
-              ) {
-                c.hijos.push(e);
-              }
-            }
-          );
         });
 
-        console.log(
-          'filas Procesadas Titulos',
-          this.estructuraFinalFilasTitulos
-        );
-
-        //Creación de hijos auxiliares para mantener espacios
-
-        for (let a = 0; a < this.estructuraFinalFilasTitulos.length; a++) {
-          if (this.estructuraFinalFilasTitulos[a].hijos.length < 1) {
-            this.estructuraFinalFilasTitulos[a].hijos.push({
+        this.estructuraFinalFilasTitulos.forEach((fila) => {
+          fila.hijos = res.filter(
+            (e:any) => e?.idSubCategoria?.idRelacion === fila.idCatalogo && e?.idTipo?.idCatalogo === 2
+          );
+          if (fila.hijos.length === 0) {
+            fila.hijos.push({
               auxiliar: true,
               countSubCats: 1,
               idCategoria: {
-                idCatalogo: this.estructuraFinalFilasTitulos[a].idCatalogo,
-                catalogo: this.estructuraFinalFilasTitulos[a].catalogo,
+                idCatalogo: fila.idCatalogo,
+                catalogo: fila.catalogo,
               },
-              idEstructura: this.estructuraFinalFilasTitulos[a].idEstructura,
+              idEstructura: fila.idEstructura,
             });
           }
-        }
+        });
 
-        for (let a = 0; a < this.estructuraFinalFilasTitulos.length; a++) {
-          this.estructuraFinalFilasSubitulos =
-            this.estructuraFinalFilasSubitulos.concat(
-              this.estructuraFinalFilasTitulos[a].hijos
-            );
-        }
-        //console.log('Columnas',this.estructuraFinalColumnasTitulos)
-        //console.log('subtitulos',this.estructuraFinalFilasSubitulos);
-        // console.log('hijos filas',this.estructuraFinalFilasTitulos)
+        this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
+
+        console.log('Filas Procesadas Titulos', this.estructuraFinalFilasTitulos);
       },
-      (err) => {}
-    ); 
+      (err) => {
+        console.error('Error al cargar la estructura MBE', err);
+      }
+    );
   }
 
   cargarDatosMbe() {
     this.gmbservices.obtenerDatosGMBE(this.id, this.versionMaxima).subscribe(
       (res) => {
         this.datosIntersecciones = res;
-        console.log('datos', this.datosIntersecciones);
+        
         swal.close();
       },
       (err) => {}
