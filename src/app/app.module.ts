@@ -32,7 +32,6 @@ import { PanelResultadosComponent } from './gmbe/panel-resultados/listar-panel/l
 
 import { FormsModule } from '@angular/forms'; 
 import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
-import { NgApexchartsModule } from "ng-apexcharts";
 import { NgChartjsModule } from 'ng-chartjs';
 
 
@@ -65,7 +64,6 @@ import { NgChartjsModule } from 'ng-chartjs';
     NgbModule,
     FontAwesomeModule,
     NgChartjsModule,
-    NgApexchartsModule,
     HttpClientModule,
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
