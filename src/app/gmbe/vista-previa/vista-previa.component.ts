@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -92,6 +92,7 @@ esVisible2: boolean[][] = [];
 @ViewChildren('thElemento2') thElements2!: QueryList<ElementRef>;
 elementosObservados = false;
 elementosObservadosModal = false;
+renderizadoServices: any;
 
 
   constructor(
@@ -125,6 +126,7 @@ elementosObservadosModal = false;
     this.cargarRevisonDos();
     this.cargarDatosMbe();
   }
+
   ngOnDestroy(): void {
      // Unsubscribe from any active subscriptions
      this.elementosObservados = false; // Marcar que los elementos no han sido observados
@@ -271,15 +273,9 @@ elementosObservadosModal = false;
       centered: true,
       backdrop: 'static',
       keyboard: false,
+      
       size: 'xl',
     })
-
-    setTimeout(() => {
-      // Asegúrate de que los elementos del modal ya se han renderizado
-      this.renderizadoModal();
-    }, 500);
-
-    
   }
 
   cargaMBE() {
@@ -503,6 +499,7 @@ elementosObservadosModal = false;
   }
 
   cerraModal() { 
+    clearInterval(this.renderizadoServices);
     this.modalService.dismissAll();
   }
 

@@ -266,12 +266,12 @@
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-                      <th #thElemento1 id="thElemento1-{{u}}-{{i}}" class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                      <th  class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
                         <app-burbujas 
                           [chartId]="'chart-modal1-' + (i + 100) + '-' + (j + 100) + '-' + u" 
                           [chartTitle]="'GraficaModal1'" 
                           [bubbleData]="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="this.esVisible1[u]?.[i] && datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))">
+                        *ngIf="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))">
                         </app-burbujas>
                       </th>
                     </ng-container>
@@ -324,10 +324,10 @@
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-                      <th #thElemento2 id="thElemento2-{{u}}-{{i}}" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                      <th  class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
                       <app-burbujas [chartId]="'chart-' + (i + 1000) + '-' + (j + 1000) + '-' + u"  [chartTitle]="'GraficaModal2'"
                         [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="this.esVisible2[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+                        *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
                       </th>
                     </ng-container>
                   </tr>
