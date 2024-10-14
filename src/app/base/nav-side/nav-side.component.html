@@ -3,12 +3,10 @@
     <div class="menu-des">
     <div class="menu text-star fs-4">
         <fa-icon [icon]="faBars" (click)="activarSidebar()" id="btn" class="ms-3"></fa-icon>
-        <!--em class='bi bi-list icon-menu m-3' (click)="activarSidebar()" id="btn"></!--em-->
     </div>
         <ul class="nav">
             <li *ngIf="this.getrol() === 1 " >
                 <a [routerLink]="['/usuarios']">
-                    <!--em class="bi bi-people-fill"></!--em-->
                     <fa-icon [icon]="faUserGroup" class="text-start iconoMenu ms-3"></fa-icon>
                     <span class="link_name m-2">
                         Usuarios
@@ -17,22 +15,12 @@
             </li>
             <li>
                 <a [routerLink]="['/gmbe']">
-                    <!--em class='bi bi-cast'></em-->
                     <fa-icon [icon]="faDesktop" class="text-start iconoMenu ms-3"></fa-icon>
                     <span class="link_name m-2">
                         MBE
                     </span>
                 </a>
             </li>
-
-            <!-- <li>
-                <a [routerLink]="['/panel']">
-                    <fa-icon [icon]="faFile" class="text-start iconoMenu ms-3"></fa-icon>
-                    <span class="link_name m-2">
-                        Panel de Resultados
-                    </span>
-                </a>
-            </li> -->
         </ul>
     </div>
 </div>

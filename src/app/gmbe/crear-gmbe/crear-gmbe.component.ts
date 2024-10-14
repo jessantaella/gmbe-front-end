@@ -666,34 +666,38 @@ clearImage(): void {
     }[] = [];
     this.estructuraFinalFilasSubitulos.forEach(
       (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
-        if(!element.esAuxiliar)
-        arregloSalida.push({
-          tipo: 2,
-          idCategoria: element.idRelacion,
-          idSubCategoria: element.idCatalogo,
-        });
-        else
-        arregloSalida.push({
-          tipo: 2,
-          idCategoria: element.idRelacion,
-          idSubCategoria: null,
-        });
+        if(!element.esAuxiliar){
+          arregloSalida.push({
+            tipo: 2,
+            idCategoria: element.idRelacion,
+            idSubCategoria: element.idCatalogo,
+          });
+        }
+        else{
+          arregloSalida.push({
+            tipo: 2,
+            idCategoria: element.idRelacion,
+            idSubCategoria: null,
+          });
+        }
       }
     );
     this.estructuraFinalColumnasSubitulos.forEach(
       (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
-        if(!element.esAuxiliar)
+        if(!element.esAuxiliar){
         arregloSalida.push({
           tipo: 1,
           idCategoria: element.idRelacion,
           idSubCategoria: element.idCatalogo,
         });
-        else
-        arregloSalida.push({
-          tipo: 1,
-          idCategoria: element.idRelacion,
-          idSubCategoria: null,
-        });
+        } 
+        else{
+          arregloSalida.push({
+            tipo: 1,
+            idCategoria: element.idRelacion,
+            idSubCategoria: null,
+          });
+        }
       }
     );
 
@@ -911,7 +915,7 @@ clearImage(): void {
       
           if (descripcion !== '' || url !== '') {
             this.gmbeservice.editarCategoria(id,nombre,descripcion,url).subscribe(
-              res => {
+              () => {
                 swal.fire({
                   title: '',
                   text: 'Registro editado exitosamente',
@@ -1020,7 +1024,7 @@ clearImage(): void {
       }
     }
 
-    if (nombre !== '' || nombre !== '' || url !== '') {
+    if (nombre !== '' || descripcion !== '' || url !== '') {
         this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value,descripcion,url).subscribe(
           res => {
             swal.fire({
@@ -1099,7 +1103,7 @@ clearImage(): void {
           }
       
             this.gmbeservice.editarSubcategoria(id,nombre,validarIdSub,descripcion,url).subscribe(
-              res => {
+              () => {
                 swal.fire({
                   title: '',
                   text: 'Registro editado exitosamente',

@@ -452,11 +452,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   validaDisabledGuardarEditar(){
-    if (this.usuarioEditForm.get('idRol')!.value === '1' || this.usuarioEditForm.get('idRol')!.value === 1){
       return true;
-    }else{
-      return true;
-    }
   }
 
 

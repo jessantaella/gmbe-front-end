@@ -22,7 +22,6 @@ constructor(private http:HttpClient,@Inject(PLATFORM_ID) private platformId:any)
     this.isBrowser = isPlatformBrowser(this.platformId);
     //if (this.isBrowser) {
       let url:string = window.location.hostname;
-      let conecta = '';
       if(url.includes('qa')){
         url = 'https://qa.coneval.org.mx/conf/configuracion.json'
       }else if(url.includes('sistemas')){
@@ -30,7 +29,7 @@ constructor(private http:HttpClient,@Inject(PLATFORM_ID) private platformId:any)
       }else{
         url = 'http://10.1.15.102:81/conf/configuracion.json'
       }
-      return this.http.get<any>(conecta,{ headers: headers });
+      return this.http.get<any>(url,{ headers: headers });
     //}
   }
 

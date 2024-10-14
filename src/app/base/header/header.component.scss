@@ -4,13 +4,6 @@
   }
 
 
-
-  .redes {
-    width: 225px;
-    margin-left: auto;
-  }
-
-
   .img-logo-cnvl{
     min-width: 225px;
     max-width: 225px;
@@ -41,6 +34,7 @@
       margin-left: 10% !important;
     }
     .redes{
+      width: 225px;
       margin: auto;
     }
     .coneval-sarc{
@@ -60,7 +54,8 @@
       margin-left: 15% !important;
     }
     .redes{
-      margin: auto;
+      width: 225px;
+      margin-left: auto;
     }
     .coneval-sarc{
       width: 60%;
@@ -68,9 +63,6 @@
     .img-logo-cnvl {
       min-width: 100px;
       max-width: 200px;
-  }
-  .redes{
-    margin-left: auto;
   }
   }
 
@@ -96,6 +88,7 @@
       width: 50%;
     }
     .redes{
+      width: 225px;
       margin-left: 0px;
     }
     .img-logo-cnvl {

@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
 import { ServicioInfoDinamicaService } from '../services/servicio-info-comun.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
-import { firstValueFrom } from 'rxjs';
 import { ServerConfigService } from 'src/app/server-config.service';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from 'src/app/services/storage-service.service';
@@ -123,7 +122,6 @@ export class InicioComponent implements OnInit {
   }
 
   obtenerMbesPublicos() {
-    let token_gmbe = this.storage.getItem('token-gmbe');
       this.info.obtenerMBEPublicado().subscribe(
         res => {
           console.log(res);
