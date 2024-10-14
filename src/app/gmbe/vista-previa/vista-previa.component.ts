@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,6 +16,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ModalGraficasComponent } from '../modal-graficas/modal-graficas.component';
 
 declare var swal: any;
 
@@ -90,6 +91,8 @@ esVisible2: boolean[][] = [];
 @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
 @ViewChildren('thElemento1') thElements1!: QueryList<ElementRef>;
 @ViewChildren('thElemento2') thElements2!: QueryList<ElementRef>;
+@ViewChildren('contentGraficas') contentGraficas!: QueryList<ElementRef>;
+
 elementosObservados = false;
 elementosObservadosModal = false;
 renderizadoServices: any;
@@ -128,9 +131,9 @@ renderizadoServices: any;
   }
 
   ngOnDestroy(): void {
-     // Unsubscribe from any active subscriptions
-     this.elementosObservados = false; // Marcar que los elementos no han sido observados
-     this.esVisible = []; // Limpiar el array de visibilidad
+    this.storage.removeItem('idMbe');
+    this.elementosObservados = false; // Marcar que los elementos no han sido observados
+    this.esVisible = []; // Limpiar el array de visibilidad
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   ngOnInit(): void {
@@ -199,7 +202,7 @@ renderizadoServices: any;
         }
       });
     }, {
-      rootMargin: '500px',
+      rootMargin: '100px',
     });
 
     this.thElements1.forEach(th => {
@@ -268,8 +271,9 @@ renderizadoServices: any;
     });
 }
 
-  abrirModalGraficas(contentGraficas: any) {
-    this.modalService.open(contentGraficas, {
+  abrirModalGraficas() {
+    this.storage.setItem('idMbe', this.idMBE);
+    this.modalService.open(ModalGraficasComponent, {
       centered: true,
       backdrop: 'static',
       keyboard: false,

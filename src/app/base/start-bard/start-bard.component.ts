@@ -22,8 +22,9 @@ export class StartBardComponent {
   constructor(private router: Router,private storage:StorageService, private cifrado:CifradoService, private notificacionesService:NotificacionesService) {
    }
 
-  validaToken(): boolean{
-    return this.storage.getItem('token-gmbe')!== null;
+  validaToken(): boolean {
+    const token = this.storage.getItem('token-gmbe');
+    return token !== null && token !== undefined && token.trim() !== '';
   }
   
   cerrarSesion(){
@@ -38,11 +39,20 @@ export class StartBardComponent {
   desplegar(){
     this.abrir = !this.abrir;
   }
-  getUsuario(){
-    let objeto = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-    //Sacar unicamnete el nombre o los dos nombres sin apellidos del objeto
-    let nombre = objeto.nombre.split(" ")[0];
-    return nombre;
+  getUsuario() {
+    const usuarioCifrado = this.storage.getItem('usr');
+    if (!usuarioCifrado) {
+      return null;
+    }
+
+    try {
+      const objeto = JSON.parse(this.cifrado.descifrar(usuarioCifrado));
+      const nombre = objeto.nombre.split(" ")[0];
+      return nombre;
+    } catch (error) {
+      console.error('Error al descifrar o parsear el usuario:', error);
+      return null;
+    }
   }
   getRole(){
    let rol= this.cifrado.descifrar(this.storage.getItem('rolUsuario')!)

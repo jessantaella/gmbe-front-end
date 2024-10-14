@@ -33,6 +33,7 @@ import { PanelResultadosComponent } from './gmbe/panel-resultados/listar-panel/l
 import { FormsModule } from '@angular/forms'; 
 import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
 import { NgChartjsModule } from 'ng-chartjs';
+import { ModalGraficasComponent } from './gmbe/modal-graficas/modal-graficas.component';
 
 
 
@@ -46,6 +47,7 @@ import { NgChartjsModule } from 'ng-chartjs';
     BarraAzulComponent,
     LoginComponent,
     ListarUsuariosComponent,
+    ModalGraficasComponent,
     NavSideComponent,
     StartBardComponent,
     NotificacionesComponent,

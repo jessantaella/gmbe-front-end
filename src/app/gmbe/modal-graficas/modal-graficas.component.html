@@ -1,0 +1,129 @@
+<div class="modal-content">
+    <div class="modal-header d-flex justify-content-center modal-titulo">
+        <strong>Información</strong>
+    </div>
+    <div class="modal-body">
+      <div class="justify-content-center">
+        <h4 class="text-center my-2"><strong>Gráfica</strong></h4>
+        <form class="mx-3" [formGroup]="modalRevisionesForm" >
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Anterior</span>
+          <div id="pregunta-1" class=" my-2" >
+
+            <div class="table-responsive">
+              <table class="table table-bordered"
+                *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+                <caption class="text-center caption-original"></caption>
+                <thead class="sticky-header">
+                  <tr class="text-center ">
+                    <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
+                      *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
+                    <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 200 : columna.countSubCats * 200) + 'px'}"
+                      *ngFor="let columna of estructuraFinalColumnasTitulos"
+                      [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
+                      [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
+                      {{ columna?.catalogo }}
+                    </th>
+                  </tr>
+                  <tr>
+                    <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
+                      <ng-container *ngFor="let hijo of subcolumna.hijos">
+                        <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" style="border: 1px solid;"
+                          *ngIf="!hijo?.auxiliar">
+                          {{ hijo?.idSubCategoria?.catalogo }}
+                        </th>
+                      </ng-container>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
+                    <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="subFilas?.countSubCats"
+                      [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
+                      *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo"  ng>
+                      {{ subFilas?.idCategoria?.catalogo }}
+                    </th>
+        
+                    <th class="subtitulos-tabla align-middle text-center" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"> {{
+                      subFilas?.idSubCategoria?.catalogo }} </th>
+        
+                    <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
+                      <th #thElemento1 id="thElemento1-{{u}}-{{i}}" class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                        <app-burbujas 
+                          [chartId]="'chart-modal1-' + (i + 100) + '-' + (j + 100) + '-' + u" 
+                          [chartTitle]="'GraficaModal1'" 
+                          [bubbleData]="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
+                        *ngIf="this.esVisible1[u]?.[i] && datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))">
+                        </app-burbujas>
+                      </th>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Actual</span>
+          <div id="pregunta-15" class=" my-2">
+
+            <div class="table-responsive ">
+              <table class="table table-bordered"
+                *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+                <caption class="text-center caption-original"></caption>
+                <thead class="sticky-header">
+                  <tr class="text-center ">
+                    <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
+                      *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
+                    <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 200) + 'px'}"
+                      *ngFor="let columna of estructuraFinalColumnasTitulos"
+                      [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
+                      [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
+                      {{ columna?.catalogo }}
+                    </th>
+                  </tr>
+                  <tr>
+                    <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
+                      <ng-container *ngFor="let hijo of subcolumna.hijos">
+                        <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center" style="border: 1px solid;"
+                          *ngIf="!hijo?.auxiliar">
+                          {{ hijo?.idSubCategoria?.catalogo }}
+                        </th>
+                      </ng-container>
+                    </ng-container>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let subFilas of estructuraFinalFilasSubitulos; let u = index">
+                    <th class="align-middle text-center titulos-tabla" id="padre" [attr.rowspan]="subFilas?.countSubCats"
+                      [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
+                      *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo">
+                      {{ subFilas?.idCategoria?.catalogo }}
+                    </th>
+        
+                    <th class="subtitulos-tabla align-middle text-center" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"> {{
+                      subFilas?.idSubCategoria?.catalogo }} </th>
+        
+                    <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
+                      <th #thElemento2 id="thElemento2-{{u}}-{{i}}"   class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                      <app-burbujas [chartId]="'chart-' + (i + 1000) + '-' + (j + 1000) + '-' + u"  [chartTitle]="'GraficaModal2'"
+                        [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
+                        *ngIf="this.esVisible2[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+                      </th>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center align-items-center">
+      <button class="btn btn-cancelar regresar" (click)="this.cerraModal()" type="button">
+        <fa-icon style="margin-right: 4px;"></fa-icon>Regresar
+      </button>
+    </div>
+  </div>

@@ -1,0 +1,225 @@
+.imagen{
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  .contenido-tabla{
+    background-color: #f0f8ff !important;
+  }
+
+  .fuente{
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: #000000;
+  }
+
+  textarea{
+    width: 100%;
+    height: 200px;
+  }
+
+  .titulos-tabla{
+    background-color: #3968C6;
+    color: white;
+  }
+  .subtitulos-tabla{
+    background-color: #BEDBFE;
+    color: #000000;
+  }
+
+  .caption-original {
+    caption-side: top; /* Esto es el valor por defecto, pero se puede especificar explícitamente */
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px; /* Espacio debajo del caption */
+  }
+
+
+  .d-flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl; /* Rota el texto 90 grados en el sentido contrario a las agujas del reloj */
+    transform: rotate(180deg); /* Ajusta la dirección del texto */
+    text-align: center;
+    margin-right: 1rem; /* Espacio entre el texto y la tabla */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    font-weight: bold; /* Opcional: Hace que el texto sea negrita */
+  }
+
+  .table-responsive{
+    height: 60vh;
+    overflow-x: auto;
+    position: relative;
+    width: 100%;
+  }
+
+
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background: white; /* Para que el fondo del encabezado sea blanco */
+    z-index: 10; /* Asegura que el encabezado esté por encima de otras filas */
+  }
+
+  .table th, .table td {
+    /*min-width: 100px;
+    ma -width: 600px;*/ 
+    word-wrap: break-word;
+  }
+
+  .table{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .regresar{
+    background-color: #21409A !important;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#ffffff;
+    margin-left: 100px !important;
+  }
+
+  .descargar{
+    background-color: #3081b9;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#ffffff;
+  }
+
+  .rechazar{
+    background-color: #B3273e;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#ffffff;
+  }
+
+  .aprobar{
+    background-color: #00a94f;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#ffffff;
+  }
+
+  .titulosTabla{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+
+.vertical-text-container {
+  display: flex;
+  align-items: center;
+  height: calc(60vh - 2rem); /* Adjust this value to move the label up or down */
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg) translateY(+60px);
+  text-align: center ;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+  @media (max-width: 768px) {
+    .form-label {
+      text-align: left;
+      display: block;
+    }
+    .form-control {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+
+.negro{
+  color: #000000;
+}
+
+#tituloTablaColumna{
+  width: 200px;
+  height: 100px;
+}
+
+/*#subtituloTablaColumna{
+  width: 500px;
+}*/
+
+.tabladatos{
+  height: 60vh;
+  width:100%;
+  overflow-y: auto;
+}
+
+.tabladatosModal{
+  height: 40vh;
+  width:100%;
+  overflow-y: auto;
+}
+
+#subtituloTablaFila{
+  width: 100px;
+}
+
+#contenidoFila{
+  width: 200px;
+}
+
+.modal-titulo{
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.titulosActual-Anterior{
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.boton-gris-modal{
+  background:#21409a !important;
+  color: white;
+  border: none;
+  width: 25%;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white;
+}
+
+.boton-gris-modal:hover{
+  background:#21409a !important;
+  color: white;
+  border: none;
+  width: 25%;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white;
+}
+
+.regresar{
+  background-color: #21409A !important;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
+  margin-left: 10px!important;
+}
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+
