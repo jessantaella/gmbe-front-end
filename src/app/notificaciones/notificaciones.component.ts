@@ -26,6 +26,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   guardarNotificaciones: any;
 
   mostrarNotificaciones = false;
+  esMenor = false;
 
   usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
   idUsuario:number = Number(this.usuario.idUsuario);
@@ -38,11 +39,22 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
       
     }
   }
+
+  dimensionesPantalla(){
+    if (window.innerHeight <= 900) {
+      console.log('Es menor');
+      this.esMenor = true;
+    }else{
+      console.log('Es mayor');
+      this.esMenor = false;
+    }
+  }
   
   ngOnInit(): void {
     console.log('Usuario:', this.usuario);
     this.verificarMostrarNotificaciones();
     this.notificacionesRes(this.idUsuario);
+    this.dimensionesPantalla();
   }
 
   verificarMostrarNotificaciones() {

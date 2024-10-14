@@ -480,18 +480,19 @@ clearImage(): void {
             );
 
             //limpiar el arreglo de subcategorias agregadas
+            this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+            this.subCategorias = [];
             this.subcategoriasAgregadas = [];
             this.activarAgregar = false;
 
       }
 
-     
-    //limpia el arreglo de subcategorias agregadas y los checkboxes
-    this.subcategoriasAgregadas = [];
-    this.ver = true;
-
-    this.obtenerCategorias();
+    //limpiar el arreglo de subcategorias agregadas
+    this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
     this.subCategorias = [];
+    this.subcategoriasAgregadas = [];
+    this.activarAgregar = false;
+    this.ver = true;
   }
 
   regresaPapa(idPadre: number) {
@@ -839,10 +840,11 @@ clearImage(): void {
             });
             if (this.modalRef) {
               //limpia el select de categorias
-              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
-              this.modalRef.close();
+              this.activarAgregar = false;
+              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
               this.obtenerCategorias();
               this.subCategorias = [];
+              this.modalRef.close();
             }
           },
           err => {
@@ -924,10 +926,11 @@ clearImage(): void {
                   this.editarCategoriaForm.get('categoria')?.setValue('');
                   this.editarCategoriaForm.get('descripcion')?.setValue('');
                   this.editarCategoriaForm.get('url')?.setValue('');
-                  this.modalRef.close();
                   this.obtenerCategorias();
-                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
                   this.subCategorias = [];
+                  this.activarAgregar = false;
+                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                  this.modalRef.close();
                 }
               },
               err => {
@@ -1028,11 +1031,9 @@ clearImage(): void {
             });
             if (this.modalRef) {
               this.subCategorias = [];
+              this.activarAgregar = false;
+              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
               this.modalRef.close();
-              console.log(this.SelectCatelogirasForm.get('selectCategoria')!.value !== '');
-              if(this.SelectCatelogirasForm.get('selectCategoria')!.value){
-                this.obtenerSubCategoriasConid(this.padreActual);
-              }
             }
            
           },
@@ -1072,11 +1073,10 @@ clearImage(): void {
     let url = this.editarSubcategoriaForm.get('url')?.value;
 
     console.log(validarIdSub);
-
-    descripcion = descripcion.trim();
     console.log(url);
     console.log(descripcion)
     url = url !== null ? url?.trim() : '';
+    descripcion = descripcion !== null ? descripcion?.trim() : '';
 
     this.gmbeservice.existeCategoriaSubcategoria(validarIdSub).subscribe(
       res=>{

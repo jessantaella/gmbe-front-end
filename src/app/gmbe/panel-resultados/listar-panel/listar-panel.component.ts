@@ -102,6 +102,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   esVisible: boolean[][] = [];
   @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
   elementosObservados = false;
+  existeSubcategoria: number = 0;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -141,6 +142,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
   ngOnDestroy(): void {
     this.subscripcionDatos.forEach(sub => sub.unsubscribe());
+    //destruye la funcion de observar los elementos y el renderizado
+    this.elementosObservados = false;
   }
   ngOnInit(): void {
     this.pantallaCargando();
@@ -512,6 +515,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
         this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
 
         this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
+        
+        //Verfica si en todo los datos de la estructura hay un idSubcategorias mayor a 0
+        this.estructuraFinalFilasSubitulos.forEach((element: any) => {
+          if (element.idSubCategoria > 0) {
+            this.existeSubcategoria = 1;
+          }
+        });
+
+        console.log(this.estructuraFinalFilasSubitulos);
 
       },
       err => {
@@ -531,20 +543,12 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   borraFiltros() {
-    this.categoriaSeleccionadaFilas = [];
-    this.subcategoriaSeleccionadaFilas = [];
-    this.categoriaSeleccionadaColumnas = [];
-    this.subcategoriaSeleccionadaColumnas = [];
     //limpia los checkbox
+    this.elementosObservados = false;
     this.categoriaSeleccionadaFila = [];
     this.subcategoriaSeleccionadaFila = [];
     this.categoriaSeleccionadaColumna = [];
     this.subcategoriaSeleccionadaColumna = [];
-    //vuelve a recargar los datos de los filtros
-    this.filtrosCategoriasFilas();
-    this.filtrosSubcategoriasFilas();
-    this.filtrosCategoriasColumnas();
-    this.filtrosSubcategoriasColumnas();
     this.cargaEstructuraPanelResultados();
   }
 
@@ -706,6 +710,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
 
   onCategoriaChangeFilas(idSeccion: number) {
+    this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
       this.categoriaSeleccionadaFilas,
@@ -719,6 +724,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   onSubCategoriaChangeFilas(idSeccion: number) {
+    this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
       this.subcategoriaSeleccionadaFilas,
@@ -730,6 +736,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   onCategoriaChangeColumnas(idSeccion: number) {
+    this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
       this.categoriaSeleccionadaColumnas,
@@ -743,6 +750,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   onSubCategoriaChangeColumnas(idSeccion: number) {
+    this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
       this.subcategoriaSeleccionadaColumnas,

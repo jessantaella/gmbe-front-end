@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,7 +24,7 @@ declare var swal: any;
   templateUrl: './vista-previa.component.html',
   styleUrls: ['./vista-previa.component.scss'],
 })
-export class VistaPreviaComponent implements OnInit, OnDestroy {
+export class VistaPreviaComponent implements OnInit, OnDestroy, AfterViewChecked {
   id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -84,6 +84,15 @@ subscriptions: Subscription[] = []; // Array to hold subscriptions
 
 estructuraCarga :any [] = [];
 
+esVisible: boolean[][] = [];
+esVisible1: boolean[][] = [];
+esVisible2: boolean[][] = [];
+@ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
+@ViewChildren('thElemento1') thElements1!: QueryList<ElementRef>;
+@ViewChildren('thElemento2') thElements2!: QueryList<ElementRef>;
+elementosObservados = false;
+elementosObservadosModal = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -94,6 +103,7 @@ estructuraCarga :any [] = [];
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
     private titulos: TitulosService,
+    private cdr: ChangeDetectorRef,
     private router: Router
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
@@ -111,23 +121,92 @@ estructuraCarga :any [] = [];
       anterior: [''],
       actual: [''],
     });
-    this.cargaMBE();
-    this.cargarEstructuraMbe();
     this.obtenerVersionMax();
     this.cargarRevisonDos();
     this.cargarDatosMbe();
   }
   ngOnDestroy(): void {
-    this.storage.removeItem('zArrayGuardado');
-    this.storage.removeItem('zArrayGuardado2');
-    this.storage.removeItem('zArrayGuardado3');
-
      // Unsubscribe from any active subscriptions
+     this.elementosObservados = false; // Marcar que los elementos no han sido observados
+     this.esVisible = []; // Limpiar el array de visibilidad
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   ngOnInit(): void {
+    this.cargaMBE();
+    this.cargarEstructuraMbe();
     this.pantallaCargando();
     this.estatusVdalidado();
+  }
+
+  ngAfterViewChecked(): void {
+    // Solo ejecutar el renderizado una vez que los elementos estén disponibles
+    if (!this.elementosObservados && this.thElements.length > 0) {
+      this.renderizado();
+      this.elementosObservados = true; // Marcar que ya se han observado los elementos
+    }
+  }
+
+  renderizado() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const [_, index, index2] = entry.target.id.split('-').map(Number);
+        if (entry.isIntersecting) {
+          if (!this.esVisible[index]) {
+            this.esVisible[index] = [];
+          }
+
+          if (!this.esVisible[index][index2]) {
+            this.esVisible[index][index2] = true;
+          }
+        }
+      });
+    }, {
+      rootMargin: '500px',
+    });
+
+    this.thElements.forEach(th => {
+      observer.observe(th.nativeElement);
+    });
+  }
+
+  renderizadoModal() {
+    console.log('elementosObservadosModal', this.elementosObservadosModal);
+    console.log('thElements1', this.thElements1);
+    console.log('thElements2', this.thElements2);
+
+    console.log('Renderizado modal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const [_, index, index2] = entry.target.id.split('-').map(Number);
+        if (entry.isIntersecting) {
+          if (!this.esVisible1[index]) {
+            this.esVisible1[index] = [];
+          }
+
+          if (!this.esVisible2[index]) {
+            this.esVisible2[index] = [];
+          }
+
+          if (!this.esVisible1[index][index2]) {
+            this.esVisible1[index][index2] = true;
+          }
+
+          if (!this.esVisible2[index][index2]) {
+            this.esVisible2[index][index2] = true;
+          }
+        }
+      });
+    }, {
+      rootMargin: '500px',
+    });
+
+    this.thElements1.forEach(th => {
+      observer.observe(th.nativeElement);
+    });
+
+    this.thElements2.forEach(th => {
+      observer.observe(th.nativeElement);
+    });
   }
 
   pantallaCargando() {
@@ -193,9 +272,12 @@ estructuraCarga :any [] = [];
       backdrop: 'static',
       keyboard: false,
       size: 'xl',
-    });
+    })
 
-    this.pantallaCargando();
+    setTimeout(() => {
+      // Asegúrate de que los elementos del modal ya se han renderizado
+      this.renderizadoModal();
+    }, 500);
 
     
   }
@@ -420,9 +502,7 @@ estructuraCarga :any [] = [];
       });
   }
 
-  cerraModal() {
-    this.storage.removeItem('zArrayGuardado2');
-    this.storage.removeItem('zArrayGuardado3');
+  cerraModal() { 
     this.modalService.dismissAll();
   }
 
@@ -560,34 +640,17 @@ estructuraCarga :any [] = [];
       (obj) => obj.idFila === columna && obj.idColumna === fila
     );
 
-    let objeto = respuesta;
+    let obj = respuesta;
 
     respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;
 
-     //Al objeto agregale el valor mas alto de z y el valor mas bajo de z
-     let thElemento = document.getElementById('thElemento');
-     const alto = thElemento?.clientHeight;
-     const ancho = thElemento?.clientWidth;
-
-     /**Todos estos datos se ocupan para dimensionar el alto y ancho que envia desde el TH, aparte mando la informacion para
-     * cuando se le da click a la burbuja y se abra la tabla de evaluaciones, tambien con ello mando el valor maximo y minimo
-     * de las burbujas para poder hacer el calculo de la burbuja
-     */
-     
-     //Agrega dentro del objeto el valor de alto y ancho
-      respuesta?.forEach((element: any) => {
-        element.idMbe = this.id,
-        element.idFila = objeto?.idFila,
-        element.idColumna = objeto?.idColumna,
-        element.idGpo = respuesta?.idGpo,
-        element.valorMaximoZ = this.valorMaximoZ,
-        element.valorMinimoZ = this.valorMinimoZ,
-        element.alto = (alto ?? 0) + 100,
-        element.ancho = ancho ? (ancho + 100) : 0
-      })
-
+      //Agrega el idFila y idColumna al objeto
+    respuesta?.forEach((element: any) => {
+      element.idFila = obj.idFila;
+      element.idColumna = obj.idColumna;
+    });
     return respuesta;
   }
 
@@ -596,22 +659,16 @@ estructuraCarga :any [] = [];
       (obj: any) => obj.idFila === columna && obj.idColumna === fila
     );
 
+    let obj = respuesta;
+    console.log('Respuesta', respuesta);
     respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;
-    
-     //Al objeto agregale el valor mas alto de z y el valor mas bajo de z
-     let thElemento = document.getElementById('thElemento');
-     const alto = thElemento?.clientHeight;
-     const ancho = thElemento?.clientWidth;
-     
-     //Agrega dentro del objeto el valor de alto y ancho
+
       respuesta?.forEach((element: any) => {
-        element.valorMaximoZ = this.valorMaximoZ,
-        element.valorMinimoZ = this.valorMinimoZ,
-        element.alto = alto ? (alto + 20) : 0,
-        element.ancho = ancho
-      }) 
+        element.idFila = obj.idFila;
+        element.idColumna = obj.idColumna;
+      });
 
     return respuesta;
     

@@ -40,7 +40,7 @@
           <div class="d-flex">
             <textarea class="form-control" id="resumen" formControlName="resumen" rows="3" [ngbTooltip]="this.generales.get('resumen')?.value"></textarea>
             <button *ngIf="revision2 != null && revision1?.resumen !== revision2?.resumen" class="btn p-0 mx-2" 
-            (click)="abrirModal(content, revision1?.resumen, revision2?.resumen, 1, 'Resumen con principales hallazgos')">
+            (click)="abrirModal(contentHallazgos, revision1?.resumen, revision2?.resumen, 1, 'Resumen con principales hallazgos')">
             <img alt="" [src]="'assets/img/CUADRO_AMARILLO-1.png'" width="25px" height="25px" />
           </button>
           </div>
@@ -94,20 +94,20 @@
           [attr.rowspan]="subFilas?.countSubCats"
           [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
           *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo"
-          [ngStyle]="{'left': '0px', 'z-index': 2}">
+          [ngStyle]="{'left': '0px', 'z-index': 2,'height': 200 + 'px'}">
         {{ subFilas?.idCategoria?.catalogo }}
       </th>
 
-      <th class="subtitulos-tabla align-middle text-center sticky-left" style="height: 200px;" scope="row" *ngIf="!subFilas?.auxiliar"
+      <th class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="!subFilas?.auxiliar"
           [ngStyle]="{'left': '100px', 'z-index': 1}">
         {{ subFilas?.idSubCategoria?.catalogo }}
       </th>
   
       <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-        <th id="thElemento" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+        <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
           <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
                         [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+                        *ngIf="this.esVisible[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura)) "></app-burbujas>
         </th>
       </ng-container>
     </tr>
@@ -181,22 +181,53 @@
   </div>
 </ng-template>
 
+<ng-template #contentHallazgos>
+  <div class="modal-content">
+    <div class="modal-header d-flex justify-content-center modal-titulo">
+        <strong>Información</strong>
+    </div>
+    <div class="modal-body d-flex flex-column">
+      <h4 class="text-center my-2 fuente"><strong>{{ modalTitulo }}</strong></h4>
+      <div class="justify-content-center w-50">
+        <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm">
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Anterior</span>
+          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2 w-100">
+            <textarea class="form-control" id="resumen" formControlName="actual" rows="3" *ngIf="tipoModalVerant === 1"></textarea>
+            <img [src]="imagenPrevia" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
+          </div>
+          <span class="d-flex justify-content-center titulosActual-Anterior fuente">Actual</span>
+          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2 w-100">
+            <textarea class="form-control" id="resumen" formControlName="anterior" rows="3" *ngIf="tipoModalVerant === 1"></textarea>
+            <img [src]="imagenNueva" alt="Imagen MBE" class="img-thumbnail imagen" *ngIf="tipoModalVerant === 2">
+          </div>
+          
+        </form>
+      </div>
+    </div>
+    
+    
+    <div class="modal-footer d-flex justify-content-center align-items-center">
+      <button class="btn btn-cancelar regresar" (click)="this.cerraModal()" type="button">
+        <fa-icon [icon]="faRotate" class="me-1"></fa-icon>Regresar
+      </button>
+    </div>
+  </div>
+</ng-template>
+
 
 <ng-template #contentGraficas>
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-center modal-titulo">
-      <h4 class="modal-title">
         <strong>Información</strong>
-      </h4>
     </div>
-    <div class="modal-body d-flex flex-column">
+    <div class="modal-body">
       <div class="justify-content-center">
         <h4 class="text-center my-2"><strong>Gráfica</strong></h4>
-        <form class="d-flex flex-column mx-3" [formGroup]="modalRevisionesForm" >
+        <form class="mx-3" [formGroup]="modalRevisionesForm" >
           <span class="d-flex justify-content-center titulosActual-Anterior fuente">Anterior</span>
-          <div id="pregunta-1" class="d-flex flex-column align-items-center my-2" style="width: 60rem;" >
+          <div id="pregunta-1" class=" my-2" >
 
-            <div class="table-responsive tabladatosModal">
+            <div class="table-responsive">
               <table class="table table-bordered"
                 *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
                 <caption class="text-center caption-original"></caption>
@@ -235,12 +266,12 @@
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-                      <th id="contenidoFila" class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                      <th #thElemento1 id="thElemento1-{{u}}-{{i}}" class="contenido-tabla" style="background-color: #f0f8ff;" *ngFor="let hijo of subcolumna.hijos; let j = index">
                         <app-burbujas 
                           [chartId]="'chart-modal1-' + (i + 100) + '-' + (j + 100) + '-' + u" 
                           [chartTitle]="'GraficaModal1'" 
                           [bubbleData]="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))">
+                        *ngIf="this.esVisible1[u]?.[i] && datosInterseccion2(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))">
                         </app-burbujas>
                       </th>
                     </ng-container>
@@ -252,9 +283,9 @@
           </div>
 
           <span class="d-flex justify-content-center titulosActual-Anterior fuente">Actual</span>
-          <div id="pregunta-15" class="d-flex flex-column align-items-center my-2" style="width: 60rem;">
+          <div id="pregunta-15" class=" my-2">
 
-            <div class="table-responsive tabladatosModal">
+            <div class="table-responsive ">
               <table class="table table-bordered"
                 *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
                 <caption class="text-center caption-original"></caption>
@@ -293,10 +324,10 @@
                       subFilas?.idSubCategoria?.catalogo }} </th>
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
-                      <th id="contenidoFila" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
+                      <th #thElemento2 id="thElemento2-{{u}}-{{i}}" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
                       <app-burbujas [chartId]="'chart-' + (i + 1000) + '-' + (j + 1000) + '-' + u"  [chartTitle]="'GraficaModal2'"
                         [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
+                        *ngIf="this.esVisible2[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"></app-burbujas>
                       </th>
                     </ng-container>
                   </tr>

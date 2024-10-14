@@ -127,7 +127,7 @@
                 <!-- Encabezado principal vacío para las filas -->
                  <div class="d-flex justify-content-around w-100">
                   <span class="w-50 h-100" >Categoría General</span>
-                  <span class="w-50 h-100" *ngIf="this.estructuraFinalFilasTitulos[0].hijos[0].idSubCategoria !== 0" >Tipo de apoyo</span>
+                  <span class="w-50 h-100" *ngIf="this.existeSubcategoria > 0" >Tipo de apoyo</span>
                  </div>
               </th>
   
@@ -181,13 +181,13 @@
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center sticky-left" id="padre"
-                [ngStyle]="{'background-color' : this.colorFila(fila.idCategoria), 'color':'white', 'left': '0px', 'z-index': 2}"
+                [ngStyle]="{'background-color' : this.colorFila(fila.idCategoria), 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
                 <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}">{{ fila?.categoria }}</span>
                 <div class="text-end"
-                *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') && (fila.complemento!== null && fila.complemento!== ''))">
+                *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') || (fila.complemento!== null && fila.complemento!== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -204,7 +204,7 @@
                 [ngStyle]="{'background-color': this.colorFila(fila.idCategoria), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
                 {{ fila?.subCategoria }}
                 <div class="text-end"
-                  *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) && (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
+                  *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
                     <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
                       fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -221,7 +221,7 @@
                   <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
                     <app-burbujas
-                      *ngIf="this.esVisible[u]?.[i] && datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
+                      *ngIf="this.esVisible[u]?.[i]"
                       [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
                        ></app-burbujas>

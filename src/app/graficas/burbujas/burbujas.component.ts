@@ -26,19 +26,12 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
   private static chartsCache = new Map<string, Chart>();
   private cachedBubbleData: any[] = [];
   public chart: Chart | null = null;
-  alto = 183;
-  ancho = 183;
 
   constructor(@Inject(PLATFORM_ID) private platformId: any, private storage: StorageService, private router: Router) { }
 
   ngAfterViewInit(): void {
     console.log('bubbleData', this.bubbleData);
     if (this.bubbleData && this.bubbleData.length > 0 && isPlatformBrowser(this.platformId)) {
-      fromEvent(window, 'scroll').pipe(
-        throttleTime(300) // ajusta el tiempo según el rendimiento que necesites
-      ).subscribe(() => {
-        this.createOrUpdateChart();
-      });
   
       requestAnimationFrame(() => {
         this.createOrUpdateChart();
@@ -57,8 +50,11 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
   }
 
   private createOrUpdateChart() {
+    // Inicializar el array para almacenar las posiciones existentes
+    let existingBubbles: Array<{ x: number, y: number }> = [];
+
     if (this.cachedBubbleData.length === 0) {
-      this.cachedBubbleData = this.bubbleData.map(this.generateBubbleData);
+      this.cachedBubbleData = this.bubbleData.map(bubble => this.generateBubbleData(bubble, existingBubbles));
     }
   
     if (BurbujasComponent.chartsCache.has(this.chartId as string)) {
@@ -102,6 +98,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
       plugins: {
         legend: { display: false },
         tooltip: {
+          position: 'average' as 'average',
           callbacks: {
             label: (context: any) => {
               const { datasetIndex, dataIndex } = context;
@@ -118,27 +115,44 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  generateBubbleData(bubble: { idMbe: number; idFila: number; idColumna: number; idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number; valorMinimoZ: number; valorMaximoZ: number }) {
+  generateBubbleData(bubble: { idMbe: number; idFila: number; idColumna: number; idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number; valorMinimoZ: number; valorMaximoZ: number }, existingBubbles: Array<{ x: number, y: number }>) {
     const { count, nombreGpo, colorBubble, alto, ancho, valorMinimoZ, valorMaximoZ } = bubble;
-    const chartWidth = 183;
-    const chartHeight = 183;
+    const chartWidth = 250;
+    const chartHeight = 250;
 
     const r =  Math.floor(((count + 1 - 1) / (120 + 1 -  1)) * (18 - 0) )+ 5;
-    const x = Math.floor(Math.random() * chartWidth) + 80;
-    const y = Math.floor(Math.random() * chartHeight) + 50;
+    const padding = 20; // Espacio entre burbujas
 
-    return {
-      x,
-      y,
-      r,
-      idMbe: bubble.idMbe,
-      idFila: bubble.idFila,
-      idColumna: bubble.idColumna,
-      idGpo: bubble.idGpo,
-      fillColor: colorBubble,
-      nombreGpo,
-      valorOriginalZ: count + '-' + r,
-    };
+    // Calcular posición base x y y
+    let x = (bubble.idFila * (r * 2 + padding)) % chartWidth;
+    let y = (bubble.idColumna * (r * 2 + padding)) % chartHeight;
+
+    // Revisar si la posición ya está ocupada por otra burbuja
+    let attempt = 0; // Contador de intentos de desplazamiento
+    const maxAttempts = 10; // Máximo número de desplazamientos permitidos
+
+    while (existingBubbles.some(b => b.x === x && b.y === y) && attempt < maxAttempts) {
+      attempt++;
+      const offset = attempt * 10; // Aumenta el desplazamiento en cada intento
+      x = (x + offset) % chartWidth;
+      y = (y + offset) % chartHeight;
+    }
+
+    // Guardar las coordenadas actuales en la lista de burbujas existentes
+    existingBubbles.push({ x, y });
+
+      return {
+        x,
+        y,
+        r,
+        idMbe: bubble.idMbe,
+        idFila: bubble.idFila,
+        idColumna: bubble.idColumna,
+        idGpo: bubble.idGpo,
+        fillColor: colorBubble,
+        nombreGpo,
+        valorOriginalZ: count + '-' + r,
+      };
   }
 
   tablaEvaluacion(idMbe: number, fila: number, columna: number, idGpo: number) {
