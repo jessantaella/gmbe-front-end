@@ -6,6 +6,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { ActivatedRoute } from '@angular/router';
+import {
+  faRotateLeft
+} from '@fortawesome/free-solid-svg-icons';
 declare var swal: any;
 
 @Component({
@@ -61,6 +64,7 @@ revision1:any
 revisionDos: any;
 id: number = 0;
 versionMaxima = 1;
+faRotate = faRotateLeft;
 
   constructor(
     private fb: FormBuilder,
@@ -80,7 +84,6 @@ versionMaxima = 1;
     });
     this.obtenerVersionMax();
     this.cargarRevisonDos();
-    this.cargarDatosMbe();
   }
 
   ngOnDestroy(): void {
@@ -173,7 +176,7 @@ renderizadoModal2() {
         this.mostrarMensajeRevisiones = false;
       }
       
-      
+      this.cargarDatosMbe();
       
     });
   }

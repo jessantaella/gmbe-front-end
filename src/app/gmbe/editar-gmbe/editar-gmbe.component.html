@@ -17,7 +17,7 @@
                   <div class="row">
                     <label for="nombre" class="col-lg-4 col-form-label text-lg-end text-start texto">* Nombre:</label>
                     <div class="col-lg-8">
-                      <input [ngbTooltip]="this.mostrarNombre" type="text" class="form-control" id="nombre"
+                      <input [ngbTooltip]="this.mostrarNombre" placement="bottom"  type="text" class="form-control" id="nombre"
                         formControlName="nombre" maxlength="200">
                     </div>
                   </div>
@@ -26,7 +26,7 @@
                   <div class="row">
                     <label for="objetivos" class="col-lg-4 col-form-label text-lg-end text-start texto">* Objetivos:</label>
                     <div class="col-lg-8">
-                      <input type="text" [ngbTooltip]="this.mostrarObjetivos" class="form-control" id="objetivos"
+                      <input type="text" [ngbTooltip]="this.mostrarObjetivos" placement="bottom"  class="form-control" id="objetivos"
                         formControlName="objetivo" maxlength="500">
                     </div>
                   </div>

@@ -16,7 +16,7 @@
         <div class="mb-3">
           <label for="objetivos" class="form-label">Objetivos:</label>
           <div class="d-flex">
-            <input [ngbTooltip]="this.mostrarObjetivos" type="text" class="form-control" id="objetivos"
+            <input [ngbTooltip]="this.mostrarObjetivos" placement="bottom" type="text" class="form-control" id="objetivos"
               formControlName="objetivos">
               <button *ngIf="revision2 != null && revision1?.objetivo !== revision2?.objetivo" class="btn p-0 mx-2" 
               (click)="abrirModal(content, revision1?.objetivo, revision2?.objetivo, 1, 'Objetivos')">

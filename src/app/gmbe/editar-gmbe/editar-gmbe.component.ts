@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
@@ -19,7 +19,7 @@ declare var swal: any;
   templateUrl: './editar-gmbe.component.html',
   styleUrls: ['./editar-gmbe.component.scss']
 })
-export class EditarGmbeComponent {
+export class EditarGmbeComponent{
 
   faFloppyDisk = faFloppyDisk;
   faRotateLeft = faRotateLeft;
@@ -50,20 +50,22 @@ export class EditarGmbeComponent {
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
 
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
+    this.cargaMBE();
     this.generales = this.fb.group({
       nombre: ['',Validators.required],
       objetivo: ['',Validators.required],
       resumen: ['',Validators.required],
     });
-    this.cargaMBE();
 
   }
+
+  
 
   cargaMBE() {
     this.gmbservices.obtenerInfoGMBE(this.id).subscribe(
       res => {
-        this.mostrarNombre = res.revisionOnenombre;
-        this.mostrarObjetivos = res.revisionOneobjetivo;
+        this.mostrarNombre = res.revisionOne.nombre;
+        this.mostrarObjetivos = res.revisionOne.objetivo;
         this.generales = this.fb.group({
           nombre: [res?.revisionOne.nombre,Validators.required],
           objetivo: [res?.revisionOne.objetivo,Validators.required],

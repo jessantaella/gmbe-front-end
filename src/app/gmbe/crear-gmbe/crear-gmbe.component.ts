@@ -148,21 +148,8 @@ export class CrearGmbeComponent implements OnInit {
     this.SelectTipoCat1();
     this.reiniciarSelect();
     this.detectarSelect();
-    this.detectarTipo();
   }
 
-  detectarTipo(){
-    this.SelectCatelogirasForm.get('selectTipo')?.valueChanges.subscribe(
-      (valor) => {
-        console.log(valor);
-        if (Number(valor) === 2) {
-          this.tipoSeleccionado = true;
-        } else {
-          this.tipoSeleccionado = false;
-        }
-      }
-    );
-  }
 
   detectarSelect(){
     this.SelectCatelogirasForm.get('selectCategoria')?.valueChanges.subscribe(
@@ -539,6 +526,12 @@ clearImage(): void {
 
   changeTipo(valor: any) {
     this.tipo = parseInt(valor.target.value);
+    console.log(this.tipo);
+    if (this.tipo === 2) {
+      this.tipoSeleccionado = true;
+    } else {
+      this.tipoSeleccionado = false;
+    }
     this.subCategorias = [];
     this.obtenerCategorias();
     this.SelectCatelogirasForm = this.fb.group({

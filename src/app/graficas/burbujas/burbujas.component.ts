@@ -106,7 +106,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
               return `${nombreGpo} ${valorOriginalZ}`;
             }
           },
-          bodyFont: { size: 12 },
+          bodyFont: { size: 10 },
         },
       },
       elements: {
@@ -129,11 +129,11 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
 
     // Revisar si la posición ya está ocupada por otra burbuja
     let attempt = 0; // Contador de intentos de desplazamiento
-    const maxAttempts = 10; // Máximo número de desplazamientos permitidos
+    const maxAttempts = 80; // Máximo número de desplazamientos permitidos
 
     while (existingBubbles.some(b => b.x === x && b.y === y) && attempt < maxAttempts) {
       attempt++;
-      const offset = attempt * 10; // Aumenta el desplazamiento en cada intento
+      const offset = attempt * 20; // Aumenta el desplazamiento en cada intento
       x = (x + offset) % chartWidth;
       y = (y + offset) % chartHeight;
     }
@@ -151,7 +151,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
         idGpo: bubble.idGpo,
         fillColor: colorBubble,
         nombreGpo,
-        valorOriginalZ: count + '-' + r,
+        valorOriginalZ: count,
       };
   }
 

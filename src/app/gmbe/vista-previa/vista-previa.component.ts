@@ -27,7 +27,7 @@ declare var swal: any;
 })
 export class VistaPreviaComponent implements OnInit, OnDestroy, AfterViewChecked {
   id: number = 0;
-  versionMaxima = 1;
+  versionMaxima = 0;
   generales: FormGroup;
   modalRevisionesForm: FormGroup;
   imageUrl: SafeUrl | null = null;
@@ -127,7 +127,6 @@ renderizadoServices: any;
     });
     this.obtenerVersionMax();
     this.cargarRevisonDos();
-    this.cargarDatosMbe();
   }
 
   ngOnDestroy(): void {
@@ -230,6 +229,7 @@ renderizadoServices: any;
       (res) => {
         
         this.revisionDos = res;
+        console.log('Revision 2', this.revisionDos);
 
         this.revisionDos.forEach((element: any) => {
           let valor = element.conteoTipoEval === null ? element.conteoDisenioEval: element.conteoTipoEval;
@@ -510,14 +510,15 @@ renderizadoServices: any;
   obtenerVersionMax() {
     this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe((res) => {
       this.versionMaxima = res?.data === null ? 1 : res?.data;
+      console.log('Version Maxima', this.versionMaxima);
       this.existeOtraRevision = this.versionMaxima > 1 ? true : false;
       if (res?.data !== null) {
         this.mostrarMensajeRevisiones = true;
       } else {
         this.mostrarMensajeRevisiones = false;
       }
-      
-      
+
+      this.cargarDatosMbe();
       
     });
   }
@@ -597,9 +598,13 @@ renderizadoServices: any;
   }
 
   cargarDatosMbe() {
+    console.log('Cargar datos MBE');
+    console.log('ID', this.id);
+    console.log('Version Maxima', this.versionMaxima);
     this.gmbservices.obtenerDatosGMBE(this.id, this.versionMaxima).subscribe(
       (res) => {
         this.datosIntersecciones = res;
+        console.log('Datos Intersecciones', this.datosIntersecciones);
         
         swal.close();
       },
