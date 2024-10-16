@@ -91,11 +91,26 @@
     color:#ffffff;
   }
 
+  .descargar:active,
+  .descargar:focus {
+    background-color: #3081b9 !important; 
+    color: #ffffff !important; 
+    border: none !important; 
+    box-shadow: none !important; 
+  }
+
   .rechazar{
     background-color: #B3273e;
     font-size: 11px;
     font-family: Arial, Helvetica, sans-serif;
     color:#ffffff;
+  }
+  .rechazar:active,
+  .rechazar:focus {
+    background-color: #B3273e!important; 
+    color: #ffffff !important; 
+    border: none !important; 
+    box-shadow: none !important; 
   }
 
   .aprobar{
@@ -103,6 +118,14 @@
     font-size: 11px;
     font-family: Arial, Helvetica, sans-serif;
     color:#ffffff;
+  }
+
+  .aprobar:active,
+  .aprobar:focus {
+    background-color: #00a94f!important; 
+    color: #ffffff !important; 
+    border: none !important; 
+    box-shadow: none !important; 
   }
 
   .titulosTabla{

@@ -144,6 +144,9 @@ ul:hover{
 .negritas{
   font-weight: bold !important;
 }
+.letranegra{
+
+}
 
 .abajo {
   position: relative;
@@ -196,4 +199,13 @@ ul:hover{
   top: 0;
   left: 0;
   z-index: 30;
+}
+
+.btn-Categorias:active,
+.btn-Categorias:focus,
+.btn-Categorias:hover {
+  background-color: #2E3E97 !important;
+  color: #ffffff !important; 
+  border: 1px solid #2E3E97 !important;
+  box-shadow: none !important; 
 }

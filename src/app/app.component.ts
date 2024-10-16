@@ -12,7 +12,7 @@ import { NotificacionesService } from './services/notificaciones.service';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.2.1' + new Date();
+  version = 'V-1.2.2';
   tags: any;
   ga: any;
   isBrowser = false;
@@ -76,8 +76,7 @@ export class AppComponent implements OnInit {
     // localStorage.setItem('Versión',packageJson.version);
     // console.log(packageJson.version);
     // (window as any).myVariable = packageJson.version;
-
-    this.storage.setItem('Versión',this.version);
+    this.checkVersion();
   }
 
 
@@ -112,4 +111,31 @@ export class AppComponent implements OnInit {
       this.meta.addTag({ name: tg.name, content: tg.content });
     });
   }
+
+  checkVersion() {
+    const storedVersion = this.storage.getItem('Versión'); 
+    const currentVersion = this.version; 
+    
+    console.log('Versión almacenada en localStorage:', storedVersion); 
+    console.log('Versión actual de la aplicación:', currentVersion);   
+    
+    //console.log('Datos en localStorage antes de cualquier acción:', localStorage);
+  
+    if (storedVersion && storedVersion !== currentVersion) {
+      console.log('Nueva versión detectada. Procediendo a limpiar localStorage y recargar...');
+      
+      console.log('Cambio de versión detectado: ', storedVersion, ' -> ', currentVersion);
+      
+      this.storage.clear();
+      window.location.reload();
+    } else {
+      console.log('Las versiones coinciden. No se realizará ninguna acción.');
+    }
+
+    this.storage.setItem('Versión', currentVersion);
+
+    console.log('Versión guardada en localStorage:', this.storage.getItem('Versión'));
+  }
+  
+  
 }
