@@ -100,21 +100,21 @@ export class ListarUsuariosComponent implements OnInit {
     this.obtenerMBEs();
     this.buscar();
     this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
-      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      
       this.mostrarNotificaciones = mostrar;
     });
   }
 
   obtenerRoles() {
     this.usuariosService.getRoles().subscribe((res) => {
-      console.log(res);
+      
       this.roles = res;
     });
   }
 
   obtenerUsuarios() {
     this.usuariosService.listarUsuarios(0, 10, "", "ACTIVOS").subscribe((res) => {
-      console.log(res);
+      
       this.usuarios = res.content;
     });
   }
@@ -123,7 +123,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.usuariosService.usuariosLDAP().subscribe(
       (res) => {
         this.usuariosLdap = res;
-        console.log(this.usuariosLdap);
+        
       },
       (error) => {}
     );
@@ -131,8 +131,8 @@ export class ListarUsuariosComponent implements OnInit {
 
   obtenerMBEs() {
     this.usuariosService.listarMBE().subscribe((res) => {
-      console.log("MBEs");
-      console.log(res);
+      
+      
       this.listaMBE = res;
     });
   }
@@ -234,7 +234,7 @@ export class ListarUsuariosComponent implements OnInit {
     this.mbeEditables = this.usuarioEditar.mbesAsociados.map(
       (item: any) => item.idMbe
     );
-    console.log(this.usuarioEditar.mbesAsociados);
+    
 
     this.usuarioEditForm = this.fb.group({
       userName: [this.usuarioEditar.userName, Validators.required],
@@ -271,7 +271,7 @@ export class ListarUsuariosComponent implements OnInit {
     console.log(this.usuarioForm.valid)
     let usuarioObj = this.usuarioForm.getRawValue();
     usuarioObj.listaMBEs = this.mbeEditables;
-    console.log(usuarioObj);
+    
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
       (res) => {
         swal.fire("", "Usuario creado exitosamente", "success");
@@ -322,7 +322,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   eliminar(usuario: any) {
-    console.log(usuario);
+    
 
     swal.fire({
       icon: 'warning',
@@ -385,21 +385,21 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   loadPage(e: number) {
-    console.log("seaqrchvalue");
-    console.log(this.seachValue);
-    console.log("loadPage");
+    
+    
+    
     if (e !== this.currentPage) {
-      console.log("currentPage");
-      console.log(this.currentPage);
+      
+      
       if (this.isModeSearch) {
-        console.log("Busqueda");
+        
         if (this.seachValue === "") {
           this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "ACTIVOS");
         } else {
           this.searchCoincidences(e - 1, this.pageSize, "ACTIVOS");
         }
       } else {
-        console.log("Paginacion");
+        
         this.cambiarPaginaGetAll(e - 1, this.pageSize, "", "ACTIVOS");
       }
     }

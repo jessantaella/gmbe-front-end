@@ -30,7 +30,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
   constructor(@Inject(PLATFORM_ID) private platformId: any, private storage: StorageService, private router: Router) { }
 
   ngAfterViewInit(): void {
-    console.log('bubbleData', this.bubbleData);
+    
     if (this.bubbleData && this.bubbleData.length > 0 && isPlatformBrowser(this.platformId)) {
   
       requestAnimationFrame(() => {
@@ -51,10 +51,10 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
 
   private createOrUpdateChart() {
     // Inicializar el array para almacenar las posiciones existentes
-    let existingBubbles: Array<{ x: number, y: number }> = [];
+    let burbujasExistentes: Array<{ x: number, y: number, r: number }> = [];
 
     if (this.cachedBubbleData.length === 0) {
-      this.cachedBubbleData = this.bubbleData.map(bubble => this.generateBubbleData(bubble, existingBubbles));
+      this.cachedBubbleData = this.bubbleData.map(bubble => this.generateBubbleData(bubble, burbujasExistentes));
     }
   
     if (BurbujasComponent.chartsCache.has(this.chartId as string)) {
@@ -115,32 +115,49 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  generateBubbleData(bubble: { idMbe: number; idFila: number; idColumna: number; idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number; valorMinimoZ: number; valorMaximoZ: number }, existingBubbles: Array<{ x: number, y: number }>) {
-    const { count, nombreGpo, colorBubble, alto, ancho, valorMinimoZ, valorMaximoZ } = bubble;
-    const chartWidth = 250;
-    const chartHeight = 250;
-
-    const r =  Math.floor(((count + 1 - 1) / (120 + 1 -  1)) * (18 - 0) )+ 5;
-    const padding = 20; // Espacio entre burbujas
-
-    // Calcular posición base x y y
-    let x = (bubble.idFila * (r * 2 + padding)) % chartWidth;
-    let y = (bubble.idColumna * (r * 2 + padding)) % chartHeight;
-
-    // Revisar si la posición ya está ocupada por otra burbuja
-    let attempt = 0; // Contador de intentos de desplazamiento
-    const maxAttempts = 80; // Máximo número de desplazamientos permitidos
-
-    while (existingBubbles.some(b => b.x === x && b.y === y) && attempt < maxAttempts) {
-      attempt++;
-      const offset = attempt * 20; // Aumenta el desplazamiento en cada intento
-      x = (x + offset) % chartWidth;
-      y = (y + offset) % chartHeight;
-    }
-
-    // Guardar las coordenadas actuales en la lista de burbujas existentes
-    existingBubbles.push({ x, y });
-
+  generateBubbleData(
+    bubble: { idMbe: number; idFila: number; idColumna: number; idGpo: number; nombreGpo: string; colorBubble: string; count: number; alto: number; ancho: number; valorMinimoZ: number; valorMaximoZ: number }, 
+    burbujasExistentes: Array<{ x: number, y: number, r: number }>
+  ) {
+      const { count, nombreGpo, colorBubble } = bubble;
+      const chartWidth = 250;
+      const chartHeight = 250;
+  
+      // Radio basado en el valor de count
+      const r = Math.floor(((count + 1 - 1) / (120 + 1 - 1)) * (18 - 0)) + 5;
+      const padding = 40; // Espacio mínimo entre burbujas
+  
+      // Posición inicial
+      let x = Math.random() * chartWidth;  // Empezar con una posición aleatoria
+      let y = Math.random() * chartHeight; 
+  
+      let intentos = 0;
+      const desplazamientos = 100; // Máximo número de desplazamientos permitidos
+  
+      const estaCerca = (b1: { x: number, y: number, r: number }, b2: { x: number, y: number, r: number }) => {
+        const distancia = Math.sqrt(Math.pow(b1.x - b2.x, 2) + Math.pow(b1.y - b2.y, 2));
+        return distancia < (b1.r + b2.r + padding);
+      };
+  
+      // Reubicar burbuja si la posición está ocupada
+      while (burbujasExistentes.some(b => estaCerca(b, { x, y, r })) && intentos < desplazamientos) {
+        intentos++;
+  
+        // Desplazar en una dirección aleatoria
+        const angulo = Math.random() * 2 * Math.PI;  // Ángulo aleatorio para el desplazamiento
+        const desplazamiento = intentos * (r + padding);  // Desplazamiento que aumenta con cada intento
+  
+        // Desplazar x e y basados en el ángulo
+        x = (x + desplazamiento * Math.cos(angulo)) % chartWidth;
+        y = (y + desplazamiento * Math.sin(angulo)) % chartHeight;
+  
+        // Asegurar que no se salga de los límites del gráfico
+        x = Math.max(r, Math.min(x, chartWidth - r));
+        y = Math.max(r, Math.min(y, chartHeight - r));
+      }
+  
+      burbujasExistentes.push({ x, y, r });
+  
       return {
         x,
         y,

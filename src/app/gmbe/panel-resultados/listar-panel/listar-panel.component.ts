@@ -523,7 +523,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
           }
         });
 
-        console.log(this.estructuraFinalFilasSubitulos);
+        
 
       },
       err => {

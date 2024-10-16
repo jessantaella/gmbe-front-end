@@ -88,7 +88,7 @@ export class InicioComponent implements OnInit {
     }
     this.obtenerMbesPublicos();
     this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
-      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      
       this.mostrarNotificaciones = mostrar;
     });
   }
@@ -102,10 +102,10 @@ export class InicioComponent implements OnInit {
           url = this.serverConfigService.getServerConfig() + 'api/gmbe-catalogos/api/elementos/idElemento?idElemento=1';
           this.obtenerMbesPublicos();
         }
-        console.log(url);
+        
         try {
           const result = await this.http.get<any>(url).toPromise();
-          console.log(result);
+          
           this.obtenerMbesPublicos();
           this.bienvenidaContenito = this.sanitizer.bypassSecurityTrustHtml(result.valor);
         } catch (err) {
@@ -126,7 +126,7 @@ export class InicioComponent implements OnInit {
     let token_gmbe = this.storage.getItem('token-gmbe');
       this.info.obtenerMBEPublicado().subscribe(
         res => {
-          console.log(res);
+          
           this.mbes = res
         },
         err => { }

@@ -174,11 +174,11 @@ renderizadoServices: any;
   }
 
   renderizadoModal() {
-    console.log('elementosObservadosModal', this.elementosObservadosModal);
-    console.log('thElements1', this.thElements1);
-    console.log('thElements2', this.thElements2);
+    
+    
+    
 
-    console.log('Renderizado modal');
+    
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         const [_, index, index2] = entry.target.id.split('-').map(Number);
@@ -229,7 +229,7 @@ renderizadoServices: any;
       (res) => {
         
         this.revisionDos = res;
-        console.log('Revision 2', this.revisionDos);
+        
 
         this.revisionDos.forEach((element: any) => {
           let valor = element.conteoTipoEval === null ? element.conteoDisenioEval: element.conteoTipoEval;
@@ -510,7 +510,7 @@ renderizadoServices: any;
   obtenerVersionMax() {
     this.gmbservices.obtenerVersionMaximaMBE(this.id).subscribe((res) => {
       this.versionMaxima = res?.data === null ? 1 : res?.data;
-      console.log('Version Maxima', this.versionMaxima);
+      
       this.existeOtraRevision = this.versionMaxima > 1 ? true : false;
       if (res?.data !== null) {
         this.mostrarMensajeRevisiones = true;
@@ -589,7 +589,7 @@ renderizadoServices: any;
 
         this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
 
-        console.log('Filas Procesadas Titulos', this.estructuraFinalFilasTitulos);
+        
       },
       (err) => {
         console.error('Error al cargar la estructura MBE', err);
@@ -598,13 +598,13 @@ renderizadoServices: any;
   }
 
   cargarDatosMbe() {
-    console.log('Cargar datos MBE');
-    console.log('ID', this.id);
-    console.log('Version Maxima', this.versionMaxima);
+    
+    
+    
     this.gmbservices.obtenerDatosGMBE(this.id, this.versionMaxima).subscribe(
       (res) => {
         this.datosIntersecciones = res;
-        console.log('Datos Intersecciones', this.datosIntersecciones);
+        
         
         swal.close();
       },
@@ -666,7 +666,7 @@ renderizadoServices: any;
     );
 
     let obj = respuesta;
-    console.log('Respuesta', respuesta);
+    
     respuesta = respuesta?.arrConteoDisenioEval.length < 1
       ? respuesta?.arrConteoTipoEval
       : respuesta?.arrConteoDisenioEval;

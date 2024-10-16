@@ -52,9 +52,9 @@ export class EvaluacionComponent implements OnInit {
   tituloAcotacion() {
     this.gmbeService.obtenerAcotaciones(this.idMbe).subscribe(
       res => {
-        console.log('Acotación:', res);
+        
         this.tituloAcotaciones = res.tipoEvaluacion;
-        console.log('tituloAcotaciones', this.tituloAcotaciones);
+        
       },
       err => {
         console.error('Error al obtener acotación:', err);
@@ -68,8 +68,8 @@ export class EvaluacionComponent implements OnInit {
 
   loadPage(e: number) {
     if (e !== this.currentPage) {
-      console.log('currentPage');
-      console.log(this.currentPage);
+      
+      
       this.datosEvaluacion(e - 1, this.pageSize);
     }
   }
@@ -78,7 +78,7 @@ export class EvaluacionComponent implements OnInit {
 
     this.gmbeService.datosEvaluacion(this.idMbe, this.fila, this.columna, this.idEvaluacion, page, size).subscribe(
       data => {
-        console.log(data);
+        
         this.datosEvaluacionTabla = data.content!;
         this.items = data?.totalElements;
         this.page = data?.pageable?.pageNumber + 1;
@@ -87,7 +87,7 @@ export class EvaluacionComponent implements OnInit {
         this.desde = (this.page - 1) * this.pageSize + 1;
       },
       error => {
-        console.log(error);
+        
       }
     );
   }

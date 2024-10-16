@@ -42,16 +42,16 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
 
   dimensionesPantalla(){
     if (window.innerHeight <= 900) {
-      console.log('Es menor');
+      
       this.esMenor = true;
     }else{
-      console.log('Es mayor');
+      
       this.esMenor = false;
     }
   }
   
   ngOnInit(): void {
-    console.log('Usuario:', this.usuario);
+    
     this.verificarMostrarNotificaciones();
     this.notificacionesRes(this.idUsuario);
     this.dimensionesPantalla();
@@ -60,15 +60,15 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   verificarMostrarNotificaciones() {
     this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
       this.mostrarNotificaciones = mostrar;
-      console.log('Mostrar Notificaciones:', this.mostrarNotificaciones);
+      
     });
   }
 
   mostrarCincoPrimerasNotificaciones(notificaciones: any) {
-    console.log('Notificaciones:', notificaciones);
+    
   
     if (this.indice >= this.notificacionesCache.length && this.notificacionesCache.length > 0) {
-      console.log('No hay más notificaciones para mostrar.');
+      
       return;
     }
   
@@ -76,11 +76,11 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
       ? this.notificacionesCache.slice(this.indice, this.indice + 5) 
       : this.notificacionesCache.slice(this.indice, this.notificacionesCache.length);
     
-    console.log('Cinco Primeras Notificaciones:', this.cincoPrimerasNotificaciones);
-    console.log('Indice:', this.indice);
+    
+    
   
     if (this.cincoPrimerasNotificaciones.length === 0 && this.notificacionesCache.length === 0) {
-      console.log('No hay más notificaciones para mostrar.');
+      
       return; 
     }
   
@@ -94,7 +94,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
       if (!this.banderaBucle && this.notificacionesInformativas.length > 0) {
         this.banderaBucle = true;
         this.notificacionesCache = this.notificacionesInformativas;
-        console.log('Notificaciones Informativas:', this.notificacionesInformativas);
+        
         this.eliminarNotificacionesNoInformativas(this.guardarNotificaciones);
         this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
       }
@@ -102,8 +102,8 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
       this.indice += 5;
     }
   
-    console.log('Notificaciones Informativas:', this.notificacionesInformativas);
-    console.log('Current Chunk:', this.cincoPrimerasNotificaciones);
+    
+    
   }
   
   
@@ -111,12 +111,12 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   eliminarNotificacionesNoInformativas(notificaciones: any) {
     //Almacena unicamete los ID de las notificaciones que no sean informativas y se eliminan todos.
     const notificacionesNoInformativas = notificaciones.filter((notificacion: any) => notificacion.informativa);
-    console.log('Notificaciones No Informativas:', notificacionesNoInformativas);
+    
     this.idNotificacionesEliminadas = notificacionesNoInformativas.map((notificacion: any) => notificacion.idNotificacion);
     const idsNotificaciones = notificacionesNoInformativas.map((notificacion: any) => notificacion.idNotificacion);
-    console.log('IDs Notificaciones:', idsNotificaciones);
+    
     this.notificacionesService.eliminarTodasNotificaciones(idsNotificaciones).subscribe((res) => {
-      console.log('Notificaciones Eliminadas:', res);
+      
     });
   };
 
@@ -126,7 +126,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
     // Verifica si la notificación eliminada es informativa y elimina del backend si es necesario
     if (notificacionEliminada.informativa) {
       this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
-        console.log('Notificación Eliminada:', res);
+        
       });
     }
   
@@ -135,31 +135,31 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
       this.mostrarCincoPrimerasNotificaciones(this.notificacionesInformativas);
     }
     
-    console.log('Notificación Eliminada:', notificacionEliminada);
+    
   }
   
 
   clickEliminarUnadeCinco() {
     //Elimina una notificación de las 5 mostradas.
     const notificacionEliminada = this.cincoPrimerasNotificaciones.shift();
-    console.log('Notificación Eliminada:', notificacionEliminada);
+    
     this.notificacionesService.eliminarNotificacion(notificacionEliminada.idNotificacion).subscribe((res) => {
-      console.log('Notificación Eliminada:', res);
+      
     });
   }
 
   notificacionesRes(idUsuario: number) {
-    console.log('ID Usuario:', idUsuario);
+    
     this.notificacionesService
       .getNotificaciones(idUsuario)
       .subscribe((res:any) => {
-        console.log("RESULTADOS");
-        console.log(res);
+        
+        
         this.notificacionesCache = res;
         this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === false);
         this.guardarNotificaciones = this.notificacionesCache.filter((notificacion: any) => notificacion.informativa === true);
-        console.log('Notificaciones:', this.notificacionesCache);
-        console.log('Notificaciones Informativas:', this.notificacionesInformativas);
+        
+        
         this.mostrarCincoPrimerasNotificaciones(res);
         this.intervalo = setInterval(() => {
           this.mostrarCincoPrimerasNotificaciones(res);

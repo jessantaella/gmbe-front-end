@@ -154,7 +154,7 @@ export class CrearGmbeComponent implements OnInit {
   detectarSelect(){
     this.SelectCatelogirasForm.get('selectCategoria')?.valueChanges.subscribe(
       (valor) => {
-        console.log(valor);
+        
         if (valor !== '') {
           this.puedeEditarCategoria = true;
         } else {
@@ -166,11 +166,11 @@ export class CrearGmbeComponent implements OnInit {
 
   escucharSelectEditado(event:any){
     this.esEditado = true;
-    console.log(event.target.value);
+    
     let idCategoria = Number(event.target.value);
     //buscar la categoria en el arreglo de categorias
     let categoria = this.arregloCategorias.find((e) => e.idCatalogo === idCategoria);
-    console.log(categoria);
+    
     this.editarNombre = categoria.catalogo;
     this.editarCategoriaForm.get('descripcion')?.setValue(categoria.descripcion);
     this.editarCategoriaForm.get('url')?.setValue(categoria.complemento);
@@ -240,7 +240,7 @@ clearImage(): void {
     }
 
     //Si el arreglo de subcategorias agregadas tiene un elemento con seleccionado puede editar subcategoria, si tiene mas de uno no puede editar
-    console.log(this.subcategoriasAgregadas);
+    
     if (this.subcategoriasAgregadas.length === 1) {
       this.puedeEditarSubCategoria = true;
     } else {
@@ -250,10 +250,10 @@ clearImage(): void {
 
   mergeAndRemoveDuplicates(arreglo1: any, arreglo2: any) {
     // Crear un conjunto de idCatalogo presentes en ambos arreglos
-    console.log('Arreglo 1');
-    console.log(arreglo1);
-    console.log('Arreglo 2');
-    console.log(arreglo2);
+    
+    
+    
+    
     const idsArreglo1 = new Set(
       arreglo1.map((item: { idCatalogo: any }) => item.idCatalogo)
     );
@@ -266,7 +266,7 @@ clearImage(): void {
     );
 
     // Filtrar ambos arreglos para eliminar elementos con idCatalogo en commonIds
-    console.log(this.tipo);
+    
     const filteredArreglo1 = arreglo1.filter(
       (item: { idCatalogo: any }) => this.tipo === 2 ? item.idCatalogo !== null && !commonIds.has(item.idCatalogo) : !commonIds.has(item.idCatalogo)
     );
@@ -287,13 +287,13 @@ clearImage(): void {
     //Reinicia el select de subcategorias
     this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
     if (this.tipo === 2) {
-      console.log('Filas');
+      
       let existe = this.estructuraFinalFilasTitulos.some(
         (obj: any) => obj.categoria.idCatalogo === this.categoria.idCatalogo
       );
       if (existe) {
-        console.log(this.estructuraFinalFilasTitulos);
-        console.log(this.categoria);
+        
+        
         let arregloOriginal = this.estructuraFinalFilasTitulos.find(
           (e: any) => {
             return e.categoria.idCatalogo == this.categoria.idCatalogo;
@@ -311,10 +311,10 @@ clearImage(): void {
               item.categoria.idCatalogo !== this.categoria.idCatalogo
           );
 
-        console.log(this.estructuraFinalFilasTitulos);
+        
 
         if(nuevasSubcategorias.length<1){
-          console.log('Agregando auxiliar');
+          
           nuevasSubcategorias.push({
             activo:true,
             catalogo:'',
@@ -332,9 +332,9 @@ clearImage(): void {
           subcategorias: nuevasSubcategorias.length > 1 ? nuevasSubcategorias.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : nuevasSubcategorias,
         });
 
-        console.log(this.estructuraFinalFilasTitulos);
+        
       } else {
-        console.log(this.estructuraFinalFilasTitulos);
+        
         this.estructuraFinalFilasTitulos.push({
           categoria: this.categoria,
           subcategorias: this.subcategoriasAgregadas.length >= 1 ? this.subcategoriasAgregadas.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : this.subcategoriasAgregadas,
@@ -342,7 +342,7 @@ clearImage(): void {
       }
 
       if(this.subcategoriasAgregadas.length<1 || this.estructuraFinalFilasTitulos.length === 1){
-        console.log('Agregando auxiliar');
+        
         this.subcategoriasAgregadas.push({
           activo:true,
           catalogo:'',
@@ -368,15 +368,15 @@ clearImage(): void {
 
         this.activarAgregar = false;
     } else {
-      console.log('Columnas');
+      
 
       let existe = this.estructuraFinalColumnasTitulos.some(
         (obj: any) => obj.categoria.idCatalogo === this.categoria.idCatalogo
       );
 
       if (existe) {
-        console.log("Existe");
-        console.log(this.estructuraFinalColumnasTitulos);
+        
+        
         let arregloOriginal = this.estructuraFinalColumnasTitulos.find(
           (e: any) => {
             return e.categoria.idCatalogo == this.categoria.idCatalogo;
@@ -396,7 +396,7 @@ clearImage(): void {
         );
 
         if(nuevasSubcategorias.length<1){
-          console.log('Agregando auxiliar');
+          
           nuevasSubcategorias.push({
             activo:true,
             catalogo:'',
@@ -414,12 +414,12 @@ clearImage(): void {
           subcategorias: nuevasSubcategorias.length > 1 ? nuevasSubcategorias.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : nuevasSubcategorias,
         });
 
-        console.log(this.estructuraFinalColumnasTitulos);
+        
         console.log(nuevasSubcategorias)
       }else{
-        console.log("No existe");
-        console.log(this.subCategorias);
-        console.log(this.subcategoriasAgregadas);
+        
+        
+        
         this.estructuraFinalColumnasTitulos.push({
           categoria: this.categoria,
           subcategorias: this.subcategoriasAgregadas.length >= 1 ? this.subcategoriasAgregadas.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : this.subcategoriasAgregadas,
@@ -430,7 +430,7 @@ clearImage(): void {
       console.log('subcategorias agregadas',this.subcategoriasAgregadas.length)
       console.log('estructuraFinalColumnasTitulos',this.estructuraFinalColumnasTitulos.length)
       if(this.subcategoriasAgregadas.length<1 || this.estructuraFinalColumnasTitulos.length > 0){
-        console.log('Agregando auxiliar');
+        
         this.subcategoriasAgregadas.push({
           activo:true,
           catalogo:'',
@@ -443,14 +443,14 @@ clearImage(): void {
         })
       }
 
-      console.log(this.subcategoriasAgregadas);
-      console.log(this.estructuraFinalColumnasTitulos);
+      
+      
 
 
 
       // else{
-      //   console.log(this.subcategoriasAgregadas);
-      //   console.log(this.estructuraFinalColumnasTitulos);
+      //   
+      //   
 
       //   this.estructuraFinalColumnasTitulos.forEach((element: any) => {
       //     element.subcategorias = element.subcategorias.filter((e: any) => e.idCatalogo !== null);
@@ -518,7 +518,7 @@ clearImage(): void {
     this.gmbeservice.listarCatalogo(1).subscribe(
       (res) => {
         this.opcionesTipoEstructura = res;
-        console.log(res);
+        
       },
       (err) => {}
     );
@@ -526,7 +526,7 @@ clearImage(): void {
 
   changeTipo(valor: any) {
     this.tipo = parseInt(valor.target.value);
-    console.log(this.tipo);
+    
     if (this.tipo === 2) {
       this.tipoSeleccionado = true;
     } else {
@@ -544,7 +544,7 @@ clearImage(): void {
     this.gmbeservice.listarCatalogo(2).subscribe(
       (res) => {
         this.arregloCategorias = res;
-        console.log(res);
+        
         if (!this.volverCargarBandera) {
           this.activarAgregar = false; 
         }
@@ -557,7 +557,7 @@ clearImage(): void {
     this.gmbeservice.listarCatalogo(2).subscribe(
       (res) => {
         this.arregloCategoriasEditado = res;
-        console.log(res);
+        
       },
       (err) => {}
     );
@@ -614,11 +614,11 @@ clearImage(): void {
     this.categoria = this.arregloCategorias.find(
       (c) => c.idCatalogo === selectedValue
     );
-    console.log(this.categoria);
+    
     this.gmbeservice
       .listarSubcategorias(this.categoria.idCatalogo)
       .subscribe((res) => {
-        console.log(res);
+        
         this.subCategoriasEditado = res;
       });
     this.editarNombreSubcategoria = this.categoria.catalogo;
@@ -699,7 +699,7 @@ clearImage(): void {
 
   guardar() {
     this.bloquearBotonGuardar = true;
-    console.log(this.generales.value);
+    
     let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0].replaceAll('.','')+Math.random()+'.png' : 'gmbeImage'+Math.random()+'.png';
     let estructura = this.generaArregloEstructura();
     let enviar = this.generales.value;
@@ -707,10 +707,10 @@ clearImage(): void {
     enviar.ruta= null;
     enviar.idUsuario = this.usuario?.idUsuario;
 
-    console.log(enviar);
+    
     this.gmbeservice.crearImagen(this.imageFile, nombre).subscribe(
       response => {
-        console.log('Imagen subida con éxito', response);
+        
         // Maneja la respuesta exitosa aquí
         enviar.ruta = response.remotePath;
         this.gmbeservice.crearGmbe(enviar).subscribe(
@@ -732,7 +732,7 @@ clearImage(): void {
   consultarAccesos(idUsuario:number){
     this.gmbeservice.consultarAccesos(idUsuario).subscribe(
       res=>{
-        console.log(res);
+        
         //Actualizar el Storage con los accesos
         this.storage.setItem('autorizadas',this.cifrado.cifrar(JSON.stringify(res)));
       },
@@ -804,7 +804,7 @@ clearImage(): void {
     }else{
       this.mostrarErrorurl = false;
     }
-    console.log(this.mostrarErrorurl);
+    
   }
 
   crearCategoria() {
@@ -818,7 +818,7 @@ clearImage(): void {
     url = url.trim();
 
     if (nombre !== '' || descripcion !== '' || url !== '') {
-      console.log(nombre);
+      
         this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
           res => {
             swal.fire({
@@ -842,7 +842,7 @@ clearImage(): void {
           },
           err => {
             // Manejo de errores
-            console.log(err.error);
+            
             // Cerrar la animación de carga
             swal.close();
             // Mostrar mensaje de error
@@ -883,7 +883,7 @@ clearImage(): void {
 
     this.gmbeservice.existeCategoriaSubcategoria(id).subscribe(
       res=>{
-        console.log(res);
+        
         if(res.data !== true){
           if(this.tipoSeleccionado && url.length>0){
             if(!this.urlPattern.test(url)){
@@ -928,7 +928,7 @@ clearImage(): void {
               },
               err => {
                 // Manejo de errores
-                console.log(err.error);
+                
                 // Cerrar la animación de carga
                 swal.close();
                 // Mostrar mensaje de error
@@ -976,7 +976,7 @@ clearImage(): void {
     this.existeCategoria = false;
     this.gmbeservice.existeCategoriaSubcategoria(idCategoria).subscribe(
       res=>{
-        console.log(res);
+        
         if(res.data === true){
           this.existeCategoria = true;
         }
@@ -1031,7 +1031,7 @@ clearImage(): void {
            
           },
           err=>{
-            console.log(err.error);
+            
             // Cerrar la animación de carga
             swal.close();
             // Mostrar mensaje de error
@@ -1065,15 +1065,15 @@ clearImage(): void {
     let descripcion = this.editarSubcategoriaForm.get('descripcion')?.value;
     let url = this.editarSubcategoriaForm.get('url')?.value;
 
-    console.log(validarIdSub);
-    console.log(url);
+    
+    
     console.log(descripcion)
     url = url !== null ? url?.trim() : '';
     descripcion = descripcion !== null ? descripcion?.trim() : '';
 
     this.gmbeservice.existeCategoriaSubcategoria(validarIdSub).subscribe(
       res=>{
-        console.log(res);
+        
         if(res.data !== true){
           if(this.tipoSeleccionado && url.length>0){
             if(!this.urlPattern.test(url)){
@@ -1119,7 +1119,7 @@ clearImage(): void {
                 
               },
               err=>{
-                console.log(err.error);
+                
                 // Cerrar la animación de carga
                 swal.close();
                 // Mostrar mensaje de error

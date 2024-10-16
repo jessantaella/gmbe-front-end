@@ -108,7 +108,7 @@ faRotate = faRotateLeft;
 }
 
  renderizadoModal1() {
-  console.log('Renderizado modal');
+  
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const [_, index, index2] = entry.target.id.split('-').map(Number);
@@ -132,7 +132,7 @@ faRotate = faRotateLeft;
 }
 
 renderizadoModal2() {
-  console.log('Renderizado modal');
+  
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const [_, index, index2] = entry.target.id.split('-').map(Number);
@@ -186,7 +186,7 @@ renderizadoModal2() {
       (res) => {
         
         this.revisionDos = res;
-        console.log('Revision 2', this.revisionDos);
+        
 
         this.revisionDos.forEach((element: any) => {
           let valor = element.conteoTipoEval === null ? element.conteoDisenioEval: element.conteoTipoEval;
@@ -251,7 +251,7 @@ renderizadoModal2() {
 
         this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
 
-        console.log('Filas Procesadas Titulos', this.estructuraFinalFilasTitulos);
+        
       },
       (err) => {
         console.error('Error al cargar la estructura MBE', err);
