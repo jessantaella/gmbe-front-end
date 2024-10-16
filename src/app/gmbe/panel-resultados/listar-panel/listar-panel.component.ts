@@ -472,7 +472,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
           console.error('Error al obtener subcategorías:', err);
         }
       )
-    };
+    }
   }
 
   anchoDinamico() {
@@ -803,7 +803,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
       (res: HttpResponse<ArrayBuffer>) => {
         if (res.body!.byteLength > 0) {
-          const file = new Blob([res!.body!], { type: 'application/xlsx' });
+          const file = new Blob([res.body!], { type: 'application/xlsx' });
           const fileURL = URL.createObjectURL(file);
           var link = document.createElement('a');
           link.href = fileURL;

@@ -1,16 +1,11 @@
-th{
 
-    background-color: #2e3e97 !important;
-    color: #ffffff !important;
-    font-family: Arial, Helvetica, sans-serif;
-   }
  
  
  th{
+    color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif;
  
      background-color: #2e3e97 !important;
-     color: #ffffff !important;
-     font-family: Arial, Helvetica, sans-serif;
     }
     .table-striped>tbody>tr:nth-child(odd)>td, 
     .table-striped>tbody>tr:nth-child(odd)>th {
@@ -45,8 +40,5 @@ th{
     font-family: Arial, Helvetica, sans-serif;
     color:#ffffff;
     margin-left: 10px!important;
+    margin-bottom: 20px;
   }
-
-  .regresar {
-  margin-bottom: 20px; /* Ajusta el valor según lo que necesites */
-}

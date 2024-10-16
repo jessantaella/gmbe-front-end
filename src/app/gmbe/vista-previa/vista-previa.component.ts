@@ -303,15 +303,15 @@ renderizadoServices: any;
           this.mostrarObjetivosModal = res.revisionTwo.objetivo;
 
           this.gmbservices.getImage(res.revisionTwo.ruta).subscribe(
-            (res) => {
-              this.imagenPrevia = this.sanitizer.bypassSecurityTrustUrl(res);
+            (resOne) => {
+              this.imagenPrevia = this.sanitizer.bypassSecurityTrustUrl(resOne);
             },
             (err) => {}
           );
 
           this.gmbservices.getImage(res.revisionOne.ruta).subscribe(
-            (res) => {
-              this.imagenNueva= this.sanitizer.bypassSecurityTrustUrl(res);
+            (resTwo) => {
+              this.imagenNueva= this.sanitizer.bypassSecurityTrustUrl(resTwo);
             },
             (err) => {}
           );
@@ -449,8 +449,8 @@ renderizadoServices: any;
                 case this.publicado:
                   swal
                     .fire('', 'Se ha publicado el MBE con éxito', 'success')
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((resultOne: { isConfirmed: any }) => {
+                      if (resultOne.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -463,8 +463,8 @@ renderizadoServices: any;
                       'Se ha enviado a validar el MBE con éxito',
                       'success'
                     )
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((resultTwo: { isConfirmed: any }) => {
+                      if (resultTwo.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -473,8 +473,8 @@ renderizadoServices: any;
                 case this.rechazado:
                   swal
                     .fire('', 'Se ha rechazado el MBE con éxito', 'success')
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((resultThree: { isConfirmed: any }) => {
+                      if (resultThree.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -483,8 +483,8 @@ renderizadoServices: any;
                 case this.validado:
                   swal
                     .fire('', 'Se ha aprobado el MBE con éxito', 'success')
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((resultFour: { isConfirmed: any }) => {
+                      if (resultFour.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -634,7 +634,7 @@ renderizadoServices: any;
 
   datosInterseccion(columna: number, fila: number) {
     let respuesta = this.datosIntersecciones.find(
-      (obj) => obj.idFila === columna && obj.idColumna === fila
+      (objOne) => objOne.idFila === columna && objOne.idColumna === fila
     );
 
     let obj = respuesta;
@@ -653,7 +653,7 @@ renderizadoServices: any;
 
   datosInterseccion2(columna: number, fila: number) {
     let respuesta = this.revisionDos.find(
-      (obj: any) => obj.idFila === columna && obj.idColumna === fila
+      (objTwo: any) => objTwo.idFila === columna && objTwo.idColumna === fila
     );
 
     let obj = respuesta;
@@ -684,7 +684,7 @@ renderizadoServices: any;
       .subscribe(
         (res: HttpResponse<ArrayBuffer>) => {
           if (res.body!.byteLength > 0) {
-            const file = new Blob([res!.body!], { type: 'application/xlsx' });
+            const file = new Blob([res.body!], { type: 'application/xlsx' });
             const fileURL = URL.createObjectURL(file);
             var link = document.createElement('a');
             link.href = fileURL;

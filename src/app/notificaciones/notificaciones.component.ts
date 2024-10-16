@@ -118,7 +118,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
     this.notificacionesService.eliminarTodasNotificaciones(idsNotificaciones).subscribe((res) => {
       console.log('Notificaciones Eliminadas:', res);
     });
-  };
+  }
 
   clickEliminarNotificacion(index: number) {
     const notificacionEliminada = this.cincoPrimerasNotificaciones.splice(index, 1)[0];

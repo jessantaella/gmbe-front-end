@@ -13,10 +13,10 @@ export class NotificacionesService {
   private mostrarNotificaciones = new BehaviorSubject<boolean>(this.obtenerEstadoNotificaciones());
   mostrarNotificaciones$ = this.mostrarNotificaciones.asObservable();
 
-  constructor(private http:HttpClient,private serverConfigService: ServerConfigService, private storage:StorageService, private cifrado:CifradoService) { }
+  constructor(private http:HttpClient,private serverConfigService: ServerConfigService, private storage:StorageService) { }
 
   mostrar(){    
-    const token = this.storage.getItem('token-gmbe') || this.storage.getItem('token-gmbe');
+    const token = this.storage.getItem('token-gmbe') ;
     if (token) {
       console.log('Mostrar notificaciones');
       this.mostrarNotificaciones.next(true);

@@ -120,6 +120,7 @@
       <div class="table-responsive tabladatos" *ngIf="!isLoading && (estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0)">
         <table class="table table-bordered"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+          <caption></caption>
           <thead class="sticky-header">
             <tr class="text-center">
               <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle subcategoria sticky-corner"
@@ -155,7 +156,7 @@
               <!-- Subencabezados de columnas (basado en idTipo: 1) -->
               <ng-container style="width: 25rem;" *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
                 <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
+                  <th id="th-7" class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
                     {{ hijo.subCategoria }}
                     <div class="text-end"
                       *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ))">
@@ -200,7 +201,7 @@
               </th>
               
               <!-- Primera subcategoría de la fila -->
-              <th class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="fila?.idSubCategoria !== 0"
+              <th id="th-1" class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="fila?.idSubCategoria !== 0"
                 [ngStyle]="{'background-color': this.colorFila(fila.idCategoria), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
                 {{ fila?.subCategoria }}
                 <div class="text-end"
@@ -246,7 +247,7 @@
             <div class="toast-body textoToast">
               <div class="d-flex">
                 <div *ngFor="let index of tiposDatosAyuda" class="d-flex" >
-                  <i class="bi bi-circle-fill" [ngStyle]="{'color': index.complemento}" ></i>
+                  <em class="bi bi-circle-fill" [ngStyle]="{'color': index.complemento}" ></em>
                   <span class="mx-2">{{index.catalogo}}</span>
                 </div>
               </div>

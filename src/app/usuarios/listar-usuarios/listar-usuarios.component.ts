@@ -357,11 +357,10 @@ export class ListarUsuariosComponent implements OnInit {
             },
             (err) => {
               this.usuariosService.desactivarUsuario(usuario?.idUsuario).subscribe(
-                (res) => {
+                () => {
                   swal.fire("", "Usuario eliminado exitosamente", "success");
                   this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
-                },
-                (err) => {}
+                }
               );
             }
           );
@@ -443,11 +442,6 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   validaDisabledGuardar(){
-    /*if (this.usuarioForm.get('idRol')!.value === '1'){
-      return this.existeUser;
-    }else{
-      return this.existeUser;
-    }*/
    return this.existeUser && this.usuarioForm.get('idRol')!.value !== '';
   }
 

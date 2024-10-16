@@ -1,19 +1,8 @@
-<!--div-- class="card shadow" style="width: 18rem;">
-  <img [src]="data?.urlImg" class="card-img-top" [alt]="data?.url" class="m-auto pt-3">
-  <div class="card-body">
-    <p class="card-text m-1 text-center">
-      <strong>
-        MBE<br>
-        {{data?.nombre}}
-      </strong>
-    </p>
-  </div>
-</!--div-->
+
 <div class="card-container">
 <div class="flip-card">
   <div class="flip-card-inner">
     <div class="flip-card-front">
-     <!--img [src]="data?.urlImg" class="card-img-top" [alt]="data?.url" class="m-auto pt-3"-->
      <div class="p-2 bd-highlight">
       <img
       *ngIf="imageUrl" [src]="imageUrl"

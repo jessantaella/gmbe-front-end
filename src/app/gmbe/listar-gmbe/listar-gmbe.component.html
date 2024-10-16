@@ -10,6 +10,7 @@
   </div>
   <div class="table-responsive">
     <table class="table table-striped table-bordered">
+      <caption></caption>
       <thead class="cabecera-tabla">
         <tr class="text-center ">
           <th scope="col">Ver</th>
@@ -115,7 +116,7 @@
           <div class="p-2 bd-highlight text-center">
             <div class="file-upload-wrapper">
               <input type="file" #fileInput class="file-upload-input" accept=".xlsx" (change)="onFileChange($event)">
-              <i class="fas fa-upload upload-icon"></i>
+              <em class="fas fa-upload upload-icon"></em>
             </div>
             <fa-icon [icon]="faX" class="btnOtrasAcciones m-2 eliminarImagen" (click)="clearImage(fileInput)"></fa-icon>
           </div>

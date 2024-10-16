@@ -169,6 +169,7 @@ i: any;
     //3.- VALIDADOR
     //4.- PUBLICADOR
     switch (idCatalogo) {
+      case this.rechazado:
       case this.creado:
         
         if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisionesAcciones) {
@@ -179,14 +180,6 @@ i: any;
         break;
       case this.pendiente:
         if (this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1 ) {
-          return true;
-        } else {
-          return false;
-        }
-        break;
-      case this.rechazado:
-        
-        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1)  && this.mostrarMensajeRevisionesAcciones) {
           return true;
         } else {
           return false;
@@ -419,10 +412,10 @@ i: any;
       if (result.isConfirmed) {
         this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
           res => {
-            let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
+            let mensajeResult = !estatusActual ? 'bloqueado' : 'desbloqueado';
             swal.fire({
               icon: 'success',
-              text: 'Se ha '+mensaje+' el MBE con éxito',
+              text: 'Se ha '+mensajeResult+' el MBE con éxito',
               confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',
@@ -451,19 +444,6 @@ i: any;
   }
 
   cargardatos() {
-    // Mostrar animación de carga
-    const loading = swal.fire({
-      text: 'Cargando...',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      showConfirmButton: false,
-      customClass: {
-        htmlContainer: 'titulo-swal',
-      },
-      willOpen: () => {
-        swal.showLoading();
-      }
-    });
     setTimeout(() => {
       this.gmbeServices.cargarInformación(this.archivoCarga, this.idMbe).subscribe(
         res => {
