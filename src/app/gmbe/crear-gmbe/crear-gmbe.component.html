@@ -290,7 +290,7 @@
         Cancelar
       </button>
       <button type="button" class="btn btn-sm btn-guardar" (click)="crearSubcategoria()"
-        [disabled]="!subcategoriaForm.valid">
+        [disabled]="!subcategoriaForm.valid || mostrarErrorurl===true">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
       </button>
@@ -347,7 +347,7 @@
         Cancelar
       </button>
       <button type="button" class="btn btn-sm btn-guardar" (click)="editarSubcategoria()"
-        [disabled]="!editarSubcategoriaForm.valid">
+        [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl===true">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
       </button>
@@ -394,7 +394,7 @@
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
       </button>
-      <button type="button" class="btn btn-sm btn-guardar" (click)="editarCategoria()" [disabled]="!editarCategoriaForm.valid">
+      <button type="button" class="btn btn-sm btn-guardar" (click)="editarCategoria()" [disabled]="!editarCategoriaForm.valid || mostrarErrorurl===true">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
       </button>

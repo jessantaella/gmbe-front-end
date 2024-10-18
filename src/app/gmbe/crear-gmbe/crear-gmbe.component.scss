@@ -185,6 +185,24 @@ label{
   --bs-btn-active-color: white !important;
 }
 
+.btn-agregar:focus{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
+.btn-agregar:active{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
 
 
 /* Estilo para el texto del mensaje en el modal */

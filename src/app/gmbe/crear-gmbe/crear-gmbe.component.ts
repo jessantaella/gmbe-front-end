@@ -134,7 +134,7 @@ export class CrearGmbeComponent implements OnInit {
     })
     this.editarSubcategoriaForm = this.fb.group({
       categoria:['',Validators.required],
-      subCategoria:['',Validators.required],
+      subCategoria:[''],
       descripcion:[''],
       url: ['']
     })
@@ -694,6 +694,7 @@ clearImage(): void {
   }
 
   validarGuardar(){
+    console.log(this.mostrarErrorurl)
     return this.generales.valid && this.estructuraFinalFilasSubitulos.length >0 && this.estructuraFinalColumnasSubitulos.length>0 && this.imageFile;
   }
 
@@ -797,6 +798,8 @@ clearImage(): void {
 
     if(this.tipoSeleccionado && url.length>0){
       if(!this.urlPattern.test(url)){
+        console.log('entro')
+        console.log(url)
         this.mostrarErrorurl = true;
       }else{
         this.mostrarErrorurl = false;
@@ -814,10 +817,10 @@ clearImage(): void {
     let descripcion = this.categoriaForm.get('descripcion')?.value;
     let url = this.categoriaForm.get('url')?.value;
     nombre = nombre.trim();
-    descripcion = descripcion.trim();
-    url = url.trim();
+    descripcion = descripcion?.trim();
+    url = url?.trim();
 
-    if (nombre !== '' || descripcion !== '' || url !== '') {
+    // if (nombre !== '' || descripcion !== '' || url !== '') {
       
         this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
           res => {
@@ -857,18 +860,18 @@ clearImage(): void {
             })
           }
         ); 
-      } else {
-        swal.fire({
-          title: '',
-          text: 'El campo no puede estar vacío',
-          icon: 'error',
-          confirmButtonText: 'OK',
-          customClass: {
-            popup: 'custom-swal-popup',
-            confirmButton: 'custom-swal-confirm-button'
-          }
-        });
-    }
+      // } else {
+      //   swal.fire({
+      //     title: '',
+      //     text: 'El campo no puede estar vacío',
+      //     icon: 'error',
+      //     confirmButtonText: 'OK',
+      //     customClass: {
+      //       popup: 'custom-swal-popup',
+      //       confirmButton: 'custom-swal-confirm-button'
+      //     }
+      //   });
+
   }
 
   editarCategoria(){
@@ -878,7 +881,7 @@ clearImage(): void {
     let descripcion = this.editarCategoriaForm.get('descripcion')?.value;
     let url = this.editarCategoriaForm.get('url')?.value;
 
-    descripcion = descripcion.trim();
+    descripcion = descripcion?.trim();
     url = url !== null ? url?.trim() : '';
 
     this.gmbeservice.existeCategoriaSubcategoria(id).subscribe(
@@ -993,8 +996,8 @@ clearImage(): void {
     let descripcion = this.subcategoriaForm.get('descripcion')?.value;
     let url = this.subcategoriaForm.get('url')?.value;
     nombre = nombre.trim();
-    descripcion = descripcion.trim();
-    url = url.trim();
+    descripcion = descripcion?.trim();
+    url = url?.trim();
 
 
     if(this.tipoSeleccionado && url.length>0){
@@ -1013,7 +1016,7 @@ clearImage(): void {
       }
     }
 
-    if (nombre !== '' || nombre !== '' || url !== '') {
+    // if (nombre !== '' || nombre !== '' || url !== '') {
         this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value,descripcion,url).subscribe(
           res => {
             swal.fire({
@@ -1047,14 +1050,14 @@ clearImage(): void {
     
           }
         )
-  }else{
-    swal.fire({
-      title: '',
-      text: 'El campo no puede estar vacío',
-      icon: 'error',
-      confirmButtonText: 'OK'
-    });
-  }
+  // }else{
+  //   swal.fire({
+  //     title: '',
+  //     text: 'El campo no puede estar vacío',
+  //     icon: 'error',
+  //     confirmButtonText: 'OK'
+  //   });
+  // }
   }
 
   editarSubcategoria(){

@@ -17,6 +17,7 @@ import { StorageService } from 'src/app/services/storage-service.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ModalGraficasComponent } from '../modal-graficas/modal-graficas.component';
+import { DataDynamic } from 'src/app/base/services/dinamic-data.services';
 
 declare var swal: any;
 
@@ -97,6 +98,8 @@ elementosObservados = false;
 elementosObservadosModal = false;
 renderizadoServices: any;
 
+cuadroAmarrillo: string = '';
+
 
   constructor(
     private route: ActivatedRoute,
@@ -106,12 +109,14 @@ renderizadoServices: any;
     private gmbservices: GmbeServicesService,
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
+    private imagen: DataDynamic,
     private titulos: TitulosService,
     private cdr: ChangeDetectorRef,
     private router: Router
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
+    this.cuadroAmarrillo = imagen.getImagen('img/CUADRO_AMARILLO-1.png');
     this.usuario = JSON.parse(
       this.cifrado.descifrar(this.storage.getItem('usr')!)
     );

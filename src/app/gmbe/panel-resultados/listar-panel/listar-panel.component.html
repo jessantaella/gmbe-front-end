@@ -64,11 +64,11 @@
   
               <div class="dropdown w-100">
                 <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
-                  id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  id="ramoDropdown-2" data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="selected-text">Categoría</span>
                   <em class="bi bi-filter"></em>
                 </button>
-                <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
+                <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown-2">
                   <li class="text-justify listaFiltros">
                     <div class="dropdown-item textoFiltro">
                       <div class="mx-2" *ngFor="let categoria of categoriasColumnas let i = index">
@@ -87,11 +87,11 @@
               <div class="dropdown w-100 mx-2">
                 <button 
                   class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
-                  id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  id="ramoDropdown-3" data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="selected-text">Subcategoría</span>
                   <em class="bi bi-filter"></em>
                 </button>
-                <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown">
+                <ul class="dropdown-menu listaFiltro" aria-labelledby="ramoDropdown-3">
                   <li class="text-justify listaFiltros">
                     <div class="dropdown-item textoFiltro">
                       <div class="mx-2" *ngFor="let subcategoria of subcategoriasColumnas; let i = index">
@@ -112,17 +112,17 @@
         </div>
         
         <div class="col-12 col-md-2 my-1 d-flex justify-content-center align-items-end" style="vertical-align: middle;">
-          <button (click)="this.borraFiltros()" class="btn btn-Categorias mb-3 abajo">Borrar filtros</button>
+          <button (click)="borraFiltros()" class="btn btn-Categorias mb-3 abajo">Borrar filtros</button>
         </div>
       </div>
     </form>
     <div class="d-flex align-items-center">
       <div class="table-responsive tabladatos" *ngIf="!isLoading && (estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0)">
-        <table class="table table-bordered"
+        <table #imagenTabla id="imagenTabla" class="table" [ngClass]="{'table-bordered': !this.modoCaptura}"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
-          <thead class="sticky-header">
+          <thead [ngClass]="{'sticky-header' : !this.modoCaptura}">
             <tr class="text-center">
-              <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle subcategoria sticky-corner"
+              <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle subcategoria" [ngClass]="{'sticky-corner' : !this.modoCaptura}"
                 *ngIf="estructuraFinalColumnasTitulos.length > 0">
                 <!-- Encabezado principal vacío para las filas -->
                  <div class="d-flex justify-content-around w-100">
@@ -180,12 +180,12 @@
               <tr>
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
-                <th class="align-middle text-center sticky-left" id="padre"
+                <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
                 [ngStyle]="{'background-color' : this.colorFila(fila.idCategoria), 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
-                <span class="my-2" [ngClass]="{'textoVertical':fila?.idSubCategoria !== 0}">{{ fila?.categoria }}</span>
+                <span class="my-2" [ngStyle]="{'writing-mode':fila?.idSubCategoria !== 0 && !this.modoCaptura ? 'vertical-rl' : '' }">{{ fila?.categoria }}</span>
                 <div class="text-end"
                 *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') || (fila.complemento!== null && fila.complemento!== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
@@ -200,9 +200,9 @@
               </th>
               
               <!-- Primera subcategoría de la fila -->
-              <th class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="fila?.idSubCategoria !== 0"
+              <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
                 [ngStyle]="{'background-color': this.colorFila(fila.idCategoria), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
-                {{ fila?.subCategoria }}
+                <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
@@ -221,7 +221,7 @@
                   <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
                     <app-burbujas
-                      *ngIf="this.esVisible[u]?.[i]"
+                      *ngIf="this.esVisible[u]?.[i] || this.modoCaptura"
                       [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
                        ></app-burbujas>

@@ -43,6 +43,7 @@
     "domino": "^2.1.6",
     "express": "^4.15.2",
     "gzipper": "^7.2.0",
+    "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
     "ng-chartjs": "^0.2.8",
     "ng2-charts": "^6.0.1",

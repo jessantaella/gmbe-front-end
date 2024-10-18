@@ -124,7 +124,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
       const chartHeight = 250;
   
       // Radio basado en el valor de count
-      const r = Math.floor(((count + 1 - 1) / (120 + 1 - 1)) * (18 - 0)) + 5;
+      const r = Math.floor(((count + 1 - 1) / (60 + 1 - 1)) * (25 - 0)) + 5;
       const padding = 40; // Espacio mínimo entre burbujas
   
       // Posición inicial

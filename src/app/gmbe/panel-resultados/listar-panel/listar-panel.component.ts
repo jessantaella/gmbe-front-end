@@ -14,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
 import { StorageService } from 'src/app/services/storage-service.service';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
+import html2canvas from 'html2canvas';
 declare var swal: any;
 
 @Component({
@@ -103,6 +104,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
   elementosObservados = false;
   existeSubcategoria: number = 0;
+
+  modoCaptura: boolean = false;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -543,12 +546,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   borraFiltros() {
-    //limpia los checkbox
-    this.elementosObservados = false;
-    this.categoriaSeleccionadaFila = [];
-    this.subcategoriaSeleccionadaFila = [];
-    this.categoriaSeleccionadaColumna = [];
-    this.subcategoriaSeleccionadaColumna = [];
+    this.categoriaSeleccionadaFilas = [];
+    this.subcategoriaSeleccionadaFilas = [];
+    this.categoriaSeleccionadaColumnas = [];
+    this.subcategoriaSeleccionadaColumnas = [];
     this.cargaEstructuraPanelResultados();
   }
 
@@ -714,11 +715,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.toggleSelection(
       idSeccion,
       this.categoriaSeleccionadaFilas,
-      this.subcategoriaSeleccionadaFilas,
       null,
-      //this.filtrosSubcategoriasFilas.bind(this),
+      null,
       this.cargaEstructuraPanelResultados.bind(this),
-      //this.cargarChechboxSubFila.bind(this)
     );
 
   }
@@ -740,7 +739,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.toggleSelection(
       idSeccion,
       this.categoriaSeleccionadaColumnas,
-      this.subcategoriaSeleccionadaColumnas,
+      null,
       null,
       //this.filtrosSubcategoriasColumnas.bind(this),
       this.cargaEstructuraPanelResultados.bind(this),
@@ -803,12 +802,11 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
       (res: HttpResponse<ArrayBuffer>) => {
         if (res.body!.byteLength > 0) {
+          this.descargarImagenPanel();
           const file = new Blob([res!.body!], { type: 'application/xlsx' });
           const fileURL = URL.createObjectURL(file);
           var link = document.createElement('a');
           link.href = fileURL;
-          swal.close();
-          swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
           link.download = 'DatosMBE_' + this.nombreMBE.replace(/\s+/g, '') + '.xlsx';
           link.click();
         } else {
@@ -826,6 +824,40 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
           text: 'Sin información',
         })
       })
+  }
+
+  activarModoCaptura() {
+    this.modoCaptura = true;
+    // Forzar la carga de todos los gráficos
+    this.esVisible = this.esVisible.map(fila => fila.map(() => true));
+  }
+
+  async descargarImagenPanel() {
+    try {
+      this.activarModoCaptura();
+      await this.delay(1000); // Espera para que todo se renderice
+      const element = document.getElementById('imagenTabla') as HTMLElement;
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true }); // Aumenta la escala para mejorar la resolución
+      const imgData = canvas.toDataURL('image/png');
+      this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
+      swal.close();
+      swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
+    } catch (error) {
+      console.error('Error al descargar la imagen del panel:', error);
+    } finally {
+      this.modoCaptura = false;
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private downloadImage(dataUrl: string, filename: string) {
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = filename;
+    link.click();
   }
 
   closeModal() {
