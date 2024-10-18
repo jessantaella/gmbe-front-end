@@ -12,7 +12,7 @@ import { NotificacionesService } from './services/notificaciones.service';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.2.2';
+  version = 'V-1.2.3';
   tags: any;
   ga: any;
   isBrowser = false;

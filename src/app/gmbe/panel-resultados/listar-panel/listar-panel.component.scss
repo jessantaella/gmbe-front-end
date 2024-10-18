@@ -60,12 +60,16 @@ ul:hover{
   color: white;
 }
 
-.btnMasInformacion{
+.btnMasInformacion,
+.btnMasInformacion:hover,
+.btnMasInformacion:active,
+.btnMasInformacion:focus{
   background-color: #00a94f;
   color: white;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 11px;
 }
+
 
 .color-icon{
   color: #2E3E97;

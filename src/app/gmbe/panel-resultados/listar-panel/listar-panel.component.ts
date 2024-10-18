@@ -238,7 +238,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   cargarChechbox() {
-
     this.categoriasFilas?.forEach(() => {
       this.categoriaSeleccionadaFila.push(false);
     });
@@ -546,11 +545,28 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   borraFiltros() {
+    //reinicio de los checkbox en false
+    this.quitarSeleccion();
+    this.cargaEstructuraPanelResultados();
+  }
+
+  quitarSeleccion() {
+    this.categoriasFilas = [];
+    this.subcategoriasFilas = [];
+    this.categoriasColumnas = [];
+    this.subcategoriasColumnas = [];
     this.categoriaSeleccionadaFilas = [];
     this.subcategoriaSeleccionadaFilas = [];
     this.categoriaSeleccionadaColumnas = [];
     this.subcategoriaSeleccionadaColumnas = [];
-    this.cargaEstructuraPanelResultados();
+    this.filtrosCategoriasFilas();
+    this.filtrosSubcategoriasFilas();
+    this.filtrosCategoriasColumnas();
+    this.filtrosSubcategoriasColumnas();
+    this.cargarChechbox();
+    this.cargarChechboxSubFila();
+    this.cargarChechboxColumnas();
+    this.cargarChechboxSubColumnas();
   }
 
   filtrarPorTipo(arreglo: any[], tipo: number) {
@@ -837,7 +853,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
       this.activarModoCaptura();
       await this.delay(1000); // Espera para que todo se renderice
       const element = document.getElementById('imagenTabla') as HTMLElement;
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true }); // Aumenta la escala para mejorar la resolución
+      const canvas = await html2canvas(element, { scale: 1, useCORS: true}); // Aumenta la escala para mejorar la resolución
       const imgData = canvas.toDataURL('image/png');
       this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
       swal.close();

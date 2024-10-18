@@ -347,7 +347,7 @@
         Cancelar
       </button>
       <button type="button" class="btn btn-sm btn-guardar" (click)="editarSubcategoria()"
-        [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl===true">
+        [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl===true || !this.habilitarSub">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
         Guardar
       </button>

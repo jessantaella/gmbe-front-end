@@ -94,6 +94,7 @@ export class CrearGmbeComponent implements OnInit {
 
   volverCargarBandera: boolean = false;
   arregloCategoriasEditado: any;
+  habilitarSub: boolean = false;
 
 
   constructor(
@@ -604,6 +605,8 @@ clearImage(): void {
 
   obtenerSubCategoriasEditado(idPadre: any) {
 
+    this.habilitarSub = false;
+
     this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.editarSubcategoriaForm.get('descripcion')?.setValue('');
     this.editarSubcategoriaForm.get('url')?.setValue('');
@@ -626,12 +629,18 @@ clearImage(): void {
     //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
   }
 
-  changeSubcategoria(idCatalogo:any){
+  changeSubcategoria(idCatalogo:any) {
     let selectElement = idCatalogo.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
     let sub = this.subCategoriasEditado.find((e: any)=>e.idCatalogo === selectedValue)
      this.editarSubcategoriaForm.get('descripcion')?.setValue(sub.descripcion);
     this.editarSubcategoriaForm.get('url')?.setValue(sub.complemento);
+    console.log(idCatalogo.target.value)
+    if (idCatalogo.target.value !== '0' || idCatalogo.target.value !== '') {
+      this.habilitarSub = true;
+    } else {
+      this.habilitarSub = false;
+    }
   }
 
   obtenerSubCategoriasConid(idPadre: number) {
@@ -820,7 +829,11 @@ clearImage(): void {
     descripcion = descripcion?.trim();
     url = url?.trim();
 
-    // if (nombre !== '' || descripcion !== '' || url !== '') {
+    console.log(url)
+    console.log(nombre)
+    console.log(descripcion)
+
+  //  if (nombre !== '' && descripcion !== '') {
       
         this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
           res => {
@@ -871,6 +884,7 @@ clearImage(): void {
       //       confirmButton: 'custom-swal-confirm-button'
       //     }
       //   });
+      // }
 
   }
 
@@ -905,7 +919,7 @@ clearImage(): void {
           }
       
       
-          if (descripcion !== '' || url !== '') {
+          //if (descripcion !== '' || url !== '') {
             this.gmbeservice.editarCategoria(id,nombre,descripcion,url).subscribe(
               res => {
                 swal.fire({
@@ -946,18 +960,18 @@ clearImage(): void {
                 })
               }
             );
-          } else {
-            swal.fire({
-              title: '',
-              text: 'El campo no puede estar vacío',
-              icon: 'error',
-              confirmButtonText: 'OK',
-              customClass: {
-                popup: 'custom-swal-popup',
-                confirmButton: 'custom-swal-confirm-button'
-              }
-            });
-          }
+          // } else {
+          //   swal.fire({
+          //     title: '',
+          //     text: 'El campo no puede estar vacío',
+          //     icon: 'error',
+          //     confirmButtonText: 'OK',
+          //     customClass: {
+          //       popup: 'custom-swal-popup',
+          //       confirmButton: 'custom-swal-confirm-button'
+          //     }
+          //   });
+          // }
         }else{
           swal.fire({
             title: '',
@@ -1016,7 +1030,7 @@ clearImage(): void {
       }
     }
 
-    // if (nombre !== '' || nombre !== '' || url !== '') {
+   // if (nombre !== '' && descripcion !== '') {
         this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value,descripcion,url).subscribe(
           res => {
             swal.fire({
@@ -1057,7 +1071,6 @@ clearImage(): void {
   //     icon: 'error',
   //     confirmButtonText: 'OK'
   //   });
-  // }
   }
 
   editarSubcategoria(){

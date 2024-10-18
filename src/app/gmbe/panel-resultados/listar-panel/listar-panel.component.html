@@ -185,7 +185,7 @@
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
-                <span class="my-2" [ngStyle]="{'writing-mode':fila?.idSubCategoria !== 0 && !this.modoCaptura ? 'vertical-rl' : '' }">{{ fila?.categoria }}</span>
+                <span class="my-2" [ngStyle]="{'writing-mode':fila?.idSubCategoria !== 0 && !this.modoCaptura ? 'vertical-rl' : '', 'transform':fila?.idSubCategoria !== 0 && !this.modoCaptura ? 'rotate(180deg)' : '' }">{{ fila?.categoria }}</span>
                 <div class="text-end"
                 *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') || (fila.complemento!== null && fila.complemento!== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
