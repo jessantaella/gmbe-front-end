@@ -51,7 +51,7 @@ export class AuthGuard implements CanActivate {
 
       console.log('route', route);
 
-    if (this.storage.getItem('autorizadas') && this.cifrado.descifrar(this.storage.getItem('usr')!)) {
+    if (this.storage.getItem('autorizadas') && this.storage.getItem('usr')) {
       // Obtener y descifrar el objeto de ids autorizados donde puede acceder el usuario
       const objetoIds = JSON.parse(this.cifrado.descifrar(this.storage.getItem('autorizadas')!));
 

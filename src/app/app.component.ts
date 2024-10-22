@@ -106,8 +106,8 @@ export class AppComponent implements OnInit {
             this.storage.removeItem('autorizadas')
             this.notificacionesService.ocultar();
 
-            const allowedRoutes = ['/panel', '/login', '/inicio', '/evaluacion'];
-            if (!allowedRoutes.includes(this.router.url)) {
+            const allowedRoutes = ['/editar-gmbe', '/gmbe', '/usuarios', '/vista-previa', 'crear-gmbe'];
+            if (allowedRoutes.includes(this.router.url)) {
               this.router.navigate(['/inicio']);
             }
           }
@@ -120,8 +120,9 @@ export class AppComponent implements OnInit {
       this.storage.removeItem('autorizadas')
       this.notificacionesService.ocultar();
 
-      const allowedRoutes = ['/panel', '/login', '/inicio', '/evaluacion'];
-      if (!allowedRoutes.includes(this.router.url)) {
+      const allowedRoutes = ['/editar-gmbe', '/gmbe', '/usuarios', '/vista-previa', 'crear-gmbe'];
+      if (allowedRoutes.includes(this.router.url)) {
+        console.log('Redirigiendo a inicio');
         this.router.navigate(['/inicio']);
       }
     }
