@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './base/header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NgbDropdown, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +13,7 @@ import { InicioComponent } from './base/inicio/inicio.component';
 import { FooterComponent } from './base/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {APP_BASE_HREF} from '@angular/common';
+import {APP_BASE_HREF, HashLocationStrategy, LocationStrategy} from '@angular/common';
 import { ObjetoMbeComponent } from './objeto-mbe/objeto-mbe.component';
 import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
 import { LoginComponent } from './base/login/login.component';
@@ -34,6 +34,7 @@ import { FormsModule } from '@angular/forms';
 import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
 import { NgChartjsModule } from 'ng-chartjs';
 import { ModalGraficasComponent } from './gmbe/modal-graficas/modal-graficas.component';
+import { UserInterceptor } from './shared/UserInterceptor';
 
 
 
@@ -71,7 +72,7 @@ import { ModalGraficasComponent } from './gmbe/modal-graficas/modal-graficas.com
     BsDropdownModule.forRoot(),
     FormsModule
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },{provide: APP_BASE_HREF, useValue: '/GMBE/'}, {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

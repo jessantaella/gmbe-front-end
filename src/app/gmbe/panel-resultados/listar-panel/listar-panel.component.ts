@@ -40,6 +40,16 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   categoriaSeleccionadaFilas: any[] = [];
   subcategoriaSeleccionadaFilas: any[] = [];
 
+  estructuraFinalColumnasTitulos1: any[] = [];
+  estructuraFinalFilasTitulos1: any[] = [];
+  estructuraFinalFilasSubitulos1: any[] = [];
+  datosIntersecciones1: any[] = [];
+
+  categoriaSeleccionadaColumnas1: any[] = [];
+  subcategoriaSeleccionadaColumnas1: any[] = [];
+  categoriaSeleccionadaFilas1: any[] = [];
+  subcategoriaSeleccionadaFilas1: any[] = [];
+
 
   mostrarNombre: string = '';
   mostrarObjetivos: string = '';
@@ -101,11 +111,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   datosInsercciones: any;
 
   esVisible: boolean[][] = [];
+  esVisible1: boolean[][] = [];
   @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
+  @ViewChildren('thElemento1') thElements1!: QueryList<ElementRef>;
   elementosObservados = false;
+  elementosObservados1 = false;
   existeSubcategoria: number = 0;
 
   modoCaptura: boolean = false;
+  terminoRenderizado: boolean = false;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -127,6 +141,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
     this.obtenerVersionMax();
     this.cargarDatosMbe();
+    this.cargarDatosMbeHidden();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
     this.filtrosSubcategoriasFilas();
@@ -134,12 +149,18 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.filtrosSubcategoriasColumnas();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
+    this.cargaEstructuraPanelResultados1();
   }
   ngAfterViewChecked(): void {
     // Solo ejecutar el renderizado una vez que los elementos estén disponibles
     if (!this.elementosObservados && this.thElements.length > 0) {
       this.renderizado();
       this.elementosObservados = true; // Marcar que ya se han observado los elementos
+    }
+    
+    if (!this.elementosObservados1 && this.thElements1.length > 0) {
+      this.renderizadoHidden();
+      this.elementosObservados1 = true; // Marcar que ya se han observado los elementos
     }
   }
 
@@ -149,6 +170,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.elementosObservados = false;
   }
   ngOnInit(): void {
+    //this.esVisible1[0][0] = true;
     this.pantallaCargando();
     this.tituloAcotacion();
     //this.escucharCambiosSelect();
@@ -177,12 +199,40 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
         }
       });
     }, {
-      rootMargin: '500px',
+      rootMargin: '300px',
     });
 
     this.thElements.forEach(th => {
       observer.observe(th.nativeElement);
     });
+  }
+
+  async renderizadoHidden() {
+    let tiempo = this.thElements1.length * 2;
+    console.log('th', this.thElements1.length);
+    console.log('Tiempo:', tiempo);
+    for (let i = 0; i < this.thElements1.length; i++) {
+      const th = this.thElements1.toArray()[i];
+      console.log(th.nativeElement.id);
+      const [_, index, index2] = th.nativeElement.id.split('-').map(Number);
+
+      if (!this.esVisible1[index]) {
+        this.esVisible1[index] = [];
+      }
+      if (!this.esVisible1[index][index2]) {
+        this.esVisible1[index][index2] = true;
+      }
+
+      // Check if the next element is in a different row
+      if (i === 0 || (i + 1 < this.thElements1.length && this.thElements1.toArray()[i + 1].nativeElement.id.split('-')[1] !== index.toString())) {
+        await this.espera(tiempo); // Wait 2000ms before processing the next row
+      }
+    }
+    this.terminoRenderizado = true;
+  }
+
+  espera(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   tituloAcotacion() {
@@ -286,6 +336,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
         
         this.valorMasAltoBurbuja = Math.max(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
         this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));  
+      },
+      err => { }
+    );
+  }
+
+  cargarDatosMbeHidden() {
+    this.gmbservices.obtenerDatosGMBEBurbujas(this.idmbe, this.versionMaxima).subscribe(
+      res => {
+        this.datosIntersecciones1 = res;
       },
       err => { }
     );
@@ -534,6 +593,36 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     );
   }
 
+  cargaEstructuraPanelResultados1(idCateoriaFilas: any = null, idSubcategoriaFilas: any = null, idCategoriaColumnas: any = null, idSubcategoriaColumnas: any = null) {
+    //limpia los datos de la estructura
+    this.estructuraFinalColumnasTitulos1 = [];
+    this.estructuraFinalFilasTitulos1 = [];
+    this.estructuraFinalFilasSubitulos1 = [];
+
+    const datosEnvio = {
+      idMbe: this.idmbe,
+      idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
+      idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
+      idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
+      idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
+    };
+
+    this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
+      res => {
+        this.sinResultados(res);
+
+        // Filtrar las columnas y las filas por tipo
+        this.estructuraFinalColumnasTitulos1 = this.filtrarPorTipo(res, 1);
+        this.estructuraFinalFilasTitulos1 = this.filtrarPorTipo(res, 2);
+
+        this.estructuraFinalFilasSubitulos1 = this.estructuraFinalFilasTitulos1.flatMap(fila => fila.hijos);
+      },
+      err => {
+        console.error('Error al obtener estructura del panel:', err);
+      }
+    );
+  }
+
   sinResultados(res: any) {
     if (res.length === 0) {
       swal.fire({
@@ -551,6 +640,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   quitarSeleccion() {
+    this.elementosObservados = false;
     this.categoriasFilas = [];
     this.subcategoriasFilas = [];
     this.categoriasColumnas = [];
@@ -655,6 +745,34 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
   datosInterseccion(columna: number, fila: number,u:number,i:number) {
     const respuesta = this.datosIntersecciones.find(
+      obj => obj.idFila === columna && obj.idColumna === fila
+    );
+
+    if (!respuesta) {
+      return [];
+    }
+
+    const conteoTipoEvaluacion = respuesta.conteoDisenioEval ?? respuesta.conteoTipoEvaluacion;
+    const evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
+
+    return evaluaciones.map((eva:any) => {
+      const [idGpo, nombreGpo, colorBubble, count] = eva.split(':');
+      return {
+        idMbe: this.idmbe,
+        idFila: respuesta.idFila,
+        idColumna: respuesta.idColumna,
+        idGpo: parseInt(idGpo),
+        nombreGpo,
+        colorBubble,
+        count: parseInt(count),
+        valorMaximoZ: this.valorMasAltoBurbuja,
+        valorMinimoZ: this.valorMasBajoBurbuja,
+      };
+    });
+  }
+
+  datosInterseccion2(columna: number, fila: number,u:number,i:number) {
+    const respuesta = this.datosIntersecciones1.find(
       obj => obj.idFila === columna && obj.idColumna === fila
     );
 
@@ -844,20 +962,34 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
   activarModoCaptura() {
     this.modoCaptura = true;
-    // Forzar la carga de todos los gráficos
-    this.esVisible = this.esVisible.map(fila => fila.map(() => true));
+  }
+
+  esperaHasta(condicion: () => boolean, intervalo: number): Promise<void> {
+    return new Promise((resolve) => {
+      const intervalId = setInterval(() => {
+        if (condicion()) {
+          clearInterval(intervalId);
+          resolve();
+        }
+      }, intervalo);
+    });
   }
 
   async descargarImagenPanel() {
     try {
       this.activarModoCaptura();
-      await this.delay(1000); // Espera para que todo se renderice
-      const element = document.getElementById('imagenTabla') as HTMLElement;
-      const canvas = await html2canvas(element, { scale: 1, useCORS: true}); // Aumenta la escala para mejorar la resolución
-      const imgData = canvas.toDataURL('image/png');
-      this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
-      swal.close();
-      swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
+
+      // Esperar hasta que terminoRenderizado sea true
+      await this.esperaHasta(() => this.terminoRenderizado, 500);
+
+      if (this.terminoRenderizado) {
+        const element = document.getElementById('imagenTabla') as HTMLElement;
+        const canvas = await html2canvas(element, { scale: 1, useCORS: true }); // Aumenta la escala para mejorar la resolución
+        const imgData = canvas.toDataURL('image/png');
+        this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
+        swal.close();
+        swal.fire('', '¡Descarga con éxito!', 'success').then(() => { }); 
+      }
     } catch (error) {
       console.error('Error al descargar la imagen del panel:', error);
     } finally {
@@ -865,9 +997,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     }
   }
 
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
   private downloadImage(dataUrl: string, filename: string) {
     const link = document.createElement('a');

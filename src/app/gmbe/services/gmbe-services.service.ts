@@ -291,5 +291,10 @@ export class GmbeServicesService {
       let url = this.serverConfigService.getServerConfig()+'api/gmbe/api/estructura-mbe/titulo-panel-resultado?idMbe='+idMBE;
       return this.http.get<any>(url);
     }
+
+    validarUsuario(usuario:string, correo:string):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/exist-user?username='+usuario+'&correo='+correo;
+      return this.http.get<any>(url);
+    }
      
 }

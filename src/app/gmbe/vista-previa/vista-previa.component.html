@@ -119,27 +119,27 @@
         width="25px" height="25px" /></button>
   </div>
   <div class="d-flex justify-content-center mt-5 mb-2">
-    <button class="btn btn-primary mx-2 border-0 regresar" [routerLink]="['/gmbe']">
+    <button class="btn  mx-2 border-0 regresar" [routerLink]="['/gmbe']">
       <fa-icon [icon]="faRotaLeft" class="btnOtrasAcciones "></fa-icon>
       Regresar
     </button>
-    <button class="btn btn-primary mx-2 border-0 descargar" (click)="descargar()">
+    <button class="btn mx-2 border-0 descargar" (click)="descargar()">
       <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
       Descargar datos
     </button>
-    <button *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" class="btn btn-primary mx-2 border-0 rechazar">
+    <button *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" class="btn mx-2 border-0 rechazar">
       <fa-icon [icon]="faX" class="btnOtrasAcciones"></fa-icon>
       Rechazar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(this.validado)" class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(this.validado)" class="btn mx-2 border-0 aprobar">
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Aprobar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(this.pendiente)" class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(this.pendiente)" class="btn mx-2 border-0 aprobar">
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Enviar a validar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(this.publicado)" class="btn btn-primary mx-2 border-0 aprobar">
+    <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(this.publicado)" class="btn mx-2 border-0 aprobar">
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Publicar
     </button>

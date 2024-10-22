@@ -9,7 +9,8 @@
   
               <div class="dropdown w-100">
                 <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias btn-Categorias-active" type="button"
-                  id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                  style="background-color: #2E3E97; color: white;">
                   <span class="selected-text">Categoría</span>
                   <em class="bi bi-filter"></em>
                 </button>
@@ -32,7 +33,8 @@
               <div class="dropdown w-100 mx-2">
                 <button 
                   class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
-                  id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  id="ramoDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                  style="background-color: #2E3E97; color: white;">
                   <span class="selected-text">Subcategoría</span>
                   <em class="bi bi-filter"></em>
                 </button>
@@ -64,7 +66,8 @@
   
               <div class="dropdown w-100">
                 <button class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
-                  id="ramoDropdown-2" data-bs-toggle="dropdown" aria-expanded="false">
+                  id="ramoDropdown-2" data-bs-toggle="dropdown" aria-expanded="false"
+                  style="background-color: #2E3E97; color: white;">
                   <span class="selected-text">Categoría</span>
                   <em class="bi bi-filter"></em>
                 </button>
@@ -87,7 +90,8 @@
               <div class="dropdown w-100 mx-2">
                 <button 
                   class="btn w-100 d-flex justify-content-between align-content-center border btn-Categorias" type="button"
-                  id="ramoDropdown-3" data-bs-toggle="dropdown" aria-expanded="false">
+                  id="ramoDropdown-3" data-bs-toggle="dropdown" aria-expanded="false"
+                  style="background-color: #2E3E97; color: white;">
                   <span class="selected-text">Subcategoría</span>
                   <em class="bi bi-filter"></em>
                 </button>
@@ -118,7 +122,7 @@
     </form>
     <div class="d-flex align-items-center">
       <div class="table-responsive tabladatos" *ngIf="!isLoading && (estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0)">
-        <table #imagenTabla id="imagenTabla" class="table" [ngClass]="{'table-bordered': !this.modoCaptura}"
+        <table class="table table-bordered"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
           <thead [ngClass]="{'sticky-header' : !this.modoCaptura}">
             <tr class="text-center">
@@ -302,6 +306,126 @@
   </ng-template>
   </div>
 
+  <!--tabla cache-->
+
+  <div style="position: fixed; top: -999999;" [ngStyle]="{'visibility':!this.modoCaptura ? 'hidden':''}"  >
+    <div class="table-responsive tabladatos" *ngIf="estructuraFinalColumnasTitulos1.length > 0 || estructuraFinalFilasTitulos1.length > 0">
+      <table #imagenTabla id="imagenTabla" class="table" [ngClass]="{'table-bordered': !this.modoCaptura}"
+        *ngIf="estructuraFinalColumnasTitulos1.length > 0 || estructuraFinalFilasTitulos1.length > 0">
+        <thead [ngClass]="{'sticky-header' : !this.modoCaptura}">
+          <tr class="text-center">
+            <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle subcategoria" [ngClass]="{'sticky-corner' : !this.modoCaptura}"
+              *ngIf="estructuraFinalColumnasTitulos1.length > 0">
+              <!-- Encabezado principal vacío para las filas -->
+               <div class="d-flex justify-content-around w-100">
+                <span class="w-50 h-100" >Categoría General</span>
+                <span class="w-50 h-100" *ngIf="this.existeSubcategoria > 0" >Tipo de apoyo</span>
+               </div>
+            </th>
+
+            <!-- Encabezados de columnas (basado en idTipo: 1) -->
+            <th scope="col" class="titulos-tabla align-middle"
+              *ngFor="let columna of estructuraFinalColumnasTitulos1 ; let i = index"
+              [ngStyle]="{'width': (this.estructuraFinalColumnasTitulos1[i].hijos[0].idSubCategoria === 0 ? 200 : this.estructuraFinalColumnasTitulos1[i].hijos.length * 200) + 'px'}"
+              [attr.colspan]="this.estructuraFinalColumnasTitulos1[i].hijos[0].idSubCategoria !== 0 ? this.estructuraFinalColumnasTitulos1[i].hijos.length : 1"
+              [attr.rowspan]="this.estructuraFinalColumnasTitulos1[i].hijos[0].idSubCategoria === 0 ? 2 : 1">
+              {{ columna.categoria }} <br>
+              <div class="text-end"
+                *ngIf="columna?.hijos[0]?.idSubCategoria == 0 && ((columna?.descripcion !== null && columna?.descripcion !== ''))">
+                <button class="btn p-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                    fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                  </svg>
+                </button>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <!-- Subencabezados de columnas (basado en idTipo: 1) -->
+            <ng-container style="width: 25rem;" *ngFor="let subcolumna of estructuraFinalColumnasTitulos1">
+              <ng-container *ngFor="let hijo of subcolumna.hijos">
+                <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
+                  {{ hijo.subCategoria }}
+                  <div class="text-end"
+                    *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ))">
+                    <button class="btn p-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem" fill="currentColor"
+                        class="bi bi-plus-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                      </svg>
+                    </button>
+                  </div>
+                </th>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Iterar sobre las categorías de las filas (idTipo: 2) -->
+          <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos1; let u = index">
+            <tr>
+              <!-- Encabezado de categoría general en las filas -->
+              <!-- Encabezado de categoría general en las filas -->
+              <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
+              [ngStyle]="{'background-color' : this.colorFila(fila.idCategoria), 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
+              [attr.rowspan]="fila.count" 
+              [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
+              *ngIf="estructuraFinalFilasSubitulos1[u - 1]?.idCategoria !== fila?.idCategoria">
+              <span class="my-2" [ngStyle]="{'writing-mode':fila?.idSubCategoria !== 0 && !this.modoCaptura ? 'vertical-rl' : '', 'transform':fila?.idSubCategoria !== 0 && !this.modoCaptura ? 'rotate(180deg)' : '' }">{{ fila?.categoria }}</span>
+              <div class="text-end"
+              *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') || (fila.complemento!== null && fila.complemento!== ''))">
+                <button class="btn p-0" >
+                  <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                    fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                  </svg>
+                </button>
+              </div>
+            </th>
+            
+            <!-- Primera subcategoría de la fila -->
+            <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
+              [ngStyle]="{'background-color': this.colorFila(fila.idCategoria), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
+              <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
+              <div class="text-end"
+                *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
+                <button class="btn p-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="1rem" height="1rem"
+                    fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                  </svg>
+                </button>
+              </div>
+            </th>
+
+              <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
+              <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos1; let i = index; trackBy: trackByFn">
+                <th #thElemento1 id="thElemento1-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
+                  <!-- Aquí van los datos de intersección, si hay -->
+                  <app-burbujas
+                    *ngIf="this.esVisible1[u]?.[i] || this.modoCaptura"
+                    [chartId]="'chart-' + i+1000 + j+1000 + u+1000" [chartTitle]="'GraficaPanel2'"
+                    [bubbleData]="datosInterseccion2(fila.idEstructura,hijo.idEstructura,u,i)"
+                     ></app-burbujas>
+                </th>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
 
 
 

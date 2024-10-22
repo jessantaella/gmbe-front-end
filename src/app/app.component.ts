@@ -5,6 +5,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { ServerConfigService } from './server-config.service';
 import { StorageService } from './services/storage-service.service';
 import { NotificacionesService } from './services/notificaciones.service';
+import { GmbeServicesService } from './gmbe/services/gmbe-services.service';
+import { CifradoService } from './services/cifrado.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -20,10 +23,16 @@ export class AppComponent implements OnInit {
   mostrarNotificaciones = false;
 
 
-  constructor(private meta: Meta, private notificacionesService: NotificacionesService, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
+  constructor(private meta: Meta,private router: Router, private cifrado:CifradoService, private gmbeServices: GmbeServicesService, private notificacionesService: NotificacionesService, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
+    this.router.events.subscribe(event => {
+      if (event.constructor.name === "NavigationEnd") {
+        console.log('Cambio de ruta detectado. Verificando sesión...');
+        this.varificarSesion();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -77,6 +86,45 @@ export class AppComponent implements OnInit {
     // console.log(packageJson.version);
     // (window as any).myVariable = packageJson.version;
     this.checkVersion();
+  }
+
+  varificarSesion(){
+    if (this.storage.getItem('usr')) {
+      let objetoUsuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+      console.log(objetoUsuario);
+      let username = objetoUsuario.userName;
+      let correo = objetoUsuario.correo;
+      console.log('verificar sesion');
+      this.gmbeServices.validarUsuario(username,correo).subscribe(
+        res => {
+          console.log(res);
+          if (res.data === null) {
+            console.log('Usuario no autorizado');
+            this.storage.removeItem('usr');
+            this.storage.removeItem('token-gmbe')
+            this.storage.removeItem('notificaciones')
+            this.storage.removeItem('autorizadas')
+            this.notificacionesService.ocultar();
+
+            const allowedRoutes = ['/panel', '/login', '/inicio', '/evaluacion'];
+            if (!allowedRoutes.includes(this.router.url)) {
+              this.router.navigate(['/inicio']);
+            }
+          }
+        }) 
+    }else{
+      console.log('Usuario no autorizado');
+      this.storage.removeItem('usr');
+      this.storage.removeItem('token-gmbe')
+      this.storage.removeItem('notificaciones')
+      this.storage.removeItem('autorizadas')
+      this.notificacionesService.ocultar();
+
+      const allowedRoutes = ['/panel', '/login', '/inicio', '/evaluacion'];
+      if (!allowedRoutes.includes(this.router.url)) {
+        this.router.navigate(['/inicio']);
+      }
+    }
   }
 
 
