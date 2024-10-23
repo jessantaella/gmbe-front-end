@@ -35,6 +35,7 @@ import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
 import { NgChartjsModule } from 'ng-chartjs';
 import { ModalGraficasComponent } from './gmbe/modal-graficas/modal-graficas.component';
 import { UserInterceptor } from './shared/UserInterceptor';
+import { BurbujasPersonalesComponent } from './graficas/burbujas-personales/burbujas-personales.component';
 
 
 
@@ -56,6 +57,7 @@ import { UserInterceptor } from './shared/UserInterceptor';
     CrearGmbeComponent,
     EditarGmbeComponent,
     BurbujasComponent,
+    BurbujasPersonalesComponent,
     VistaPreviaComponent,
     PanelResultadosComponent,
     EvaluacionComponent

@@ -208,28 +208,35 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   async renderizadoHidden() {
-    let tiempo = this.thElements1.length * 2;
-    console.log('th', this.thElements1.length);
+    const thElementsArray = this.thElements1.toArray(); // Acceder una vez al array
+    const totalElements = thElementsArray.length;
+    const tiempo = totalElements * 1; // Tiempo basado en el total de elementos
+    
+    console.log('th', totalElements);
     console.log('Tiempo:', tiempo);
-    for (let i = 0; i < this.thElements1.length; i++) {
-      const th = this.thElements1.toArray()[i];
-      console.log(th.nativeElement.id);
+  
+    let lastIndex = -1; // Para almacenar el índice de fila anterior
+  
+    for (let i = 0; i < totalElements; i++) {
+      const th = thElementsArray[i];
       const [_, index, index2] = th.nativeElement.id.split('-').map(Number);
-
+  
+      // Inicializa la visibilidad si es necesario
       if (!this.esVisible1[index]) {
         this.esVisible1[index] = [];
       }
-      if (!this.esVisible1[index][index2]) {
-        this.esVisible1[index][index2] = true;
-      }
-
-      // Check if the next element is in a different row
-      if (i === 0 || (i + 1 < this.thElements1.length && this.thElements1.toArray()[i + 1].nativeElement.id.split('-')[1] !== index.toString())) {
-        await this.espera(tiempo); // Wait 2000ms before processing the next row
+      this.esVisible1[index][index2] = true;
+  
+      // Verificar si es una nueva fila
+      if (index !== lastIndex) {
+        await this.espera(tiempo); // Espera antes de procesar la siguiente fila
+        lastIndex = index; // Actualiza el índice de fila
       }
     }
+  
     this.terminoRenderizado = true;
   }
+  
 
   espera(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -412,33 +419,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.figuraActivaId = null;
     this.mensajeFlotanteFuera = false;
   }
-
-  // escucharCambiosSelect() {
-  //   this.generales.get('categoriaFila')?.valueChanges.subscribe((value) => {
-  //     this.selectedCategoriaFila = value;
-  //     
-  //     this.filtrosCategoriasFilas(parseInt(value), 0);
-  //     this.filtrosSubcategoriasFilas(parseInt(value), 0);
-  //   })
-  //   this.generales.get('subcategoriaFila')?.valueChanges.subscribe((value) => {
-  //     
-  //     this.selectedSubcategoriaFila = value;
-  //     this.filtrosSubcategoriasFilas(parseInt(this.selectedCategoriaFila), parseInt(value));
-  //   })
-
-
-  //   this.generales.get('categoriasColumna')?.valueChanges.subscribe((value) => {
-  //     
-  //     this.filtrosCategoriasColumnas(parseInt(value), 0);
-  //     this.filtrosSubcategoriasColumnas(parseInt(value), 0);
-  //   });
-
-  //   this.generales.get('subcategoriasColumna')?.valueChanges.subscribe((value) => {
-  //     
-  //     this.filtrosSubcategoriasColumnas(parseInt(this.generales.get('categoriasColumna')?.value), parseInt(value));
-  //   });
-
-  // }
 
   filtrosCategoriasFilas() {
     let datosEnvio = {
@@ -976,25 +956,25 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   async descargarImagenPanel() {
-    try {
-      this.activarModoCaptura();
+    //try {
+      //this.activarModoCaptura();
 
       // Esperar hasta que terminoRenderizado sea true
-      await this.esperaHasta(() => this.terminoRenderizado, 500);
+      //await this.esperaHasta(() => this.terminoRenderizado, 500);
 
-      if (this.terminoRenderizado) {
+      //if (this.terminoRenderizado) {
         const element = document.getElementById('imagenTabla') as HTMLElement;
         const canvas = await html2canvas(element, { scale: 1, useCORS: true }); // Aumenta la escala para mejorar la resolución
         const imgData = canvas.toDataURL('image/png');
         this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
         swal.close();
         swal.fire('', '¡Descarga con éxito!', 'success').then(() => { }); 
-      }
-    } catch (error) {
+      //}
+    /*} catch (error) {
       console.error('Error al descargar la imagen del panel:', error);
     } finally {
       this.modoCaptura = false;
-    }
+    }*/
   }
 
 

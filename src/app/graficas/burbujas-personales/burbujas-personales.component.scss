@@ -1,0 +1,62 @@
+/**.bubble {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.7;
+    transition: transform 0.3s ease;
+  }
+  
+  .bubble:hover {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  .bubble-container {
+    background-color: white;
+    position: relative; /* Asegúrate de que el posicionamiento sea relativo */
+//    overflow: hidden; /* Evita que el contenido se desborde */
+//    border: 1px solid #ccc; /* Opcional, para visualizar el contenedor */
+// }
+  
+
+.bubble-container {
+  position: relative;
+  overflow: visible;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  //z-index: 10;
+}
+
+.tooltip {
+  position: fixed;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; 
+}
+
+.tooltip2{
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro con 50% de opacidad */
+}
+
+
+.tooltip-color {
+  width: 8px; /* Ancho del cuadro de color */
+  height: 8px; /* Alto del cuadro de color */
+  margin-right: 2px; /* Espaciado a la derecha */
+  display: inline-block; /* Para que se comporte como un bloque en línea */
+  border-radius: 3px; /* Esquinas redondeadas (opcional) */
+}
+
+
+.textoTooltip{
+  font-size: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ffffff;
+}
