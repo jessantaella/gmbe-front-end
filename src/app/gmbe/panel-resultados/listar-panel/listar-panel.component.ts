@@ -114,12 +114,14 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   esVisible1: boolean[][] = [];
   @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
   @ViewChildren('thElemento1') thElements1!: QueryList<ElementRef>;
+  @ViewChild('tablaDatos') tablaDatos!: ElementRef;
   elementosObservados = false;
   elementosObservados1 = false;
   existeSubcategoria: number = 0;
 
   modoCaptura: boolean = false;
   terminoRenderizado: boolean = false;
+  bandera: boolean = false;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -149,19 +151,14 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.filtrosSubcategoriasColumnas();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
-    this.cargaEstructuraPanelResultados1();
+    //this.cargaEstructuraPanelResultados1();
   }
   ngAfterViewChecked(): void {
-    // Solo ejecutar el renderizado una vez que los elementos estén disponibles
-    if (!this.elementosObservados && this.thElements.length > 0) {
-      this.renderizado();
-      this.elementosObservados = true; // Marcar que ya se han observado los elementos
-    }
-    
-    if (!this.elementosObservados1 && this.thElements1.length > 0) {
-      this.renderizadoHidden();
-      this.elementosObservados1 = true; // Marcar que ya se han observado los elementos
-    }
+    this.tieneScroll();
+    // if (!this.elementosObservados1 && this.thElements1.length > 0) {
+    //   this.renderizadoHidden();
+    //   this.elementosObservados1 = true; // Marcar que ya se han observado los elementos
+    // }
   }
 
   ngOnDestroy(): void {
@@ -173,6 +170,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     //this.esVisible1[0][0] = true;
     this.pantallaCargando();
     this.tituloAcotacion();
+    
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
     setTimeout(() => {
@@ -183,6 +181,25 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
   trackByFn(index: number, item: any): number {
     return item.id; // o cualquier propiedad única
+  }
+
+  tieneScroll() {
+    //Detecta si la tabla tiene scroll e imprime en consola si es así
+    const tabla = this.tablaDatos?.nativeElement;
+    if (tabla?.scrollHeight > tabla?.clientHeight && tabla !== undefined) {
+      console.log('Tiene scroll');
+      // Solo ejecutar el renderizado una vez que los elementos estén disponibles
+      if (!this.elementosObservados && this.thElements.length > 0) {
+        this.renderizado();
+        this.elementosObservados = true; // Marcar que ya se han observado los elementos
+      }
+    }else{
+      if (!this.bandera && tabla !== undefined) {
+        console.log('Renderizado completo');
+        this.bandera = true;
+        this.renderizadoCompleto(); 
+      }
+    }
   }
 
   renderizado() {
@@ -207,33 +224,48 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     });
   }
 
-  async renderizadoHidden() {
-    let tiempo = this.thElements1.length * 2;
-    console.log('th', this.thElements1.length);
-    console.log('Tiempo:', tiempo);
-    for (let i = 0; i < this.thElements1.length; i++) {
-      const th = this.thElements1.toArray()[i];
-      console.log(th.nativeElement.id);
+  renderizadoCompleto() {
+    console.log('th', this.thElements.length);
+    for (let i = 0; i < this.thElements.length + 1 ; i++) {
+      const th = this.thElements.toArray()[i];
       const [_, index, index2] = th.nativeElement.id.split('-').map(Number);
 
-      if (!this.esVisible1[index]) {
-        this.esVisible1[index] = [];
+      if (!this.esVisible[index]) {
+        this.esVisible[index] = [];
       }
-      if (!this.esVisible1[index][index2]) {
-        this.esVisible1[index][index2] = true;
-      }
-
-      // Check if the next element is in a different row
-      if (i === 0 || (i + 1 < this.thElements1.length && this.thElements1.toArray()[i + 1].nativeElement.id.split('-')[1] !== index.toString())) {
-        await this.espera(tiempo); // Wait 2000ms before processing the next row
+      if (!this.esVisible[index][index2]) {
+        this.esVisible[index][index2] = true;
       }
     }
-    this.terminoRenderizado = true;
   }
 
-  espera(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  // async renderizadoHidden() {
+  //   let tiempo = this.thElements1.length * 2;
+  //   console.log('th', this.thElements1.length);
+  //   console.log('Tiempo:', tiempo);
+  //   for (let i = 0; i < this.thElements1.length; i++) {
+  //     const th = this.thElements1.toArray()[i];
+  //     console.log(th.nativeElement.id);
+  //     const [_, index, index2] = th.nativeElement.id.split('-').map(Number);
+
+  //     if (!this.esVisible1[index]) {
+  //       this.esVisible1[index] = [];
+  //     }
+  //     if (!this.esVisible1[index][index2]) {
+  //       this.esVisible1[index][index2] = true;
+  //     }
+
+  //     // Check if the next element is in a different row
+  //     if (i === 0 || (i + 1 < this.thElements1.length && this.thElements1.toArray()[i + 1].nativeElement.id.split('-')[1] !== index.toString())) {
+  //       await this.espera(tiempo); // Wait 2000ms before processing the next row
+  //     }
+  //   }
+  //   this.terminoRenderizado = true;
+  // }
+
+  // espera(ms: number): Promise<void> {
+  //   return new Promise(resolve => setTimeout(resolve, ms));
+  // }
 
   tituloAcotacion() {
     this.gmbservices.obtenerAcotaciones(this.idmbe).subscribe(
@@ -412,33 +444,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.figuraActivaId = null;
     this.mensajeFlotanteFuera = false;
   }
-
-  // escucharCambiosSelect() {
-  //   this.generales.get('categoriaFila')?.valueChanges.subscribe((value) => {
-  //     this.selectedCategoriaFila = value;
-  //     
-  //     this.filtrosCategoriasFilas(parseInt(value), 0);
-  //     this.filtrosSubcategoriasFilas(parseInt(value), 0);
-  //   })
-  //   this.generales.get('subcategoriaFila')?.valueChanges.subscribe((value) => {
-  //     
-  //     this.selectedSubcategoriaFila = value;
-  //     this.filtrosSubcategoriasFilas(parseInt(this.selectedCategoriaFila), parseInt(value));
-  //   })
-
-
-  //   this.generales.get('categoriasColumna')?.valueChanges.subscribe((value) => {
-  //     
-  //     this.filtrosCategoriasColumnas(parseInt(value), 0);
-  //     this.filtrosSubcategoriasColumnas(parseInt(value), 0);
-  //   });
-
-  //   this.generales.get('subcategoriasColumna')?.valueChanges.subscribe((value) => {
-  //     
-  //     this.filtrosSubcategoriasColumnas(parseInt(this.generales.get('categoriasColumna')?.value), parseInt(value));
-  //   });
-
-  // }
 
   filtrosCategoriasFilas() {
     let datosEnvio = {
@@ -769,6 +774,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
         valorMinimoZ: this.valorMasBajoBurbuja,
       };
     });
+  }
+
+  tieneDatos(columna: number, fila: number) {
+    const respuesta = this.datosIntersecciones.find(
+      obj => obj.idFila === columna && obj.idColumna === fila
+    );
+    return respuesta !== undefined ? true : false;
   }
 
   datosInterseccion2(columna: number, fila: number,u:number,i:number) {

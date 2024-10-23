@@ -121,7 +121,7 @@
       </div>
     </form>
     <div class="d-flex align-items-center">
-      <div class="table-responsive tabladatos" *ngIf="!isLoading && (estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0)">
+      <div #tablaDatos id="tablaDatos" class="table-responsive tabladatos" *ngIf="!isLoading && (estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0)">
         <table class="table table-bordered"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
           <thead [ngClass]="{'sticky-header' : !this.modoCaptura}">
@@ -225,7 +225,7 @@
                   <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
                     <app-burbujas
-                      *ngIf="this.esVisible[u]?.[i] || this.modoCaptura"
+                      *ngIf="(this.esVisible[u]?.[i] || this.modoCaptura) && this.tieneDatos(fila.idEstructura,hijo.idEstructura)"
                       [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
                        ></app-burbujas>
@@ -305,8 +305,7 @@
     </div>
   </ng-template>
   </div>
-
-  <!--tabla cache-->
+<!-- 
 
   <div style="position: fixed; top: -999999;" [ngStyle]="{'visibility':!this.modoCaptura ? 'hidden':''}"  >
     <div class="table-responsive tabladatos" *ngIf="estructuraFinalColumnasTitulos1.length > 0 || estructuraFinalFilasTitulos1.length > 0">
@@ -316,14 +315,11 @@
           <tr class="text-center">
             <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle subcategoria" [ngClass]="{'sticky-corner' : !this.modoCaptura}"
               *ngIf="estructuraFinalColumnasTitulos1.length > 0">
-              <!-- Encabezado principal vacío para las filas -->
                <div class="d-flex justify-content-around w-100">
                 <span class="w-50 h-100" >Categoría General</span>
                 <span class="w-50 h-100" *ngIf="this.existeSubcategoria > 0" >Tipo de apoyo</span>
                </div>
             </th>
-
-            <!-- Encabezados de columnas (basado en idTipo: 1) -->
             <th scope="col" class="titulos-tabla align-middle"
               *ngFor="let columna of estructuraFinalColumnasTitulos1 ; let i = index"
               [ngStyle]="{'width': (this.estructuraFinalColumnasTitulos1[i].hijos[0].idSubCategoria === 0 ? 200 : this.estructuraFinalColumnasTitulos1[i].hijos.length * 200) + 'px'}"
@@ -344,7 +340,6 @@
             </th>
           </tr>
           <tr>
-            <!-- Subencabezados de columnas (basado en idTipo: 1) -->
             <ng-container style="width: 25rem;" *ngFor="let subcolumna of estructuraFinalColumnasTitulos1">
               <ng-container *ngFor="let hijo of subcolumna.hijos">
                 <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
@@ -367,11 +362,8 @@
         </thead>
 
         <tbody>
-          <!-- Iterar sobre las categorías de las filas (idTipo: 2) -->
           <ng-container *ngFor="let fila of estructuraFinalFilasSubitulos1; let u = index">
             <tr>
-              <!-- Encabezado de categoría general en las filas -->
-              <!-- Encabezado de categoría general en las filas -->
               <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
               [ngStyle]="{'background-color' : this.colorFila(fila.idCategoria), 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
               [attr.rowspan]="fila.count" 
@@ -390,8 +382,6 @@
                 </button>
               </div>
             </th>
-            
-            <!-- Primera subcategoría de la fila -->
             <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
               [ngStyle]="{'background-color': this.colorFila(fila.idCategoria), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
               <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
@@ -408,10 +398,8 @@
               </div>
             </th>
 
-              <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
               <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos1; let i = index; trackBy: trackByFn">
                 <th #thElemento1 id="thElemento1-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
-                  <!-- Aquí van los datos de intersección, si hay -->
                   <app-burbujas
                     *ngIf="this.esVisible1[u]?.[i] || this.modoCaptura"
                     [chartId]="'chart-' + i+1000 + j+1000 + u+1000" [chartTitle]="'GraficaPanel2'"
@@ -425,7 +413,7 @@
       </table>
 
     </div>
-  </div>
+  </div> -->
 
 
 
