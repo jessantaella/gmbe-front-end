@@ -158,12 +158,28 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     //this.esVisible1[0][0] = true;
     this.tituloAcotacion();
+    this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
     setTimeout(() => {
       this.abrirToastAyuda = false;
       this.esperaSegundos = false;
     }, 10000);
+  }
+
+  pantallaCargando() {
+    this.isLoading = true;
+    swal.fire({
+      title: 'Cargando',
+      timerProgressBar: true,
+      didOpen: () => {
+        swal.showLoading();
+      }
+    });
+    setTimeout(() => {
+      this.isLoading = false;
+      swal.close();
+    }, 1000);
   }
 
   trackByFn(index: number, item: any): number {
@@ -241,17 +257,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   cargarDatosMbe() {
-
-    this.isLoading = true;
-    swal.fire({
-      title: 'Cargando',
-      timerProgressBar: true,
-      didOpen: () => {
-        swal.showLoading();
-      }
-    });
-
-
     this.gmbservices.obtenerDatosGMBEBurbujas(this.idmbe, this.versionMaxima).subscribe(
       res => {
 
@@ -265,9 +270,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         
         this.valorMasAltoBurbuja = Math.max(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
         this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
-        
-        this.isLoading = false;
-        swal.close();
       },
       err => { }
     );
@@ -456,68 +458,68 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.estructuraFinalFilasTitulos = [];
     this.estructuraFinalFilasSubitulos = [];
 
-    const datosEnvio = {
-      idMbe: this.idmbe,
-      idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
-      idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
-      idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
-      idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
-    };
+    // Obtener estructuras guardadas del localStorage
+    let estructurasGuardadas = JSON.parse(this.storage.getItem('EstructuraTabla') || '[]');
 
-    this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
-      res => {
-        this.sinResultados(res);
+    // Verificar si ya existe una estructura con el mismo idMbe
+    const estructuraExistente = estructurasGuardadas.find((estructura: any) => estructura.idMbe === this.idmbe);
 
-        // Filtrar las columnas y las filas por tipo
-        this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
-        this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
+    if (estructuraExistente && (idCateoriaFilas?.length === 0 || idCateoriaFilas === null ) && (idSubcategoriaFilas?.length === 0 || idSubcategoriaFilas === null) && (idCategoriaColumnas?.length === 0 || idCategoriaColumnas === null) && (idSubcategoriaColumnas?.length === 0 || idSubcategoriaColumnas === null)) {
+      console.log('Estructura guardada en el localStorage:', estructuraExistente);
+      // Cargar la estructura existente desde el localStorage
+      setTimeout(() => {
+        this.estructuraFinalColumnasTitulos = estructuraExistente.columnas;
+        this.estructuraFinalFilasTitulos = estructuraExistente.filas;
+        this.estructuraFinalFilasSubitulos = estructuraExistente.subfilas;
+      }, 500);
+    } else {
+      console.log('No existe estructura guardada en el localStorage');
+      // Construir la estructura si no existe en el localStorage
+      const datosEnvio = {
+        idMbe: this.idmbe,
+        idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
+        idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
+        idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
+        idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
+      };
 
-        this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
-        
-        //Verfica si en todo los datos de la estructura hay un idSubcategorias mayor a 0
-        this.estructuraFinalFilasSubitulos.forEach((element: any) => {
-          if (element.idSubCategoria > 0) {
-            this.existeSubcategoria = 1;
-          }
-        });
+      this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
+        res => {
+          this.sinResultados(res);
 
-        
+          // Filtrar las columnas y las filas por tipo
+          this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
+          this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
 
-      },
-      err => {
-        console.error('Error al obtener estructura del panel:', err);
-      }
-    );
-  }
+          this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
 
-  cargaEstructuraPanelResultados1(idCateoriaFilas: any = null, idSubcategoriaFilas: any = null, idCategoriaColumnas: any = null, idSubcategoriaColumnas: any = null) {
-    //limpia los datos de la estructura
-    this.estructuraFinalColumnasTitulos1 = [];
-    this.estructuraFinalFilasTitulos1 = [];
-    this.estructuraFinalFilasSubitulos1 = [];
+          // Verifica si en todos los datos de la estructura hay un idSubcategorias mayor a 0
+          this.estructuraFinalFilasSubitulos.forEach((element: any) => {
+            if (element.idSubCategoria > 0) {
+              this.existeSubcategoria = 1;
+            }
+          });
 
-    const datosEnvio = {
-      idMbe: this.idmbe,
-      idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
-      idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
-      idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
-      idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
-    };
+          console.log(this.estructuraFinalFilasSubitulos);
+          console.log(this.estructuraFinalColumnasTitulos);
+          console.log(this.estructuraFinalFilasTitulos);
 
-    this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
-      res => {
-        this.sinResultados(res);
+          let estructuraGuardada = {
+            idMbe: this.idmbe,
+            columnas: this.estructuraFinalColumnasTitulos,
+            filas: this.estructuraFinalFilasTitulos,
+            subfilas: this.estructuraFinalFilasSubitulos
+          };
 
-        // Filtrar las columnas y las filas por tipo
-        this.estructuraFinalColumnasTitulos1 = this.filtrarPorTipo(res, 1);
-        this.estructuraFinalFilasTitulos1 = this.filtrarPorTipo(res, 2);
-
-        this.estructuraFinalFilasSubitulos1 = this.estructuraFinalFilasTitulos1.flatMap(fila => fila.hijos);
-      },
-      err => {
-        console.error('Error al obtener estructura del panel:', err);
-      }
-    );
+          // Agregar la nueva estructura al localStorage
+          estructurasGuardadas.push(estructuraGuardada);
+          this.storage.setItem('EstructuraTabla', JSON.stringify(estructurasGuardadas));
+        },
+        err => {
+          console.error('Error al obtener estructura del panel:', err);
+        }
+      );
+    }
   }
 
   sinResultados(res: any) {
@@ -645,10 +647,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       obj => obj.idFila === columna && obj.idColumna === fila
     );
 
-    if (!respuesta) {
-      return [];
-    }
-
     const conteoTipoEvaluacion = respuesta.conteoDisenioEval ?? respuesta.conteoTipoEvaluacion;
     const evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
 
@@ -668,58 +666,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     });
   }
 
-  datosInterseccion2(columna: number, fila: number,u:number,i:number) {
-    const respuesta = this.datosIntersecciones1.find(
+  validarDatos(columna: number, fila: number) {
+    const respuesta = this.datosIntersecciones.find(
       obj => obj.idFila === columna && obj.idColumna === fila
     );
 
-    if (!respuesta) {
-      return [];
-    }
+    return respuesta ? true : false;
 
-    const conteoTipoEvaluacion = respuesta.conteoDisenioEval ?? respuesta.conteoTipoEvaluacion;
-    const evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
-
-    return evaluaciones.map((eva:any) => {
-      const [idGpo, nombreGpo, colorBubble, count] = eva.split(':');
-      return {
-        idMbe: this.idmbe,
-        idFila: respuesta.idFila,
-        idColumna: respuesta.idColumna,
-        idGpo: parseInt(idGpo),
-        nombreGpo,
-        colorBubble,
-        count: parseInt(count),
-        valorMaximoZ: this.valorMasAltoBurbuja,
-        valorMinimoZ: this.valorMasBajoBurbuja,
-      };
-    });
-  }
-
-  insertadoEncontrados(respuesta: any,u:number,i:number) {
-    const conteoTipoEvaluacion = respuesta.conteoDisenioEval ?? respuesta.conteoTipoEvaluacion;
-    const evaluaciones = conteoTipoEvaluacion ? conteoTipoEvaluacion.split(',') : [];
-
-    const thElemento = document.getElementById('thElemento-' + u + '-' + i);
-    const alto = thElemento?.clientHeight ?? 0;
-    const ancho = thElemento?.clientWidth ?? 0;
-
-    return evaluaciones.map((eva:any) => {
-      const [idGpo, nombreGpo, colorBubble, count] = eva.split(':');
-      return {
-        idMbe: this.idmbe,
-        idFila: respuesta.idFila,
-        idColumna: respuesta.idColumna,
-        idGpo: parseInt(idGpo),
-        nombreGpo,
-        colorBubble,
-        count: parseInt(count),
-        valorMaximoZ: this.valorMasAltoBurbuja,
-        valorMinimoZ: this.valorMasBajoBurbuja,
-        alto: alto,
-        ancho: ancho,
-      };
-    });
   }
 
   colorFila(idCategoria: number) {

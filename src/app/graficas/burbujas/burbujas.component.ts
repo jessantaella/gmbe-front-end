@@ -1,3 +1,4 @@
+import { animation } from "@angular/animations";
 import { isPlatformBrowser } from "@angular/common";
 import {
   AfterViewInit,
@@ -91,12 +92,18 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
           }
         }
       },
+      animation: { duration: 0 },
       scales: {
         x: { display: false },
         y: { display: false },
       },
       plugins: {
         legend: { display: false },
+        decimation: {
+          enabled: true,
+          algorithm: 'lttb' as 'lttb', 
+          samples: 1000       
+        },
         tooltip: {
           position: 'average' as 'average',
           callbacks: {
