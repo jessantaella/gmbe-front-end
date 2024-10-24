@@ -94,67 +94,6 @@ faRotate = faRotateLeft;
    this.pantallaCargando();
  }
 
- ngAfterViewChecked(): void {
-  // Solo ejecutar el renderizado una vez que los elementos estén disponibles
-  if (!this.elementosObservadosModal1 && this.thElements1.length > 0 ) {
-    this.renderizadoModal1();
-    this.elementosObservadosModal1 = true; // Marcar que ya se han observado los elementos
-  }
-
-  if (!this.elementosObservadosModal2 && this.thElements2.length > 0 ) {
-    this.renderizadoModal2();
-    this.elementosObservadosModal2 = true; // Marcar que ya se han observado los elementos
-  }
-}
-
- renderizadoModal1() {
-  
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      const [_, index, index2] = entry.target.id.split('-').map(Number);
-      if (entry.isIntersecting) {
-        if (!this.esVisible1[index]) {
-          this.esVisible1[index] = [];
-        }
-
-        if (!this.esVisible1[index][index2]) {
-          this.esVisible1[index][index2] = true;
-        }
-      }
-    });
-  }, {
-    rootMargin: '100px',
-  });
-
-  this.thElements1.forEach(th => {
-    observer.observe(th.nativeElement);
-  });
-}
-
-renderizadoModal2() {
-  
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      const [_, index, index2] = entry.target.id.split('-').map(Number);
-      if (entry.isIntersecting) {
-        if (!this.esVisible2[index]) {
-          this.esVisible2[index] = [];
-        }
-
-        if (!this.esVisible2[index][index2]) {
-          this.esVisible2[index][index2] = true;
-        }
-      }
-    });
-  }, {
-    rootMargin: '100px',
-  });
-
-  this.thElements2.forEach(th => {
-    observer.observe(th.nativeElement);
-  });
-}
-
  pantallaCargando() {
   swal.fire({
     title: 'Cargando',
@@ -320,6 +259,22 @@ renderizadoModal2() {
 
     return respuesta;
     
+  }
+
+  validarDatosBurbujas(columna: number, fila: number){
+    let respuesta = this.datosIntersecciones.find(
+      (obj) => obj.idFila === columna && obj.idColumna === fila
+    );
+
+    return respuesta === undefined ? false : true;
+  }
+
+  validarDatosBurbujas2(columna: number, fila: number){
+    let respuesta = this.revisionDos.find(
+      (obj:any) => obj.idFila === columna && obj.idColumna === fila
+    );
+
+    return respuesta === undefined ? false : true;
   }
 
   regresaValorSinSubcategoria(padre: any, hijo: any) {

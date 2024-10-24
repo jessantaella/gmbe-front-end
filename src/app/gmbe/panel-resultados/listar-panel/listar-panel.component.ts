@@ -23,7 +23,7 @@ declare var swal: any;
   styleUrls: ['./listar-panel.component.scss'],
   //changeDetection: ChangeDetectionStrategy.OnPush 
 })
-export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class PanelResultadosComponent implements OnInit, OnDestroy{
   id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -114,14 +114,12 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   esVisible1: boolean[][] = [];
   @ViewChildren('thElemento') thElements!: QueryList<ElementRef>;
   @ViewChildren('thElemento1') thElements1!: QueryList<ElementRef>;
-  @ViewChild('tablaDatos') tablaDatos!: ElementRef;
   elementosObservados = false;
   elementosObservados1 = false;
   existeSubcategoria: number = 0;
 
   modoCaptura: boolean = false;
   terminoRenderizado: boolean = false;
-  bandera: boolean = false;
 
 
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
@@ -143,7 +141,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
     this.obtenerVersionMax();
     this.cargarDatosMbe();
-    this.cargarDatosMbeHidden();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
     this.filtrosSubcategoriasFilas();
@@ -151,14 +148,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     this.filtrosSubcategoriasColumnas();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
-    //this.cargaEstructuraPanelResultados1();
-  }
-  ngAfterViewChecked(): void {
-    this.tieneScroll();
-    // if (!this.elementosObservados1 && this.thElements1.length > 0) {
-    //   this.renderizadoHidden();
-    //   this.elementosObservados1 = true; // Marcar que ya se han observado los elementos
-    // }
   }
 
   ngOnDestroy(): void {
@@ -168,9 +157,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
   ngOnInit(): void {
     //this.esVisible1[0][0] = true;
-    this.pantallaCargando();
     this.tituloAcotacion();
-    
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
     setTimeout(() => {
@@ -183,90 +170,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     return item.id; // o cualquier propiedad única
   }
 
-  tieneScroll() {
-    //Detecta si la tabla tiene scroll e imprime en consola si es así
-    const tabla = this.tablaDatos?.nativeElement;
-    if (tabla?.scrollHeight > tabla?.clientHeight && tabla !== undefined) {
-      console.log('Tiene scroll');
-      // Solo ejecutar el renderizado una vez que los elementos estén disponibles
-      if (!this.elementosObservados && this.thElements.length > 0) {
-        this.renderizado();
-        this.elementosObservados = true; // Marcar que ya se han observado los elementos
-      }
-    }else{
-      if (!this.bandera && tabla !== undefined) {
-        console.log('Renderizado completo');
-        this.bandera = true;
-        this.renderizadoCompleto(); 
-      }
-    }
-  }
-
-  renderizado() {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const [_, index, index2] = entry.target.id.split('-').map(Number);
-        if (entry.isIntersecting) {
-          if (!this.esVisible[index]) {
-            this.esVisible[index] = [];
-          }
-          if (!this.esVisible[index][index2]) {
-            this.esVisible[index][index2] = true;
-          }
-        }
-      });
-    }, {
-      rootMargin: '300px',
-    });
-
-    this.thElements.forEach(th => {
-      observer.observe(th.nativeElement);
-    });
-  }
-
-  renderizadoCompleto() {
-    console.log('th', this.thElements.length);
-    for (let i = 0; i < this.thElements.length + 1 ; i++) {
-      const th = this.thElements.toArray()[i];
-      const [_, index, index2] = th.nativeElement.id.split('-').map(Number);
-
-      if (!this.esVisible[index]) {
-        this.esVisible[index] = [];
-      }
-      if (!this.esVisible[index][index2]) {
-        this.esVisible[index][index2] = true;
-      }
-    }
-  }
-
-  // async renderizadoHidden() {
-  //   let tiempo = this.thElements1.length * 2;
-  //   console.log('th', this.thElements1.length);
-  //   console.log('Tiempo:', tiempo);
-  //   for (let i = 0; i < this.thElements1.length; i++) {
-  //     const th = this.thElements1.toArray()[i];
-  //     console.log(th.nativeElement.id);
-  //     const [_, index, index2] = th.nativeElement.id.split('-').map(Number);
-
-  //     if (!this.esVisible1[index]) {
-  //       this.esVisible1[index] = [];
-  //     }
-  //     if (!this.esVisible1[index][index2]) {
-  //       this.esVisible1[index][index2] = true;
-  //     }
-
-  //     // Check if the next element is in a different row
-  //     if (i === 0 || (i + 1 < this.thElements1.length && this.thElements1.toArray()[i + 1].nativeElement.id.split('-')[1] !== index.toString())) {
-  //       await this.espera(tiempo); // Wait 2000ms before processing the next row
-  //     }
-  //   }
-  //   this.terminoRenderizado = true;
-  // }
-
-  // espera(ms: number): Promise<void> {
-  //   return new Promise(resolve => setTimeout(resolve, ms));
-  // }
-
   tituloAcotacion() {
     this.gmbservices.obtenerAcotaciones(this.idmbe).subscribe(
       res => {
@@ -278,21 +181,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
         console.error('Error al obtener acotación:', err);
       }
     );
-  }
-
-  pantallaCargando() {
-    this.isLoading = true;
-    swal.fire({
-      title: 'Cargando',
-      timerProgressBar: true,
-      didOpen: () => {
-        swal.showLoading();
-      }
-    });
-    setTimeout(() => {
-      swal.close();
-      this.isLoading = false; 
-    }, 4000); 
   }
 
   datosAyuda() {
@@ -354,6 +242,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
 
   cargarDatosMbe() {
 
+    this.isLoading = true;
+    swal.fire({
+      title: 'Cargando',
+      timerProgressBar: true,
+      didOpen: () => {
+        swal.showLoading();
+      }
+    });
+
 
     this.gmbservices.obtenerDatosGMBEBurbujas(this.idmbe, this.versionMaxima).subscribe(
       res => {
@@ -367,19 +264,14 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
         });
         
         this.valorMasAltoBurbuja = Math.max(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
-        this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));  
+        this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
+        
+        this.isLoading = false;
+        swal.close();
       },
       err => { }
     );
-  }
 
-  cargarDatosMbeHidden() {
-    this.gmbservices.obtenerDatosGMBEBurbujas(this.idmbe, this.versionMaxima).subscribe(
-      res => {
-        this.datosIntersecciones1 = res;
-      },
-      err => { }
-    );
   }
 
   abrirModal(content: any, informacion: any, titulo: string, seccion: string) {
@@ -776,13 +668,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
     });
   }
 
-  tieneDatos(columna: number, fila: number) {
-    const respuesta = this.datosIntersecciones.find(
-      obj => obj.idFila === columna && obj.idColumna === fila
-    );
-    return respuesta !== undefined ? true : false;
-  }
-
   datosInterseccion2(columna: number, fila: number,u:number,i:number) {
     const respuesta = this.datosIntersecciones1.find(
       obj => obj.idFila === columna && obj.idColumna === fila
@@ -938,6 +823,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   descargar() {
+    this.modoCaptura = true;
     swal.fire({
       title: 'Descargando',
       timerProgressBar: true,
@@ -988,25 +874,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy, AfterViewChe
   }
 
   async descargarImagenPanel() {
-    try {
-      this.activarModoCaptura();
-
-      // Esperar hasta que terminoRenderizado sea true
-      await this.esperaHasta(() => this.terminoRenderizado, 500);
-
-      if (this.terminoRenderizado) {
-        const element = document.getElementById('imagenTabla') as HTMLElement;
-        const canvas = await html2canvas(element, { scale: 1, useCORS: true }); // Aumenta la escala para mejorar la resolución
-        const imgData = canvas.toDataURL('image/png');
-        this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
-        swal.close();
-        swal.fire('', '¡Descarga con éxito!', 'success').then(() => { }); 
-      }
-    } catch (error) {
-      console.error('Error al descargar la imagen del panel:', error);
-    } finally {
-      this.modoCaptura = false;
-    }
+    const element = document.getElementById('imagenTabla') as HTMLElement;
+    const canvas = await html2canvas(element, { scale: 1, useCORS: true }); // Aumenta la escala para mejorar la resolución
+    const imgData = canvas.toDataURL('image/png');
+    this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
+    swal.close();
+    this.modoCaptura = false;
+    swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
   }
 
 

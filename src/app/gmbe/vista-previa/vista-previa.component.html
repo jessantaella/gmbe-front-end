@@ -105,9 +105,10 @@
   
       <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
         <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-          <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
+          <!-- <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
                         [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="this.esVisible[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura)) "></app-burbujas>
+                        *ngIf="this.esVisible[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura)) "></app-burbujas> -->
+          <app-burbujas-personales *ngIf="this.validarDatosBurbujas(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" [datosBurbujas]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"  [ancho]="180" [alto]="180"></app-burbujas-personales>
         </th>
       </ng-container>
     </tr>
