@@ -75,9 +75,7 @@ export class BurbujasPersonalesComponent {
     
     // Cálculo del radio ajustado
     const r = 4 + (count - 1) * 0.2;
-    
-    
-  
+      
     let x:number, y:number;
   
     // Si no hay otras burbujas, colocar la burbuja en el centro

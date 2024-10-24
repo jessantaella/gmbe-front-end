@@ -16,6 +16,9 @@ import { StorageService } from 'src/app/services/storage-service.service';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import html2canvas from 'html2canvas';
 declare var swal: any;
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
+import domtoimage from 'dom-to-image';
 
 @Component({
   selector: 'app-listar-panel',
@@ -24,6 +27,8 @@ declare var swal: any;
   //changeDetection: ChangeDetectionStrategy.OnPush 
 })
 export class PanelResultadosComponent implements OnInit, OnDestroy{
+
+  faCirclePlus = faCirclePlus;
   id: number = 0;
   versionMaxima = 1;
   generales: FormGroup;
@@ -784,7 +789,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         swal.showLoading();
       }
     });
-    this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
+    this.descargarImagenPanel();
+    /*this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
       (res: HttpResponse<ArrayBuffer>) => {
         if (res.body!.byteLength > 0) {
           this.descargarImagenPanel();
@@ -808,7 +814,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
           title: '<center> Error </center>',
           text: 'Sin información',
         })
-      })
+      })*/
   }
 
   activarModoCaptura() {
@@ -827,13 +833,35 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   async descargarImagenPanel() {
-    const element = document.getElementById('imagenTabla') as HTMLElement;
+    /*const element = document.getElementById('imagenTabla') as HTMLElement;
     const canvas = await html2canvas(element, { scale: 1, useCORS: true }); // Aumenta la escala para mejorar la resolución
     const imgData = canvas.toDataURL('image/png');
     this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
     swal.close();
     this.modoCaptura = false;
-    swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
+    swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });*/
+    const node = document.getElementById('imagenTabla') as HTMLElement; // Selecciona el div que quieres capturar
+    if (node) {
+      // Corrige elementos conflictivos como SVGs
+      const svgElements = node.getElementsByTagName('svg');
+      for (let i = 0; i < svgElements.length; i++) {
+        const svg = svgElements[i];
+        svg.setAttribute('class', svg.className.baseVal); // Corregir la propiedad class
+      }
+    
+      domtoimage.toPng(node)
+        .then((dataUrl: string) => {
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = 'captura.png';
+          link.click();
+    
+          swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
+        })
+        .catch((error: any) => {
+          console.error('Error al capturar el elemento:', error);
+        });
+    }
   }
 
 
