@@ -29,20 +29,11 @@
   //z-index: 10;
 }
 
-.tooltip {
-  position: fixed;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px 8px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000; 
-}
 
 .tooltip2{
-  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro con 50% de opacidad */
+  background-color: rgba(0, 0, 0, 0.8); 
+  border-radius: 5px;
+  padding: 2%;
 }
 
 

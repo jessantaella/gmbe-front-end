@@ -67,7 +67,7 @@ export class BurbujasPersonalesComponent {
     const { count, nombreGpo, colorBubble, idGpo } = bubble;
     const chartWidth = this.ancho || 150; // Ancho del contenedor
     const chartHeight = this.alto || 150; // Alto del contenedor
-    const padding = 10; // Espacio entre burbujas
+    const padding = 20; // Espacio entre burbujas
   
     // Determinar el número total de burbujas existentes
     const totalBurbujas = this.burbujasExistentes.length + 1; // Incluir la burbuja actual
