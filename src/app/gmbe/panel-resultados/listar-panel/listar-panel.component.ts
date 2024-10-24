@@ -456,68 +456,66 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.estructuraFinalFilasTitulos = [];
     this.estructuraFinalFilasSubitulos = [];
 
-    const datosEnvio = {
-      idMbe: this.idmbe,
-      idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
-      idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
-      idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
-      idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
-    };
+    // Obtener estructuras guardadas del localStorage
+    let estructurasGuardadas = JSON.parse(this.storage.getItem('EstructuraTabla') || '[]');
 
-    this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
-      res => {
-        this.sinResultados(res);
+    // Verificar si ya existe una estructura con el mismo idMbe
+    const estructuraExistente = estructurasGuardadas.find((estructura: any) => estructura.idMbe === this.idmbe);
 
-        // Filtrar las columnas y las filas por tipo
-        this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
-        this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
+    if (estructuraExistente) {
+      // Cargar la estructura existente desde el localStorage
+      setTimeout(() => {
+        this.estructuraFinalColumnasTitulos = estructuraExistente.columnas;
+        this.estructuraFinalFilasTitulos = estructuraExistente.filas;
+        this.estructuraFinalFilasSubitulos = estructuraExistente.subfilas;
+      }, 500);
+    } else {
+      // Construir la estructura si no existe en el localStorage
+      const datosEnvio = {
+        idMbe: this.idmbe,
+        idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
+        idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
+        idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
+        idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
+      };
 
-        this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
-        
-        //Verfica si en todo los datos de la estructura hay un idSubcategorias mayor a 0
-        this.estructuraFinalFilasSubitulos.forEach((element: any) => {
-          if (element.idSubCategoria > 0) {
-            this.existeSubcategoria = 1;
-          }
-        });
+      this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
+        res => {
+          this.sinResultados(res);
 
-        
+          // Filtrar las columnas y las filas por tipo
+          this.estructuraFinalColumnasTitulos = this.filtrarPorTipo(res, 1);
+          this.estructuraFinalFilasTitulos = this.filtrarPorTipo(res, 2);
 
-      },
-      err => {
-        console.error('Error al obtener estructura del panel:', err);
-      }
-    );
-  }
+          this.estructuraFinalFilasSubitulos = this.estructuraFinalFilasTitulos.flatMap(fila => fila.hijos);
 
-  cargaEstructuraPanelResultados1(idCateoriaFilas: any = null, idSubcategoriaFilas: any = null, idCategoriaColumnas: any = null, idSubcategoriaColumnas: any = null) {
-    //limpia los datos de la estructura
-    this.estructuraFinalColumnasTitulos1 = [];
-    this.estructuraFinalFilasTitulos1 = [];
-    this.estructuraFinalFilasSubitulos1 = [];
+          // Verifica si en todos los datos de la estructura hay un idSubcategorias mayor a 0
+          this.estructuraFinalFilasSubitulos.forEach((element: any) => {
+            if (element.idSubCategoria > 0) {
+              this.existeSubcategoria = 1;
+            }
+          });
 
-    const datosEnvio = {
-      idMbe: this.idmbe,
-      idCategoriasFilas: idCateoriaFilas?.length > 0 ? idCateoriaFilas : null,
-      idSubcategoriasFilas: idSubcategoriaFilas?.length > 0 ? idSubcategoriaFilas : null,
-      idCategoriasColumnas: idCategoriaColumnas?.length > 0 ? idCategoriaColumnas : null,
-      idSubcategoriasColumnas: idSubcategoriaColumnas?.length > 0 ? idSubcategoriaColumnas : null
-    };
+          console.log(this.estructuraFinalFilasSubitulos);
+          console.log(this.estructuraFinalColumnasTitulos);
+          console.log(this.estructuraFinalFilasTitulos);
 
-    this.gmbservices.obtenerEstructuraPanelResultados(datosEnvio).subscribe(
-      res => {
-        this.sinResultados(res);
+          let estructuraGuardada = {
+            idMbe: this.idmbe,
+            columnas: this.estructuraFinalColumnasTitulos,
+            filas: this.estructuraFinalFilasTitulos,
+            subfilas: this.estructuraFinalFilasSubitulos
+          };
 
-        // Filtrar las columnas y las filas por tipo
-        this.estructuraFinalColumnasTitulos1 = this.filtrarPorTipo(res, 1);
-        this.estructuraFinalFilasTitulos1 = this.filtrarPorTipo(res, 2);
-
-        this.estructuraFinalFilasSubitulos1 = this.estructuraFinalFilasTitulos1.flatMap(fila => fila.hijos);
-      },
-      err => {
-        console.error('Error al obtener estructura del panel:', err);
-      }
-    );
+          // Agregar la nueva estructura al localStorage
+          estructurasGuardadas.push(estructuraGuardada);
+          this.storage.setItem('EstructuraTabla', JSON.stringify(estructurasGuardadas));
+        },
+        err => {
+          console.error('Error al obtener estructura del panel:', err);
+        }
+      );
+    }
   }
 
   sinResultados(res: any) {
