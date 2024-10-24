@@ -264,13 +264,14 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         });
         
         this.valorMasAltoBurbuja = Math.max(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
-        this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));  
+        this.valorMasBajoBurbuja = Math.min(...this.cadenaDatosBurbujas.flatMap((cadena: any) => cadena.split(',').map((item: any) => parseInt(item.split(':')[3]))));
+        
+        this.isLoading = false;
+        swal.close();
       },
       err => { }
     );
 
-    this.isLoading = false;
-    swal.close();
   }
 
   abrirModal(content: any, informacion: any, titulo: string, seccion: string) {
