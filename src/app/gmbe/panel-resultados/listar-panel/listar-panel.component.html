@@ -103,7 +103,7 @@
                           <input  class="form-check-input" type="checkbox"
                             [checked]="subcategoriaSeleccionadaColumna[i]"
                             (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria)" />
-                          <label class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
+                          <label (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria)" style="cursor: pointer;" class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
                         </div>
                       </div>
                     </div>
@@ -121,8 +121,8 @@
       </div>
     </form>
     <div class="d-flex align-items-center">
-      <div class="table-responsive tabladatos" *ngIf="!isLoading && (estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0)">
-        <table class="table table-bordered"
+      <div class="table-responsive tabladatos" *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
+        <table class="table" [ngClass]="{'table-bordered' : !this.modoCaptura}"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0" id="imagenTabla" #imagenTabla>
           <thead [ngClass]="{'sticky-header' : !this.modoCaptura}">
             <tr class="text-center">
@@ -222,7 +222,7 @@
   
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index; trackBy: trackByFn">
-                  <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
+                  <th [ngStyle]="{'border': this.modoCaptura ? '0.5px solid' : ''}" #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
                     <!-- Aquí van los datos de intersección, si hay -->
                     <!--app-burbujas
                       [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"

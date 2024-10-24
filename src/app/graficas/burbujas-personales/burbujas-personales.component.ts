@@ -37,6 +37,8 @@ export class BurbujasPersonalesComponent {
 
   ngOnInit() {
 
+    console.log(this.datosBurbujas);
+
     if (this.datosBurbujas.length >0) {
    
     // Generar burbujas para todos los datosBurbujas al inicializar el componente

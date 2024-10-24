@@ -26,7 +26,7 @@ declare var swal: any;
   templateUrl: './vista-previa.component.html',
   styleUrls: ['./vista-previa.component.scss'],
 })
-export class VistaPreviaComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class VistaPreviaComponent implements OnInit, OnDestroy{
   id: number = 0;
   versionMaxima = 0;
   generales: FormGroup;
@@ -147,14 +147,6 @@ cuadroAmarrillo: string = '';
     this.estatusVdalidado();
   }
 
-  ngAfterViewChecked(): void {
-    // Solo ejecutar el renderizado una vez que los elementos estén disponibles
-    if (!this.elementosObservados && this.thElements.length > 0) {
-      this.renderizado();
-      this.elementosObservados = true; // Marcar que ya se han observado los elementos
-    }
-  }
-
   renderizado() {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -174,46 +166,6 @@ cuadroAmarrillo: string = '';
     });
 
     this.thElements.forEach(th => {
-      observer.observe(th.nativeElement);
-    });
-  }
-
-  renderizadoModal() {
-    
-    
-    
-
-    
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const [_, index, index2] = entry.target.id.split('-').map(Number);
-        if (entry.isIntersecting) {
-          if (!this.esVisible1[index]) {
-            this.esVisible1[index] = [];
-          }
-
-          if (!this.esVisible2[index]) {
-            this.esVisible2[index] = [];
-          }
-
-          if (!this.esVisible1[index][index2]) {
-            this.esVisible1[index][index2] = true;
-          }
-
-          if (!this.esVisible2[index][index2]) {
-            this.esVisible2[index][index2] = true;
-          }
-        }
-      });
-    }, {
-      rootMargin: '100px',
-    });
-
-    this.thElements1.forEach(th => {
-      observer.observe(th.nativeElement);
-    });
-
-    this.thElements2.forEach(th => {
       observer.observe(th.nativeElement);
     });
   }
@@ -663,6 +615,14 @@ cuadroAmarrillo: string = '';
       element.idColumna = obj.idColumna;
     });
     return respuesta;
+  }
+
+  validarDatosBurbujas(columna: number, fila: number){
+    let respuesta = this.datosIntersecciones.find(
+      (obj) => obj.idFila === columna && obj.idColumna === fila
+    );
+
+    return respuesta === undefined ? false : true;
   }
 
   datosInterseccion2(columna: number, fila: number) {
