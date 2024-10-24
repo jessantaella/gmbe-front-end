@@ -23,6 +23,8 @@ export class BurbujasPersonalesComponent {
     valorMaximoZ: number;
   }> = [];
 
+  @Input() titulo: string | undefined;
+
   constructor(private router: Router){}
 
   tooltipVisible: boolean = false;
@@ -136,7 +138,9 @@ hideTooltip() {
 }
 
 redireccionar(idMbe: number, fila: number, columna: number, idGpo: number){
-  this.router.navigate(['/evaluacion'], { queryParams: { idMbe: idMbe, idFila: fila, idColumna: columna, idEva: idGpo } });
+  if (this.titulo === 'panel') {
+    this.router.navigate(['/evaluacion'], { queryParams: { idMbe: idMbe, idFila: fila, idColumna: columna, idEva: idGpo } });
+  }
 }
 
 
