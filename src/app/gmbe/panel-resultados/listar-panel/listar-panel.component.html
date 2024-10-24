@@ -228,7 +228,7 @@
                       [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
                        ></!--app-burbujas-->
-                       <app-burbujas-personales [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="180" [alto]="180"></app-burbujas-personales>
+                       <app-burbujas-personales *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="180" [alto]="180"></app-burbujas-personales>
                   </th>
                 </ng-container>
               </tr>
