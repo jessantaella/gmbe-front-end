@@ -52,6 +52,10 @@ export class UserInterceptor implements HttpInterceptor {
                     window.location.reload();
                 }
             });*/
+            this.storage.sesionRemoveItem('usr');
+            this.storage.sesionRemoveItem('token-gmbe')
+            this.storage.sesionRemoveItem('notificaciones')
+            this.storage.sesionRemoveItem('autorizadas')
             this.router.navigate(['/login']);
             this.modalService.dismissAll();
             swal.closeAll();
@@ -66,6 +70,10 @@ export class UserInterceptor implements HttpInterceptor {
                   window.location.reload();
               }
           });*/
+          this.storage.sesionRemoveItem('usr');
+          this.storage.sesionRemoveItem('token-gmbe')
+          this.storage.sesionRemoveItem('notificaciones')
+          this.storage.sesionRemoveItem('autorizadas')
           this.router.navigate(['/login']);
           this.modalService.dismissAll();
           swal.closeAll();

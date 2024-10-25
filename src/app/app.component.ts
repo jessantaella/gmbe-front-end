@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.2.3';
+  version = 'V-1.2.5';
   tags: any;
   ga: any;
   isBrowser = false;
@@ -105,11 +105,6 @@ export class AppComponent implements OnInit {
             this.storage.sesionRemoveItem('notificaciones')
             this.storage.sesionRemoveItem('autorizadas')
             this.notificacionesService.ocultar();
-
-            const allowedRoutes = ['/editar-gmbe', '/gmbe', '/usuarios', '/vista-previa', 'crear-gmbe'];
-            if (allowedRoutes.includes(this.router.url)) {
-              this.router.navigate(['/inicio']);
-            }
           }
         }) 
     }else{
@@ -119,12 +114,6 @@ export class AppComponent implements OnInit {
       this.storage.sesionRemoveItem('notificaciones')
       this.storage.sesionRemoveItem('autorizadas')
       this.notificacionesService.ocultar();
-
-      const allowedRoutes = ['/editar-gmbe', '/gmbe', '/usuarios', '/vista-previa', 'crear-gmbe'];
-      if (allowedRoutes.includes(this.router.url)) {
-        console.log('Redirigiendo a inicio');
-        this.router.navigate(['/inicio']);
-      }
     }
   }
 
