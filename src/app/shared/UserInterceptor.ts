@@ -40,11 +40,7 @@ export class UserInterceptor implements HttpInterceptor {
         return this.gmbeServices.validarUsuario(userName, correo).pipe(
           switchMap((response) => {
             console.log('consulta de peticion',response)
-            if (response.data !== null) {
-              this.isUserValid = true;
-              console.log('usuario valido')
-              return this.handleRequestWithToken(req, next);
-            } else {
+            if (response.data === null) {
               this.isUserValid = false;
               console.error('Token no válido o expirado');
               /*this.router.navigate(['/login']).then(() => {
@@ -56,27 +52,23 @@ export class UserInterceptor implements HttpInterceptor {
             this.storage.sesionRemoveItem('token-gmbe')
             this.storage.sesionRemoveItem('notificaciones')
             this.storage.sesionRemoveItem('autorizadas')
-            this.router.navigate(['/login']);
             this.modalService.dismissAll();
-            swal.closeAll();
+            this.router.navigate(['/inicio']);
               return throwError(() => new Error('Token no válido o expirado'));
+            } else {
+              this.isUserValid = true;
+              console.log('usuario valido')
+              return this.handleRequestWithToken(req, next);
             }
           }),
           catchError((error) => {
             this.isUserValid = false;
-            console.error('Token no válido o expirado');
+           // console.error('Token no válido o expirado');
            /* this.router.navigate(['/login']).then(() => {
               if (isPlatformBrowser(this.platformId)) {
                   window.location.reload();
               }
           });*/
-          this.storage.sesionRemoveItem('usr');
-          this.storage.sesionRemoveItem('token-gmbe')
-          this.storage.sesionRemoveItem('notificaciones')
-          this.storage.sesionRemoveItem('autorizadas')
-          this.router.navigate(['/login']);
-          this.modalService.dismissAll();
-          swal.closeAll();
             return throwError(() => new Error('Token no válido o expirado'));
           })
         );
