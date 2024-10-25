@@ -1,54 +1,64 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable, throwError, of } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { StorageService } from '../services/storage-service.service';
 import { CifradoService } from '../services/cifrado.service';
+import { GmbeServicesService } from '../gmbe/services/gmbe-services.service';
 
 @Injectable()
 export class UserInterceptor implements HttpInterceptor {
-  private serverConfLoaded = new Subject<void>();
+  private isUserValid: boolean | null = null;
 
-  constructor(private storage: StorageService,private cifrado:CifradoService) {}
+  constructor(
+    private storage: StorageService,
+    private cifrado: CifradoService,
+    private gmbeServices: GmbeServicesService
+  ) {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    // Obtener el usuario del localStorage
-    const auth_token = this.storage.sesionGetItem('token-gmbe');
-    console.log(auth_token);
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (this.isUserValid === false) {
+      console.error('Token no válido o expirado');
+      return throwError(() => new Error('Token no válido o expirado'));
+    }
 
-    // Verificar si la URL contiene ciertas rutas específicas
-    const allowedRoutes = ['login', 'panel', 'inicio', 'evaluacion'];
-    const isAllowedRoute = allowedRoutes.some(route => req.url.includes(route));
+    if (this.isUserValid !== null) {
+      return this.handleRequestWithToken(req, next); // Usa el valor almacenado si ya está validado
+    }
 
-    if (isAllowedRoute || req.url.includes('conf/server-conf.json')) {
-      // Si la URL es una de las permitidas o es la configuración del servidor, se envía la solicitud sin el encabezado
-      console.log('No se envía el encabezado de usuario');
-      console.log(req.url);
+    const userSession = this.storage.sesionGetItem('usr');
+    if (userSession) {
+      const objetoUsuario = JSON.parse(this.cifrado.descifrar(userSession));
+      const { userName, correo } = objetoUsuario;
+
+      return this.gmbeServices.validarUsuario(userName, correo).pipe(
+        switchMap((response) => {
+          if (response) {
+            this.isUserValid = true;
+            return this.handleRequestWithToken(req, next);
+          } else {
+            this.isUserValid = false;
+            console.error('Token no válido o expirado');
+            return throwError(() => new Error('Token no válido o expirado'));
+          }
+        }),
+        catchError((error) => {
+          this.isUserValid = false;
+          console.error('Token no válido o expirado');
+          return throwError(() => new Error('Token no válido o expirado'));
+        })
+      );
+    } else {
+      console.error('No hay sesión de usuario');
       return next.handle(req);
     }
+  }
 
-    // Esperar a que se cargue la configuración del servidor
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-    });
-
-    if (auth_token !== null) {
-      headers = new HttpHeaders({
-        Accept: 'application/json',
-        Authorization: `Bearer ${auth_token}`,
-      });
-    }
-
-    const reqClone = req.clone({
-      headers: headers,
-    });
-
-    console.log('Se envía el encabezado de usuario');
-    console.log(reqClone);
-
-    return next.handle(reqClone);
+  private handleRequestWithToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = this.cifrado.descifrar(this.storage.sesionGetItem('token-gmbe')!);
+    const clonedRequest = token
+      ? req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) })
+      : req;
+    return next.handle(clonedRequest);
   }
 }
