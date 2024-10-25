@@ -74,7 +74,7 @@ import { BurbujasPersonalesComponent } from './graficas/burbujas-personales/burb
     BsDropdownModule.forRoot(),
     FormsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },{provide: APP_BASE_HREF, useValue: '/GMBE/'}, {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true}],
+  providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}, {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

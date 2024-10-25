@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { StorageService } from '../services/storage-service.service';
 import { CifradoService } from '../services/cifrado.service';
@@ -54,7 +54,7 @@ export class UserInterceptor implements HttpInterceptor {
             this.storage.sesionRemoveItem('autorizadas')
             this.modalService.dismissAll();
             this.router.navigate(['/inicio']);
-              return throwError(() => new Error('Token no válido o expirado'));
+              return EMPTY;
             } else {
               this.isUserValid = true;
               console.log('usuario valido')
@@ -69,7 +69,7 @@ export class UserInterceptor implements HttpInterceptor {
                   window.location.reload();
               }
           });*/
-            return throwError(() => new Error('Token no válido o expirado'));
+            return EMPTY;
           })
         );
       }else{

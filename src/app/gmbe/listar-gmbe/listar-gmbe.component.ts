@@ -490,7 +490,7 @@ i: any;
           // Mostrar mensaje de error
           swal.fire({
             icon: 'error',
-            html: err.error.message.replace(/\n/g, '<br>'),
+            html: err?.error?.message.replace(/\n/g, '<br>'),
             confirmButtonText: 'OK',
             customClass: {
               htmlContainer: 'titulo-swal',
