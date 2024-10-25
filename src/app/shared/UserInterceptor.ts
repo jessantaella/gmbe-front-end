@@ -16,7 +16,7 @@ export class UserInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // Obtener el usuario del localStorage
-    const auth_token = this.storage.getItem('token-gmbe');
+    const auth_token = this.storage.sesionGetItem('token-gmbe');
     console.log(auth_token);
 
     // Verificar si la URL contiene ciertas rutas específicas

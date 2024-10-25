@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.storage.getItem('usr') !== null) {
+    if (this.storage.sesionGetItem('usr') !== null) {
       this.router.navigate(['/inicio']);
     }
   }
@@ -88,10 +88,10 @@ export class LoginComponent implements OnInit {
           if (res.token) {
             this.idAutorizadas(res.usuarioAutenticado?.idUsuario);
             this.router.navigate(["/inicio"]);
-            this.storage.setItem("token-gmbe", this.cifrado.cifrar(res.token?.token));
-            this.storage.setItem("rolUsuario", this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
+            this.storage.sesionSetItem("token-gmbe", this.cifrado.cifrar(res.token?.token));
+            this.storage.sesionSetItem("rolUsuario", this.cifrado.cifrar(res.usuarioAutenticado?.rolUsuario?.rol));
 
-            this.storage.setItem("usr", this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
+            this.storage.sesionSetItem("usr", this.cifrado.cifrar(JSON.stringify(res.usuarioAutenticado)));
             this.notificacionService.mostrar();
           } else if (res.mensaje === "Usuario no encontrado en el sistema") {
             swal.fire(

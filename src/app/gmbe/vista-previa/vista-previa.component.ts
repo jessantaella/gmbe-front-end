@@ -118,7 +118,7 @@ cuadroAmarrillo: string = '';
     this.titulos.changePestaña(this.textoBienvenida);
     this.cuadroAmarrillo = imagen.getImagen('img/CUADRO_AMARILLO-1.png');
     this.usuario = JSON.parse(
-      this.cifrado.descifrar(this.storage.getItem('usr')!)
+      this.cifrado.descifrar(this.storage.sesionGetItem('usr')!)
     );
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.generales = this.fb.group({

@@ -47,7 +47,7 @@ export class EditarGmbeComponent{
     private cifrado: CifradoService) {
     this.titulos.changePestaña(this.textoBienvenida);
     this.titulos.changeBienvenida(this.textoBienvenida);
-    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
 
     this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.cargaMBE();

@@ -89,8 +89,8 @@ export class AppComponent implements OnInit {
   }
 
   varificarSesion(){
-    if (this.storage.getItem('usr')) {
-      let objetoUsuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
+    if (this.storage.sesionGetItem('usr')) {
+      let objetoUsuario = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
       console.log(objetoUsuario);
       let username = objetoUsuario.userName;
       let correo = objetoUsuario.correo;
@@ -100,10 +100,10 @@ export class AppComponent implements OnInit {
           console.log(res);
           if (res.data === null) {
             console.log('Usuario no autorizado');
-            this.storage.removeItem('usr');
-            this.storage.removeItem('token-gmbe')
-            this.storage.removeItem('notificaciones')
-            this.storage.removeItem('autorizadas')
+            this.storage.sesionRemoveItem('usr');
+            this.storage.sesionRemoveItem('token-gmbe')
+            this.storage.sesionRemoveItem('notificaciones')
+            this.storage.sesionRemoveItem('autorizadas')
             this.notificacionesService.ocultar();
 
             const allowedRoutes = ['/editar-gmbe', '/gmbe', '/usuarios', '/vista-previa', 'crear-gmbe'];
@@ -114,10 +114,10 @@ export class AppComponent implements OnInit {
         }) 
     }else{
       console.log('Usuario no autorizado');
-      this.storage.removeItem('usr');
-      this.storage.removeItem('token-gmbe')
-      this.storage.removeItem('notificaciones')
-      this.storage.removeItem('autorizadas')
+      this.storage.sesionRemoveItem('usr');
+      this.storage.sesionRemoveItem('token-gmbe')
+      this.storage.sesionRemoveItem('notificaciones')
+      this.storage.sesionRemoveItem('autorizadas')
       this.notificacionesService.ocultar();
 
       const allowedRoutes = ['/editar-gmbe', '/gmbe', '/usuarios', '/vista-previa', 'crear-gmbe'];

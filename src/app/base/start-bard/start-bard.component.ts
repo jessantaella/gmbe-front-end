@@ -23,15 +23,15 @@ export class StartBardComponent {
    }
 
   validaToken(): boolean {
-    const token = this.storage.getItem('token-gmbe');
+    const token = this.storage.sesionGetItem('token-gmbe');
     return token !== null && token !== undefined && token.trim() !== '';
   }
   
   cerrarSesion(){
-    this.storage.removeItem('usr');
-    this.storage.removeItem('token-gmbe')
-    this.storage.removeItem('notificaciones')
-    this.storage.removeItem('autorizadas')
+    this.storage.sesionRemoveItem('usr');
+    this.storage.sesionRemoveItem('token-gmbe')
+    this.storage.sesionRemoveItem('notificaciones')
+    this.storage.sesionRemoveItem('autorizadas')
     this.router.navigate(['/login'])
     this.notificacionesService.ocultar();
   }
@@ -40,7 +40,7 @@ export class StartBardComponent {
     this.abrir = !this.abrir;
   }
   getUsuario() {
-    const usuarioCifrado = this.storage.getItem('usr');
+    const usuarioCifrado = this.storage.sesionGetItem('usr');
     if (!usuarioCifrado) {
       return null;
     }
@@ -55,7 +55,7 @@ export class StartBardComponent {
     }
   }
   getRole(){
-   let rol= this.cifrado.descifrar(this.storage.getItem('rolUsuario')!)
+   let rol= this.cifrado.descifrar(this.storage.sesionGetItem('rolUsuario')!)
    return rol;
   }
 
