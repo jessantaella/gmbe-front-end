@@ -30,6 +30,25 @@ export class StorageService {
     }
   }
 
+  sesionGetItem(key: string): string | null {
+    if (this.isBrowser) {
+      return sessionStorage.getItem(key);
+    }
+    return null;
+  }
+
+  sesionSetItem(key: string, value: string): void {
+    if (this.isBrowser) {
+      sessionStorage.setItem(key , value);
+    }
+  }
+
+  sesionRemoveItem(key: string): void {
+    if (this.isBrowser) {
+      sessionStorage.removeItem(key);
+    }
+  }
+
   clear(): void {
     if (this.isBrowser) {
       localStorage.clear();

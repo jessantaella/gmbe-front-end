@@ -21,8 +21,8 @@
                         <div class="form-check">
                           <input id="categoria-fila-{{i}}"  class="form-check-input" type="checkbox"
                             [checked]="categoriaSeleccionadaFila[i]"
-                            (click)="onCategoriaChangeFilas(categoria?.idCategoria)" />
-                          <label style="cursor: pointer;" for="categoria-fila-{{i}}" class="form-check-label colorLabel">{{categoria?.categoria}}</label>
+                            (click)="onCategoriaChangeFilas(categoria?.idCategoria, $event)" />
+                          <label (click)="this.detenerPropagacion($event)"  style="cursor: pointer;" for="categoria-fila-{{i}}" class="form-check-label colorLabel">{{categoria?.categoria}}</label>
                         </div>
                       </div>
                     </div>
@@ -45,8 +45,8 @@
                         <div class="form-check">
                           <input id="subcategoria-fila-{{i}}" class="form-check-input" type="checkbox"
                             [checked]="subcategoriaSeleccionadaFila[i]"
-                            (click)="onSubCategoriaChangeFilas(subcategoria?.idSubcategoria)" />
-                          <label style="cursor: pointer;" for="subcategoria-fila-{{i}}" class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
+                            (click)="onSubCategoriaChangeFilas(subcategoria?.idSubcategoria, $event)" />
+                          <label (click)="this.detenerPropagacion($event)" style="cursor: pointer;" for="subcategoria-fila-{{i}}" class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
                         </div>
                       </div>
                     </div>
@@ -78,8 +78,8 @@
                         <div class="form-check">
                           <input id="categoria-columna-{{i}}" class="form-check-input" type="checkbox"
                             [checked]="categoriaSeleccionadaColumna[i]"
-                            (click)="onCategoriaChangeColumnas(categoria?.idCategoria)" />
-                          <label style="cursor: pointer;" for="categoria-columna-{{i}}" class="form-check-label colorLabel">{{categoria?.categoria}}</label>
+                            (click)="onCategoriaChangeColumnas(categoria?.idCategoria, $event)" />
+                          <label (click)="this.detenerPropagacion($event)" style="cursor: pointer;" for="categoria-columna-{{i}}" class="form-check-label colorLabel">{{categoria?.categoria}}</label>
                         </div>
                       </div>
                     </div>
@@ -102,8 +102,8 @@
                         <div class="form-check">
                           <input id="subcategoria-columna-{{i}}"  class="form-check-input" type="checkbox"
                             [checked]="subcategoriaSeleccionadaColumna[i]"
-                            (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria)" />
-                          <label style="cursor: pointer;" for="subcategoria-columna-{{i}}"  class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
+                            (click)="onSubCategoriaChangeColumnas(subcategoria?.idSubcategoria, $event)" />
+                          <label (click)="this.detenerPropagacion($event)" style="cursor: pointer;" for="subcategoria-columna-{{i}}"  class="form-check-label colorLabel">{{subcategoria?.subCategoria}}</label>
                         </div>
                       </div>
                     </div>
@@ -122,7 +122,7 @@
     </form>
     <div class="d-flex align-items-center">
       <div class="table-responsive tabladatos" *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
-        <table class="table" [ngClass]="{'table-bordered' : !this.modoCaptura}"
+        <table class="table table-bordered"
           *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0" id="imagenTabla" #imagenTabla>
           <thead [ngClass]="{'sticky-header' : !this.modoCaptura}">
             <tr class="text-center">
@@ -145,7 +145,7 @@
                 <div class="text-end"
                   *ngIf="columna?.hijos[0]?.idSubCategoria == 0 && ((columna?.descripcion !== null && columna?.descripcion !== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content,columna,'categoria','Columna' )">
-                    <fa-icon [icon]="faCirclePlus"></fa-icon>
+                    <i style="color: white;" width="1rem" height="1rem" class="bi bi-plus-circle"></i>
                   </button>
                 </div>
               </th>
@@ -159,7 +159,7 @@
                     <div class="text-end"
                       *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ))">
                       <button class="btn p-0" (click)="this.abrirModal(content,hijo,'subcategoria','Columna' )">
-                        <fa-icon [icon]="faCirclePlus"></fa-icon>
+                        <i style="color: white;" width="1rem" height="1rem" class="bi bi-plus-circle"></i>
                       </button>
                     </div>
                   </th>
@@ -183,7 +183,7 @@
                 <div class="text-end"
                 *ngIf="fila?.idSubCategoria === 0 && ((fila.descripcion !== null && fila.descripcion !== '') || (fila.complemento!== null && fila.complemento!== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'categoria','Fila')">
-                    <fa-icon [icon]="faCirclePlus"></fa-icon>
+                    <i style="color: white;" width="1rem" height="1rem" class="bi bi-plus-circle"></i>
                   </button>
                 </div>
               </th>
@@ -195,7 +195,7 @@
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
                   <button class="btn p-0" (click)="this.abrirModal(content, fila,'subcategoria','Fila')">
-                    <fa-icon [icon]="faCirclePlus"></fa-icon>
+                    <i style="color: white;" width="1rem" height="1rem" class="bi bi-plus-circle"></i>
                   </button>
                 </div>
               </th>
@@ -208,7 +208,7 @@
                       [chartId]="'chart-' + i + j + u" [chartTitle]="'GraficaPanel'"
                       [bubbleData]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"
                        ></!--app-burbujas-->
-                       <app-burbujas-personales *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="180" [alto]="180"></app-burbujas-personales>
+                       <app-burbujas-personales [titulo]="'panel'" *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="180" [alto]="180"></app-burbujas-personales>
                   </th>
                 </ng-container>
               </tr>
@@ -218,7 +218,7 @@
   
       </div>
     </div>
-    <div class="d-flex justify-content-between w-100">
+    <div class="d-flex justify-content-between w-100 my-3">
       <div class="position-relative" >
         <div class="position-absolute  bottom-50 start-20 p-3" style="z-index: 11; width: max-content;" *ngIf="this.abrirToastAyuda" >
           <div id="liveToast" class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">

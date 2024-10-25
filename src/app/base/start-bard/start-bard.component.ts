@@ -32,7 +32,6 @@ export class StartBardComponent {
     this.storage.removeItem('token-gmbe')
     this.storage.removeItem('notificaciones')
     this.storage.removeItem('autorizadas')
-    this.storage.removeItem('EstructuraTabla')
     this.router.navigate(['/login'])
     this.notificacionesService.ocultar();
   }

@@ -464,7 +464,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.estructuraFinalFilasSubitulos = [];
 
     // Obtener estructuras guardadas del localStorage
-    let estructurasGuardadas = JSON.parse(this.storage.getItem('EstructuraTabla') || '[]');
+    let estructurasGuardadas = JSON.parse(this.storage.sesionGetItem('EstructuraTabla') || '[]');
 
     // Verificar si ya existe una estructura con el mismo idMbe
     const estructuraExistente = estructurasGuardadas.find((estructura: any) => estructura.idMbe === this.idmbe);
@@ -518,7 +518,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
 
           // Agregar la nueva estructura al localStorage
           estructurasGuardadas.push(estructuraGuardada);
-          this.storage.setItem('EstructuraTabla', JSON.stringify(estructurasGuardadas));
+          this.storage.sesionSetItem('EstructuraTabla', JSON.stringify(estructurasGuardadas));
         },
         err => {
           console.error('Error al obtener estructura del panel:', err);
@@ -697,9 +697,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     return this.conteoCategorias[idCategoria];
   }
 
+  detenerPropagacion(event: Event) {
+    event.stopPropagation();
+  }
 
 
-  onCategoriaChangeFilas(idSeccion: number) {
+
+  onCategoriaChangeFilas(idSeccion: number, event: any) {
     this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
@@ -711,7 +715,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
 
   }
 
-  onSubCategoriaChangeFilas(idSeccion: number) {
+  onSubCategoriaChangeFilas(idSeccion: number, event: any) {
+    console.log('Subcategoria seleccionada:', idSeccion);
+    console.log('event:', event);
     this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
@@ -720,10 +726,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       null,
       this.cargaEstructuraPanelResultados.bind(this)
     );
-
   }
 
-  onCategoriaChangeColumnas(idSeccion: number) {
+  onCategoriaChangeColumnas(idSeccion: number, event: any) {
     this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
@@ -737,7 +742,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
 
   }
 
-  onSubCategoriaChangeColumnas(idSeccion: number) {
+  onSubCategoriaChangeColumnas(idSeccion: number, event: any) {
     this.elementosObservados = false;
     this.toggleSelection(
       idSeccion,
@@ -781,7 +786,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   descargar() {
-    this.modoCaptura = true;
     swal.fire({
       title: 'Descargando',
       timerProgressBar: true,
@@ -789,8 +793,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         swal.showLoading();
       }
     });
-    this.descargarImagenPanel();
-    /*this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
+    this.gmbservices.descargarReporteDatos(this.idmbe, this.versionMaxima).subscribe(
       (res: HttpResponse<ArrayBuffer>) => {
         if (res.body!.byteLength > 0) {
           this.descargarImagenPanel();
@@ -814,11 +817,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
           title: '<center> Error </center>',
           text: 'Sin información',
         })
-      })*/
-  }
-
-  activarModoCaptura() {
-    this.modoCaptura = true;
+      })
   }
 
   esperaHasta(condicion: () => boolean, intervalo: number): Promise<void> {
@@ -833,13 +832,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   async descargarImagenPanel() {
-    /*const element = document.getElementById('imagenTabla') as HTMLElement;
-    const canvas = await html2canvas(element, { scale: 1, useCORS: true }); // Aumenta la escala para mejorar la resolución
-    const imgData = canvas.toDataURL('image/png');
-    this.downloadImage(imgData, `${this.nombreMBE.replace(/\s+/g, '')}.png`);
-    swal.close();
-    this.modoCaptura = false;
-    swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });*/
     const node = document.getElementById('imagenTabla') as HTMLElement; // Selecciona el div que quieres capturar
     if (node) {
       // Corrige elementos conflictivos como SVGs
@@ -853,7 +845,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         .then((dataUrl: string) => {
           const link = document.createElement('a');
           link.href = dataUrl;
-          link.download = 'captura.png';
+          link.download = this.nombreMBE.replace(/\s+/g, '') + '.png';
           link.click();
     
           swal.fire('', '¡Descarga con éxito!', 'success').then(() => { });
@@ -863,15 +855,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         });
     }
   }
-
-
-  private downloadImage(dataUrl: string, filename: string) {
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = filename;
-    link.click();
-  }
-
   closeModal() {
     this.modalService.dismissAll();
   }
