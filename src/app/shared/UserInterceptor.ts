@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { StorageService } from '../services/storage-service.service';
 import { CifradoService } from '../services/cifrado.service';
 import { GmbeServicesService } from '../gmbe/services/gmbe-services.service';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+declare var swal: any;
 
 @Injectable()
 export class UserInterceptor implements HttpInterceptor {
@@ -13,45 +17,64 @@ export class UserInterceptor implements HttpInterceptor {
   constructor(
     private storage: StorageService,
     private cifrado: CifradoService,
-    private gmbeServices: GmbeServicesService
+    private gmbeServices: GmbeServicesService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private modalService: NgbModal
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.isUserValid === false) {
-      console.error('Token no válido o expirado');
-      return throwError(() => new Error('Token no válido o expirado'));
-    }
-
-    if (this.isUserValid !== null) {
-      return this.handleRequestWithToken(req, next); // Usa el valor almacenado si ya está validado
-    }
 
     const userSession = this.storage.sesionGetItem('usr');
-    if (userSession) {
-      const objetoUsuario = JSON.parse(this.cifrado.descifrar(userSession));
-      const { userName, correo } = objetoUsuario;
+      console.log(req.url)
 
-      return this.gmbeServices.validarUsuario(userName, correo).pipe(
-        switchMap((response) => {
-          if (response) {
-            this.isUserValid = true;
-            return this.handleRequestWithToken(req, next);
-          } else {
+      if (req.url.includes('/gmbe-catalogos/api/login/auth') || req.url.includes('get-mbes-permitidos') || req.url.includes('usuarios/exist-user?') || req.url.includes('conf/server-conf.json')) {
+        return next.handle(req);
+      }
+
+      console.log('sesión',userSession);
+      if(userSession){
+        const objetoUsuario = JSON.parse(this.cifrado.descifrar(userSession));
+        const { userName, correo } = objetoUsuario;
+        console.log('Valida usuario en guard ')
+        return this.gmbeServices.validarUsuario(userName, correo).pipe(
+          switchMap((response) => {
+            console.log('consulta de peticion',response)
+            if (response.data !== null) {
+              this.isUserValid = true;
+              console.log('usuario valido')
+              return this.handleRequestWithToken(req, next);
+            } else {
+              this.isUserValid = false;
+              console.error('Token no válido o expirado');
+              /*this.router.navigate(['/login']).then(() => {
+                if (isPlatformBrowser(this.platformId)) {
+                    window.location.reload();
+                }
+            });*/
+            this.router.navigate(['/login']);
+            this.modalService.dismissAll();
+            swal.closeAll();
+              return throwError(() => new Error('Token no válido o expirado'));
+            }
+          }),
+          catchError((error) => {
             this.isUserValid = false;
             console.error('Token no válido o expirado');
+           /* this.router.navigate(['/login']).then(() => {
+              if (isPlatformBrowser(this.platformId)) {
+                  window.location.reload();
+              }
+          });*/
+          this.router.navigate(['/login']);
+          this.modalService.dismissAll();
+          swal.closeAll();
             return throwError(() => new Error('Token no válido o expirado'));
-          }
-        }),
-        catchError((error) => {
-          this.isUserValid = false;
-          console.error('Token no válido o expirado');
-          return throwError(() => new Error('Token no válido o expirado'));
-        })
-      );
-    } else {
-      console.error('No hay sesión de usuario');
-      return next.handle(req);
-    }
+          })
+        );
+      }else{
+        return next.handle(req);
+      }
   }
 
   private handleRequestWithToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
