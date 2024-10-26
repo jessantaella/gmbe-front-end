@@ -8,6 +8,7 @@ import { GmbeServicesService } from '../gmbe/services/gmbe-services.service';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotificacionesService } from '../services/notificaciones.service';
 declare var swal: any;
 
 @Injectable()
@@ -20,6 +21,7 @@ export class UserInterceptor implements HttpInterceptor {
     private gmbeServices: GmbeServicesService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
+    private notificacionesService: NotificacionesService,
     private modalService: NgbModal
   ) {}
 
@@ -46,6 +48,7 @@ export class UserInterceptor implements HttpInterceptor {
             this.storage.sesionRemoveItem('token-gmbe')
             this.storage.sesionRemoveItem('notificaciones')
             this.storage.sesionRemoveItem('autorizadas')
+            this.notificacionesService.ocultar();
             this.modalService.dismissAll();
             this.router.navigate(['/inicio']);
               return EMPTY;

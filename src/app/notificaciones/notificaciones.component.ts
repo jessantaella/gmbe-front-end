@@ -51,7 +51,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    
+    console.log('NotificacionesComponent');
     this.verificarMostrarNotificaciones();
     this.notificacionesRes(this.idUsuario);
     this.dimensionesPantalla();
@@ -149,7 +149,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   }
 
   notificacionesRes(idUsuario: number) {
-    
+    console.log('NotificacionesComponent - notificacionesRes');
     this.notificacionesService
       .getNotificaciones(idUsuario)
       .subscribe((res:any) => {
@@ -158,8 +158,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
         this.notificacionesCache = res;
         this.notificacionesInformativas = res.filter((notificacion: any) => notificacion.informativa === false);
         this.guardarNotificaciones = this.notificacionesCache.filter((notificacion: any) => notificacion.informativa === true);
-        
-        
+      
         this.mostrarCincoPrimerasNotificaciones(res);
         this.intervalo = setInterval(() => {
           this.mostrarCincoPrimerasNotificaciones(res);

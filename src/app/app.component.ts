@@ -105,6 +105,8 @@ export class AppComponent implements OnInit {
             this.storage.removeItem('notificaciones')
             this.storage.removeItem('autorizadas')
             this.notificacionesService.ocultar();
+          }else{
+            this.notificacionesService.mostrar();
           }
         }) 
     }else{
