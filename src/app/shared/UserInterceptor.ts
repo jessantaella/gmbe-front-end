@@ -32,22 +32,16 @@ export class UserInterceptor implements HttpInterceptor {
         return next.handle(req);
       }
 
-      console.log('sesión',userSession);
+
       if(userSession){
         const objetoUsuario = JSON.parse(this.cifrado.descifrar(userSession));
         const { userName, correo } = objetoUsuario;
         console.log('Valida usuario en guard ')
         return this.gmbeServices.validarUsuario(userName, correo).pipe(
           switchMap((response) => {
-            console.log('consulta de peticion',response)
             if (response.data === null) {
               this.isUserValid = false;
               console.error('Token no válido o expirado');
-              /*this.router.navigate(['/login']).then(() => {
-                if (isPlatformBrowser(this.platformId)) {
-                    window.location.reload();
-                }
-            });*/
             this.storage.sesionRemoveItem('usr');
             this.storage.sesionRemoveItem('token-gmbe')
             this.storage.sesionRemoveItem('notificaciones')
@@ -61,16 +55,10 @@ export class UserInterceptor implements HttpInterceptor {
               return this.handleRequestWithToken(req, next);
             }
           }),
-          catchError((error) => {
+          /*catchError((error) => {
             this.isUserValid = false;
-           // console.error('Token no válido o expirado');
-           /* this.router.navigate(['/login']).then(() => {
-              if (isPlatformBrowser(this.platformId)) {
-                  window.location.reload();
-              }
-          });*/
             return EMPTY;
-          })
+          })*/
         );
       }else{
         return next.handle(req);
@@ -83,5 +71,15 @@ export class UserInterceptor implements HttpInterceptor {
       ? req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) })
       : req;
     return next.handle(clonedRequest);
+  }
+
+
+  private limpiarSesionYRedirigir() {
+    this.storage.sesionRemoveItem('usr');
+    this.storage.sesionRemoveItem('token-gmbe');
+    this.storage.sesionRemoveItem('notificaciones');
+    this.storage.sesionRemoveItem('autorizadas');
+    this.modalService.dismissAll();
+    this.router.navigate(['/inicio']);
   }
 }
