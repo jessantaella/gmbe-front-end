@@ -274,10 +274,22 @@ export class ListarUsuariosComponent implements OnInit {
     
     this.usuariosService.crearUsuario(usuarioObj).subscribe(
       (res) => {
-        swal.fire("", "Usuario creado exitosamente", "success");
-        if (this.modalRef) {
-          this.modalRef.close();
-          this.cambiarPaginaGetAll(0,10,'','ACTIVOS');
+        console.log(res)
+        console.log(res.status)
+        switch (res.status) {
+          case 0:
+            swal.fire("", "Usuario creado exitosamente", "success");
+            if (this.modalRef) {
+              this.modalRef.close();
+              this.cambiarPaginaGetAll(0,10,'','ACTIVOS');
+            }
+            break;
+          case 1:
+            console.log("entra a 1")
+            swal.fire("", "El usuario ya está registrado", "error");
+            break;
+          default:
+            break;
         }
       },
       (err) => {
