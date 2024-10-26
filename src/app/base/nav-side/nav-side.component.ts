@@ -21,10 +21,10 @@ export class NavSideComponent implements OnInit {
 
   getrol()
   {
-    if(this.storage.sesionGetItem('usr') === null){
+    if(this.storage.getItem('usr') === null){
         return 0;
     }
-    let objeto = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
+    let objeto = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     let rol =  objeto.rolUsuario;
     return rol.idRol;
   }

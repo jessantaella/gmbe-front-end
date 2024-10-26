@@ -75,7 +75,7 @@ faRotate = faRotateLeft;
     private route: ActivatedRoute
   ) { 
     this.usuario = JSON.parse(
-      this.cifrado.descifrar(this.storage.sesionGetItem('usr')!)
+      this.cifrado.descifrar(this.storage.getItem('usr')!)
     );
     this.id = parseInt(this.storage.getItem('idMbe')!);
     this.modalRevisionesForm = this.fb.group({

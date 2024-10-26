@@ -28,7 +28,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   mostrarNotificaciones = false;
   esMenor = false;
 
-  usuario = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
+  usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
   idUsuario:number = Number(this.usuario.idUsuario);
   idNotificacionesEliminadas: any;
   

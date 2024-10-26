@@ -105,7 +105,7 @@ export class CrearGmbeComponent implements OnInit {
     private router:Router,
     private storage:StorageService, private cifrado:CifradoService
   ) {
-    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.titulos.changePestaña('Crear  MBE');
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.tipoEstructura();

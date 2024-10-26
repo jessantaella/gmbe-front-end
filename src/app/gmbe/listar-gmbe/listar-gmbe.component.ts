@@ -82,7 +82,7 @@ i: any;
     private cifrado: CifradoService) {
     this.titulos.changePestaña(this.textoBienvenida);
     this.titulos.changeBienvenida(this.textoBienvenida);
-    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
+    this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.cargaDatos = this.fb.group({
       nombre: [''],
     });
@@ -91,7 +91,7 @@ i: any;
 
   ngOnInit(): void {
     this.estatusVdalidado();
-    this.ObjetoUser = JSON.parse(this.cifrado.descifrar(this.storage.sesionGetItem('usr')!));
+    this.ObjetoUser = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     
     this.idUsuario = this.ObjetoUser.idUsuario;
 
