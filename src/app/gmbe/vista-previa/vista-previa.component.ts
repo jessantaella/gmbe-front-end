@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';

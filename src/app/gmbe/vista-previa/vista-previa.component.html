@@ -128,19 +128,34 @@
       <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
       Descargar datos
     </button>
-    <button *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" class="btn mx-2 border-0 rechazar">
+    <button  class="btn mx-2 border-0 rechazar" *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" >
       <fa-icon [icon]="faX" class="btnOtrasAcciones"></fa-icon>
       Rechazar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(this.validado)" class="btn mx-2 border-0 aprobar">
+    <button class="btn mx-2 border-0 aprobar" [ngStyle]="{
+      'background-color': '#00a94f',
+      'font-size': '11px',
+      'font-family': 'Arial, Helvetica, sans-serif',
+      'color': '#ffffff'
+    }" *ngIf="this.validarBotonesAcciones('aprobado')" (click)="this.cambiarEstatusMBE(this.validado)" >
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Aprobar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(this.pendiente)" class="btn mx-2 border-0 aprobar">
+    <button class="btn mx-2 border-0 aprobar" [ngStyle]="{
+      'background-color': '#00a94f',
+      'font-size': '11px',
+      'font-family': 'Arial, Helvetica, sans-serif',
+      'color': '#ffffff'
+    }" *ngIf="this.validarBotonesAcciones('validar')" (click)="this.cambiarEstatusMBE(this.pendiente)" >
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Enviar a validar
     </button>
-    <button *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(this.publicado)" class="btn mx-2 border-0 aprobar">
+    <button   class="btn mx-2 border-0 aprobar" [ngStyle]="{
+      'background-color': '#00a94f',
+      'font-size': '11px',
+      'font-family': 'Arial, Helvetica, sans-serif',
+      'color': '#ffffff'
+    }" *ngIf="this.validarBotonesAcciones('publicado')" (click)="this.cambiarEstatusMBE(this.publicado)">
       <fa-icon [icon]="faCheck" class="btnOtrasAcciones"></fa-icon>
       Publicar
     </button>

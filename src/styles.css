@@ -173,3 +173,46 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   color: #21409a;
   
 }
+
+
+
+.btnMasInformacion,
+.btnMasInformacion:hover,
+.btnMasInformacion:active,
+.btnMasInformacion:focus{
+  background-color: #00a94f;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+.descargar,
+.descargar:hover,
+.descargar:active,
+.descargar:focus{
+  background-color: #3081b9;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
+}
+
+
+.rechazar,
+.rechazar:hover,
+.rechazar:active,
+.rechazar:focus{
+  background-color: #B3273e;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
+}
+
+.aprobar,
+.aprobar:hover,
+.aprobar:active,
+.aprobar:focus{
+  background-color: #00a94f;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
+}

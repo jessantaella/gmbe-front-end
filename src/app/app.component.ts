@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.2.5';
+  version = 'V-1.2.7';
   tags: any;
   ga: any;
   isBrowser = false;
@@ -167,7 +167,7 @@ export class AppComponent implements OnInit {
       console.log('Cambio de versión detectado: ', storedVersion, ' -> ', currentVersion);
       
       this.storage.clear();
-      window.location.reload();
+      this.router.navigate(['/inicio']);
     } else {
       console.log('Las versiones coinciden. No se realizará ninguna acción.');
     }

@@ -246,7 +246,10 @@
     
       </div>
       <div class="d-flex justify-content-center align-items-center">
-        <button class="btn mx-2 border-0 descargar" (click)="this.descargar()" >
+        <button class="btn mx-2 border-0 descargar" [ngStyle]="{ 'background-color': '#3081b9',
+          'font-size': '11px',
+          'font-family': 'Arial, Helvetica, sans-serif',
+          'color':'#ffffff'}" (click)="this.descargar()" >
           <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
           Descargar datos
         </button>
@@ -279,7 +282,10 @@
         </form>
       </div>
       <div class="modal-footer d-flex justify-content-center align-items-center">
-        <button class="btn btnMasInformacion" *ngIf="urlModal !== '' && urlModal !== null && this.btnMasInformacion"
+        <button class="btn btnMasInformacion" [ngStyle]="{ 'background-color': '#00a94f',
+        'font-size': '11px',
+        'font-family': 'Arial, Helvetica, sans-serif',
+        'color':'ffffff'}" *ngIf="urlModal !== '' && urlModal !== null && this.btnMasInformacion"
           (click)="masInformacion()" type="button">Más información</button>
       </div>
     </div>
