@@ -44,10 +44,10 @@ export class UserInterceptor implements HttpInterceptor {
             if (response.data === null) {
               this.isUserValid = false;
               console.error('Token no válido o expirado');
-            this.storage.sesionRemoveItem('usr');
-            this.storage.sesionRemoveItem('token-gmbe')
-            this.storage.sesionRemoveItem('notificaciones')
-            this.storage.sesionRemoveItem('autorizadas')
+            this.storage.removeItem('usr');
+            this.storage.removeItem('token-gmbe')
+            this.storage.removeItem('notificaciones')
+            this.storage.removeItem('autorizadas')
             this.notificacionesService.ocultar();
             this.modalService.dismissAll();
             this.router.navigate(['/inicio']);
@@ -78,10 +78,10 @@ export class UserInterceptor implements HttpInterceptor {
 
 
   private limpiarSesionYRedirigir() {
-    this.storage.sesionRemoveItem('usr');
-    this.storage.sesionRemoveItem('token-gmbe');
-    this.storage.sesionRemoveItem('notificaciones');
-    this.storage.sesionRemoveItem('autorizadas');
+    this.storage.removeItem('usr');
+    this.storage.removeItem('token-gmbe');
+    this.storage.removeItem('notificaciones');
+    this.storage.removeItem('autorizadas');
     this.modalService.dismissAll();
     this.router.navigate(['/inicio']);
   }
