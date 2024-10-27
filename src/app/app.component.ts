@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.2.7';
+  version = 'V-1.2.9';
   tags: any;
   ga: any;
   isBrowser = false;
@@ -91,15 +91,12 @@ export class AppComponent implements OnInit {
   varificarSesion(){
     if (this.storage.getItem('usr')) {
       let objetoUsuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-      console.log(objetoUsuario);
       let username = objetoUsuario.userName;
       let correo = objetoUsuario.correo;
-      console.log('verificar sesion');
       this.gmbeServices.validarUsuario(username,correo).subscribe(
         res => {
           console.log(res);
           if (res.data === null) {
-            console.log('Usuario no autorizado');
             this.storage.removeItem('usr');
             this.storage.removeItem('token-gmbe')
             this.storage.removeItem('notificaciones')
@@ -111,7 +108,6 @@ export class AppComponent implements OnInit {
           }
         }) 
     }else{
-      console.log('Usuario no autorizado');
       this.storage.removeItem('usr');
       this.storage.removeItem('token-gmbe')
       this.storage.removeItem('notificaciones')

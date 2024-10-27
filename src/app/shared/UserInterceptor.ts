@@ -44,13 +44,7 @@ export class UserInterceptor implements HttpInterceptor {
             if (response.data === null) {
               this.isUserValid = false;
               console.error('Token no válido o expirado');
-            this.storage.removeItem('usr');
-            this.storage.removeItem('token-gmbe')
-            this.storage.removeItem('notificaciones')
-            this.storage.removeItem('autorizadas')
-            this.notificacionesService.ocultar();
-            this.modalService.dismissAll();
-            this.router.navigate(['/inicio']);
+              this.limpiarSesionYRedirigir();
               return EMPTY;
             } else {
               this.isUserValid = true;
@@ -79,9 +73,10 @@ export class UserInterceptor implements HttpInterceptor {
 
   private limpiarSesionYRedirigir() {
     this.storage.removeItem('usr');
-    this.storage.removeItem('token-gmbe');
-    this.storage.removeItem('notificaciones');
-    this.storage.removeItem('autorizadas');
+    this.storage.removeItem('token-gmbe')
+    this.storage.removeItem('notificaciones')
+    this.storage.removeItem('autorizadas')
+    this.notificacionesService.ocultar();
     this.modalService.dismissAll();
     this.router.navigate(['/inicio']);
   }
