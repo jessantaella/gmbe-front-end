@@ -128,7 +128,12 @@
       <fa-icon [icon]="faDownload" class="btnOtrasAcciones"></fa-icon>
       Descargar datos
     </button>
-    <button  class="btn mx-2 border-0 rechazar" *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" >
+    <button  class="btn mx-2 border-0 rechazar" [ngStyle]="{
+      'background-color': '#B3273e',
+      'font-size': '11px',
+      'font-family': 'Arial, Helvetica, sans-serif',
+      'color': '#ffffff'
+    }" *ngIf="this.validarBotonesAcciones('rechazado')" (click)="this.cambiarEstatusMBE(this.rechazado)" >
       <fa-icon [icon]="faX" class="btnOtrasAcciones"></fa-icon>
       Rechazar
     </button>
