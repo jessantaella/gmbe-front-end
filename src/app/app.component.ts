@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'GMBE';
-  version = 'V-1.2.9';
+  version = 'V-1.3.0';
   tags: any;
   ga: any;
   isBrowser = false;
