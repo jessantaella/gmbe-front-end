@@ -31,11 +31,16 @@ export class UserInterceptor implements HttpInterceptor {
       console.log(req.url)
 
       if (req.url.includes('/gmbe-catalogos/api/login/auth') || req.url.includes('get-mbes-permitidos') || req.url.includes('usuarios/exist-user?') || req.url.includes('conf/server-conf.json')) {
+        console.log('No se valida token en guard')
+        this.notificacionesService.mostrar();
         return next.handle(req);
       }
 
+      console.log('Valida usuario en guard ')
+
 
       if(userSession){
+        console.log('Valida usuario en guard ')
         const objetoUsuario = JSON.parse(this.cifrado.descifrar(userSession));
         const { userName, correo } = objetoUsuario;
         console.log('Valida usuario en guard ')
@@ -43,12 +48,13 @@ export class UserInterceptor implements HttpInterceptor {
           switchMap((response) => {
             if (response.data === null) {
               this.isUserValid = false;
-              console.error('Token no válido o expirado');
+              console.log('Token no válido o expirado');
               this.limpiarSesionYRedirigir();
               return EMPTY;
             } else {
               this.isUserValid = true;
               console.log('usuario valido')
+              this.notificacionesService.mostrar();
               return this.handleRequestWithToken(req, next);
             }
           }),

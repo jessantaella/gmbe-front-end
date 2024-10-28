@@ -16,7 +16,7 @@ export class NotificacionesService {
   constructor(private http:HttpClient,private serverConfigService: ServerConfigService, private storage:StorageService, private cifrado:CifradoService) { }
 
   mostrar(){    
-    const token = this.storage.getItem('token-gmbe') || this.storage.getItem('token-gmbe');
+    const token = this.storage.getItem('token-gmbe') || this.storage.getItem('usr');
     if (token) {
       console.log('Mostrar notificaciones');
       this.mostrarNotificaciones.next(true);
