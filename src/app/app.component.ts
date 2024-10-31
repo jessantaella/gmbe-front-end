@@ -27,12 +27,6 @@ export class AppComponent implements OnInit {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
-    this.router.events.subscribe(event => {
-      if (event.constructor.name === "NavigationEnd") {
-        console.log('Cambio de ruta detectado. Verificando sesión...');
-        this.varificarSesion();
-      }
-    });
   }
 
   ngOnInit(): void {
@@ -86,34 +80,6 @@ export class AppComponent implements OnInit {
     // console.log(packageJson.version);
     // (window as any).myVariable = packageJson.version;
     this.checkVersion();
-  }
-
-  varificarSesion(){
-    if (this.storage.getItem('usr')) {
-      let objetoUsuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
-      let username = objetoUsuario.userName;
-      let correo = objetoUsuario.correo;
-      this.gmbeServices.validarUsuario(username,correo).subscribe(
-        res => {
-          console.log(res);
-          if (res.data === null) {
-            this.storage.removeItem('usr');
-            this.storage.removeItem('token-gmbe')
-            this.storage.removeItem('notificaciones')
-            this.storage.removeItem('autorizadas')
-            this.notificacionesService.ocultar();
-            this.router.navigate(['/inicio']);
-          }else{
-            this.notificacionesService.mostrar();
-          }
-        }) 
-    }else{
-      this.storage.removeItem('usr');
-      this.storage.removeItem('token-gmbe')
-      this.storage.removeItem('notificaciones')
-      this.storage.removeItem('autorizadas')
-      this.notificacionesService.ocultar();
-    }
   }
 
 

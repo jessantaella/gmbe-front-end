@@ -59,7 +59,6 @@ async obtenerImagen(ruta: string): Promise<void> {
     const res = await firstValueFrom(this.gmbeservices.getImage(ruta));
     this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(res);
   } catch (err) {
-    console.error('Error al obtener la imagen:', err);
   }
 }
 

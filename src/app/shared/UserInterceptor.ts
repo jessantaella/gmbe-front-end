@@ -1,5 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of, EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { StorageService } from '../services/storage-service.service';
@@ -27,53 +27,32 @@ export class UserInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const userSession = this.storage.sesionGetItem('usr');
-      console.log(req.url)
+     // const userSession = this.storage.getItem('usr');
+      const token = this.storage.getItem('token-gmbe');
 
-      if (req.url.includes('/gmbe-catalogos/api/login/auth') || req.url.includes('get-mbes-permitidos') || req.url.includes('usuarios/exist-user?') || req.url.includes('conf/server-conf.json')) {
-        console.log('No se valida token en guard')
-        this.notificacionesService.mostrar();
-        return next.handle(req);
+      if (!token) {
+        return EMPTY;
       }
 
-      console.log('Valida usuario en guard ')
+      const solicitud = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.cifrado.descifrar(token || '')}`,
+        },
+      });
 
-
-      if(userSession){
-        console.log('Valida usuario en guard ')
-        const objetoUsuario = JSON.parse(this.cifrado.descifrar(userSession));
-        const { userName, correo } = objetoUsuario;
-        console.log('Valida usuario en guard ')
-        return this.gmbeServices.validarUsuario(userName, correo).pipe(
-          switchMap((response) => {
-            if (response.data === null) {
-              this.isUserValid = false;
-              console.log('Token no válido o expirado');
-              this.limpiarSesionYRedirigir();
-              return EMPTY;
-            } else {
-              this.isUserValid = true;
-              console.log('usuario valido')
-              this.notificacionesService.mostrar();
-              return this.handleRequestWithToken(req, next);
-            }
-          }),
-          /*catchError((error) => {
-            this.isUserValid = false;
-            return EMPTY;
-          })*/
-        );
-      }else{
-        return next.handle(req);
-      }
-  }
-
-  private handleRequestWithToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.cifrado.descifrar(this.storage.sesionGetItem('token-gmbe')!);
-    const clonedRequest = token
-      ? req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) })
-      : req;
-    return next.handle(clonedRequest);
+      return next.handle(solicitud).pipe(
+        tap(event => {
+          if (event instanceof HttpResponse) {
+        // Puedes manejar otras respuestas aquí si lo necesitas
+          }
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+        this.limpiarSesionYRedirigir();
+          }
+          return throwError(error);
+        })
+      );
   }
 
 
