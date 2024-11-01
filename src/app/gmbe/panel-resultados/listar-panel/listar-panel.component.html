@@ -225,7 +225,7 @@
             <div class="toast-header d-flex justify-content-between" >
               <strong *ngIf="this.tituloAcotaciones">Tipos de evaluación</strong>
               <strong *ngIf="!this.tituloAcotaciones">Diseño de evaluación</strong>
-              <button *ngIf="!this.esperaSegundos" (click)="this.cerrarAyuda()"  type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              <button (click)="this.cerrarAyuda()"  type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body textoToast">
               <div class="d-flex">

@@ -166,10 +166,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
-    setTimeout(() => {
-      this.abrirToastAyuda = false;
-      this.esperaSegundos = false;
-    }, 10000);
   }
 
   pantallaCargando() {
@@ -351,10 +347,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       categorias: null,
       subcategorias: null,
     };
-
+    console.log('datosEnvio:', datosEnvio);
     this.gmbservices.filtroCategoria(datosEnvio).subscribe(
       res => {
-
+        console.log(res);
         this.categoriasFilas = res;
         this.cargarChechbox();
         //this.cargarChechbox();
