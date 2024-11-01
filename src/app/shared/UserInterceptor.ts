@@ -29,20 +29,23 @@ export class UserInterceptor implements HttpInterceptor {
 
      // const userSession = this.storage.getItem('usr');
       const token = this.storage.getItem('token-gmbe');
-
-      if (!token) {
-        return EMPTY;
-      }
+      console.log('token', token);
 
       const solicitud = req.clone({
         setHeaders: {
           Authorization: `Bearer ${this.cifrado.descifrar(token || '')}`,
         },
       });
+      
+      if (!token) {
+        return next.handle(solicitud)
+      }
+
 
       return next.handle(solicitud).pipe(
         tap(event => {
           if (event instanceof HttpResponse) {
+            console.log('TAP', event);
         // Puedes manejar otras respuestas aquí si lo necesitas
           }
         }),
