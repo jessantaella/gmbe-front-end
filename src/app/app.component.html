@@ -5,6 +5,7 @@
   <div class="d-flex flex-row flex-grow-1 p-0">
     <app-nav-side></app-nav-side>
       <div class="w-100 overflow-auto">
+        <app-notificaciones *ngIf="this.mostrarNotificaciones" ></app-notificaciones>
           <router-outlet></router-outlet>
       </div>
   </div>
