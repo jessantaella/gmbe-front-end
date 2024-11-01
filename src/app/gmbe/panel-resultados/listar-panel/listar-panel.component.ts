@@ -148,9 +148,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.cargarDatosMbe();
     this.datosAyuda();
     this.filtrosCategoriasFilas();
-    this.filtrosSubcategoriasFilas();
+    //this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
-    this.filtrosSubcategoriasColumnas();
+    //this.filtrosSubcategoriasColumnas();
     this.cargarDatosMbe();
     this.cargaEstructuraPanelResultados();
   }
@@ -366,22 +366,22 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   filtrosSubcategoriasFilas(idCategorias: any = null) {
-
+    console.log('idCategorias:', idCategorias); 
     let datosEnvio;
     if (idCategorias?.length === 0) {
       this.subcategoriasFilas = [];
     } else {
       datosEnvio = {
         idMbe: this.idmbe,
-        idTipo: 3,
+        idTipo: 2,
         categorias: idCategorias,
         subcategorias: null,
       };
 
       this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
         res => {
-
-          this.subcategoriasFilas = res;
+          console.log(res);
+          this.subcategoriasFilas = res.filter((subcategoria: any) => subcategoria.idSubcategoria !== 0);
           this.cargarChechboxSubFila()
         },
         err => {
@@ -395,7 +395,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   filtrosCategoriasColumnas() {
     let datosEnvio = {
       idMbe: this.idmbe,
-      idTipo: 2,
+      idTipo: 1,
       categorias: null,
       subcategorias: null,
     };
@@ -420,17 +420,15 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     } else {
       datosEnvio = {
         idMbe: this.idmbe,
-        idTipo: 3,
+        idTipo: 1,
         categorias: idCategoria,
         subcategorias: null,
       };
 
       this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
         res => {
-
-          this.subcategoriasColumnas = res;
-          //Saca el idCategoria del primer dato de la subcategoria y marca el checkbox de la categoria
-          this.categoriaSeleccionadaColumnas = [];
+          console.log(res);
+          this.subcategoriasColumnas = res.filter((subcategoria: any) => subcategoria.idSubcategoria !== 0);
           this.cargarChechboxSubColumnas();
         },
         err => {
@@ -554,13 +552,13 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.categoriaSeleccionadaColumnas = [];
     this.subcategoriaSeleccionadaColumnas = [];
     this.filtrosCategoriasFilas();
-    this.filtrosSubcategoriasFilas();
+    //this.filtrosSubcategoriasFilas();
     this.filtrosCategoriasColumnas();
-    this.filtrosSubcategoriasColumnas();
+    //this.filtrosSubcategoriasColumnas();
     this.cargarChechbox();
-    this.cargarChechboxSubFila();
+    //this.cargarChechboxSubFila();
     this.cargarChechboxColumnas();
-    this.cargarChechboxSubColumnas();
+    //this.cargarChechboxSubColumnas();
   }
 
   filtrarPorTipo(arreglo: any[], tipo: number) {
@@ -708,11 +706,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.toggleSelection(
       idSeccion,
       this.categoriaSeleccionadaFilas,
-      null,
-      null,
-      this.cargaEstructuraPanelResultados.bind(this),
+      this.subcategoriaSeleccionadaFilas,
+      this.filtrosSubcategoriasFilas.bind(this),
+      this.cargaEstructuraPanelResultados.bind(this)
     );
-
   }
 
   onSubCategoriaChangeFilas(idSeccion: number, event: any) {
@@ -733,13 +730,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.toggleSelection(
       idSeccion,
       this.categoriaSeleccionadaColumnas,
-      null,
-      null,
-      //this.filtrosSubcategoriasColumnas.bind(this),
-      this.cargaEstructuraPanelResultados.bind(this),
-      //this.cargaEstructuraPanelResultados.bind(this)
+      this.subcategoriaSeleccionadaColumnas,
+      this.filtrosSubcategoriasColumnas.bind(this),
+      this.cargaEstructuraPanelResultados.bind(this)
     );
-
   }
 
   onSubCategoriaChangeColumnas(idSeccion: number, event: any) {
@@ -751,7 +745,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       null,
       this.cargaEstructuraPanelResultados.bind(this)
     );
-
   }
 
   private toggleSelection(
