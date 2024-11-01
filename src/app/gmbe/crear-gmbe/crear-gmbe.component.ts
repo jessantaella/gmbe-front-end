@@ -48,6 +48,8 @@ export class CrearGmbeComponent implements OnInit {
   subcategoriaForm: FormGroup;
   editarCategoriaForm: FormGroup;
   editarSubcategoriaForm: FormGroup;
+  eliminarCategoriaForm: FormGroup;
+  eliminarSubcategoriaForm: FormGroup;
 
   opcionesTipoEstructura!: any[];
 
@@ -143,12 +145,33 @@ export class CrearGmbeComponent implements OnInit {
     this.SelectCatelogirasForm = this.fb.group({
       selectTipo: [''],
       selectCategoria: ['0'],
+    })
+
+    this.eliminarCategoriaForm = this.fb.group({
+      categoria:[''],
+      descripcion:[''],
+      url: ['']
+    })
+
+    this.eliminarSubcategoriaForm = this.fb.group({
+      categoria:[''],
+      subCategoria:[''],
+      descripcion:[''],
+      url: ['']
     });
   }
   ngOnInit(): void {
     this.SelectTipoCat1();
     this.reiniciarSelect();
     this.detectarSelect();
+    this.bloquearInputEliminado();
+  }
+
+  bloquearInputEliminado(){
+    this.eliminarCategoriaForm.get('descripcion')?.disable();
+    this.eliminarCategoriaForm.get('url')?.disable();
+    this.eliminarSubcategoriaForm.get('descripcion')?.disable();
+    this.eliminarSubcategoriaForm.get('url')?.disable();
   }
 
 
@@ -173,8 +196,8 @@ export class CrearGmbeComponent implements OnInit {
     let categoria = this.arregloCategorias.find((e) => e.idCatalogo === idCategoria);
     
     this.editarNombre = categoria.catalogo;
-    this.editarCategoriaForm.get('descripcion')?.setValue(categoria.descripcion);
-    this.editarCategoriaForm.get('url')?.setValue(categoria.complemento);
+    this.eliminarCategoriaForm.get('descripcion')?.setValue(categoria.descripcion);
+    this.eliminarCategoriaForm.get('url')?.setValue(categoria.complemento);
   }
   
   SelectTipoCat1(){
@@ -185,7 +208,7 @@ export class CrearGmbeComponent implements OnInit {
     //si se cambia valor de selectTipo se reinicia el valor de selectCategoria
     this.SelectCatelogirasForm.get('selectTipo')?.valueChanges.subscribe(
       (valor) => {
-        this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+        this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
       }
     );
   }
@@ -286,7 +309,7 @@ clearImage(): void {
     console.log("TIPO")
     console.log(this.tipo)
     //Reinicia el select de subcategorias
-    this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+    this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
     if (this.tipo === 2) {
       
       let existe = this.estructuraFinalFilasTitulos.some(
@@ -607,9 +630,9 @@ clearImage(): void {
 
     this.habilitarSub = false;
 
-    this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
-    this.editarSubcategoriaForm.get('descripcion')?.setValue('');
-    this.editarSubcategoriaForm.get('url')?.setValue('');
+    this.eliminarSubcategoriaForm.get('subCategoria')?.setValue('');
+    this.eliminarSubcategoriaForm.get('descripcion')?.setValue('');
+    this.eliminarSubcategoriaForm.get('url')?.setValue('');
 
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
@@ -621,10 +644,11 @@ clearImage(): void {
     this.gmbeservice
       .listarSubcategorias(this.categoria.idCatalogo)
       .subscribe((res) => {
+        console.log(res)
         
         this.subCategoriasEditado = res;
       });
-    this.editarNombreSubcategoria = this.categoria.catalogo;
+    this.eliminarSubcategoriaForm = this.categoria.catalogo;
     //this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
     //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
   }
@@ -1169,6 +1193,10 @@ clearImage(): void {
 
 
     console.log(idSub)
+  }
+
+  eliminarCategoriaModal(){
+
   }
 
   cerrarModalCatalgo(){
