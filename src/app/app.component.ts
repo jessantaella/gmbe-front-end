@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       console.log('Cambio en mostrarNotificaciones:', mostrar);
       this.mostrarNotificaciones = mostrar;
     });
-    this.consultarTags();
+    //this.consultarTags();
 
     this.meta.addTag({
       "name": "description",

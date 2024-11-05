@@ -30,6 +30,9 @@ export class FooterComponent {
       res=>{
         this.generales = res.generales;
         this.redes = res.generales.redes;
+      },
+      err=>{
+        console.error(err);
       }
     )
    }

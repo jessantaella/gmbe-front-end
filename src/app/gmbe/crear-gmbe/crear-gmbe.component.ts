@@ -41,7 +41,7 @@ export class CrearGmbeComponent implements OnInit {
 
   private modalRef: NgbModalRef | undefined;
 
-  usuario : any ;
+  usuario: any;
 
   generales: FormGroup;
   categoriaForm: FormGroup;
@@ -53,7 +53,7 @@ export class CrearGmbeComponent implements OnInit {
 
   opcionesTipoEstructura!: any[];
 
-  activarAgregar : boolean = false;
+  activarAgregar: boolean = false;
 
   /** Arreglos de pruebas */
 
@@ -65,7 +65,7 @@ export class CrearGmbeComponent implements OnInit {
 
   subCategorias!: any[];
 
-  padreActual : number = 0;
+  padreActual: number = 0;
 
   suscriocionCatalogoEditar: Subscription | undefined;
   suscripcionSubCatalogoEditar: Subscription | undefined;
@@ -91,7 +91,7 @@ export class CrearGmbeComponent implements OnInit {
   editarNombre: any;
   subCategoriasEditado: any;
   editarNombreSubcategoria: any;
-  mostrarErrorurl : boolean = false;
+  mostrarErrorurl: boolean = false;
   existeCategoria: boolean = false;
 
   volverCargarBandera: boolean = false;
@@ -104,8 +104,8 @@ export class CrearGmbeComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private gmbeservice: GmbeServicesService,
-    private router:Router,
-    private storage:StorageService, private cifrado:CifradoService
+    private router: Router,
+    private storage: StorageService, private cifrado: CifradoService
   ) {
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.titulos.changePestaña('Crear  MBE');
@@ -119,26 +119,26 @@ export class CrearGmbeComponent implements OnInit {
     });
 
     this.categoriaForm = this.fb.group({
-      nombre:['',Validators.required],
-      descripcion:[''],
+      nombre: ['', Validators.required],
+      descripcion: [''],
       url: ['']
     })
     this.subcategoriaForm = this.fb.group({
-      categoria:[0,Validators.required],
-      nombre:['', Validators.required],
-      descripcion:[''],
+      categoria: [0, Validators.required],
+      nombre: ['', Validators.required],
+      descripcion: [''],
       url: ['']
     })
 
     this.editarCategoriaForm = this.fb.group({
-      categoria:['',Validators.required],
-      descripcion:[''],
+      categoria: ['', Validators.required],
+      descripcion: [''],
       url: ['']
     })
     this.editarSubcategoriaForm = this.fb.group({
-      categoria:['',Validators.required],
-      subCategoria:[''],
-      descripcion:[''],
+      categoria: ['', Validators.required],
+      subCategoria: [''],
+      descripcion: [''],
       url: ['']
     })
 
@@ -148,15 +148,15 @@ export class CrearGmbeComponent implements OnInit {
     })
 
     this.eliminarCategoriaForm = this.fb.group({
-      categoria:[''],
-      descripcion:[''],
+      categoria: ['', Validators.required],
+      descripcion: [''],
       url: ['']
     })
 
     this.eliminarSubcategoriaForm = this.fb.group({
-      categoria:[''],
-      subCategoria:[''],
-      descripcion:[''],
+      categoria: ['', Validators.required],
+      subCategoria: ['', Validators.required],
+      descripcion: [''],
       url: ['']
     });
   }
@@ -167,7 +167,7 @@ export class CrearGmbeComponent implements OnInit {
     this.bloquearInputEliminado();
   }
 
-  bloquearInputEliminado(){
+  bloquearInputEliminado() {
     this.eliminarCategoriaForm.get('descripcion')?.disable();
     this.eliminarCategoriaForm.get('url')?.disable();
     this.eliminarSubcategoriaForm.get('descripcion')?.disable();
@@ -175,10 +175,10 @@ export class CrearGmbeComponent implements OnInit {
   }
 
 
-  detectarSelect(){
+  detectarSelect() {
     this.SelectCatelogirasForm.get('selectCategoria')?.valueChanges.subscribe(
       (valor) => {
-        
+
         if (valor !== '') {
           this.puedeEditarCategoria = true;
         } else {
@@ -188,23 +188,30 @@ export class CrearGmbeComponent implements OnInit {
     );
   }
 
-  escucharSelectEditado(event:any){
+  escucharSelectEditado(event: any) {
     this.esEditado = true;
-    
+
     let idCategoria = Number(event.target.value);
     //buscar la categoria en el arreglo de categorias
     let categoria = this.arregloCategorias.find((e) => e.idCatalogo === idCategoria);
-    
+
+    console.warn(categoria)
+
     this.editarNombre = categoria.catalogo;
+
+    this.editarCategoriaForm.get('descripcion')?.setValue(categoria.descripcion);
+    this.editarCategoriaForm.get('url')?.setValue(categoria.descripcion);
+
+
     this.eliminarCategoriaForm.get('descripcion')?.setValue(categoria.descripcion);
     this.eliminarCategoriaForm.get('url')?.setValue(categoria.complemento);
   }
-  
-  SelectTipoCat1(){
+
+  SelectTipoCat1() {
     this.SelectCatelogirasForm.get('selectTipo')?.setValue(1);
   }
 
-  reiniciarSelect(){
+  reiniciarSelect() {
     //si se cambia valor de selectTipo se reinicia el valor de selectCategoria
     this.SelectCatelogirasForm.get('selectTipo')?.valueChanges.subscribe(
       (valor) => {
@@ -222,28 +229,28 @@ export class CrearGmbeComponent implements OnInit {
         event.target.value = ''; // Limpia el input de archivo
         return;
       }
-  
+
       if (file.size > 5242880) { // 5MB en bytes
         swal.fire('', 'La imagen excede el tamaño permitido', 'error');
         return;
       }
-  
+
       this.imageFile = file;
-  
+
       const reader = new FileReader();
       reader.onload = (e) => {
         this.imageUrl = e.target?.result;
       };
       reader.readAsDataURL(file);
-  
+
       event.target.value = ''; // Limpia el input de archivo después de leerlo
     }
   }
 
-clearImage(): void {
+  clearImage(): void {
     this.imageUrl = null;
     this.imageFile = null;
-}
+  }
 
 
   subcategoriaSeleccionada(sub: any) {
@@ -264,7 +271,7 @@ clearImage(): void {
     }
 
     //Si el arreglo de subcategorias agregadas tiene un elemento con seleccionado puede editar subcategoria, si tiene mas de uno no puede editar
-    
+
     if (this.subcategoriasAgregadas.length === 1) {
       this.puedeEditarSubCategoria = true;
     } else {
@@ -274,10 +281,10 @@ clearImage(): void {
 
   mergeAndRemoveDuplicates(arreglo1: any, arreglo2: any) {
     // Crear un conjunto de idCatalogo presentes en ambos arreglos
-    
-    
-    
-    
+
+
+
+
     const idsArreglo1 = new Set(
       arreglo1.map((item: { idCatalogo: any }) => item.idCatalogo)
     );
@@ -290,7 +297,7 @@ clearImage(): void {
     );
 
     // Filtrar ambos arreglos para eliminar elementos con idCatalogo en commonIds
-    
+
     const filteredArreglo1 = arreglo1.filter(
       (item: { idCatalogo: any }) => this.tipo === 2 ? item.idCatalogo !== null && !commonIds.has(item.idCatalogo) : !commonIds.has(item.idCatalogo)
     );
@@ -311,13 +318,13 @@ clearImage(): void {
     //Reinicia el select de subcategorias
     this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
     if (this.tipo === 2) {
-      
+
       let existe = this.estructuraFinalFilasTitulos.some(
         (obj: any) => obj.categoria.idCatalogo === this.categoria.idCatalogo
       );
       if (existe) {
-        
-        
+
+
         let arregloOriginal = this.estructuraFinalFilasTitulos.find(
           (e: any) => {
             return e.categoria.idCatalogo == this.categoria.idCatalogo;
@@ -335,19 +342,19 @@ clearImage(): void {
               item.categoria.idCatalogo !== this.categoria.idCatalogo
           );
 
-        
 
-        if(nuevasSubcategorias.length<1){
-          
+
+        if (nuevasSubcategorias.length < 1) {
+
           nuevasSubcategorias.push({
-            activo:true,
-            catalogo:'',
-            complemento:null,
-            created:null,
-            idCatalogo:null,
-            idRelacion:this.categoria?.idCatalogo,
-            idTipoCatalogo:null,
-            esAuxiliar:true
+            activo: true,
+            catalogo: '',
+            complemento: null,
+            created: null,
+            idCatalogo: null,
+            idRelacion: this.categoria?.idCatalogo,
+            idTipoCatalogo: null,
+            esAuxiliar: true
           })
         }
 
@@ -356,26 +363,26 @@ clearImage(): void {
           subcategorias: nuevasSubcategorias.length > 1 ? nuevasSubcategorias.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : nuevasSubcategorias,
         });
 
-        
+
       } else {
-        
+
         this.estructuraFinalFilasTitulos.push({
           categoria: this.categoria,
           subcategorias: this.subcategoriasAgregadas.length >= 1 ? this.subcategoriasAgregadas.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : this.subcategoriasAgregadas,
         });
       }
 
-      if(this.subcategoriasAgregadas.length<1 || this.estructuraFinalFilasTitulos.length === 1){
-        
+      if (this.subcategoriasAgregadas.length < 1 || this.estructuraFinalFilasTitulos.length === 1) {
+
         this.subcategoriasAgregadas.push({
-          activo:true,
-          catalogo:'',
-          complemento:null,
-          created:null,
-          idCatalogo:null,
-          idRelacion:this.categoria?.idCatalogo,
-          idTipoCatalogo:null,
-          esAuxiliar:true
+          activo: true,
+          catalogo: '',
+          complemento: null,
+          created: null,
+          idCatalogo: null,
+          idRelacion: this.categoria?.idCatalogo,
+          idTipoCatalogo: null,
+          esAuxiliar: true
         })
       }
 
@@ -388,19 +395,19 @@ clearImage(): void {
           []
         );
 
-        this.subcategoriasAgregadas = [];
+      this.subcategoriasAgregadas = [];
 
-        this.activarAgregar = false;
+      this.activarAgregar = false;
     } else {
-      
+
 
       let existe = this.estructuraFinalColumnasTitulos.some(
         (obj: any) => obj.categoria.idCatalogo === this.categoria.idCatalogo
       );
 
       if (existe) {
-        
-        
+
+
         let arregloOriginal = this.estructuraFinalColumnasTitulos.find(
           (e: any) => {
             return e.categoria.idCatalogo == this.categoria.idCatalogo;
@@ -414,22 +421,22 @@ clearImage(): void {
 
 
         this.estructuraFinalColumnasTitulos =
-        this.estructuraFinalColumnasTitulos.filter(
-          (item: { categoria: { idCatalogo: any } }) =>
-            item.categoria.idCatalogo !== this.categoria.idCatalogo
-        );
+          this.estructuraFinalColumnasTitulos.filter(
+            (item: { categoria: { idCatalogo: any } }) =>
+              item.categoria.idCatalogo !== this.categoria.idCatalogo
+          );
 
-        if(nuevasSubcategorias.length<1){
-          
+        if (nuevasSubcategorias.length < 1) {
+
           nuevasSubcategorias.push({
-            activo:true,
-            catalogo:'',
-            complemento:null,
-            created:null,
-            idCatalogo:null,
-            idRelacion:this.categoria?.idCatalogo,
-            idTipoCatalogo:null,
-            esAuxiliar:true
+            activo: true,
+            catalogo: '',
+            complemento: null,
+            created: null,
+            idCatalogo: null,
+            idRelacion: this.categoria?.idCatalogo,
+            idTipoCatalogo: null,
+            esAuxiliar: true
           })
         }
 
@@ -438,37 +445,37 @@ clearImage(): void {
           subcategorias: nuevasSubcategorias.length > 1 ? nuevasSubcategorias.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : nuevasSubcategorias,
         });
 
-        
+
         console.log(nuevasSubcategorias)
-      }else{
-        
-        
-        
+      } else {
+
+
+
         this.estructuraFinalColumnasTitulos.push({
           categoria: this.categoria,
           subcategorias: this.subcategoriasAgregadas.length >= 1 ? this.subcategoriasAgregadas.filter((subcategoria: any) => subcategoria.idCatalogo !== null) : this.subcategoriasAgregadas,
         });
       }
       // agrega auxiliar para espacios en blanco no subcategorias
-      console.log('subcategorias agregadas',this.subcategoriasAgregadas)
-      console.log('subcategorias agregadas',this.subcategoriasAgregadas.length)
-      console.log('estructuraFinalColumnasTitulos',this.estructuraFinalColumnasTitulos.length)
-      if(this.subcategoriasAgregadas.length<1 || this.estructuraFinalColumnasTitulos.length > 0){
-        
+      console.log('subcategorias agregadas', this.subcategoriasAgregadas)
+      console.log('subcategorias agregadas', this.subcategoriasAgregadas.length)
+      console.log('estructuraFinalColumnasTitulos', this.estructuraFinalColumnasTitulos.length)
+      if (this.subcategoriasAgregadas.length < 1 || this.estructuraFinalColumnasTitulos.length > 0) {
+
         this.subcategoriasAgregadas.push({
-          activo:true,
-          catalogo:'',
-          complemento:null,
-          created:null,
-          idCatalogo:null,
-          idRelacion:this.categoria?.idCatalogo,
-          idTipoCatalogo:null,
-          esAuxiliar:true
+          activo: true,
+          catalogo: '',
+          complemento: null,
+          created: null,
+          idCatalogo: null,
+          idRelacion: this.categoria?.idCatalogo,
+          idTipoCatalogo: null,
+          esAuxiliar: true
         })
       }
 
-      
-      
+
+
 
 
 
@@ -482,21 +489,21 @@ clearImage(): void {
       // }
 
 
-          this.estructuraFinalColumnasSubitulos = [];
-          this.estructuraFinalColumnasSubitulos =
-            this.estructuraFinalColumnasTitulos.reduce(
-              (acc: string | any[], item: { subcategorias: any }) =>
-                acc.concat(item.subcategorias),
-              []
-            );
+      this.estructuraFinalColumnasSubitulos = [];
+      this.estructuraFinalColumnasSubitulos =
+        this.estructuraFinalColumnasTitulos.reduce(
+          (acc: string | any[], item: { subcategorias: any }) =>
+            acc.concat(item.subcategorias),
+          []
+        );
 
-            //limpiar el arreglo de subcategorias agregadas
-            this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-            this.subCategorias = [];
-            this.subcategoriasAgregadas = [];
-            this.activarAgregar = false;
+      //limpiar el arreglo de subcategorias agregadas
+      this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+      this.subCategorias = [];
+      this.subcategoriasAgregadas = [];
+      this.activarAgregar = false;
 
-      }
+    }
 
     //limpiar el arreglo de subcategorias agregadas
     this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
@@ -542,15 +549,15 @@ clearImage(): void {
     this.gmbeservice.listarCatalogo(1).subscribe(
       (res) => {
         this.opcionesTipoEstructura = res;
-        
+
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
   changeTipo(valor: any) {
     this.tipo = parseInt(valor.target.value);
-    
+
     if (this.tipo === 2) {
       this.tipoSeleccionado = true;
     } else {
@@ -561,19 +568,19 @@ clearImage(): void {
     this.SelectCatelogirasForm = this.fb.group({
       selectCategoria: ['0'],
     });
-    
+
   }
 
   obtenerCategorias() {
     this.gmbeservice.listarCatalogo(2).subscribe(
       (res) => {
         this.arregloCategorias = res;
-        
+
         if (!this.volverCargarBandera) {
-          this.activarAgregar = false; 
+          this.activarAgregar = false;
         }
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -581,9 +588,9 @@ clearImage(): void {
     this.gmbeservice.listarCatalogo(2).subscribe(
       (res) => {
         this.arregloCategoriasEditado = res;
-        
+
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -640,24 +647,24 @@ clearImage(): void {
     this.categoria = this.arregloCategorias.find(
       (c) => c.idCatalogo === selectedValue
     );
-    
+
     this.gmbeservice
       .listarSubcategorias(this.categoria.idCatalogo)
       .subscribe((res) => {
         console.log(res)
-        
+
         this.subCategoriasEditado = res;
       });
-    this.eliminarSubcategoriaForm = this.categoria.catalogo;
+    //this.eliminarSubcategoriaForm = this.categoria.catalogo;
     //this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
     //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
   }
 
-  changeSubcategoria(idCatalogo:any) {
+  changeSubcategoria(idCatalogo: any) {
     let selectElement = idCatalogo.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
-    let sub = this.subCategoriasEditado.find((e: any)=>e.idCatalogo === selectedValue)
-     this.editarSubcategoriaForm.get('descripcion')?.setValue(sub.descripcion);
+    let sub = this.subCategoriasEditado.find((e: any) => e.idCatalogo === selectedValue)
+    this.editarSubcategoriaForm.get('descripcion')?.setValue(sub.descripcion);
     this.editarSubcategoriaForm.get('url')?.setValue(sub.complemento);
     console.log(idCatalogo.target.value)
     if (idCatalogo.target.value !== '0' || idCatalogo.target.value !== '') {
@@ -691,69 +698,65 @@ clearImage(): void {
       idSubCategoria: any;
     }[] = [];
     this.estructuraFinalFilasSubitulos.forEach(
-      (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
-        if(!element.esAuxiliar)
-        arregloSalida.push({
-          tipo: 2,
-          idCategoria: element.idRelacion,
-          idSubCategoria: element.idCatalogo,
-        });
+      (element: { idCatalogo: any; idRelacion: any; esAuxiliar: boolean }) => {
+        if (!element.esAuxiliar)
+          arregloSalida.push({
+            tipo: 2,
+            idCategoria: element.idRelacion,
+            idSubCategoria: element.idCatalogo,
+          });
         else
-        arregloSalida.push({
-          tipo: 2,
-          idCategoria: element.idRelacion,
-          idSubCategoria: null,
-        });
+          arregloSalida.push({
+            tipo: 2,
+            idCategoria: element.idRelacion,
+            idSubCategoria: null,
+          });
       }
     );
     this.estructuraFinalColumnasSubitulos.forEach(
-      (element: { idCatalogo: any; idRelacion: any; esAuxiliar:boolean }) => {
-        if(!element.esAuxiliar)
-        arregloSalida.push({
-          tipo: 1,
-          idCategoria: element.idRelacion,
-          idSubCategoria: element.idCatalogo,
-        });
+      (element: { idCatalogo: any; idRelacion: any; esAuxiliar: boolean }) => {
+        if (!element.esAuxiliar)
+          arregloSalida.push({
+            tipo: 1,
+            idCategoria: element.idRelacion,
+            idSubCategoria: element.idCatalogo,
+          });
         else
-        arregloSalida.push({
-          tipo: 1,
-          idCategoria: element.idRelacion,
-          idSubCategoria: null,
-        });
+          arregloSalida.push({
+            tipo: 1,
+            idCategoria: element.idRelacion,
+            idSubCategoria: null,
+          });
       }
     );
 
     return arregloSalida;
   }
 
-  validarGuardar(){
-    console.log(this.mostrarErrorurl)
-    return this.generales.valid && this.estructuraFinalFilasSubitulos.length >0 && this.estructuraFinalColumnasSubitulos.length>0 && this.imageFile;
+  validarGuardar() {
+    return this.generales.valid && this.estructuraFinalFilasSubitulos.length > 0 && this.estructuraFinalColumnasSubitulos.length > 0 && this.imageFile;
   }
 
   guardar() {
     this.bloquearBotonGuardar = true;
-    
-    let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0].replaceAll('.','')+Math.random()+'.png' : 'gmbeImage'+Math.random()+'.png';
+    let nombre = this.imageFile?.name ? this.imageFile.name.split(".")[0].replaceAll('.', '') + Math.random() + '.png' : 'gmbeImage' + Math.random() + '.png';
     let estructura = this.generaArregloEstructura();
     let enviar = this.generales.value;
     enviar.estructura = estructura;
-    enviar.ruta= null;
+    enviar.ruta = null;
     enviar.idUsuario = this.usuario?.idUsuario;
-
-    
     this.gmbeservice.crearImagen(this.imageFile, nombre).subscribe(
       response => {
-        
+
         // Maneja la respuesta exitosa aquí
         enviar.ruta = response.remotePath;
         this.gmbeservice.crearGmbe(enviar).subscribe(
-          res=>{
+          res => {
             swal.fire('', 'MBE registrado exitosamente', 'success');
             this.consultarAccesos(enviar.idUsuario);
             this.router.navigate(['/gmbe'])
           },
-          err=>{}
+          err => { }
         );
       },
       error => {
@@ -763,14 +766,14 @@ clearImage(): void {
     );
   }
 
-  consultarAccesos(idUsuario:number){
+  consultarAccesos(idUsuario: number) {
     this.gmbeservice.consultarAccesos(idUsuario).subscribe(
-      res=>{
-        
+      res => {
+
         //Actualizar el Storage con los accesos
-        this.storage.setItem('autorizadas',this.cifrado.cifrar(JSON.stringify(res)));
+        this.storage.setItem('autorizadas', this.cifrado.cifrar(JSON.stringify(res)));
       },
-      err=>{}
+      err => { }
     )
   }
 
@@ -779,28 +782,50 @@ clearImage(): void {
     this.modalService.dismissAll();
   }
 
-  open(content: TemplateRef<any>,tipo :string) {
+  open(content: TemplateRef<any>, tipo: string) {
     this.mostrarErrorurl = false;
     this.volverCargarBandera = true;
     this.obtenerCategoriasEditado();
 
-    if(tipo=== 'categoria'){
+    if (tipo === 'categoria') {
       this.esEditado = false;
       this.categoriaForm = this.fb.group({
-        nombre:['',Validators.required],
-        descripcion:[''],
+        nombre: ['', Validators.required],
+        descripcion: [''],
         url: ['']
       });
     }
 
-    if(tipo==='subcategoria'){
+    if (tipo === 'subcategoria') {
       this.esEditado = false;
       this.subcategoriaForm = this.fb.group({
-        categoria:[0,Validators.required],
-        nombre:['',Validators.required],
-        descripcion:[''],
+        categoria: [0, Validators.required],
+        nombre: ['', Validators.required],
+        descripcion: [''],
         url: ['']
       });
+    }
+
+    if (tipo === 'categoriaEliminar') {
+      this.eliminarCategoriaForm = this.fb.group({
+        categoria: [0, Validators.required],
+        descripcion: [''],
+        url: ['']
+      })
+      this.eliminarCategoriaForm.get('descripcion')?.disable();
+      this.eliminarCategoriaForm.get('url')?.disable();
+    }
+
+
+    if (tipo === 'subcategoriaEliminar') {
+      this.eliminarSubcategoriaForm = this.fb.group({
+        categoria: [0, Validators.required],
+        subCategoria: [0, Validators.required],
+        descripcion: [''],
+        url: ['']
+      })
+      this.eliminarSubcategoriaForm.get('descripcion')?.disable();
+      this.eliminarSubcategoriaForm.get('url')?.disable();
     }
 
     this.modalRef = this.modalService.open(content, {
@@ -810,11 +835,11 @@ clearImage(): void {
     });
   }
 
-//1:CREAR 2:EDITAR 3:CREAR CAT 4:EDITAR CAT
-  validaUrl(form:number){
+  //1:CREAR 2:EDITAR 3:CREAR CAT 4:EDITAR CAT
+  validaUrl(form: number) {
     let url;
 
-    switch(form){
+    switch (form) {
       case 1:
         url = this.categoriaForm.get('url')?.value;
         break;
@@ -822,25 +847,25 @@ clearImage(): void {
         url = this.editarCategoriaForm.get('url')?.value;
         break;
       case 3:
-        url = this.subcategoriaForm.get('url')?.value;     
+        url = this.subcategoriaForm.get('url')?.value;
         break;
       case 4:
-          url = this.editarSubcategoriaForm.get('url')?.value;     
+        url = this.editarSubcategoriaForm.get('url')?.value;
         break;
     }
 
-    if(this.tipoSeleccionado && url.length>0){
-      if(!this.urlPattern.test(url)){
+    if (this.tipoSeleccionado && url.length > 0) {
+      if (!this.urlPattern.test(url)) {
         console.log('entro')
         console.log(url)
         this.mostrarErrorurl = true;
-      }else{
+      } else {
         this.mostrarErrorurl = false;
       }
-    }else{
+    } else {
       this.mostrarErrorurl = false;
     }
-    
+
   }
 
   crearCategoria() {
@@ -857,62 +882,90 @@ clearImage(): void {
     console.log(nombre)
     console.log(descripcion)
 
-  //  if (nombre !== '' && descripcion !== '') {
-      
-        this.gmbeservice.crearCategoria(nombre, descripcion, url ).subscribe(
-          res => {
-            swal.fire({
-              title: '',
-              text: 'Registro creado exitosamente',
-              icon: 'success',
-              confirmButtonText: 'OK',
-              customClass: {
-                popup: 'custom-swal-popup',
-                confirmButton: 'custom-swal-confirm-button'
+    this.gmbeservice.crearCategoria(nombre, descripcion, url).subscribe(
+      res => {
+        swal.fire({
+          title: '',
+          text: 'Registro creado exitosamente',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
+          }
+        });
+        if (this.modalRef) {
+          //limpia el select de categorias
+          this.activarAgregar = false;
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.obtenerCategorias();
+          this.subCategorias = [];
+          this.modalRef.close();
+        }
+      },
+      err => { // Cerrar la animación de carga
+        swal.close();
+        // Verifica si el código de estado es 409
+        if (err.status === 409) {
+          let data = err.error.data;
+          swal.fire({
+            icon: 'warning',
+            text: '“¿Desea reactivar esta categoría/subcategoría?”.',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true,
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'guardar-swal',
+              cancelButton: 'cancelar-swal',
+            },
+          })
+            .then((result: { isConfirmed: any }) => {
+              if (result.isConfirmed) {
+                let envio = { descripcion: descripcion, complemento: url, activo: true, idCatalogo: data?.idCatalogo };
+                this.gmbeservice.actualizarActivarCategoriaSubcategoria(envio).subscribe(
+                  res => {
+                    swal.fire({
+                      title: '',
+                      text: 'Registro creado exitosamente',
+                      icon: 'success',
+                      confirmButtonText: 'OK',
+                      customClass: {
+                        popup: 'custom-swal-popup',
+                        confirmButton: 'custom-swal-confirm-button'
+                      }
+                    });
+                    if (this.modalRef) {
+                      //limpia el select de categorias
+                      this.activarAgregar = false;
+                      this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                      this.obtenerCategorias();
+                      this.subCategorias = [];
+                      this.modalRef.close();
+                    }
+                  });
               }
             });
-            if (this.modalRef) {
-              //limpia el select de categorias
-              this.activarAgregar = false;
-              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-              this.obtenerCategorias();
-              this.subCategorias = [];
-              this.modalRef.close();
+        } else {
+          // Manejo de otros errores
+          swal.fire({
+            icon: 'error',
+            text: err.error.message || 'Ocurrió un error al crear el registro',
+            confirmButtonText: 'OK',
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'ok-swal',
             }
-          },
-          err => {
-            // Manejo de errores
-            
-            // Cerrar la animación de carga
-            swal.close();
-            // Mostrar mensaje de error
-            swal.fire({
-              icon: 'error',
-              text: err.error.messaje,
-              confirmButtonText: 'OK',
-              customClass: {
-                htmlContainer: 'titulo-swal',
-                confirmButton: 'ok-swal',
-              }
-            })
-          }
-        ); 
-      // } else {
-      //   swal.fire({
-      //     title: '',
-      //     text: 'El campo no puede estar vacío',
-      //     icon: 'error',
-      //     confirmButtonText: 'OK',
-      //     customClass: {
-      //       popup: 'custom-swal-popup',
-      //       confirmButton: 'custom-swal-confirm-button'
-      //     }
-      //   });
-      // }
-
+          });
+        }
+      }
+    );
   }
 
-  editarCategoria(){
+  editarCategoria() {
     let id = Number(this.editarCategoriaForm.get('categoria')?.value);
     let nombre = this.editarNombre;
 
@@ -923,11 +976,11 @@ clearImage(): void {
     url = url !== null ? url?.trim() : '';
 
     this.gmbeservice.existeCategoriaSubcategoria(id).subscribe(
-      res=>{
-        
-        if(res.data !== true){
-          if(this.tipoSeleccionado && url.length>0){
-            if(!this.urlPattern.test(url)){
+      res => {
+
+        if (res.data !== true) {
+          if (this.tipoSeleccionado && url.length > 0) {
+            if (!this.urlPattern.test(url)) {
               swal.fire({
                 title: '',
                 text: 'Ingresa una URL',
@@ -941,49 +994,49 @@ clearImage(): void {
               return;
             }
           }
-      
-      
+
+
           //if (descripcion !== '' || url !== '') {
-            this.gmbeservice.editarCategoria(id,nombre,descripcion,url).subscribe(
-              res => {
-                swal.fire({
-                  title: '',
-                  text: 'Registro editado exitosamente',
-                  icon: 'success',
-                  confirmButtonText: 'OK',
-                  customClass: {
-                    popup: 'custom-swal-popup',
-                    confirmButton: 'custom-swal-confirm-button'
-                  }
-                });
-                if (this.modalRef) {
-                  this.editarCategoriaForm.get('categoria')?.setValue('');
-                  this.editarCategoriaForm.get('descripcion')?.setValue('');
-                  this.editarCategoriaForm.get('url')?.setValue('');
-                  this.obtenerCategorias();
-                  this.subCategorias = [];
-                  this.activarAgregar = false;
-                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-                  this.modalRef.close();
+          this.gmbeservice.editarCategoria(id, nombre, descripcion, url).subscribe(
+            res => {
+              swal.fire({
+                title: '',
+                text: 'Registro editado exitosamente',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                  popup: 'custom-swal-popup',
+                  confirmButton: 'custom-swal-confirm-button'
                 }
-              },
-              err => {
-                // Manejo de errores
-                
-                // Cerrar la animación de carga
-                swal.close();
-                // Mostrar mensaje de error
-                swal.fire({
-                  icon: 'error',
-                  text: err.error.messaje,
-                  confirmButtonText: 'OK',
-                  customClass: {
-                    htmlContainer: 'titulo-swal',
-                    confirmButton: 'ok-swal',
-                  }
-                })
+              });
+              if (this.modalRef) {
+                this.editarCategoriaForm.get('categoria')?.setValue('');
+                this.editarCategoriaForm.get('descripcion')?.setValue('');
+                this.editarCategoriaForm.get('url')?.setValue('');
+                this.obtenerCategorias();
+                this.subCategorias = [];
+                this.activarAgregar = false;
+                this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                this.modalRef.close();
               }
-            );
+            },
+            err => {
+              // Manejo de errores
+
+              // Cerrar la animación de carga
+              swal.close();
+              // Mostrar mensaje de error
+              swal.fire({
+                icon: 'error',
+                text: err.error.messaje,
+                confirmButtonText: 'OK',
+                customClass: {
+                  htmlContainer: 'titulo-swal',
+                  confirmButton: 'ok-swal',
+                }
+              })
+            }
+          );
           // } else {
           //   swal.fire({
           //     title: '',
@@ -996,7 +1049,7 @@ clearImage(): void {
           //     }
           //   });
           // }
-        }else{
+        } else {
           swal.fire({
             title: '',
             text: 'No se puede editar esta categoría ya que se encuentra relacionada a un MBE',
@@ -1009,26 +1062,26 @@ clearImage(): void {
           });
         }
       },
-      err=>{}
+      err => { }
     );
   }
 
-  existeCategoriaSubcategoria(idCategoria: number):boolean{
+  existeCategoriaSubcategoria(idCategoria: number): boolean {
     this.existeCategoria = false;
     this.gmbeservice.existeCategoriaSubcategoria(idCategoria).subscribe(
-      res=>{
-        
-        if(res.data === true){
+      res => {
+
+        if (res.data === true) {
           this.existeCategoria = true;
         }
       },
-      err=>{}
+      err => { }
     );
     return this.existeCategoria;
   }
 
 
-  crearSubcategoria(){
+  crearSubcategoria() {
 
     let nombre = this.subcategoriaForm.get('nombre')?.value;
     let descripcion = this.subcategoriaForm.get('descripcion')?.value;
@@ -1037,9 +1090,8 @@ clearImage(): void {
     descripcion = descripcion?.trim();
     url = url?.trim();
 
-
-    if(this.tipoSeleccionado && url.length>0){
-      if(!this.urlPattern.test(url)){
+    if (this.tipoSeleccionado && url.length > 0) {
+      if (!this.urlPattern.test(url)) {
         swal.fire({
           title: '',
           text: 'Ingresa una URL',
@@ -1053,70 +1105,112 @@ clearImage(): void {
         return;
       }
     }
-
-   // if (nombre !== '' && descripcion !== '') {
-        this.gmbeservice.crearSubcategoria(nombre,this.subcategoriaForm.get('categoria')?.value,descripcion,url).subscribe(
-          res => {
-            swal.fire({
-              title: '',
-              text: 'Registro creado exitosamente',
-              icon: 'success',
-              confirmButtonText: 'OK'
-            });
-            if (this.modalRef) {
-              this.subCategorias = [];
-              this.activarAgregar = false;
-              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-              this.modalRef.close();
-            }
-           
-          },
-          err=>{
-            
-            // Cerrar la animación de carga
-            swal.close();
-            // Mostrar mensaje de error
-            swal.fire({
-              icon: 'error',
-              text: err.error.messaje,
-              confirmButtonText: 'OK',
-              customClass: {
-                htmlContainer: 'titulo-swal',
-                confirmButton: 'ok-swal',
-              }
-            })
-    
+    this.gmbeservice.crearSubcategoria(nombre, this.subcategoriaForm.get('categoria')?.value, descripcion, url).subscribe(
+      res => {
+        swal.fire({
+          title: '',
+          text: 'Registro creado exitosamente',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        if (this.modalRef) {
+          this.subCategorias = [];
+          this.activarAgregar = false;
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.modalRef.close();
+        }
+      },
+      err => {
+        swal.close();
+        /*swal.fire({
+          icon: 'error',
+          text: err.error.messaje,
+          confirmButtonText: 'OK',
+          customClass: {
+            htmlContainer: 'titulo-swal',
+            confirmButton: 'ok-swal',
           }
-        )
-  // }else{
-  //   swal.fire({
-  //     title: '',
-  //     text: 'El campo no puede estar vacío',
-  //     icon: 'error',
-  //     confirmButtonText: 'OK'
-  //   });
+        })*/
+        if (err.status === 409) {
+          let data = err.error.data;
+          swal.fire({
+            icon: 'warning',
+            text: '“¿Desea reactivar esta categoría/subcategoría?”.',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true,
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'guardar-swal',
+              cancelButton: 'cancelar-swal',
+            },
+          })
+            .then((result: { isConfirmed: any }) => {
+              if (result.isConfirmed) {
+                let envio = { descripcion: descripcion, complemento: url, activo: true, idCatalogo: data?.idCatalogo };
+                this.gmbeservice.actualizarActivarCategoriaSubcategoria(envio).subscribe(
+                  res => {
+                    swal.fire({
+                      title: '',
+                      text: 'Registro creado exitosamente',
+                      icon: 'success',
+                      confirmButtonText: 'OK',
+                      customClass: {
+                        popup: 'custom-swal-popup',
+                        confirmButton: 'custom-swal-confirm-button'
+                      }
+                    });
+                    if (this.modalRef) {
+                      //limpia el select de categorias
+                      this.activarAgregar = false;
+                      this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                      this.obtenerCategorias();
+                      this.subCategorias = [];
+                      this.modalRef.close();
+                    }
+                  });
+              }
+            });
+        }else{
+          // Manejo de otros errores
+          swal.fire({
+            icon: 'error',
+            text: err.error.message || 'Ocurrió un error al crear el registro',
+            confirmButtonText: 'OK',
+            customClass: {
+              htmlContainer: 'titulo-swal',
+              confirmButton: 'ok-swal',
+            }
+          });
+        }
+
+      }
+    )
   }
 
-  editarSubcategoria(){
+  editarSubcategoria() {
     let id = Number(this.editarSubcategoriaForm.get('categoria')?.value);
     let idSub = Number(this.editarSubcategoriaForm.get('subCategoria')?.value);
-    let validarIdSub =  idSub === 0 ? id : idSub;
+    let validarIdSub = idSub === 0 ? id : idSub;
     let nombre = this.editarNombreSubcategoria;
     let descripcion = this.editarSubcategoriaForm.get('descripcion')?.value;
     let url = this.editarSubcategoriaForm.get('url')?.value;
 
-    
-    
+
+
     console.log(descripcion)
     url = url !== null ? url?.trim() : '';
     descripcion = descripcion !== null ? descripcion?.trim() : '';
 
     this.gmbeservice.existeCategoriaSubcategoria(validarIdSub).subscribe(
-      res=>{
-        
-        if(res.data !== true){
-          if(this.tipoSeleccionado && url.length>0){
-            if(!this.urlPattern.test(url)){
+      res => {
+
+        if (res.data !== true) {
+          if (this.tipoSeleccionado && url.length > 0) {
+            if (!this.urlPattern.test(url)) {
               swal.fire({
                 title: '',
                 text: 'Ingresa una URL',
@@ -1130,76 +1224,212 @@ clearImage(): void {
               return;
             }
           }
-      
-            this.gmbeservice.editarSubcategoria(id,nombre,validarIdSub,descripcion,url).subscribe(
-              res => {
-                swal.fire({
-                  title: '',
-                  text: 'Registro editado exitosamente',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-                });
-                  this.subCategoriasEditado = [];
-                  //Se limpia los arrays de subcategorias agregadas y los checkboxes
-                  this.subcategoriasAgregadas = [];
-                  this.subCategorias = [];
-                  //La bandera de guardado se pone en false
-                  this.activarAgregar = false;
-                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
-                  this.editarSubcategoriaForm.get('categoria')?.setValue('');
-                  this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
-                  this.editarSubcategoriaForm.get('descripcion')?.setValue('');
-                  this.editarSubcategoriaForm.get('url')?.setValue('');
-                  //Vuelve a cargar las subcategorias
-                  this.obtenerCategorias();
-                  this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-                  this.subCategorias = [];
 
-                  this.modalService.dismissAll();
-                
-              },
-              err=>{
-                
-                // Cerrar la animación de carga
-                swal.close();
-                // Mostrar mensaje de error
-                swal.fire({
-                  icon: 'error',
-                  text: err.error.messaje,
-                  confirmButtonText: 'OK',
-                  customClass: {
-                    htmlContainer: 'titulo-swal',
-                    confirmButton: 'ok-swal',
-                  }
-                })
-        
-              }
-            );
-          }else{
-            swal.fire({
-              title: '',
-              text: 'No se puede editar esta subcategoría ya que se encuentra relacionada a un MBE',
-              icon: 'error',
-              confirmButtonText: 'OK',
-              customClass: {
-                popup: 'custom-swal-popup',
-                confirmButton: 'custom-swal-confirm-button'
-              }
-            });
-          }
+          this.gmbeservice.editarSubcategoria(id, nombre, validarIdSub, descripcion, url).subscribe(
+            res => {
+              swal.fire({
+                title: '',
+                text: 'Registro editado exitosamente',
+                icon: 'success',
+                confirmButtonText: 'OK'
+              });
+              this.subCategoriasEditado = [];
+              //Se limpia los arrays de subcategorias agregadas y los checkboxes
+              this.subcategoriasAgregadas = [];
+              this.subCategorias = [];
+              //La bandera de guardado se pone en false
+              this.activarAgregar = false;
+              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+              this.editarSubcategoriaForm.get('categoria')?.setValue('');
+              this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
+              this.editarSubcategoriaForm.get('descripcion')?.setValue('');
+              this.editarSubcategoriaForm.get('url')?.setValue('');
+              //Vuelve a cargar las subcategorias
+              this.obtenerCategorias();
+              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+              this.subCategorias = [];
+
+              this.modalService.dismissAll();
+
+            },
+            err => {
+
+              // Cerrar la animación de carga
+              swal.close();
+              // Mostrar mensaje de error
+              swal.fire({
+                icon: 'error',
+                text: err.error.messaje,
+                confirmButtonText: 'OK',
+                customClass: {
+                  htmlContainer: 'titulo-swal',
+                  confirmButton: 'ok-swal',
+                }
+              })
+
+            }
+          );
+        } else {
+          swal.fire({
+            title: '',
+            text: 'No se puede editar esta subcategoría ya que se encuentra relacionada a un MBE',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+              popup: 'custom-swal-popup',
+              confirmButton: 'custom-swal-confirm-button'
+            }
+          });
+        }
       },
-      err=>{}
+      err => { }
     );
 
 
     console.log(idSub)
   }
 
-  eliminarCategoriaModal(){
+  eliminarCategoriaFinal() {
+
+    let id = this.eliminarCategoriaForm.get('categoria')?.value;
+    this.gmbeservice.eliminarCategoriaSubcategoria(id).subscribe(
+      res => {
+        console.log('respuesta eliminación', res);
+        if (res?.code === 1) {
+          swal.fire({
+            title: '',
+            text: res?.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+              popup: 'custom-swal-popup',
+              confirmButton: 'custom-swal-confirm-button'
+            }
+          });
+          this.eliminarCategoriaTabla(1, parseInt(id));
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.obtenerCategorias();
+          this.subCategorias = [];
+        } else {
+          swal.fire({
+            title: '',
+            text: 'Registro eliminado exitosamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+          this.modalService.dismissAll();
+          this.eliminarCategoriaTabla(1, parseInt(id));
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.obtenerCategorias();
+          this.subCategorias = [];
+        }
+      },
+    )
+  }
+
+  eliminarCategoriaTabla(tipo: number, id: number) {
+    console.info(id)
+
+    let aux: { categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; subcategorias: any[]; }[] = [];
+    this.estructuraFinalColumnasTitulos.forEach((e: {
+      categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
+    }) => {
+      let sub: any[] = [];
+      e.subcategorias.forEach((i: any) => {
+        if (i.idCatalogo !== id) {
+          sub.push(i);
+        }
+      })
+      if (sub.length > 0) {
+        aux.push({ categoria: e.categoria, subcategorias: sub })
+      }
+
+    })
+    this.estructuraFinalColumnasTitulos = aux;
+
+    aux = [];
+
+    this.estructuraFinalFilasTitulos.forEach((e: {
+      categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
+    }) => {
+      let sub: any[] = [];
+      e.subcategorias.forEach((i: any) => {
+        if (i.idCatalogo !== id) {
+          sub.push(i);
+        }
+      })
+      if (sub.length > 0) {
+        aux.push({ categoria: e.categoria, subcategorias: sub })
+      }
+    })
+    this.estructuraFinalFilasTitulos = aux;
+
+    let auxSub: { idCatalogo: number; idRelacion: number; }[] = [];
+    this.estructuraFinalColumnasSubitulos.forEach((a: { idCatalogo: number; idRelacion: number; }) => {
+      if (a.idCatalogo !== id && a.idRelacion !== id) {
+        auxSub.push(a);
+      }
+    })
+    this.estructuraFinalColumnasSubitulos = auxSub;
+
+    auxSub = [];
+    this.estructuraFinalFilasSubitulos.forEach((a: { idCatalogo: number; idRelacion: number; }) => {
+      if (a.idCatalogo !== id && a.idRelacion !== id) {
+        auxSub.push(a);
+      }
+    })
+    this.estructuraFinalFilasSubitulos = auxSub;
+
+    this.estructuraFinalColumnasTitulos = this.estructuraFinalColumnasTitulos.filter((item: { categoria: { idCatalogo: number; }; }) => item.categoria.idCatalogo !== id);
+    this.estructuraFinalFilasTitulos = this.estructuraFinalFilasTitulos.filter((item: { categoria: { idCatalogo: number; }; }) => item.categoria.idCatalogo !== id);
+
+
+    console.error(this.estructuraFinalColumnasTitulos)
+    console.error(this.estructuraFinalColumnasSubitulos)
+    console.error(this.estructuraFinalFilasTitulos)
+    console.error(this.estructuraFinalFilasSubitulos)
 
   }
 
-  cerrarModalCatalgo(){
+  eliminarSubcategoriaFinal() {
+    let id = this.eliminarSubcategoriaForm.get('subCategoria')?.value;
+    this.gmbeservice.eliminarCategoriaSubcategoria(id).subscribe(
+      res => {
+        console.log('respuesta eliminación', res);
+        if (res?.code === 1) {
+          swal.fire({
+            title: '',
+            text: res?.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+              popup: 'custom-swal-popup',
+              confirmButton: 'custom-swal-confirm-button'
+            }
+          });
+          this.eliminarCategoriaTabla(1, parseInt(id));
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.obtenerCategorias();
+          this.subCategorias = [];
+        } else {
+          swal.fire({
+            title: '',
+            text: 'Registro eliminado exitosamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
+          this.modalService.dismissAll();
+          this.eliminarCategoriaTabla(1, parseInt(id));
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.obtenerCategorias();
+          this.subCategorias = [];
+        }
+      },
+    )
+  }
+
+
+  cerrarModalCatalgo() {
     this.volverCargarBandera = false;
     this.editarCategoriaForm.get('categoria')?.setValue('');
     this.editarCategoriaForm.get('descripcion')?.setValue('');
@@ -1207,7 +1437,7 @@ clearImage(): void {
     this.modalRef?.close();
   }
 
-  cerrarModalSubCatalgo(){
+  cerrarModalSubCatalgo() {
     //limpia el arreglo de subcategorias agregadas y los checkboxes
     this.volverCargarBandera = false;
     this.subCategoriasEditado = [];
@@ -1219,13 +1449,13 @@ clearImage(): void {
   }
 
 
-validaSubtitulosColumna(){
-  return this.estructuraFinalColumnasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
-}
+  validaSubtitulosColumna() {
+    return this.estructuraFinalColumnasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
+  }
 
-validaSubtitulosFilas(){
-  return this.estructuraFinalFilasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
-}
+  validaSubtitulosFilas() {
+    return this.estructuraFinalFilasSubitulos.some((obj: { esAuxiliar: boolean | undefined; }) => obj.esAuxiliar === false || obj.esAuxiliar === undefined);
+  }
 
-  
+
 }

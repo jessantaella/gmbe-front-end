@@ -27,9 +27,15 @@ export class UserInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    // Si la URL es 'conf/server-conf.json', deja pasar la solicitud sin modificarla
+    if (req.url.includes('conf/server-conf.json') || req.url.includes('/conf/configuracion.json')) {
+      return next.handle(req);
+    }
+
+
      // const userSession = this.storage.getItem('usr');
       const token = this.storage.getItem('token-gmbe');
-      console.log('token', token);
+      //console.log('token', token);
 
       const solicitud = req.clone({
         setHeaders: {
@@ -45,8 +51,7 @@ export class UserInterceptor implements HttpInterceptor {
       return next.handle(solicitud).pipe(
         tap(event => {
           if (event instanceof HttpResponse) {
-            console.log('TAP', event);
-        // Puedes manejar otras respuestas aquí si lo necesitas
+            //console.log('TAP', event);
           }
         }),
         catchError((error: HttpErrorResponse) => {

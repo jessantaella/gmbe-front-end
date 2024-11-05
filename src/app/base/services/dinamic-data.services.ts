@@ -30,7 +30,9 @@ constructor(private http:HttpClient,@Inject(PLATFORM_ID) private platformId:any)
       }else{
         url = 'http://10.1.15.102:81/conf/configuracion.json'
       }
-      return this.http.get<any>(conecta,{ headers: headers });
+console.log('aqui consulta dinamicamente',url)
+
+      return this.http.get<any>(url,{ headers: headers });
     //}
   }
 

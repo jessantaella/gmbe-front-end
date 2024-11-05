@@ -296,5 +296,19 @@ export class GmbeServicesService {
       let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/usuarios/exist-user?username='+usuario+'&correo='+correo;
       return this.http.get<any>(url);
     }
+
+
+    eliminarCategoriaSubcategoria(idCategoriaSubcategoria:number):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+`api/gmbe/api/catalogo/detele?idCategoriaSubcategoria=${idCategoriaSubcategoria}`;
+      return this.http.post<any>(url,{});
+    }
+
+
+    actualizarActivarCategoriaSubcategoria(datos:any):Observable<any>{
+      let url = this.serverConfigService.getServerConfig()+`api/gmbe/api/catalogo/activar-desactivar`;
+      return this.http.put<any>(url,datos);
+    }
+
+
      
 }

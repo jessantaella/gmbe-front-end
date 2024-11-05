@@ -415,7 +415,7 @@
           <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
           <div class="col-sm-6">
             <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria" (change)="obtenerSubCategoriasEditado($event)">
-              <option value="" disabled >Seleccione una opción</option>
+              <option value="0" disabled >Seleccione una opción</option>
               <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">{{categoria.catalogo}}
               </option>
             </select>
@@ -426,7 +426,7 @@
           <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre subcategoría:</label>
           <div class="col-sm-6">
             <select class="form-select" aria-label="Seleccione una opción" formControlName="subCategoria" (change)="changeSubcategoria($event)">
-              <option value="" disabled >Seleccione una opción</option>
+              <option value="0" disabled >Seleccione una opción</option>
               <option [value]="categoria.idCatalogo" *ngFor="let categoria of subCategoriasEditado">{{categoria.catalogo}}
               </option>
             </select>
@@ -455,9 +455,10 @@
         Cancelar
       </button>
       <button type="button" class="btn btn-sm btn-guardar"
-        [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl===true || !this.habilitarSub">
+      (click)="eliminarSubcategoriaFinal()"
+        [disabled]="(!eliminarSubcategoriaForm.valid || eliminarSubcategoriaForm.get('subCategoria')?.value === 0) || mostrarErrorurl===true">
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
-        Guardar
+        Aceptar
       </button>
     </div>
   </ng-template>
@@ -474,7 +475,7 @@
             <div class="col-sm-8">
               <select class="form-select" formControlName="categoria" 
               (change)="escucharSelectEditado($event)" >
-                      <option value="" disabled >Seleccione una opción</option>
+                      <option value="0" disabled >Seleccione una opción</option>
                       <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">
                         {{categoria.catalogo}}</option>
                     </select>
@@ -502,9 +503,9 @@
         <fa-icon [icon]="faRotateLeft"></fa-icon>
         Cancelar
       </button>
-      <button type="button" class="btn btn-sm btn-guardar" [disabled]="!editarCategoriaForm.valid || mostrarErrorurl===true">
+      <button type="button" class="btn btn-sm btn-guardar" (click)="eliminarCategoriaFinal()"  [disabled]="(!eliminarCategoriaForm.valid || eliminarCategoriaForm.get('categoria')?.value === 0) || mostrarErrorurl===true" >
         <fa-icon [icon]="faFloppyDisk"></fa-icon>
-        Guardar
+        Aceptar
       </button>
     </div>
   </ng-template>
