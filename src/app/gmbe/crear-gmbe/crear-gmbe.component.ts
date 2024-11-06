@@ -666,6 +666,10 @@ export class CrearGmbeComponent implements OnInit {
     let sub = this.subCategoriasEditado.find((e: any) => e.idCatalogo === selectedValue)
     this.editarSubcategoriaForm.get('descripcion')?.setValue(sub.descripcion);
     this.editarSubcategoriaForm.get('url')?.setValue(sub.complemento);
+
+    this.eliminarSubcategoriaForm.get('descripcion')?.setValue(sub.descripcion);
+    this.eliminarSubcategoriaForm.get('url')?.setValue(sub.complemento);
+
     console.log(idCatalogo.target.value)
     if (idCatalogo.target.value !== '0' || idCatalogo.target.value !== '') {
       this.habilitarSub = true;
@@ -820,7 +824,7 @@ export class CrearGmbeComponent implements OnInit {
     if (tipo === 'subcategoriaEliminar') {
       this.eliminarSubcategoriaForm = this.fb.group({
         categoria: [0, Validators.required],
-        subCategoria: [0, Validators.required],
+        subCategoria: ['', Validators.required],
         descripcion: [''],
         url: ['']
       })
@@ -910,7 +914,7 @@ export class CrearGmbeComponent implements OnInit {
           let data = err.error.data;
           swal.fire({
             icon: 'warning',
-            text: '“¿Desea reactivar esta categoría/subcategoría?”.',
+            text: '¿Desea reactivar esta categoría?',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -1135,7 +1139,7 @@ export class CrearGmbeComponent implements OnInit {
           let data = err.error.data;
           swal.fire({
             icon: 'warning',
-            text: '“¿Desea reactivar esta categoría/subcategoría?”.',
+            text: '¿Desea reactivar esta subcategoría?',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -1178,7 +1182,7 @@ export class CrearGmbeComponent implements OnInit {
           // Manejo de otros errores
           swal.fire({
             icon: 'error',
-            text: err.error.message || 'Ocurrió un error al crear el registro',
+            text: err.error.message,
             confirmButtonText: 'OK',
             customClass: {
               htmlContainer: 'titulo-swal',
