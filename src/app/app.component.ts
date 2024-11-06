@@ -14,8 +14,10 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
+  packageJson = require('../../package.json');
+
   title = 'GMBE';
-  version = 'V-1.3.0';
+  version = this.packageJson.version;
   tags: any;
   ga: any;
   isBrowser = false;

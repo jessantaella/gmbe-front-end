@@ -1,4 +1,4 @@
-//LOCAL
+
 export const environment = {
     production: true,
     servidor : "http://10.1.15.102:81",

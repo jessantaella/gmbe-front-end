@@ -41,7 +41,7 @@ export class ServerConfigService {
   
           this.http.get<any>(url,{ headers: headers })
             .subscribe(response => {
-              this.serverConfig = 'http://10.1.15.156:8000/'//response.servidor;
+              this.serverConfig = response.servidor;
               if(this.storage.getItem('srv') !== this.serverConfig){
                   this.storage.setItem('srv',this.serverConfig)
               }
