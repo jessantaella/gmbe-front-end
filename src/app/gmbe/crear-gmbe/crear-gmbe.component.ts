@@ -545,6 +545,35 @@ export class CrearGmbeComponent implements OnInit {
     }
   }
 
+  eliminarSubcategoria(tipo: number, elemento: any){
+    console.log(this.estructuraFinalColumnasTitulos);
+    if (tipo === 1) {
+      this.estructuraFinalColumnasSubitulos =
+        this.estructuraFinalColumnasSubitulos.filter(
+          (e: { idCatalogo: any; }) => e.idCatalogo !== elemento.idCatalogo
+        );
+        this.estructuraFinalColumnasTitulos.forEach((item: { subcategorias: any[]; }) => {
+          item.subcategorias = item.subcategorias.filter(subcategoria => {
+            return subcategoria.idCatalogo !== elemento.idCatalogo;
+          });
+        });
+        this.estructuraFinalColumnasTitulos = this.estructuraFinalColumnasTitulos.filter((item: { subcategorias: string | any[]; }) => item.subcategorias.length > 0);
+    }else{
+      this.estructuraFinalFilasSubitulos =
+      this.estructuraFinalFilasSubitulos.filter(
+        (e: { idCatalogo: any; }) => e.idCatalogo !== elemento.idCatalogo
+      );
+      this.estructuraFinalFilasTitulos.forEach((item: { subcategorias: any[]; }) => {
+        item.subcategorias = item.subcategorias.filter(subcategoria => {
+          return subcategoria.idCatalogo !== elemento.idCatalogo;
+        });
+      });
+      this.estructuraFinalFilasTitulos = this.estructuraFinalFilasTitulos.filter((item: { subcategorias: string | any[]; }) => item.subcategorias.length > 0);
+    }
+  }
+
+
+
   // uno para obtener fila o columna
   tipoEstructura() {
     this.gmbeservice.listarCatalogo(1).subscribe(

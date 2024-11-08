@@ -167,6 +167,8 @@
                       *ngIf="estructuraFinalColumnasTitulos.length>0"></th>
                     <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center"
                       *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
+                      <fa-icon [icon]="faTrash"
+                      (click)="eliminarSubcategoria(1,subcolumna)"></fa-icon>
                       {{ subcolumna.catalogo }}
                     </th>
                   </tr>

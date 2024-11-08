@@ -91,7 +91,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
 
   conteoCategorias: any;
 
-  colores = ['#80C080', '#8080FF', '#C080C0', '#ffb6c0', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
+  colores = ['#C2544C', '#757582', '#5562A6', '#32818E', '#B4499E', '#917059'];
+  colorCategoria : {categoria:number,color:string}[]= [];
+  posColores = 0;
+  idAnterior = -1;
   colorSeleccionado = '';
 
   tituloCategoriaModal: string = '';
@@ -508,10 +511,18 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
             }
           });
 
-          console.log(this.estructuraFinalFilasSubitulos);
-          console.log(this.estructuraFinalColumnasTitulos);
-          console.log(this.estructuraFinalFilasTitulos);
-
+          let contador = -1;
+          let categoriaAnt=0;
+          this.estructuraFinalFilasSubitulos.forEach(e=>{
+            if(e.idCategoria !== categoriaAnt ){
+              categoriaAnt = e.idCategoria;
+              contador++;
+            }
+            if(contador>this.colores.length-1){
+              contador = 0;
+            }
+            e.color = this.colores[contador];
+          })
           let estructuraGuardada = {
             idMbe: this.idmbe,
             columnas: this.estructuraFinalColumnasTitulos,
@@ -687,22 +698,30 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
 
   }
 
-  colorFila(idCategoria: number) {
-    if (!this.conteoCategorias) {
-      this.conteoCategorias = {};
+  colorFila(posicion: number, tipo: number, id: number) {
+    let salida = '';
+    if(id !== this.idAnterior){
+      this.posColores++;
+      this.idAnterior = id;
     }
-
-    if (!this.conteoCategorias[idCategoria]) {
-      if (this.colores.length === 0) {
-        this.colores = ['#80C080', '#8080FF', '#C080C0', '#ffb6c0', '#c0c0c0', '#808080', '#ff8080', '#ffd280', '#5562A6', '#35AEB6', '#B8475A', '#F89E66'];
-      }
-      this.colorSeleccionado = this.colores.splice(Math.floor(Math.random() * this.colores.length), 1)[0];
+    // Verifica si es de tipo 1 y no hay selecciones en filas o columnas
+    if (tipo === 1 && this.seleccionColumnasCategorias.length === 0 && this.seleccionFilasCategorias.length === 0) {
+      // Calcula el color basado en la posición y almacena en `colorCategoria` si no existe
+      salida = this.colores[this.posColores % this.colores.length];
       
-      this.conteoCategorias[idCategoria] = this.colorSeleccionado;
+      // Solo agrega el color si no existe ya en `colorCategoria`
+      const existeCategoria = this.colorCategoria.some(obj => obj.categoria === id);
+      if (!existeCategoria) {
+        this.colorCategoria.push({ categoria: id, color: salida });
+      }
+    } else {
+      // Si ya existe en `colorCategoria`, busca el color
+      const item = this.colorCategoria.find(obj => obj.categoria === id);
+      salida = item?.color ?? ''; // Usa el color si existe, o una cadena vacía si no
     }
-
-    return this.conteoCategorias[idCategoria];
+    return salida;
   }
+  
 
   detenerPropagacion(event: Event) {
     event.stopPropagation();

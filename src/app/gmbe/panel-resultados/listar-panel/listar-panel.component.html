@@ -173,7 +173,7 @@
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
-                [ngStyle]="{'background-color' : this.colorFila(fila.idCategoria), 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
+                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
@@ -188,7 +188,7 @@
               
               <!-- Primera subcategoría de la fila -->
               <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
-                [ngStyle]="{'background-color': this.colorFila(fila.idCategoria), 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
+                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
                 <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
