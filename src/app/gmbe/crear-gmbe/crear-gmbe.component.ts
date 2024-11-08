@@ -190,6 +190,7 @@ export class CrearGmbeComponent implements OnInit {
 
   escucharSelectEditado(event: any) {
     this.esEditado = true;
+    this.mostrarErrorurl = false;
 
     let idCategoria = Number(event.target.value);
     //buscar la categoria en el arreglo de categorias
@@ -636,10 +637,14 @@ export class CrearGmbeComponent implements OnInit {
   obtenerSubCategoriasEditado(idPadre: any) {
 
     this.habilitarSub = false;
-
+    this.mostrarErrorurl =false;
     this.eliminarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.eliminarSubcategoriaForm.get('descripcion')?.setValue('');
     this.eliminarSubcategoriaForm.get('url')?.setValue('');
+
+    this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
+    this.editarSubcategoriaForm.get('descripcion')?.setValue('');
+    this.editarSubcategoriaForm.get('url')?.setValue('');
 
     let selectElement = idPadre.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
@@ -647,7 +652,6 @@ export class CrearGmbeComponent implements OnInit {
     this.categoria = this.arregloCategorias.find(
       (c) => c.idCatalogo === selectedValue
     );
-
     this.gmbeservice
       .listarSubcategorias(this.categoria.idCatalogo)
       .subscribe((res) => {
@@ -655,12 +659,11 @@ export class CrearGmbeComponent implements OnInit {
 
         this.subCategoriasEditado = res;
       });
-    //this.eliminarSubcategoriaForm = this.categoria.catalogo;
-    //this.editarSubcategoriaForm.get('descripcion')?.setValue(this.categoria.descripcion);
-    //this.editarSubcategoriaForm.get('url')?.setValue(this.categoria.complemento);
+   
   }
 
   changeSubcategoria(idCatalogo: any) {
+    this.mostrarErrorurl =false;
     let selectElement = idCatalogo.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
     let sub = this.subCategoriasEditado.find((e: any) => e.idCatalogo === selectedValue)
@@ -957,7 +960,7 @@ export class CrearGmbeComponent implements OnInit {
           // Manejo de otros errores
           swal.fire({
             icon: 'error',
-            text: 'La categoría ya esta registrada',
+            text: 'La categoría ya está registrada',
             confirmButtonText: 'OK',
             customClass: {
               htmlContainer: 'titulo-swal',
@@ -1041,18 +1044,6 @@ export class CrearGmbeComponent implements OnInit {
               })
             }
           );
-          // } else {
-          //   swal.fire({
-          //     title: '',
-          //     text: 'El campo no puede estar vacío',
-          //     icon: 'error',
-          //     confirmButtonText: 'OK',
-          //     customClass: {
-          //       popup: 'custom-swal-popup',
-          //       confirmButton: 'custom-swal-confirm-button'
-          //     }
-          //   });
-          // }
         } else {
           swal.fire({
             title: '',
@@ -1162,7 +1153,7 @@ export class CrearGmbeComponent implements OnInit {
                     if (this.modalRef) {
                       //limpia el select de categorias
                       this.activarAgregar = false;
-                      this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+                      this.subcategoriaForm.reset();
                       this.obtenerCategorias();
                       this.subCategorias = [];
                       this.modalRef.close();
@@ -1174,7 +1165,7 @@ export class CrearGmbeComponent implements OnInit {
           // Manejo de otros errores
           swal.fire({
             icon: 'error',
-            text: 'La subcategoria ya esta registrada',
+            text: 'La subcategoría ya está registrada',
             confirmButtonText: 'OK',
             customClass: {
               htmlContainer: 'titulo-swal',
@@ -1412,11 +1403,9 @@ export class CrearGmbeComponent implements OnInit {
               confirmButton: 'custom-swal-confirm-button'
             }
           });
-          this.eliminarCategoriaTabla(1, parseInt(id));
-          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
 
-          this.eliminarSubcategoriaForm.get('categoria')?.setValue('');
-          this.eliminarSubcategoriaForm.get('categoria')?.setValue('');
+          this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+          this.eliminarSubcategoriaForm.get('categoria')?.setValue('0');
           this.eliminarSubcategoriaForm.get('subCategoria')?.setValue('');
           this.eliminarSubcategoriaForm.get('descripcion')?.setValue('');
           this.eliminarSubcategoriaForm.get('url')?.setValue('');
@@ -1434,8 +1423,7 @@ export class CrearGmbeComponent implements OnInit {
           this.modalService.dismissAll();
           this.eliminarCategoriaTabla(1, parseInt(id));
           this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-
-          this.eliminarSubcategoriaForm.get('categoria')?.setValue('');
+          this.eliminarSubcategoriaForm.get('categoria')?.setValue('0');
           this.eliminarSubcategoriaForm.get('subCategoria')?.setValue('');
           this.eliminarSubcategoriaForm.get('descripcion')?.setValue('');
           this.eliminarSubcategoriaForm.get('url')?.setValue('');

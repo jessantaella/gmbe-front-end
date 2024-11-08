@@ -127,6 +127,16 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   terminoRenderizado: boolean = false;
 
 
+  /** Filtros */
+
+  seleccionFilasCategorias:any[] = [];
+  seleccionFilasSubCategorias : any []= [];
+  seleccionFilasSubCategoriasObjetos : any []= [];
+
+  seleccionColumnasCategorias:any[] = [];
+  seleccionColumnasSubCategorias : any []= [];
+  seleccionColumnasSubCategoriasObjetos : any []= [];
+
   constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
@@ -344,8 +354,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     let datosEnvio = {
       idMbe: this.idmbe,
       idTipo: 2,
-      categorias: null,
-      subcategorias: null,
+      categorias: this.seleccionFilasCategorias,
+      subcategorias: this.seleccionFilasSubCategorias,
     };
     console.log('datosEnvio:', datosEnvio);
     this.gmbservices.filtroCategoria(datosEnvio).subscribe(
@@ -361,17 +371,16 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     );
   }
 
-  filtrosSubcategoriasFilas(idCategorias: any = null) {
-    console.log('idCategorias:', idCategorias); 
+  filtrosSubcategoriasFilas() {
     let datosEnvio;
-    if (idCategorias?.length === 0) {
+    if (this.seleccionFilasCategorias?.length === 0) {
       this.subcategoriasFilas = [];
     } else {
       datosEnvio = {
         idMbe: this.idmbe,
         idTipo: 2,
-        categorias: idCategorias,
-        subcategorias: null,
+        categorias: this.seleccionFilasCategorias,
+        subcategorias: this.seleccionFilasSubCategorias,
       };
 
       this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
@@ -534,6 +543,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   borraFiltros() {
     //reinicio de los checkbox en false
     this.quitarSeleccion();
+    this.seleccionColumnasCategorias = [];
+    this.seleccionFilasCategorias = [];
+    this.seleccionColumnasSubCategorias = [];
+    this.seleccionFilasSubCategorias = [];
     this.cargaEstructuraPanelResultados();
   }
 
@@ -847,6 +860,152 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   closeModal() {
     this.modalService.dismissAll();
   }
+  
+  /**
+   *  Inicia sección de filtros nuevos
+   * 
+   */
 
+
+  seleccionarCategoriaFilas(idCategoria:number){
+    const index = this.seleccionFilasCategorias.indexOf(idCategoria);
+    if (index === -1) {
+      // Si no existe, lo agrega
+      this.seleccionFilasCategorias.push(idCategoria);
+    } else {
+      // Si ya existe, lo elimina
+      this.seleccionFilasCategorias.splice(index, 1);
+      let busca = this.subcategoriasFilas.filter(
+        (item: { idCategoria: number; }) => item.idCategoria === idCategoria
+      );
+      const idsAEliminar = busca.map((item: { idSubcategoria: any; }) => item.idSubcategoria);
+      console.warn(idsAEliminar);
+      console.warn(this.seleccionFilasSubCategorias)
+        // Filtra `seleccionFilasSubCategorias` para excluir los `idSubcategoria` en `idsAEliminar`
+        this.seleccionFilasSubCategorias = this.seleccionFilasSubCategorias.filter(
+          item => !idsAEliminar.includes(item)
+        );
+    }
+    this.filtrosFilas();
+  }
+
+  seleccionSubcategoriasFilas(idSubcategoria:number){
+    const index = this.seleccionFilasSubCategorias.indexOf(idSubcategoria);
+    if (index === -1) {
+      // Si no existe, lo agrega
+      this.seleccionFilasSubCategorias.push(idSubcategoria);
+    } else {
+      // Si ya existe, lo elimina
+      this.seleccionFilasSubCategorias.splice(index, 1);
+    }
+    this.filtrosFilas();
+  }
+
+  filtrosFilas(){
+    if(this.seleccionFilasCategorias.length === 0){
+      this.seleccionFilasSubCategorias = [];
+    }
+
+   let datosEnvio = {
+      idMbe: this.idmbe,
+      idTipo: 2,
+      categorias: this.seleccionFilasCategorias?.length === 0 ? null: this.seleccionFilasCategorias,
+      subcategorias: this.seleccionFilasSubCategorias?.length === 0 ? null: this.seleccionFilasSubCategorias,
+    };
+
+    this.gmbservices.filtroCategoria(datosEnvio).subscribe(
+      res => {
+        console.log(res);
+        this.categoriasFilas = res;
+        this.cargarChechbox();
+      },
+      err => {
+        console.error('Error al obtener categorías:', err);
+      }
+    );
+
+    this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
+      res => {
+        console.log(res);
+        this.subcategoriasFilas = res.filter((subcategoria: any) => subcategoria.idSubcategoria !== 0);
+        this.cargarChechboxSubFila()
+      },
+      err => {
+        console.error('Error al obtener subcategorías:', err);
+      }
+    );
+
+    this.cargaEstructuraPanelResultados(this.seleccionFilasCategorias,this.seleccionFilasSubCategorias,this.seleccionColumnasCategorias,this.seleccionColumnasSubCategorias);
+  }
+
+  seleccionarCategoriaColumnas(idCategoria:number){
+    console.log(idCategoria);
+    const index = this.seleccionColumnasCategorias.indexOf(idCategoria);
+    if (index === -1) {
+      // Si no existe, lo agrega
+      this.seleccionColumnasCategorias.push(idCategoria);
+    } else {
+      // Si ya existe, lo elimina
+      this.seleccionColumnasCategorias.splice(index, 1);
+      let busca = this.subcategoriasColumnas.filter(
+        (item: { idCategoria: number; }) => item.idCategoria === idCategoria
+      );
+      const idsAEliminar = busca.map((item: { idSubcategoria: any; }) => item.idSubcategoria);
+        // Filtra `seleccionFilasSubCategorias` para excluir los `idSubcategoria` en `idsAEliminar`
+        this.seleccionColumnasCategorias = this.seleccionColumnasCategorias.filter(
+          item => !idsAEliminar.includes(item)
+        );
+    }
+    this.filtrosColumnas();
+  }
+
+  seleccionSubcategoriasColumnas(idSubcategoria:number){
+    const index = this.seleccionColumnasSubCategorias.indexOf(idSubcategoria);
+    if (index === -1) {
+      // Si no existe, lo agrega
+      this.seleccionColumnasSubCategorias.push(idSubcategoria);
+    } else {
+      // Si ya existe, lo elimina
+      this.seleccionColumnasSubCategorias.splice(index, 1);
+    }
+    this.filtrosColumnas();
+  }
+
+  filtrosColumnas(){
+    if(this.seleccionColumnasCategorias.length === 0){
+      this.seleccionColumnasSubCategorias = [];
+    }
+
+   let datosEnvio = {
+      idMbe: this.idmbe,
+      idTipo: 1,
+      categorias: this.seleccionColumnasCategorias?.length === 0 ? null: this.seleccionColumnasCategorias,
+      subcategorias: this.seleccionColumnasSubCategorias?.length === 0 ? null: this.seleccionColumnasSubCategorias,
+    };
+
+    this.gmbservices.filtroCategoria(datosEnvio).subscribe(
+      res => {
+        console.log(res);
+        this.categoriasColumnas = res;
+        this.cargarChechboxColumnas();
+      },
+      err => {
+        console.error('Error al obtener categorías:', err);
+      }
+    );
+
+    this.gmbservices.filtrosSubcategoria(datosEnvio).subscribe(
+      res => {
+        console.log(res);
+        this.subcategoriasColumnas = res.filter((subcategoria: any) => subcategoria.idSubcategoria !== 0);
+        this.cargarChechboxSubColumnas()
+      },
+      err => {
+        console.error('Error al obtener subcategorías:', err);
+      }
+    );
+
+    this.cargaEstructuraPanelResultados(this.seleccionFilasCategorias,this.seleccionFilasSubCategorias,this.seleccionColumnasCategorias,this.seleccionColumnasSubCategorias);
+  }
 
 }
