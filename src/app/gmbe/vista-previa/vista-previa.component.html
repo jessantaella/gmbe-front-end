@@ -48,6 +48,7 @@
       </div>
     </div>
   </form>
+  <div class="container-fluid align-middle">
   <div class="text-center titulosTabla mt-4 negro">
     Variable de resultados
   </div>
@@ -58,7 +59,7 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}" >
+    <div class="table-responsive tabladatos" [ngStyle]="{'width':'100%'}" >
       <table class="table table-bordered"
       *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
   <caption class="text-center caption-original"></caption>
@@ -166,7 +167,7 @@
     </button>
   </div>
 </div>
-
+</div>
 <ng-template #content>
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-center modal-titulo">

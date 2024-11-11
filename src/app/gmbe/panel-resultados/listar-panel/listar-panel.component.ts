@@ -128,6 +128,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
 
   modoCaptura: boolean = false;
   terminoRenderizado: boolean = false;
+  categoriaFilasAnterior = '';
+  categoriaColumnasAnterior = '';
 
 
   /** Filtros */
@@ -1025,6 +1027,23 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     );
 
     this.cargaEstructuraPanelResultados(this.seleccionFilasCategorias,this.seleccionFilasSubCategorias,this.seleccionColumnasCategorias,this.seleccionColumnasSubCategorias);
+  }
+
+  /**
+   * Modifica listado subcategoria de filtros
+   * 
+   */
+
+  obtenerCategoria(idCategoria:number,tipo:number){
+    let nomCategoria = '';
+    if(tipo===1){
+        nomCategoria = this.categoriasFilas.find((cat: { idCategoria: number; })=>cat.idCategoria === idCategoria)?.categoria;
+        this.categoriaFilasAnterior =this.categoriaFilasAnterior === '' || nomCategoria !== this.categoriaFilasAnterior? nomCategoria : this.categoriaFilasAnterior;
+    }else{
+      nomCategoria = this.categoriasColumnas.find((cat: { idCategoria: number; })=>cat.idCategoria === idCategoria)?.categoria;
+      this.categoriaColumnasAnterior =this.categoriaColumnasAnterior === '' ||  nomCategoria !== this.categoriaColumnasAnterior ? nomCategoria : this.categoriaColumnasAnterior;
+    }
+    return nomCategoria;
   }
 
 }
