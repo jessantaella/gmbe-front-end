@@ -1,0 +1,83 @@
+.bordelabel {
+    border: 0;
+    border-radius: 27.5px;
+    box-shadow: 0 10px 30px #7e79796e;
+  }
+
+  .texto{
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+  }
+  
+  @media (min-width: 1200px) {
+    .div-tamanio {
+      width: 37%;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .div-tamanio {
+      width: 53%;
+    }
+  }
+  
+  @media (min-width: 0px) and (max-width: 767px) {
+    .div-tamanio {
+      width: 86%;
+      margin: 5%;
+    }
+  }
+  
+  .span-titulo {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px !important;
+  }
+  
+  .span-texto {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+  }
+  
+  .botones {
+    background: #2e3e97;
+    color: white;
+    border: none;
+    --bs-btn-active-bg: #2e3e97;
+    --bs-btn-active-color: white;
+    --bs-btn-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .botones:hover {
+    background: #2e3e97;
+    color: white;
+    --bs-btn-active-bg: #2e3e97;
+    --bs-btn-active-color: white;
+    --bs-btn-color: white;
+  }
+  
+  .icon-size {
+    width: 10%;
+    background: #FAF9F9;
+  }
+  
+  .border-input {
+    border-radius: 0px !important;
+  }
+  
+  .icon-eye {
+    color: #2e3e97;
+  }
+  
+  .color-container {
+    background: #f0f3ed;
+  }
+  
+  .color-div {
+    background: white !important;
+  }
+  

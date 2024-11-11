@@ -1,10 +1,11 @@
 <div class="d-flex flex-column min-vh-100 fondoPagina">
   <app-header></app-header>
-  <app-start-bar></app-start-bar>
-
+  <app-start-bard></app-start-bard>
   <app-barra-azul></app-barra-azul>
   <div class="d-flex flex-row flex-grow-1 p-0">
-      <div class="w-100" style="overflow: auto;" >
+    <app-nav-side></app-nav-side>
+      <div class="w-100 overflow-auto">
+        <app-notificaciones *ngIf="this.mostrarNotificaciones" ></app-notificaciones>
           <router-outlet></router-outlet>
       </div>
   </div>

@@ -1,0 +1,218 @@
+.table {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  table-layout: fixed; /* Para que las columnas tengan anchos fijos */
+  width: 100%;
+}
+
+.titulos-tabla {
+  background-color: #305496;
+  color: white;
+}
+
+.subtitulos-tabla {
+  background-color: #305496;
+  color: white;
+  
+}
+
+.tabladatos {
+  max-height: 50rem;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#tituloTablaColumna {
+  width: 180px;
+}
+
+#contenidoFila {
+  width: 200px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+.fuente{
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+ul, li{
+  background-color: #2E3E97;
+  color: white;
+}
+
+.dropdown-item:hover{
+  background-color: #2E3E97;
+  color: white;
+}
+
+ul:hover{
+  background-color: #2E3E97;
+  color: white;
+}
+
+.colorLabel{
+  color: white;
+}
+
+.btnMasInformacion,
+.btnMasInformacion:hover,
+.btnMasInformacion:active,
+.btnMasInformacion:focus{
+  background-color: #00a94f;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+
+.color-icon{
+  color: #2E3E97;
+}
+
+.textoToast{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+.descargar{
+  background-color: #3081b9;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
+}
+
+.fuenteletra{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.colorletra{
+  color:#000000 !important;
+}
+
+.btn-close {
+  color: white !important;
+  font-size: 1.5rem !important;
+  opacity: 1 !important;
+}
+
+.btn-Categorias{
+  background-color: #2E3E97;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.mensaje-flotante {
+  position: fixed; /* Centra el mensaje horizontalmente */
+  transform: translateX(-50%); /* Ajusta el centrado relativo */
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none; /* Evita que interfiera con el mouseover */
+}
+
+.textoVertical{
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.listaFiltros{
+  height: auto;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.btn-close{
+  color: white !important;
+  font-size: 1rem !important;
+  opacity: 1 !important;
+}
+
+.negritas{
+  font-weight: bold !important;
+}
+.letranegra{
+
+}
+
+.abajo {
+  position: relative;
+  top: 4px;
+}
+
+
+.tamanio {
+  font-size: 22px;
+}
+.boton-ayuda {
+  margin-left: 10px;
+  margin-bottom: 3px;
+}
+
+.texto-justificado {
+  text-align: justify;
+}
+
+.subcategoria {
+  width: 250px !important; /* Fuerza el ancho */
+}
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 5;
+  border-right: 1px solid #ddd;
+}
+
+.sticky-left-sub {
+  position: sticky;
+  left: 150px; /* Ajusta el valor según el ancho de la primera columna */
+  background-color: white;
+  z-index: 4;
+  border-right: 1px solid #ddd;
+}
+
+.sticky-left {
+  position: sticky;
+  left: 0;
+  background-color: white; /* Asegura que el fondo se vea correctamente */
+  z-index: 10; /* Asegura que se superponga a las celdas de datos */
+  border-right: 1px solid #dee2e6; /* O cualquier borde que prefieras */
+}
+
+.sticky-corner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 30;
+}
+
+.btn-Categorias:active,
+.btn-Categorias:focus,
+.btn-Categorias:hover {
+  background-color: #2E3E97 !important;
+  color: #ffffff !important; 
+  border: 1px solid #2E3E97 !important;
+  box-shadow: none !important; 
+}
+
+.descargar,
+.descargar:hover,
+.descargar:active,
+.descargar:focus{
+  background-color: #3081b9;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#ffffff;
+}

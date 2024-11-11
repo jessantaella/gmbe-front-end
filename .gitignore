@@ -371,3 +371,5 @@ node_modules
 .angular/cache/16.2.8/babel-webpack/
 
 *.old
+
+dist/

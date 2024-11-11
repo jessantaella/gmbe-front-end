@@ -1,0 +1,146 @@
+.div-botones {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .icon-menu{
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .icon-dropdown
+  {
+    cursor: pointer;
+  }
+.barra {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+
+.sidebar {
+    top: 0;
+    left: 0;
+    width: 50px;
+    background: #8586AC;
+    color: white;
+    font-size: 16px;
+    height: 100% !important;
+    transition: all .2s ease;
+  }
+
+  .sidebar.active {
+    width: 240px !important;
+    background: #8586AC;
+    color: white;
+    font-size: 16px;
+    height: 100%;
+    transition: all .2s ease;
+    top: 0;
+    left: 0;
+  }
+
+  @media (min-width:0px) and (max-width:992px) {
+    .sidebar {
+      display: none;
+    }
+  }
+
+  .sidebar .src {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .sidebar .link_name {
+    color: white !important;
+    text-decoration: none !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar em {
+    height: 50px;
+    min-width: 50px;
+    border-radius: 0px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 22px;
+    color: white;
+  }
+
+  .sidebar.active em {
+    height: 50px;
+    min-width: 50px;
+    border-radius: 0px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 22px;
+    color: white;
+  }
+
+  .sidebar ul li {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin: 0;
+    list-style: none;
+  }
+
+  .sidebar ul li a {
+    color: #21409A;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    border-radius: 0px;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+
+  .sidebar ul li a:hover {
+    color: white;
+    background: #21409A;
+  }
+
+
+  .sidebar.active .link_name {
+    opacity: initial;
+    pointer-events: none;
+  }
+
+  .dropdown-menu {
+    font-size: 16px;
+    background: #7E89B0;
+    color: white;
+  }
+
+  .dropdown-item {
+    color: white !important;
+  }
+
+  .dropdown-toggle::after {
+    color: white;
+  }
+
+  .sidebar .dropdown-toggle::after {
+    display: none;
+  }
+
+  .sidebar.active .dropdown-toggle::after {
+    display: block;
+  }
+
+  .menu-des{
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+
+  .iconoMenu{
+    color: #ffffff;
+    font-size:16x;
+  }

@@ -1,0 +1,275 @@
+
+<div class="container-fluid d-flex flex-column justify-content-center color-container wrapper flex-grow-1 d-flex">
+  <div style="margin-left: 14px">
+    <div class="d-flex flex-row justify-content-between my-3">
+      <form class="d-flex flex-row justify-content-center align-items-center w-50 anchoBuscador"
+        style="margin-left: 3px">
+        <span class="d-flex justify-content-center align-items-center letraContenido">Buscar:&nbsp;</span><input
+          class="form-control border border-dark buscador" [formControl]="searchValue" ngbTooltip="Buscar usuario"
+          type="search" />
+      </form>
+      <button (click)="open(crearModal)" class="btn-nuevo btn-sm botonesPrincipales" style="margin-right: 18px">
+        <em class='bi bi-plus'></em>Nuevo usuario
+      </button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered custom-striped-table">
+      <thead class="cabecera-tabla">
+        <tr class="text-center ">
+          <th scope="col" class="columna-acciones columnaAccion">Ver</th>
+          <th scope="col" class="columna-acciones columnaAccion">Editar</th>
+          <th scope="col" class="columna-acciones columnaAccion">Eliminar</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Usuario</th>
+          <th scope="col">MBE</th>
+        </tr>
+      </thead>
+      <tbody  *ngIf="usuarios.length>0">
+        <tr *ngFor="let usuario of usuarios">
+          <td class="text-center align-middle">
+            <fa-icon [icon]="faEye" class="btn-acciones" (click)="openVer(verModal,usuario)"></fa-icon>
+          </td>
+          <td class="text-center align-middle">
+            <fa-icon [icon]="faPencil" class="btn-acciones" (click)="openEditar(editarModal,usuario)"></fa-icon>
+          </td>
+          <td class="text-center align-middle ">
+            <fa-icon [icon]="faTrashCan" class="btn-acciones" (click)="eliminar(usuario)"></fa-icon>
+          </td>
+          <td class="align-middle letratabla">{{usuario?.nombre}}</td>
+          <td class="text-center align-middle letratabla">{{usuario?.userName}}</td>
+          <td class="nombreMBE align-middle letratabla" *ngIf="usuario?.rolUsuario?.idRol !== 1">
+            <ul>
+              <li *ngFor="let item of resumeTablamMbe(usuario?.mbesAsociados)">
+                {{item}}
+              </li>
+            </ul>
+          </td>
+          <td class="align-middle text-center letratabla" *ngIf="usuario?.rolUsuario?.idRol === 1">
+            Todos
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="usuarios.length<1">
+        <tr >
+          <td class="text-center align-middle" colspan="6">
+            Sin resultados
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav class="d-flex justify-content-center" *ngIf="totalPage>1">
+    <ngb-pagination [(page)]="page" [collectionSize]="items" [maxSize]="10" [pageSize]="pageSize"
+      (pageChange)="loadPage($event)" [rotate]="true" [directionLinks]="true" [boundaryLinks]="false">
+    </ngb-pagination>
+  </nav>
+</div>
+
+
+<ng-template #crearModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title w-100 text-center">Nuevo usuario</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="usuarioForm">
+      <div class="mb-3 row">
+        <label for="usuario" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Usuario:</label>
+        <div class="col-12 col-sm-6">
+          <input type="text" class="form-control" id="usuario" (input)="filterUsuarios($event)" formControlName="userName">
+          <datalist id="usuariosList" style="display: block !important;" [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
+            <option *ngFor="let usuario of filteredUsuarios" [value]="usuario.samaccountname" (click)="selectUsuario(usuario)">{{ usuario.samaccountname }}</option>
+          </datalist>
+          <datalist id="usuariosList" style="display: block !important;" *ngIf="validarExisteUser()!.length < 1" [ngStyle]="{'max-height': filteredUsuarios && filteredUsuarios.length > 3 ? '100px' : 'auto', 'overflow-y': filteredUsuarios && filteredUsuarios.length > 3 ? 'auto' : 'initial'}">
+            <option [value]="null" class="noExiste">No existe usuario en LDAP</option>
+          </datalist>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="correo" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Correo:</label>
+        <div class="col-12 col-sm-6">
+          <input type="text" class="form-control" id="correo" placeholder="ejemplo@ejemplo.com" formControlName="correo">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="rol" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Rol:</label>
+        <div class="col-12 col-sm-6">
+          <select class="form-select" aria-label="Rol" formControlName="idRol" (change)="validarGmbes()">
+            <option selected disabled>Seleccione un rol</option>
+            <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="nombre" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;">Nombre:</label>
+        <div class="col-12 col-sm-6">
+          <input type="text" class="form-control" id="nombre" placeholder="Nombre(s)" formControlName="nombre">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="mbe" class="col-12 col-sm-4 col-form-label text-start text-sm-end" style="color: black; font-family: Arial, Helvetica, sans-serif;"
+        *ngIf="usuarioForm.get('idRol')!.value !== '1'">
+        Mapas de Brechas de Evidencias:</label>
+        <div class="col-12 col-sm-6 my-1" *ngIf="usuarioForm.get('idRol')!.value !== '1'">
+          <div class="btn-group drop my-2" dropdown #dropdown="bs-dropdown" [autoClose]="false">
+            <button dropdownToggle type="button" class="btn dropdown-toggle" *ngIf="usuarioForm.get('idRol')!.value !== '1'">
+              <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length > 0">Seleccionados {{mbeEditables!.length}}</span>
+              <span class="caret icono-toogle" style="color: black; font-family: Arial, Helvetica, sans-serif;" *ngIf="mbeEditables!.length <= 0">Ningún seleccionado</span>
+            </button>
+            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
+              <li role="menuitem" *ngFor="let mbe of listaMBE">
+                <input type="checkbox" class="radio" (change)="onCheckboxChangeMBE(mbe.idMbe)"/>{{mbe.nombre}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-sm btn-cancelar"  (click)="onCancel()">
+      <fa-icon [icon]="faRotate"></fa-icon>
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-sm btn-guardar" (click)="crear()" [disabled]="!validaDisabledGuardar()">
+      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+      Guardar
+    </button>
+  </div>
+</ng-template>
+
+
+
+
+
+<ng-template #editarModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title w-100 text-center">Editar usuario</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="usuarioEditForm">
+      <div class="mb-3 row">
+        <label for="usuario" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Usuario:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="usuario" formControlName="userName">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="correo" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Correo:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="correo" formControlName="correo">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="rol" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Rol:</label>
+        <div class="col-sm-6">
+          <select class="form-select" aria-label="Rol" formControlName="idRol">
+            <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="nombre" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Nombre:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="nombre" formControlName="nombre">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="mapas" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label"
+        *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">Mapas de Brechas de Evidencias:</label>
+        <div class="col-sm-6 my-2 my-1"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
+          <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
+            <button dropdownToggle type="button" class="btn dropdown-toggle"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
+              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0 || mbeEditables.length>0">Seleccionados
+                {{mbeEditables.length}}</span>
+              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<1 && mbeEditables.length<1">Ningún seleccionado</span>
+            </button>
+            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
+              aria-labelledby="button-triggers-manual">
+              <li role="menuitem" *ngFor="let mbe of listaMBE">
+                <input type="checkbox" class="radio" [checked]="verificaAsociacionMBE(mbe?.idMbe)" (change)="onCheckboxChangeMBE(mbe.idMbe)"/>{{mbe.nombre}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-sm btn-cancelar" (click)="modal.dismiss('Cancelar')">
+      <fa-icon [icon]="faRotate"></fa-icon>
+      Cancelar  
+    </button>
+    <button type="button" class="btn btn-sm btn-guardar" (click)="editar()" [disabled]="!validaDisabledGuardarEditar()">
+      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+      Guardar
+    </button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #verModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title w-100 text-center">Ver usuario</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="usuarioEditForm">
+      <div class="mb-3 row">
+        <label for="usuario" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Usuario:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="usuario" formControlName="userName" readonly>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="correo" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Correo:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="correo" formControlName="correo" readonly>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="rol" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Rol:</label>
+        <div class="col-sm-6">
+          <select class="form-select" aria-label="Rol" formControlName="idRol">
+            <option selected>Seleccione un rol</option>
+            <option [value]="rol.idRol" *ngFor="let rol of roles">{{rol.rol}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="nombre" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label">Nombre:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="nombre" formControlName="nombre" readonly>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="mapas" class="col-sm-4 col-form-label text-xs-left text-sm-end custom-label"
+        *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1"
+        >Mapas de Brechas de Evidencias:</label>
+        <div class="col-sm-6 my-2"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
+          <div class="btn-group drop" dropdown #dropdown="bs-dropdown" [autoClose]="false">
+            <button dropdownToggle type="button" class="btn dropdown-toggle"  *ngIf="usuarioEditForm.get('idRol')!.value !== '1' && usuarioEditForm.get('idRol')!.value !== 1">
+              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length>0">Seleccionados
+                {{usuarioEditar?.mbesAsociados?.length}}</span>
+              <span class="caret icono-toogle" *ngIf="usuarioEditar?.mbesAsociados?.length<=0">Ningún
+                seleccionado</span>
+            </button>
+            <ul id="dropdown-triggers-manual" *dropdownMenu class="dropdown-menu" role="menu"
+              aria-labelledby="button-triggers-manual">
+              <li role="menuitem" *ngFor="let mbe of usuarioEditar?.mbesAsociados">
+                {{mbe.nombreMbe}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-sm btn-cancelar regresar" (click)="modal.dismiss('Cancelar')">
+      <fa-icon [icon]="faRotate"></fa-icon>
+      Regresar
+    </button>
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { DataDynamic } from '../services/dinamic-data.services';
-import { environment } from 'src/environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
@@ -12,14 +12,17 @@ export class FooterComponent {
   generales:any;
   datos:any;
   redes:any;
+  isBrowser = false;
 
-  logoBlanco = '';
-
-  constructor(private servicio:DataDynamic) { }
+  constructor(private servicio:DataDynamic,
+    @Inject(PLATFORM_ID) private platformId: any,
+    private dinamicService: DataDynamic
+  ) { 
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.consultarData();
-    this.logoBlanco = environment.recursos + 'LOGO_CONEVAL-BLANCO.svg';
   }
 
   consultarData(){
@@ -27,8 +30,15 @@ export class FooterComponent {
       res=>{
         this.generales = res.generales;
         this.redes = res.generales.redes;
+      },
+      err=>{
+        console.error(err);
       }
     )
    }
+
+   getImagen(imagen: string) {
+    return this.dinamicService.getImagen(imagen);
+  }
 
 }

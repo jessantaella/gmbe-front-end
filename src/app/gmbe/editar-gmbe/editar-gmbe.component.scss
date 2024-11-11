@@ -1,0 +1,167 @@
+.custom-accordion-button {
+  background-color: #2B3172; /* Color de fondo predeterminado */
+  color: white; /* Color del texto */
+  border: none;
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  --bs-btn-active-bg: #2B3172;
+  --bs-btn-active-color: white;
+}
+
+@media (max-width: 1030px) {
+  .movil
+  {
+    padding: 0 !important;
+  }
+
+  .movil-padding-2{
+    padding: 0.5rem !important;
+  }
+
+  .movil-imagen-padding-2{
+    padding: 0rem !important;
+  }
+}
+
+.texto{
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (min-width: 1031px) {
+  .movil-padding-2{
+    padding: 0.5rem !important;
+  }
+
+  .movil-imagen-padding-2{
+    padding: 0.5rem !important;
+  }
+}
+
+.custom-accordion-button:not(.collapsed) {
+  background-color: #2B3172; /* Nuevo color de fondo cuando el acordeón está abierto */
+  color: white; /* Se mantiene el color del texto */
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  --bs-btn-active-bg: #2B3172;
+  --bs-btn-active-color: white;
+}
+
+.custom-accordion-button:hover {
+  background-color: #2B3172; /* Color de fondo al pasar el ratón por encima */
+  color: white; /* Color del texto al pasar el ratón por encima */
+  font-size: 22px;
+  font-family: Arial, Helvetica, sans-serif;
+  --bs-btn-active-bg: #2B3172;
+  --bs-btn-active-color: white;
+}
+
+.custom-accordion-button::after {
+  content: ''; /* Asegúrate de que el pseudo-elemento tenga contenido */
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  border-right: 0.15em solid white; /* Color de la flecha */
+  border-bottom: 0.15em solid white; /* Color de la flecha */
+  transition: transform 0.2s; /* Animación de rotación */
+  transform: rotate(-135deg); /* Rotar la flecha hacia arriba */
+}
+
+//cuando aria-expanded es true (cuando el acordeón está abierto), la flecha se rota 90 grados
+.custom-accordion-button[aria-expanded='true']::after {
+  transform: rotate(45deg);
+  border-right-color: white; /* Asegúrate de que el color sea consistente */
+  border-bottom-color: white; /* Asegúrate de que el color sea consistente */
+}
+
+.custom-accordion-button:not(.collapsed)::after {
+  transform: rotate(45deg);
+  border-right-color: white; /* Asegúrate de que el color sea consistente */
+  border-bottom-color: white; /* Asegúrate de que el color sea consistente */
+}
+
+//cuando aria-expanded es false (cuando el acordeón está cerrado), la flecha se rota 90 grados
+.custom-accordion-button[aria-expanded='false']::after {
+  transform: rotate(-135deg);
+  border-right-color: white; /* Asegúrate de que el color sea consistente */
+  border-bottom-color: white; /* Asegúrate de que el color sea consistente */
+}
+
+.accordion-collapse{
+    background-color: #eff3ec;
+}
+
+.file-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .file-upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .upload-icon {
+    font-size: 24px;
+    color: #21409a;
+    background-color: none;
+    cursor: pointer;
+  }
+
+  .btnOtrasAcciones{
+    background-color: none;
+    font-size: 20px;
+    color: #21409a;
+    cursor: pointer;
+  }
+
+  .imagen{
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  .listado{
+    height: 200px;
+    overflow: auto;
+  }
+
+  .titulo-swal{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+  }
+  @media (max-width: 576px) {
+    .accordion-body .row {
+      align-items: center;
+    }
+  
+    .accordion-body label.col-form-label {
+      text-align: left;
+    }
+  
+    .accordion-body .col-12, 
+    .accordion-body .col-md-6 {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  
+    .file-upload-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  
+    .file-upload-wrapper .upload-icon {
+      cursor: pointer;
+    }
+  
+    .imagen {
+      max-width: 100%;
+      height: auto;
+    }
+  }

@@ -4,17 +4,40 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './base/header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { NgbDropdown, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { InicioComponent } from './base/inicio/inicio.component';
 import { FooterComponent } from './base/footer/footer.component';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {APP_BASE_HREF} from '@angular/common';
+import {APP_BASE_HREF, HashLocationStrategy, LocationStrategy} from '@angular/common';
 import { ObjetoMbeComponent } from './objeto-mbe/objeto-mbe.component';
-import { StartBarComponent } from './base/start-bar/start-bar.component';
 import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
+import { LoginComponent } from './base/login/login.component';
+import { NavSideComponent } from './base/nav-side/nav-side.component';
+import { ListarUsuariosComponent } from './usuarios/listar-usuarios/listar-usuarios.component';
+import { ListarGmbeComponent } from './gmbe/listar-gmbe/listar-gmbe.component';
+import { CrearGmbeComponent } from './gmbe/crear-gmbe/crear-gmbe.component';
+import { StartBardComponent } from './base/start-bard/start-bard.component';
+import { BurbujasComponent } from './graficas/burbujas/burbujas.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { VistaPreviaComponent } from './gmbe/vista-previa/vista-previa.component';
+import { EditarGmbeComponent } from './gmbe/editar-gmbe/editar-gmbe.component';
+import { NotificacionesComponent } from './notificaciones/notificaciones.component';
+import { PanelResultadosComponent } from './gmbe/panel-resultados/listar-panel/listar-panel.component';
+
+import { FormsModule } from '@angular/forms'; 
+import { EvaluacionComponent } from './gmbe/evaluacion/evaluacion.component';
+import { NgChartjsModule } from 'ng-chartjs';
+import { ModalGraficasComponent } from './gmbe/modal-graficas/modal-graficas.component';
+import { UserInterceptor } from './shared/UserInterceptor';
+import { BurbujasPersonalesComponent } from './graficas/burbujas-personales/burbujas-personales.component';
+
+
 
 @NgModule({
   declarations: [
@@ -23,18 +46,35 @@ import { BarraAzulComponent } from './base/barra-azul/barra-azul.component';
     InicioComponent,
     FooterComponent,
     ObjetoMbeComponent,
-    StartBarComponent,
-    BarraAzulComponent
+    BarraAzulComponent,
+    LoginComponent,
+    ListarUsuariosComponent,
+    ModalGraficasComponent,
+    NavSideComponent,
+    StartBardComponent,
+    NotificacionesComponent,
+    ListarGmbeComponent,
+    CrearGmbeComponent,
+    EditarGmbeComponent,
+    BurbujasComponent,
+    BurbujasPersonalesComponent,
+    VistaPreviaComponent,
+    PanelResultadosComponent,
+    EvaluacionComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    NgbModule,
     FontAwesomeModule,
+    NgChartjsModule,
     HttpClientModule,
-    AccordionModule
+    ReactiveFormsModule,
+    BsDropdownModule.forRoot(),
+    FormsModule
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}],
+  providers: [{provide: APP_BASE_HREF, useValue: '/GMBE/'}, {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

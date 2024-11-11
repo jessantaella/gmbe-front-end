@@ -1,11 +1,35 @@
-<div class="card shadow" style="width: 18rem;">
+<!--div-- class="card shadow" style="width: 18rem;">
   <img [src]="data?.urlImg" class="card-img-top" [alt]="data?.url" class="m-auto pt-3">
   <div class="card-body">
-    <p class="card-text m-2 text-center">
+    <p class="card-text m-1 text-center">
       <strong>
         MBE<br>
         {{data?.nombre}}
       </strong>
     </p>
   </div>
+</!--div-->
+<div class="card-container">
+<div class="flip-card">
+  <div class="flip-card-inner">
+    <div class="flip-card-front">
+     <!--img [src]="data?.urlImg" class="card-img-top" [alt]="data?.url" class="m-auto pt-3"-->
+     <div class="p-2 bd-highlight">
+      <img
+      *ngIf="imageUrl" [src]="imageUrl"
+        alt="Imagen MBE" class="img-thumbnail imagen">
+    </div>
+     <p class="card-text m-1 text-center">
+      <strong>
+        MBE<br>
+        {{data?.nombre}}
+      </strong>
+    </p>
+    </div>
+    <div class="flip-card-back">
+      <p class="titulo">Resumen del MBE</p>
+      <p class="resumen m-2">{{data?.resumen}}</p>
+    </div>
+  </div>
+</div>
 </div>

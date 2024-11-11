@@ -1,26 +1,42 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID,  Renderer2, RendererFactory2 } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { DataDynamic } from './base/services/dinamic-data.services';
 import { isPlatformBrowser } from '@angular/common';
+import { ServerConfigService } from './server-config.service';
+import { StorageService } from './services/storage-service.service';
+import { NotificacionesService } from './services/notificaciones.service';
+import { GmbeServicesService } from './gmbe/services/gmbe-services.service';
+import { CifradoService } from './services/cifrado.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
+  packageJson = require('../../package.json');
+
   title = 'GMBE';
-  version = 'V-1.0.1' + new Date();
+  version = this.packageJson.version;
   tags: any;
   ga: any;
   isBrowser = false;
+  private renderer: Renderer2;
+  mostrarNotificaciones = false;
 
 
-  constructor(private meta: Meta, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any) {
+  constructor(private meta: Meta,private router: Router, private cifrado:CifradoService, private gmbeServices: GmbeServicesService, private notificacionesService: NotificacionesService, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
+    this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
+    this.url.loadServerConfig();
   }
 
   ngOnInit(): void {
-    this.consultarTags();
+    this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
+      console.log('Cambio en mostrarNotificaciones:', mostrar);
+      this.mostrarNotificaciones = mostrar;
+    });
+    //this.consultarTags();
 
     this.meta.addTag({
       "name": "description",
@@ -47,6 +63,25 @@ export class AppComponent implements OnInit {
       "content": "UTF-8"
     })
 
+
+    /*if(this.isBrowser){
+      console.log('voy por icon');
+      const link: HTMLLinkElement = this.renderer.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'icon';
+      link.href = 'https://sistemas.coneval.org.mx/conf/assets/favicon.ico';
+
+      const links = document.querySelectorAll("link[rel*='icon']");
+      links.forEach(link => link.parentNode?.removeChild(link));
+
+      const head = this.renderer.selectRootElement('head', true);
+      this.renderer.appendChild(head, link);
+    }*/
+
+    // localStorage.setItem('Versión',packageJson.version);
+    // console.log(packageJson.version);
+    // (window as any).myVariable = packageJson.version;
+    this.checkVersion();
   }
 
 
@@ -81,4 +116,31 @@ export class AppComponent implements OnInit {
       this.meta.addTag({ name: tg.name, content: tg.content });
     });
   }
+
+  checkVersion() {
+    const storedVersion = this.storage.getItem('Versión'); 
+    const currentVersion = this.version; 
+    
+    console.log('Versión almacenada en localStorage:', storedVersion); 
+    console.log('Versión actual de la aplicación:', currentVersion);   
+    
+    //console.log('Datos en localStorage antes de cualquier acción:', localStorage);
+  
+    if (storedVersion && storedVersion !== currentVersion) {
+      console.log('Nueva versión detectada. Procediendo a limpiar localStorage y recargar...');
+      
+      console.log('Cambio de versión detectado: ', storedVersion, ' -> ', currentVersion);
+      
+      this.storage.clear();
+      this.router.navigate(['/inicio']);
+    } else {
+      console.log('Las versiones coinciden. No se realizará ninguna acción.');
+    }
+
+    this.storage.setItem('Versión', currentVersion);
+
+    console.log('Versión guardada en localStorage:', this.storage.getItem('Versión'));
+  }
+  
+  
 }

@@ -1,0 +1,173 @@
+@import "../../../assets/style/color.scss";
+@import "../../../assets/style/base.scss";
+
+.start-bar {
+  height: 30px;
+  max-height: 30px;
+  background-color: #21a542;
+}
+
+
+.etiqueta {
+  margin-left: 2px;
+  font-size: 16px;
+  margin-top: 3.5px;
+  cursor: pointer;
+}
+.etiquetaHome {
+  font-size: 16px;
+}
+.ref-white{
+  text-decoration: none;
+  color: #ffff;
+}
+
+.ref-white:hover{
+  text-decoration: none;
+  color: #ffff;
+}
+
+.alinear {
+  text-align: center;
+  margin-top: 3px;
+}
+
+.centrar {
+  margin-top: 20px;
+}
+
+.letras {
+  color: #ffff;
+}
+
+@media only screen and (max-width: 700px) {
+  .etiqueta {
+    margin-top: 3.5px;
+    display: none;
+    margin-left: 2px;
+  }
+
+  .icono {
+    margin-top: 3.5px;
+  }
+
+  .alinear {
+    display: none;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .etiqueta {
+    margin-top: 3.5px;
+    display: none;
+    margin-left: 2px;
+  }
+  .alinear {
+    display: none;
+  }
+
+  .icono {
+    margin-top: 3.5px;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .etiqueta {
+    margin-top: 3.5px;
+    display: none;
+    margin-left: 2px;
+  }
+  .alinear {
+    display: none;
+  }
+
+  .icono {
+    margin-top: 3.5px;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  .etiqueta {
+    margin-top: 3.5px;
+    display: none;
+    margin-left: 2px;
+  }
+  .icono {
+    margin-top: 3.5px;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .etiqueta {
+    margin-top: 3.5px;
+    display: none;
+    margin-left: 2px;
+  }
+  .alinear {
+    display: none;
+  }
+  .icono {
+    margin-top: 3.5px;
+  }
+}
+
+
+button{
+  font-family: Arial,sans-serif !important;
+  font-style: normal !important;
+}
+
+.movil
+{
+    display: none;
+}
+
+.escritorio
+{
+    display: block;
+}
+
+@media(max-width: 992px) {
+    .movil
+    {
+        display: block;
+    }
+    .escritorio
+    {
+        display: none;
+    }
+}
+
+.color-menu
+{
+  color: black;
+}
+
+.color-opciones
+{
+  color: #ffff;
+  background-color: #8586ac;
+}
+
+.link-color
+{
+  color: #ffff;
+  font-family: Arial,sans-serif !important;
+  font-size: 16px;
+}
+
+
+.logousuario{
+  color: #ffff !important;
+  font-family: Arial,sans-serif !important;
+}
+
+.logousuario2{
+  color: #ffff;
+  font-family: Arial,sans-serif !important;
+}
+
+.texto-menu-movil{
+  color: #ffff;
+  font-family: Arial,sans-serif !important;
+  font-size: 16x;
+  font-weight: normal;
+}
+
+
