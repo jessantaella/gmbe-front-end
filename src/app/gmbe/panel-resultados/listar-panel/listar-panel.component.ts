@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, QueryList, ViewChild, ViewChildren, HostListener} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GmbeServicesService } from '../../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -17,6 +17,7 @@ import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import html2canvas from 'html2canvas';
 declare var swal: any;
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { isPlatformBrowser } from '@angular/common';
 
 import domtoimage from 'dom-to-image';
 
@@ -142,7 +143,17 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   seleccionColumnasSubCategorias : any []= [];
   seleccionColumnasSubCategoriasObjetos : any []= [];
 
-  constructor(private route: ActivatedRoute, private storage: StorageService, private router: Router, private gmbservices: GmbeServicesService, private fb: FormBuilder, private modalService: NgbModal, private titulos: TitulosService) {
+  ancho: number=150;
+  alto:  number=150;
+
+  constructor(private route: ActivatedRoute,
+      private storage: StorageService, 
+      private router: Router, 
+      private gmbservices: GmbeServicesService, 
+      private fb: FormBuilder, 
+      private modalService: NgbModal, 
+      private titulos: TitulosService,
+      @Inject(PLATFORM_ID) private platformId: object) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.nombreMBE = this.storage.getItem('MBENombre')!;
@@ -181,6 +192,24 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
+    this.calcularDimensiones();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.calcularDimensiones();
+  }
+
+  calcularDimensiones() {
+    if (isPlatformBrowser(this.platformId)) {
+      // Solo se ejecuta en el navegador
+      this.ancho = window.innerWidth * 0.1; // 50% del ancho de la pantalla
+      this.alto = window.innerHeight * 0.1; // 80% del alto de la pantalla
+    } else {
+      // Proporciona un valor por defecto para el servidor
+      this.ancho = 150;
+      this.alto = 150;
+    }
   }
 
   pantallaCargando() {
@@ -296,7 +325,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.modalService.open(content, {
       centered: true,
       keyboard: false,
-      size: 'md'
+      size: 'sm'
     });
 
     if (seccion === 'Columna') {

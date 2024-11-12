@@ -41,10 +41,13 @@
                   <li class="text-justify listaFiltros">
                     <div class="dropdown-item textoFiltro">
                       <div class="mx-2" *ngFor="let subcategoria of subcategoriasFilas; let i = index">
+
+                        <hr class="dropdown-divider bg-white" *ngIf="i>0 && subcategoriasFilas[i-1]?.idCategoria!== subcategoria?.idCategoria">
+
                         <label *ngIf="this.categoriaFilasAnterior !== obtenerCategoria(subcategoria?.idCategoria,1) || i===0"
-                        class="colorLabel">{{obtenerCategoria(subcategoria?.idCategoria,1)}}
+                        class="text-white-50">{{obtenerCategoria(subcategoria?.idCategoria,1)}}
                       </label>
-                        <div class="form-check" *ngIf="subcategoria.idSubCategoria !== 0" >
+                        <div class="form-check ms-1" *ngIf="subcategoria.idSubCategoria !== 0" >
                           <input id="subcategoria-fila-{{i}}" class="form-check-input" type="checkbox"
                             [checked]="seleccionFilasSubCategorias.includes(subcategoria?.idSubcategoria)"
                             (click)="seleccionSubcategoriasFilas(subcategoria?.idSubcategoria)" />
@@ -100,8 +103,9 @@
                   <li class="text-justify listaFiltros">
                     <div class="dropdown-item textoFiltro">
                       <div class="mx-2" *ngFor="let subcategoria of subcategoriasColumnas; let i = index">
+                        <hr class="dropdown-divider bg-white" *ngIf="i>0 && subcategoriasColumnas[i-1]?.idCategoria!== subcategoria?.idCategoria">
                         <label *ngIf="this.categoriaColumnasAnterior !== obtenerCategoria(subcategoria?.idCategoria,2) || i===0"
-                        class="colorLabel">{{obtenerCategoria(subcategoria?.idCategoria,1)}}
+                        class="text-white-50">{{obtenerCategoria(subcategoria?.idCategoria,1)}}
                       </label>
                         <div class="form-check">
                           <input id="subcategoria-columna-{{i}}"  class="form-check-input" type="checkbox"
@@ -179,7 +183,7 @@
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
-                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 2, 'height': '200px'}"
+                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 2, 'height': ancho}"
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
@@ -194,7 +198,7 @@
               
               <!-- Primera subcategoría de la fila -->
               <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
-                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': '200px'}">
+                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': ancho}">
                 <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== ''))">
@@ -207,7 +211,7 @@
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index; trackBy: trackByFn">
                   <th [ngStyle]="{'border': this.modoCaptura ? '0.5px solid' : ''}" #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
-                       <app-burbujas-personales [titulo]="'panel'" *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="180" [alto]="180"></app-burbujas-personales>
+                       <app-burbujas-personales [titulo]="'panel'" *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="ancho" [alto]="ancho"></app-burbujas-personales>
                   </th>
                 </ng-container>
               </tr>
