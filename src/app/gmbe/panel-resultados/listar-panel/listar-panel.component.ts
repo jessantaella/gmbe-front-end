@@ -293,32 +293,29 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   abrirModal(content: any, informacion: any, titulo: string, seccion: string) {
+    this.urlModal ='';
     this.modalService.open(content, {
       centered: true,
       keyboard: false,
       size: 'md'
     });
-
     if (seccion === 'Columna') {
-      this.btnMasInformacion = false;
+      this.btnMasInformacion = true;
       this.tituloModal = false;
     }else{
       this.btnMasInformacion = true;
       this.tituloModal = true;
     }
 
-    
+    console.log(informacion)
 
-
-    switch (titulo) {
+      switch (titulo) {
       case 'categoria':
-
         this.tituloCategoriaModal = informacion.categoria;
         this.informacionCategoriaModal = informacion.descripcion;
         this.urlModal = informacion.complemento;
         break;
       case 'subcategoria':
-
         this.tituloCategoriaModal = informacion.subCategoria;
         this.informacionCategoriaModal = informacion.descripcionSubcategoria;
         this.urlModal = informacion.complementoSubcategoria;

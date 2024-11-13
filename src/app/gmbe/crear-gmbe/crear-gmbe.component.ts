@@ -1010,11 +1010,6 @@ export class CrearGmbeComponent implements OnInit {
 
     descripcion = descripcion?.trim();
     url = url !== null ? url?.trim() : '';
-
-    this.gmbeservice.existeCategoriaSubcategoria(id).subscribe(
-      res => {
-
-        if (res.data !== true) {
           if (this.tipoSeleccionado && url.length > 0) {
             if (!this.urlPattern.test(url)) {
               swal.fire({
@@ -1030,9 +1025,6 @@ export class CrearGmbeComponent implements OnInit {
               return;
             }
           }
-
-
-          //if (descripcion !== '' || url !== '') {
           this.gmbeservice.editarCategoria(id, nombre, descripcion, url).subscribe(
             res => {
               swal.fire({
@@ -1054,6 +1046,7 @@ export class CrearGmbeComponent implements OnInit {
                 this.activarAgregar = false;
                 this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
                 this.modalRef.close();
+                this.storage.sesionRemoveItem('EstructuraTabla');
               }
             },
             err => {
@@ -1073,21 +1066,6 @@ export class CrearGmbeComponent implements OnInit {
               })
             }
           );
-        } else {
-          swal.fire({
-            title: '',
-            text: 'No se puede editar esta categoría ya que se encuentra relacionada a un MBE',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            customClass: {
-              popup: 'custom-swal-popup',
-              confirmButton: 'custom-swal-confirm-button'
-            }
-          });
-        }
-      },
-      err => { }
-    );
   }
 
   existeCategoriaSubcategoria(idCategoria: number): boolean {
@@ -1221,10 +1199,6 @@ export class CrearGmbeComponent implements OnInit {
     url = url !== null ? url?.trim() : '';
     descripcion = descripcion !== null ? descripcion?.trim() : '';
 
-    this.gmbeservice.existeCategoriaSubcategoria(validarIdSub).subscribe(
-      res => {
-
-        if (res.data !== true) {
           if (this.tipoSeleccionado && url.length > 0) {
             if (!this.urlPattern.test(url)) {
               swal.fire({
@@ -1266,6 +1240,7 @@ export class CrearGmbeComponent implements OnInit {
               this.subCategorias = [];
 
               this.modalService.dismissAll();
+              this.storage.sesionRemoveItem('EstructuraTabla');
 
             },
             err => {
@@ -1285,23 +1260,6 @@ export class CrearGmbeComponent implements OnInit {
 
             }
           );
-        } else {
-          swal.fire({
-            title: '',
-            text: 'No se puede editar esta subcategoría ya que se encuentra relacionada a un MBE',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            customClass: {
-              popup: 'custom-swal-popup',
-              confirmButton: 'custom-swal-confirm-button'
-            }
-          });
-        }
-      },
-      err => { }
-    );
-
-
     console.log(idSub)
   }
 
