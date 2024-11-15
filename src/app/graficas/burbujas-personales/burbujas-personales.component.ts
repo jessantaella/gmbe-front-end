@@ -85,7 +85,6 @@ export class BurbujasPersonalesComponent {
   
     // Ajustar el radio máximo si hay múltiples burbujas con el valor máximo
     let minRadius = 2;
-    console.warn(this.ancho);
     let maxRadius = this.ancho && this.ancho >130 ? 20 : 10;
   
     if (maxCountBubbles > 1) {
@@ -187,15 +186,17 @@ export class BurbujasPersonalesComponent {
     
 
   showTooltip(event: MouseEvent, bubble: any) {
+    console.log(bubble.y)
     this.tooltipData = bubble;
-    const tooltipHeight = 30; 
+    const padding = -10; 
     // Ajusta las coordenadas aquí
     this.tooltipStyles = {
       position: 'absolute',
-      left: `${Math.max(0, bubble.x - bubble.r *2)}px`, // Colocar a la derecha de la burbuja
-      top: `${Math.max(0, bubble.y - (tooltipHeight / 2) + (bubble.r / 2))}px`, // Centrado verticalmente con la burbuja
+      left: `${bubble.x-bubble.r}px`, 
+      top: `${bubble.y-(bubble.r*2)}px`, 
       zIndex: 1000
     };
+    console.log(this.tooltipStyles)
   
     this.tooltipVisible = true;
   }

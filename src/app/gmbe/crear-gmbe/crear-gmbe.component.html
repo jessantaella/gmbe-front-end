@@ -168,7 +168,7 @@
                     <th id="subtituloTablaFila" class="subtitulos-tabla align-middle text-center"
                       *ngFor="let  subcolumna of estructuraFinalColumnasSubitulos">
                       <fa-icon [icon]="faTrash"
-                      (click)="eliminarSubcategoria(1,subcolumna)"></fa-icon>
+                      (click)="eliminarSubcategoria(1,subcolumna)" *ngIf="subcolumna.catalogo!== ''"></fa-icon>
                       {{ subcolumna.catalogo }}
                     </th>
                   </tr>
@@ -182,9 +182,13 @@
                       [attr.rowspan]="regresaPapa(subFilas.idRelacion).subcategorias.length"
                       *ngIf="estructuraFinalFilasSubitulos[i-1]?.idRelacion !== subFilas.idRelacion">
                       <fa-icon [icon]="faTrash"
-                        (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>{{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
+                        (click)="eliminarCategoria(2,regresaPapa(subFilas.idRelacion).categoria)"></fa-icon>
+                        {{regresaPapa(subFilas.idRelacion).categoria.catalogo}}
                     </th>
-                    <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="validaSubtitulosFilas()"> {{subFilas.catalogo}} </th>
+                    <th class="subtitulos-tabla align-middle text-center" scope="row" *ngIf="validaSubtitulosFilas()"> 
+                      <fa-icon [icon]="faTrash"
+                        (click)="eliminarSubcategoria(2,subFilas)" *ngIf="subFilas.catalogo!== ''"></fa-icon>
+                      {{subFilas.catalogo}} </th>
                   </tr>
                 </tbody>
               </table>

@@ -131,6 +131,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   terminoRenderizado: boolean = false;
   categoriaFilasAnterior = '';
   categoriaColumnasAnterior = '';
+  imprimir = false;
 
 
   /** Filtros */
@@ -326,7 +327,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.modalService.open(content, {
       centered: true,
       keyboard: false,
-      size: 'sm'
+      size: 'md'
     });
     if (seccion === 'Columna') {
       this.btnMasInformacion = true;
@@ -882,6 +883,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   async descargarImagenPanel() {
+    this.imprimir = true;
+    // Espera a que Angular detecte el cambio para ocultar el botón
+  await new Promise(resolve => setTimeout(resolve, 0));
+
     const node = document.getElementById('imagenTabla') as HTMLElement; // Selecciona el div que quieres capturar
     if (node) {
       // Corrige elementos conflictivos como SVGs
@@ -904,6 +909,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
           console.error('Error al capturar el elemento:', error);
         });
     }
+    this.imprimir = false;
   }
   closeModal() {
     this.modalService.dismissAll();
@@ -933,6 +939,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         this.seleccionFilasSubCategorias = this.seleccionFilasSubCategorias.filter(
           item => !idsAEliminar.includes(item)
         );
+
+        this.seleccionFilasSubCategorias= this.seleccionFilasSubCategorias.filter(e=>idCategoria ===e.idCategoria);
     }
     this.filtrosFilas();
   }
@@ -995,6 +1003,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     } else {
       // Si ya existe, lo elimina
       this.seleccionColumnasCategorias.splice(index, 1);
+
       let busca = this.subcategoriasColumnas.filter(
         (item: { idCategoria: number; }) => item.idCategoria === idCategoria
       );
@@ -1003,6 +1012,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         this.seleccionColumnasCategorias = this.seleccionColumnasCategorias.filter(
           item => !idsAEliminar.includes(item)
         );
+       this.seleccionColumnasSubCategorias= this.seleccionColumnasSubCategorias.filter(e=>idCategoria ===e.idCategoria);
     }
     this.filtrosColumnas();
   }

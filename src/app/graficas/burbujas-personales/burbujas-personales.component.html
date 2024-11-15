@@ -1,5 +1,4 @@
   <div class="bubble-container" [ngStyle]="{'width.px': ancho, 'height.px': alto}">
-    {{datosBurbujas?.length}}
     <div *ngFor="let bubble of burbujasExistentes"
          class="bubble"
          [style.width.px]="bubble.r * 2"
@@ -9,14 +8,13 @@
          [style.background-color]="bubble.fillColor"
          (mouseover)="showTooltip($event, bubble)"  
          (mouseout)="hideTooltip()"
-         (click)="redireccionar(datosBurbujas[0].idMbe,datosBurbujas[0].idFila,datosBurbujas[0].idColumna,bubble.idGpo)"
-         >
+         (click)="redireccionar(datosBurbujas[0].idMbe,datosBurbujas[0].idFila,datosBurbujas[0].idColumna,bubble.idGpo)">
     </div>
   
     <!-- Tooltip personalizado -->
     <div *ngIf="tooltipVisible" class="tooltip2 text-center align-middle" [ngStyle]="tooltipStyles" width="100%">
-      <div class="tooltip-color" [style.background-color]="tooltipData.fillColor"></div> <!-- Cuadro de color -->
-      <span class="textoTooltip m-auto">{{ tooltipData.nombreGpo }} {{tooltipData.count}}</span> <!-- Nombre de la burbuja -->
+      <div class="tooltip-color" [style.background-color]="tooltipData.fillColor"></div> 
+      <span class="textoTooltip m-auto">{{ tooltipData.nombreGpo }} {{tooltipData.count}}</span>
     </div>
   </div>
   
