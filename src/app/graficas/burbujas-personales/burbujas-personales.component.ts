@@ -84,8 +84,9 @@ export class BurbujasPersonalesComponent {
     const maxCountBubbles = this.datosBurbujas.filter(b => b.count === maxCount).length;
   
     // Ajustar el radio máximo si hay múltiples burbujas con el valor máximo
-    let minRadius = 4;
-    let maxRadius = 20;
+    let minRadius = 2;
+    console.warn(this.ancho);
+    let maxRadius = this.ancho && this.ancho >130 ? 20 : 10;
   
     if (maxCountBubbles > 1) {
       const gridArea = chartWidth * chartHeight;
@@ -112,6 +113,9 @@ export class BurbujasPersonalesComponent {
   
       x = centerX + radius * Math.cos(angle);
       y = centerY + radius * Math.sin(angle);
+
+      x= x>chartWidth-r ? x-r:x-padding;
+      y= y>chartHeight-r ? y-r : y-padding;
   
     } else if (count === maxCount && maxCountBubbles === 1) {
       // Si es la única burbuja con el valor máximo, colócala en el centro
@@ -188,7 +192,7 @@ export class BurbujasPersonalesComponent {
     // Ajusta las coordenadas aquí
     this.tooltipStyles = {
       position: 'absolute',
-      left: `${Math.max(0, bubble.x + bubble.r + 5)}px`, // Colocar a la derecha de la burbuja
+      left: `${Math.max(0, bubble.x - bubble.r *2)}px`, // Colocar a la derecha de la burbuja
       top: `${Math.max(0, bubble.y - (tooltipHeight / 2) + (bubble.r / 2))}px`, // Centrado verticalmente con la burbuja
       zIndex: 1000
     };

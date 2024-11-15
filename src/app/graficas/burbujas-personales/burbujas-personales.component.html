@@ -14,7 +14,7 @@
     </div>
   
     <!-- Tooltip personalizado -->
-    <div *ngIf="tooltipVisible" class="tooltip2 text-center align-middle" [ngStyle]="tooltipStyles">
+    <div *ngIf="tooltipVisible" class="tooltip2 text-center align-middle" [ngStyle]="tooltipStyles" width="100%">
       <div class="tooltip-color" [style.background-color]="tooltipData.fillColor"></div> <!-- Cuadro de color -->
       <span class="textoTooltip m-auto">{{ tooltipData.nombreGpo }} {{tooltipData.count}}</span> <!-- Nombre de la burbuja -->
     </div>

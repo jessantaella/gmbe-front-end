@@ -591,7 +591,7 @@ export class CrearGmbeComponent implements OnInit {
     if (this.tipo === 2) {
       this.tipoSeleccionado = true;
     } else {
-      this.tipoSeleccionado = false;
+      this.tipoSeleccionado = true;
     }
     this.subCategorias = [];
     this.obtenerCategorias();
@@ -851,8 +851,6 @@ export class CrearGmbeComponent implements OnInit {
       this.eliminarCategoriaForm.get('descripcion')?.disable();
       this.eliminarCategoriaForm.get('url')?.disable();
     }
-
-
     if (tipo === 'subcategoriaEliminar') {
       this.eliminarSubcategoriaForm = this.fb.group({
         categoria: [0, Validators.required],
@@ -890,7 +888,7 @@ export class CrearGmbeComponent implements OnInit {
         break;
     }
 
-    if (this.tipoSeleccionado && url.length > 0) {
+    if (url.length > 0) {
       if (!this.urlPattern.test(url)) {
         console.log('entro')
         console.log(url)

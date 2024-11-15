@@ -557,6 +557,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
             filas: this.estructuraFinalFilasTitulos,
             subfilas: this.estructuraFinalFilasSubitulos
           };
+          console.log(this.estructuraFinalColumnasTitulos);
 
           // Agregar la nueva estructura al localStorage
           estructurasGuardadas.push(estructuraGuardada);
