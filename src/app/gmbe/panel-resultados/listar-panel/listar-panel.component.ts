@@ -558,8 +558,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
             filas: this.estructuraFinalFilasTitulos,
             subfilas: this.estructuraFinalFilasSubitulos
           };
-          console.log(this.estructuraFinalColumnasTitulos);
-
           // Agregar la nueva estructura al localStorage
           estructurasGuardadas.push(estructuraGuardada);
           this.storage.sesionSetItem('EstructuraTabla', JSON.stringify(estructurasGuardadas));
@@ -939,8 +937,10 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         this.seleccionFilasSubCategorias = this.seleccionFilasSubCategorias.filter(
           item => !idsAEliminar.includes(item)
         );
+        console.error(this.seleccionFilasSubCategorias);
 
-        this.seleccionFilasSubCategorias= this.seleccionFilasSubCategorias.filter(e=>idCategoria ===e.idCategoria);
+        //this.seleccionFilasSubCategorias= this.seleccionFilasSubCategorias.filter(e=>idCategoria ===e.idCategoria);
+        console.error(this.seleccionFilasSubCategorias);
     }
     this.filtrosFilas();
   }
@@ -956,6 +956,8 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     }
     this.filtrosFilas();
   }
+
+
 
   filtrosFilas(){
     if(this.seleccionFilasCategorias.length === 0){
@@ -1012,7 +1014,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         this.seleccionColumnasCategorias = this.seleccionColumnasCategorias.filter(
           item => !idsAEliminar.includes(item)
         );
-       this.seleccionColumnasSubCategorias= this.seleccionColumnasSubCategorias.filter(e=>idCategoria ===e.idCategoria);
+       //this.seleccionColumnasSubCategorias= this.seleccionColumnasSubCategorias.filter(e=>idCategoria ===e.idCategoria);
     }
     this.filtrosColumnas();
   }
