@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,  OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-burbujas-personales',
@@ -24,21 +26,60 @@ export class BurbujasPersonalesComponent {
   }> = [];
 
   @Input() titulo: string | undefined;
-
-  constructor(private router: Router){}
+  @Input() ancho: number = 0;
+  @Input() alto: number =0;
 
   tooltipVisible: boolean = false;
   tooltipData: any = {}; // Información del tooltip
   tooltipStyles: any = {}; // Estilos para posicionar el tooltip
   countMayor : number = 0;
 
-  @Input() ancho: number | undefined;
-  @Input() alto: number | undefined;
 
   burbujasExistentes: Array<{ x: number, y: number, r: number, fillColor: string, nombreGpo: string , count:number, idGpo : number}> = [];
 
+
+  tiempoEspera:number=10;
+
+  anchoActual: number = 0; // Almacena el ancho actual
+  altoActual: number = 0; // Almacena el alto actual
+  factorEscala: number = 1; // Factor para escalar las burbujas
+
+  constructor(private router: Router){
+  }
+
+
+
   ngOnInit() {
     this.inicializarBurbujas();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Detectar cambios en ancho
+    if (changes['ancho'] || changes['alto']) {
+      this.calcularFactorEscala();
+    }
+  }
+
+
+  calcularFactorEscala(): void {
+    // Asegurar que los valores sean positivos y válidos
+    const anchoNuevo = this.ancho > 0 ? this.ancho : this.anchoActual;
+    const altoNuevo = this.alto > 0 ? this.alto : this.altoActual;
+
+    // Calcular el factor de escala basado en el cambio de tamaño del contenedor
+    if (this.anchoActual && this.altoActual) {
+      const factorAncho = anchoNuevo / this.anchoActual;
+      const factorAlto = altoNuevo / this.altoActual;
+
+      // Usar el menor factor para mantener la proporción
+      this.factorEscala = Math.min(factorAncho, factorAlto);
+    } else {
+      this.factorEscala = 1; // Valor por defecto en el primer render
+    }
+
+    // Actualizar valores actuales
+    this.anchoActual = anchoNuevo;
+    this.altoActual = altoNuevo;
   }
 
   inicializarBurbujas() {
@@ -73,9 +114,9 @@ export class BurbujasPersonalesComponent {
     valorMaximoZ: number;
   }) {
     const { count, nombreGpo, colorBubble, idGpo } = bubble;
-    const chartWidth = this.ancho || 150;
-    const chartHeight = this.alto || 150;
-    const padding = 20; // Espacio entre burbujas en la cuadrícula
+    const chartWidth = this.ancho-20 || 150;
+    const chartHeight = this.alto-20 || 150;
+    const padding = 10;
   
     // Determinar el count máximo para escalar los radios
     const maxCount = this.countMayor;
@@ -83,101 +124,107 @@ export class BurbujasPersonalesComponent {
     // Contar cuántas burbujas tienen el valor máximo
     const maxCountBubbles = this.datosBurbujas.filter(b => b.count === maxCount).length;
   
-    // Ajustar el radio máximo si hay múltiples burbujas con el valor máximo
     let minRadius = 2;
-    let maxRadius = this.ancho && this.ancho >130 ? 20 : 10;
+    let maxRadius = Math.min(chartWidth, chartHeight) / 6;
   
+    // Ajustar el radio máximo si hay muchas burbujas grandes
     if (maxCountBubbles > 1) {
-      const gridArea = chartWidth * chartHeight;
-      const adjustedMaxRadius = Math.min(
+      maxRadius = Math.min(
         maxRadius,
-        Math.sqrt((gridArea / maxCountBubbles) / Math.PI) - padding / 2
+        Math.sqrt((chartWidth * chartHeight) / (Math.PI * maxCountBubbles)) / 2 - padding
       );
-      maxRadius = adjustedMaxRadius;
     }
   
-    // Escalar el radio de acuerdo con el valor `count` relativo a `maxCount`
+    // Escalar el radio
     const r = minRadius + ((count / maxCount) * (maxRadius - minRadius));
   
-    let x: number = 0, y: number = 0;
+    let x: number = 0,
+      y: number = 0;
     const centerX = chartWidth / 2;
     const centerY = chartHeight / 2;
   
-    if (count === maxCount && maxCountBubbles > 1) {
-      // Si hay múltiples burbujas con el valor máximo, distribuirlas en un círculo
-      const angleIncrement = (2 * Math.PI) / maxCountBubbles;
-      const index = this.burbujasExistentes.length;
-      const angle = angleIncrement * index;
-      const radius = (Math.min(chartWidth, chartHeight) / 2) - r - padding;
+    if (count === maxCount) {
+      if (maxCountBubbles > 1) {
+        // Distribuir burbujas grandes en un círculo compacto
+        const angleIncrement = (2 * Math.PI) / maxCountBubbles;
+        const index = this.burbujasExistentes.filter(b => b.count === maxCount).length;
+        const angle = angleIncrement * index;
+        const radius = Math.min(chartWidth, chartHeight) / 4;
   
-      x = centerX + radius * Math.cos(angle);
-      y = centerY + radius * Math.sin(angle);
-
-      x= x>chartWidth-r ? x-r:x-padding;
-      y= y>chartHeight-r ? y-r : y-padding;
-  
-    } else if (count === maxCount && maxCountBubbles === 1) {
-      // Si es la única burbuja con el valor máximo, colócala en el centro
-      if (!this.burbujasExistentes.some(b => b.x === centerX && b.y === centerY)) {
+        x = centerX + radius * Math.cos(angle);
+        y = centerY + radius * Math.sin(angle);
+      } else {
+        // Una única burbuja grande en el centro
         x = centerX;
         y = centerY;
-      } else {
-        const angleIncrement = Math.PI / 4;
-        let positioned = false;
-        let angle = 0;
-  
-        while (!positioned && angle < 2 * Math.PI) {
-          x = centerX + (r + padding) * Math.cos(angle);
-          y = centerY + (r + padding) * Math.sin(angle);
-          if (!this.burbujasExistentes.some(b => Math.hypot(b.x - x, b.y - y) < b.r + r + padding)) {
-            positioned = true;
-          } else {
-            angle += angleIncrement;
-          }
-        }
       }
     } else {
-      // Posicionar las burbujas en una cuadrícula si no son las más grandes
-      const cols = Math.floor(chartWidth / (2 * r + padding));
-      const rows = Math.floor(chartHeight / (2 * r + padding));
-      const gridIndex = this.burbujasExistentes.length;
+      // Posición aleatoria para otras burbujas
+      let positioned = false;
+      let attempts = 0;
+      while (!positioned && attempts < 1000) {
+        x = Math.random() * (chartWidth - 2 * r) + r;
+        y = Math.random() * (chartHeight - 2 * r) + r;
   
-      x = (gridIndex % cols) * (2 * r + padding) + r + padding / 2;
-      y = Math.floor(gridIndex / cols) * (2 * r + padding) + r + padding / 2;
+        // Verificar superposición
+        const overlappingBubble = this.burbujasExistentes.find(b =>
+          Math.hypot(b.x - x, b.y - y) < b.r + r + padding
+        );
   
-      x = Math.min(x, chartWidth - r);
-      y = Math.min(y, chartHeight - r);
-
-      x= x>chartWidth-r ? x-r:x-padding;
-      y= y>chartHeight-r ? y-r : y-padding;
-      
+        if (!overlappingBubble) {
+          positioned = true;
+        } else {
+          attempts++;
+        }
+      }
+  
+      // Si no se puede encontrar un lugar después de muchos intentos, forzar la posición
+      if (!positioned) {
+        x = Math.random() * (chartWidth - 2 * r) + r;
+        y = Math.random() * (chartHeight - 2 * r) + r;
+      }
     }
   
-    // Añadir la burbuja a la lista existente
+    // Asegurar que la burbuja no se salga del contenedor
+    x = Math.max(r, Math.min(chartWidth - r, x));
+    y = Math.max(r, Math.min(chartHeight - r, y));
+
+    // Añadir burbuja
     this.burbujasExistentes.push({ x, y, r, fillColor: colorBubble, nombreGpo, count, idGpo });
+  
+    // Ajustar posiciones si hay superposiciones
+    this.ajustarSuperposiciones();
   }
   
   
-  // Función para ajustar superposiciones de burbujas, colocando las más pequeñas arriba
   ajustarSuperposiciones() {
-    // Ordena las burbujas de mayor a menor tamaño
-    this.burbujasExistentes.sort((a, b) => b.r - a.r);
+    const padding = 10;
   
-    const estaCerca = (b1: { x: number; y: number; r: number }, b2: { x: number; y: number; r: number }) => {
-      const distancia = Math.hypot(b1.x - b2.x, b1.y - b2.y);
-      return distancia < (b1.r + b2.r);
-    };
-  
-    // Reajustar las burbujas que estén cerca, colocando la más pequeña arriba
     for (let i = 0; i < this.burbujasExistentes.length; i++) {
       for (let j = i + 1; j < this.burbujasExistentes.length; j++) {
-        const burbujaGrande = this.burbujasExistentes[i];
-        const burbujaPequena = this.burbujasExistentes[j];
+        const b1 = this.burbujasExistentes[i];
+        const b2 = this.burbujasExistentes[j];
   
-        if (estaCerca(burbujaGrande, burbujaPequena)) {
-          // Coloca la burbuja más pequeña visualmente arriba
-          this.burbujasExistentes[j] = burbujaPequena;
-          this.burbujasExistentes[i] = burbujaGrande;
+        const dist = Math.hypot(b1.x - b2.x, b1.y - b2.y);
+        const minDist = b1.r + b2.r + padding;
+  
+        if (dist < minDist) {
+          const overlap = minDist - dist;
+          const angle = Math.atan2(b2.y - b1.y, b2.x - b1.x);
+  
+          const moveX = (overlap / 2) * Math.cos(angle);
+          const moveY = (overlap / 2) * Math.sin(angle);
+  
+          b1.x -= moveX;
+          b1.y -= moveY;
+          b2.x += moveX;
+          b2.y += moveY;
+  
+          // Asegurar que no se salgan del contenedor
+          b1.x = Math.max(b1.r, Math.min(this.ancho - b1.r, b1.x));
+          b1.y = Math.max(b1.r, Math.min(this.alto - b1.r, b1.y));
+          b2.x = Math.max(b2.r, Math.min(this.ancho - b2.r, b2.x));
+          b2.y = Math.max(b2.r, Math.min(this.alto - b2.r, b2.y));
         }
       }
     }
@@ -186,17 +233,20 @@ export class BurbujasPersonalesComponent {
     
 
   showTooltip(event: MouseEvent, bubble: any) {
-    console.log(bubble.y)
+    //console.log(bubble.y)
+    //console.log(bubble.r);
     this.tooltipData = bubble;
     const padding = -10; 
     // Ajusta las coordenadas aquí
+    const diametro = bubble.r*2;
     this.tooltipStyles = {
       position: 'absolute',
-      left: `${bubble.x-bubble.r}px`, 
-      top: `${bubble.y-(bubble.r*2)}px`, 
+      left: `${bubble.x+diametro}px`, 
+      top: `${bubble.y-bubble.r}px`, 
+      whiteSpace: 'nowrap', // Evitar saltos de línea
       zIndex: 1000
     };
-    console.log(this.tooltipStyles)
+    //console.log(this.tooltipStyles)
   
     this.tooltipVisible = true;
   }
@@ -210,6 +260,17 @@ redireccionar(idMbe: number, fila: number, columna: number, idGpo: number){
   if (this.titulo === 'panel') {
     this.router.navigate(['/evaluacion'], { queryParams: { idMbe: idMbe, idFila: fila, idColumna: columna, idEva: idGpo } });
   }
+}
+
+calcularNivel(grpo: any[],valor:number){
+ // Ordenar el arreglo por el campo count en orden ascendente
+ const sortedArray = [...grpo].sort((b, a) => a.count - b.count);
+
+ // Encontrar la posición del valor en el arreglo ordenado
+ const position = sortedArray.findIndex(item => item.count === valor);
+
+ // Devolver la posición en formato 1-based (1, 2, 3, ...)
+ return position +1; // -1 si el valor no se encuentra
 }
 
 

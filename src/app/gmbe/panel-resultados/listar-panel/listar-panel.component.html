@@ -159,7 +159,7 @@
               <!-- Subencabezados de columnas (basado en idTipo: 1) -->
               <ng-container style="width: 25rem;" *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
                 <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th class="subtitulos-tabla align-middle text-center" *ngIf="hijo.idSubCategoria !== 0">
+                  <th class="subtitulos-tabla align-middle text-center" [ngStyle]="{'z-index':200}" *ngIf="hijo.idSubCategoria !== 0">
                     {{ hijo.subCategoria }}
                     <div class="text-end"
                       *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ) || (hijo?.complementoSubcategoria !== null && hijo?.complementoSubcategoria !== '' )) && !this.imprimir">
@@ -180,7 +180,7 @@
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
-                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 2, 'height': ancho}"
+                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 30, 'height': ancho}"
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
@@ -195,7 +195,7 @@
               
               <!-- Primera subcategoría de la fila -->
               <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
-                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 1, 'height': ancho}">
+                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 30, 'height': ancho}">
                 <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== '')) && !this.imprimir">

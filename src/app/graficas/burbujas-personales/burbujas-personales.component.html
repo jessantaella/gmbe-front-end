@@ -1,10 +1,11 @@
   <div class="bubble-container" [ngStyle]="{'width.px': ancho, 'height.px': alto}">
     <div *ngFor="let bubble of burbujasExistentes"
          class="bubble"
-         [style.width.px]="bubble.r * 2"
-         [style.height.px]="bubble.r * 2"
+         [style.width.px]=" (bubble.r * 2)* factorEscala"
+         [style.height.px]="(bubble.r * 2)* factorEscala"
          [style.left.px]="bubble.x"
          [style.top.px]="bubble.y"
+         [style.zIndex]="calcularNivel(burbujasExistentes,bubble.count)"
          [style.background-color]="bubble.fillColor"
          (mouseover)="showTooltip($event, bubble)"  
          (mouseout)="hideTooltip()"

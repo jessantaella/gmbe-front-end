@@ -13,7 +13,7 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
 import { StorageService } from 'src/app/services/storage-service.service';
-import { debounceTime, fromEvent, Subscription } from 'rxjs';
+import { debounceTime, fromEvent, Subject, Subscription } from 'rxjs';
 import html2canvas from 'html2canvas';
 declare var swal: any;
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -155,6 +155,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       private modalService: NgbModal, 
       private titulos: TitulosService,
       @Inject(PLATFORM_ID) private platformId: object) {
+
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
     this.nombreMBE = this.storage.getItem('MBENombre')!;
@@ -193,19 +194,25 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
-    this.calcularDimensiones();
+    //this.calcularDimensiones();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.calcularDimensiones();
+   this.calcularDimensiones();
   }
 
   calcularDimensiones() {
     if (isPlatformBrowser(this.platformId)) {
+      if((window.innerWidth*0.1)/2<this.ancho){
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigateByUrl(currentUrl);
+        });
+      }
       // Solo se ejecuta en el navegador
-      this.ancho = window.innerWidth * 0.1; // 50% del ancho de la pantalla
-      this.alto = window.innerHeight * 0.1; // 80% del alto de la pantalla
+      this.ancho = window.innerWidth * 0.1;
+      this.alto = window.innerHeight * 0.1;
     } else {
       // Proporciona un valor por defecto para el servidor
       this.ancho = 150;
