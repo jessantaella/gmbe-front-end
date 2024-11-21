@@ -60,7 +60,7 @@
     position: sticky;
     top: 0;
     background: white; /* Para que el fondo del encabezado sea blanco */
-    z-index: 10; /* Asegura que el encabezado esté por encima de otras filas */
+    z-index: 200; /* Asegura que el encabezado esté por encima de otras filas */
   }
 
   .table th, .table td {

@@ -65,6 +65,7 @@ revisionDos: any;
 id: number = 0;
 versionMaxima = 1;
 faRotate = faRotateLeft;
+anchoCelda = 150;
 
   constructor(
     private fb: FormBuilder,

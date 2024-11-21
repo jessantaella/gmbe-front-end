@@ -34,7 +34,7 @@
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 10;
+  z-index: 200;
 }
 
 .fuente{
@@ -152,7 +152,7 @@ ul:hover{
 
 
 .tamanio {
-  font-size: 22px;
+  font-size: 20px;
 }
 .boton-ayuda {
   margin-left: 10px;
@@ -195,7 +195,7 @@ ul:hover{
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 30;
+  z-index: 200;
 }
 
 .btn-Categorias:active,
@@ -215,4 +215,14 @@ ul:hover{
   font-size: 11px;
   font-family: Arial, Helvetica, sans-serif;
   color:#ffffff;
+}
+
+.tituloModal{
+  font-size: 22px;
+}
+
+.contenidoModal{
+  font-size: 16px;
+  max-height: 200px;
+  overflow-y: auto;
 }

@@ -48,6 +48,7 @@
       </div>
     </div>
   </form>
+  <div class="container-fluid align-middle">
   <div class="text-center titulosTabla mt-4 negro">
     Variable de resultados
   </div>
@@ -58,7 +59,7 @@
         Intervenciones
       </div>
     </div>
-    <div class="table-responsive tabladatos" [ngStyle]="{'width': this.anchoDinamico() + '%'}" >
+    <div class="table-responsive tabladatos" [ngStyle]="{'width':'100%'}" >
       <table class="table table-bordered"
       *ngIf="estructuraFinalColumnasTitulos.length > 0 || estructuraFinalFilasTitulos.length > 0">
   <caption class="text-center caption-original"></caption>
@@ -67,7 +68,7 @@
       <!-- Esquina superior izquierda fija -->
       <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle sticky-left sticky-top"
           *ngIf="estructuraFinalColumnasTitulos.length > 0"
-          [ngStyle]="{'top': '0px', 'left': '0px', 'z-index': 3}">
+          [ngStyle]="{'top': '0px', 'left': '0px', 'z-index': 100}">
       </th>
 
       <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
@@ -94,21 +95,18 @@
           [attr.rowspan]="subFilas?.countSubCats"
           [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
           *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo"
-          [ngStyle]="{'left': '0px', 'z-index': 2,'height': 200 + 'px'}">
+          [ngStyle]="{'left': '0px', 'z-index': 100,'height': 200 + 'px'}">
         {{ subFilas?.idCategoria?.catalogo }}
       </th>
 
       <th class="subtitulos-tabla align-middle text-center sticky-left" scope="row" *ngIf="!subFilas?.auxiliar"
-          [ngStyle]="{'left': '100px', 'z-index': 1}">
+          [ngStyle]="{'left': '100px', 'z-index': 100}">
         {{ subFilas?.idSubCategoria?.catalogo }}
       </th>
   
       <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
         <th #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-          <!-- <app-burbujas [chartId]="'chart-' + i + 100 + j + 800 + u + 250" [chartTitle]="'GraficaPrincipal'"
-                        [bubbleData]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"
-                        *ngIf="this.esVisible[u]?.[i] && datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura)) "></app-burbujas> -->
-          <app-burbujas-personales *ngIf="this.validarDatosBurbujas(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" [datosBurbujas]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"  [ancho]="180" [alto]="180"></app-burbujas-personales>
+          <app-burbujas-personales *ngIf="this.validarDatosBurbujas(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" [datosBurbujas]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"  [ancho]="150" [alto]="150"></app-burbujas-personales>
         </th>
       </ng-container>
     </tr>
@@ -166,7 +164,7 @@
     </button>
   </div>
 </div>
-
+</div>
 <ng-template #content>
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-center modal-titulo">
