@@ -961,6 +961,7 @@ export class CrearGmbeComponent implements OnInit {
               confirmButton: 'guardar-swal',
               cancelButton: 'cancelar-swal',
             },
+            
           })
             .then((result: { isConfirmed: any }) => {
               if (result.isConfirmed) {
@@ -1304,6 +1305,7 @@ export class CrearGmbeComponent implements OnInit {
           this.obtenerCategorias();
           this.subCategorias = [];
           this.editarCategoriaForm.get('descripcion')?.setValue('');
+          
           this.editarCategoriaForm.get('url')?.setValue('');
           this.eliminarCategoriaForm.get('descripcion')?.setValue('');
           this.eliminarCategoriaForm.get('url')?.setValue('');
@@ -1416,6 +1418,8 @@ export class CrearGmbeComponent implements OnInit {
           this.eliminarSubcategoriaForm.get('categoria')?.setValue('0');
           this.eliminarSubcategoriaForm.get('subCategoria')?.setValue('');
           this.eliminarSubcategoriaForm.get('descripcion')?.setValue('');
+          this.editarSubcategoriaForm.get('descripcion')?.setValue('');
+          this.editarSubcategoriaForm.get('url')?.setValue('');
           this.eliminarSubcategoriaForm.get('url')?.setValue('');
           this.activarAgregar = false;
           this.obtenerCategorias();
