@@ -132,8 +132,10 @@ export class BurbujasPersonalesComponent {
 
     let maxRadius =this.datosBurbujas.length>6 && this.ancho<150 && minCount>7?   Math.min(chartWidth, chartHeight) / 12: Math.min(chartWidth, chartHeight) / 6;
    
-
     maxRadius = minCount>7 || this.datosBurbujas.length>10?  Math.min(chartWidth, chartHeight) / 20 : maxRadius;
+
+    minRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? 3: minRadius;
+    maxRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? Math.min(chartWidth, chartHeight) / 6: maxRadius;
   
     // Ajustar el radio máximo si hay muchas burbujas grandes
     if (maxCountBubbles > 1 || this.datosBurbujas.length>8) {
