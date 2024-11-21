@@ -8,6 +8,7 @@ import { NotificacionesService } from './services/notificaciones.service';
 import { GmbeServicesService } from './gmbe/services/gmbe-services.service';
 import { CifradoService } from './services/cifrado.service';
 import { Router } from '@angular/router';
+import { TokenService } from './services/token.services';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,17 @@ export class AppComponent implements OnInit {
   mostrarNotificaciones = false;
 
 
-  constructor(private meta: Meta,private router: Router, private cifrado:CifradoService, private gmbeServices: GmbeServicesService, private notificacionesService: NotificacionesService, private servicio: DataDynamic, @Inject(PLATFORM_ID) private platformId: any, private storage: StorageService,private url:ServerConfigService, rendererFactory: RendererFactory2) {
+  constructor(private meta: Meta,
+    private router: Router,
+    private cifrado:CifradoService, 
+    private gmbeServices: GmbeServicesService, 
+    private notificacionesService: NotificacionesService, 
+    private servicio: DataDynamic, 
+    @Inject(PLATFORM_ID) private platformId: any, 
+    private storage: StorageService,
+    private url:ServerConfigService,
+    private tokenServices:TokenService,
+    rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
@@ -36,6 +47,7 @@ export class AppComponent implements OnInit {
       console.log('Cambio en mostrarNotificaciones:', mostrar);
       this.mostrarNotificaciones = mostrar;
     });
+    this.verificarToken();
     //this.consultarTags();
 
     this.meta.addTag({
@@ -62,25 +74,6 @@ export class AppComponent implements OnInit {
       "name": "charset",
       "content": "UTF-8"
     })
-
-
-    /*if(this.isBrowser){
-      console.log('voy por icon');
-      const link: HTMLLinkElement = this.renderer.createElement('link');
-      link.type = 'image/x-icon';
-      link.rel = 'icon';
-      link.href = 'https://sistemas.coneval.org.mx/conf/assets/favicon.ico';
-
-      const links = document.querySelectorAll("link[rel*='icon']");
-      links.forEach(link => link.parentNode?.removeChild(link));
-
-      const head = this.renderer.selectRootElement('head', true);
-      this.renderer.appendChild(head, link);
-    }*/
-
-    // localStorage.setItem('Versión',packageJson.version);
-    // console.log(packageJson.version);
-    // (window as any).myVariable = packageJson.version;
     this.checkVersion();
   }
 
@@ -141,6 +134,15 @@ export class AppComponent implements OnInit {
 
     console.log('Versión guardada en localStorage:', this.storage.getItem('Versión'));
   }
+
+  verificarToken(){
+    if(!this.storage.getItem('token-gmbe-publico')){
+    this.tokenServices.obtenerTokenPublico().subscribe(
+      res=>{
+        this.storage.setItem("token-gmbe-publico",this.cifrado.cifrar(res.token));
+      })
+  }
+}
   
   
 }
