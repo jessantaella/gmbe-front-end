@@ -819,6 +819,11 @@ export class CrearGmbeComponent implements OnInit {
   }
 
   open(content: TemplateRef<any>, tipo: string) {
+    this.categoriaForm.reset();
+    this.subcategoriaForm.reset();
+    this.eliminarCategoriaForm.reset();
+    this.eliminarSubcategoriaForm.reset();
+
     this.mostrarErrorurl = false;
     this.volverCargarBandera = true;
     this.obtenerCategoriasEditado();

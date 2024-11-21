@@ -1,7 +1,7 @@
-import { Component, Input,  OnChanges, SimpleChanges } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, Input, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-burbujas-personales',
@@ -33,7 +33,7 @@ export class BurbujasPersonalesComponent {
   tooltipData: any = {}; // Información del tooltip
   tooltipStyles: any = {}; // Estilos para posicionar el tooltip
   countMayor : number = 0;
-
+  anchoTooltip:number = 0;
 
   burbujasExistentes: Array<{ x: number, y: number, r: number, fillColor: string, nombreGpo: string , count:number, idGpo : number}> = [];
 
@@ -44,7 +44,7 @@ export class BurbujasPersonalesComponent {
   altoActual: number = 0; // Almacena el alto actual
   factorEscala: number = 1; // Factor para escalar las burbujas
 
-  constructor(private router: Router){
+  constructor(private router: Router,@Inject(PLATFORM_ID) private platformId: Object){
   }
 
 
@@ -116,7 +116,7 @@ export class BurbujasPersonalesComponent {
     const { count, nombreGpo, colorBubble, idGpo } = bubble;
     const chartWidth = this.ancho-20 || 150;
     const chartHeight = this.alto-20 || 150;
-    const padding = 10;
+    const padding = this.datosBurbujas.length>8 ? 5: 10;
   
     // Determinar el count máximo para escalar los radios
     const maxCount = this.countMayor;
@@ -125,10 +125,18 @@ export class BurbujasPersonalesComponent {
     const maxCountBubbles = this.datosBurbujas.filter(b => b.count === maxCount).length;
   
     let minRadius = 2;
-    let maxRadius = Math.min(chartWidth, chartHeight) / 6;
+
+    const minCount = this.datosBurbujas.reduce((min, item) => {
+      return item.count < min ? item.count : min;
+    }, Infinity);
+
+    let maxRadius =this.datosBurbujas.length>6 && this.ancho<150 && minCount>7?   Math.min(chartWidth, chartHeight) / 12: Math.min(chartWidth, chartHeight) / 6;
+   
+
+    maxRadius = minCount>7 || this.datosBurbujas.length>10?  Math.min(chartWidth, chartHeight) / 20 : maxRadius;
   
     // Ajustar el radio máximo si hay muchas burbujas grandes
-    if (maxCountBubbles > 1) {
+    if (maxCountBubbles > 1 || this.datosBurbujas.length>8) {
       maxRadius = Math.min(
         maxRadius,
         Math.sqrt((chartWidth * chartHeight) / (Math.PI * maxCountBubbles)) / 2 - padding
@@ -198,7 +206,7 @@ export class BurbujasPersonalesComponent {
   
   
   ajustarSuperposiciones() {
-    const padding = 10;
+    const padding = this.datosBurbujas.length>8 ? 5: 10;
   
     for (let i = 0; i < this.burbujasExistentes.length; i++) {
       for (let j = i + 1; j < this.burbujasExistentes.length; j++) {
@@ -221,10 +229,10 @@ export class BurbujasPersonalesComponent {
           b2.y += moveY;
   
           // Asegurar que no se salgan del contenedor
-          b1.x = Math.max(b1.r, Math.min(this.ancho - b1.r, b1.x));
-          b1.y = Math.max(b1.r, Math.min(this.alto - b1.r, b1.y));
-          b2.x = Math.max(b2.r, Math.min(this.ancho - b2.r, b2.x));
-          b2.y = Math.max(b2.r, Math.min(this.alto - b2.r, b2.y));
+          b1.x = Math.max(b1.r, Math.min((this.ancho * b1.r) - b1.r, b1.x));
+          b1.y = Math.max(b1.r, Math.min((this.alto * b1.r) - b1.r, b1.y));
+          b2.x = Math.max(b2.r, Math.min((this.ancho * b2.r) - b2.r, b2.x));
+          b2.y = Math.max(b2.r, Math.min((this.alto * b2.r) - b2.r, b2.y));
         }
       }
     }
@@ -233,22 +241,26 @@ export class BurbujasPersonalesComponent {
     
 
   showTooltip(event: MouseEvent, bubble: any) {
+    this.anchoTooltip = bubble.nombreGpo.length*5;
     //console.log(bubble.y)
     //console.log(bubble.r);
     this.tooltipData = bubble;
-    const padding = -10; 
+    const padding = bubble.r*2 <=20 ? 25:5; 
     // Ajusta las coordenadas aquí
     const diametro = bubble.r*2;
+
+    let calculoLongitud= bubble.x-diametro-padding;
+    let calculoAltitud = (bubble.y-bubble.r)-padding;
     this.tooltipStyles = {
       position: 'absolute',
-      left: `${bubble.x+diametro}px`, 
-      top: `${bubble.y-bubble.r}px`, 
+      left: `${bubble.x+ this.anchoTooltip>=this.ancho? bubble.x-this.anchoTooltip:calculoLongitud}px`, 
+      top: `${calculoAltitud}px`, 
       whiteSpace: 'nowrap', // Evitar saltos de línea
       zIndex: 1000
     };
     //console.log(this.tooltipStyles)
-  
     this.tooltipVisible = true;
+
   }
   
 // Ocultar el tooltip cuando el mouse sale

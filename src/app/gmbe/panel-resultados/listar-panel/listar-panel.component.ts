@@ -938,8 +938,6 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         (item: { idCategoria: number; }) => item.idCategoria === idCategoria
       );
       const idsAEliminar = busca.map((item: { idSubcategoria: any; }) => item.idSubcategoria);
-      console.warn(idsAEliminar);
-      console.warn(this.seleccionFilasSubCategorias)
         // Filtra `seleccionFilasSubCategorias` para excluir los `idSubcategoria` en `idsAEliminar`
         this.seleccionFilasSubCategorias = this.seleccionFilasSubCategorias.filter(
           item => !idsAEliminar.includes(item)
@@ -1018,7 +1016,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       );
       const idsAEliminar = busca.map((item: { idSubcategoria: any; }) => item.idSubcategoria);
         // Filtra `seleccionFilasSubCategorias` para excluir los `idSubcategoria` en `idsAEliminar`
-        this.seleccionColumnasCategorias = this.seleccionColumnasCategorias.filter(
+        this.seleccionColumnasSubCategorias = this.seleccionColumnasSubCategorias.filter(
           item => !idsAEliminar.includes(item)
         );
        //this.seleccionColumnasSubCategorias= this.seleccionColumnasSubCategorias.filter(e=>idCategoria ===e.idCategoria);

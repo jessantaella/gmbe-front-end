@@ -13,7 +13,7 @@
     </div>
   
     <!-- Tooltip personalizado -->
-    <div *ngIf="tooltipVisible" class="tooltip2 text-center align-middle" [ngStyle]="tooltipStyles" width="100%">
+    <div  *ngIf="tooltipVisible" class="tooltip2 text-center align-middle" [ngStyle]="tooltipStyles" width="100%">
       <div class="tooltip-color" [style.background-color]="tooltipData.fillColor"></div> 
       <span class="textoTooltip m-auto">{{ tooltipData.nombreGpo }} {{tooltipData.count}}</span>
     </div>
