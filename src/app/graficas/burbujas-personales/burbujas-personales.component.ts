@@ -124,13 +124,14 @@ export class BurbujasPersonalesComponent {
     // Contar cuántas burbujas tienen el valor máximo
     const maxCountBubbles = this.datosBurbujas.filter(b => b.count === maxCount).length;
   
-    let minRadius = 2;
+    let minRadius = 4;
 
     const minCount = this.datosBurbujas.reduce((min, item) => {
       return item.count < min ? item.count : min;
     }, Infinity);
 
-    let maxRadius =this.datosBurbujas.length>6 && this.ancho<150 && minCount>7?   Math.min(chartWidth, chartHeight) / 12: Math.min(chartWidth, chartHeight) / 6;
+
+    let maxRadius =this.datosBurbujas.length>6 && this.ancho<=150 && minCount>7?   Math.min(chartWidth, chartHeight) / 12: Math.min(chartWidth, chartHeight) / 6;
    
     maxRadius = minCount>7 || this.datosBurbujas.length>10?  Math.min(chartWidth, chartHeight) / 20 : maxRadius;
 
@@ -138,10 +139,11 @@ export class BurbujasPersonalesComponent {
     maxRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? Math.min(chartWidth, chartHeight) / 6: maxRadius;
   
     // Ajustar el radio máximo si hay muchas burbujas grandes
-    if (maxCountBubbles > 1 || this.datosBurbujas.length>8) {
+    if (maxCountBubbles > 1 || this.datosBurbujas.length>8 ) {
+      let divisor = this.datosBurbujas.length>7 && maxCount<3 ? 1.5:2;
       maxRadius = Math.min(
         maxRadius,
-        Math.sqrt((chartWidth * chartHeight) / (Math.PI * maxCountBubbles)) / 2 - padding
+        Math.sqrt((chartWidth * chartHeight) / (Math.PI * maxCountBubbles)) / divisor - padding
       );
     }
   
@@ -175,6 +177,8 @@ export class BurbujasPersonalesComponent {
       while (!positioned && attempts < 1000) {
         x = Math.random() * (chartWidth - 2 * r) + r;
         y = Math.random() * (chartHeight - 2 * r) + r;
+        x =x+chartWidth>= this.ancho ? x-(r+padding):x;
+        y =y+chartHeight>=this.ancho ? y-(r-padding):y;
   
         // Verificar superposición
         const overlappingBubble = this.burbujasExistentes.find(b =>
@@ -192,12 +196,18 @@ export class BurbujasPersonalesComponent {
       if (!positioned) {
         x = Math.random() * (chartWidth - 2 * r) + r;
         y = Math.random() * (chartHeight - 2 * r) + r;
+        x =x+chartWidth>= this.ancho ? x-(r+padding):x;
+        y =y+chartHeight>=this.ancho ? y-(r-padding):y;
+  
       }
     }
   
     // Asegurar que la burbuja no se salga del contenedor
     x = Math.max(r, Math.min(chartWidth - r, x));
     y = Math.max(r, Math.min(chartHeight - r, y));
+    x =x+chartWidth>= this.ancho ? x-(r+padding):x;
+    y =y+chartHeight>=this.ancho ? y-(r-padding):y;
+
 
     // Añadir burbuja
     this.burbujasExistentes.push({ x, y, r, fillColor: colorBubble, nombreGpo, count, idGpo });
