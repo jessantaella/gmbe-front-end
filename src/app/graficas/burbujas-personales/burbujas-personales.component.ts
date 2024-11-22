@@ -85,8 +85,8 @@ export class BurbujasPersonalesComponent {
   inicializarBurbujas() {
     if (this.datosBurbujas.length > 0) {
       // Encontrar la burbuja con el mayor valor de `count`
-      const max = this.datosBurbujas.reduce((max, burbuja) => {
-        return (burbuja.count > max.count) ? burbuja : max;
+      const max = this.datosBurbujas.reduce((maximo, burbuja) => {
+        return (burbuja.count > maximo.count) ? burbuja : maximo;
       });
       this.countMayor = max.count;
     }

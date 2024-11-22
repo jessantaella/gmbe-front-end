@@ -95,7 +95,7 @@ ul:hover{
   color:#000000 !important;
 }
 
-.btn-close {
+.btn-close{
   color: white !important;
   font-size: 1.5rem !important;
   opacity: 1 !important;
@@ -132,19 +132,9 @@ ul:hover{
   overflow-y: auto;
 }
 
-.btn-close{
-  color: white !important;
-  font-size: 1rem !important;
-  opacity: 1 !important;
-}
-
 .negritas{
   font-weight: bold !important;
 }
-.letranegra{
-
-}
-
 .abajo {
   position: relative;
   top: 4px;
@@ -167,13 +157,6 @@ ul:hover{
   width: 250px !important; /* Fuerza el ancho */
 }
 
-.sticky-left {
-  position: sticky;
-  left: 0;
-  background-color: white;
-  z-index: 5;
-  border-right: 1px solid #ddd;
-}
 
 .sticky-left-sub {
   position: sticky;

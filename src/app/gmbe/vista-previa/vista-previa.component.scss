@@ -39,15 +39,6 @@
     align-items: center;
   }
 
-  .vertical-text {
-    writing-mode: vertical-rl; /* Rota el texto 90 grados en el sentido contrario a las agujas del reloj */
-    transform: rotate(180deg); /* Ajusta la dirección del texto */
-    text-align: center;
-    margin-right: 1rem; /* Espacio entre el texto y la tabla */
-    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-    font-weight: bold; /* Opcional: Hace que el texto sea negrita */
-  }
-
   .table-responsive{
     height: 60vh;
     overflow-x: auto;

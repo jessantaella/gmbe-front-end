@@ -226,7 +226,7 @@ anchoCelda = 150;
 
   datosInterseccion(columna: number, fila: number) {
     let respuesta = this.datosIntersecciones.find(
-      (obj) => obj.idFila === columna && obj.idColumna === fila
+      (obj1) => obj1.idFila === columna && obj1.idColumna === fila
     );
 
     let obj = respuesta;
@@ -245,7 +245,7 @@ anchoCelda = 150;
 
   datosInterseccion2(columna: number, fila: number) {
     let respuesta = this.revisionDos.find(
-      (obj: any) => obj.idFila === columna && obj.idColumna === fila
+      (obj2: any) => obj2.idFila === columna && obj2.idColumna === fila
     );
 
     let obj = respuesta;

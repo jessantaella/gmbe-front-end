@@ -178,11 +178,7 @@ i: any;
         }
         break;
       case this.pendiente:
-        if (this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1 ) {
-          return true;
-        } else {
-          return false;
-        }
+        return this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1;
         break;
       case this.rechazado:
         
@@ -419,10 +415,10 @@ i: any;
       if (result.isConfirmed) {
         this.gmbeServices.cambiarEstatus(idMbe, !estatusActual).subscribe(
           res => {
-            let mensaje = !estatusActual ? 'bloqueado' : 'desbloqueado';
+            let mensaje1 = !estatusActual ? 'bloqueado' : 'desbloqueado';
             swal.fire({
               icon: 'success',
-              text: 'Se ha '+mensaje+' el MBE con éxito',
+              text: 'Se ha '+mensaje1+' el MBE con éxito',
               confirmButtonText: 'OK',
               customClass: {
                 htmlContainer: 'titulo-swal',
@@ -452,7 +448,7 @@ i: any;
 
   cargardatos() {
     // Mostrar animación de carga
-    const loading = swal.fire({
+    swal.fire({
       text: 'Cargando...',
       allowOutsideClick: false,
       allowEscapeKey: false,

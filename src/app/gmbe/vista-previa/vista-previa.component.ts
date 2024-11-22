@@ -264,15 +264,15 @@ cuadroAmarrillo: string = '';
           this.mostrarObjetivosModal = res.revisionTwo.objetivo;
 
           this.gmbservices.getImage(res.revisionTwo.ruta).subscribe(
-            (res) => {
-              this.imagenPrevia = this.sanitizer.bypassSecurityTrustUrl(res);
+            (res1) => {
+              this.imagenPrevia = this.sanitizer.bypassSecurityTrustUrl(res1);
             },
             (err) => {}
           );
 
           this.gmbservices.getImage(res.revisionOne.ruta).subscribe(
-            (res) => {
-              this.imagenNueva= this.sanitizer.bypassSecurityTrustUrl(res);
+            (res2) => {
+              this.imagenNueva= this.sanitizer.bypassSecurityTrustUrl(res2);
             },
             (err) => {}
           );
@@ -424,8 +424,8 @@ cuadroAmarrillo: string = '';
                       'Se ha enviado a validar el MBE con éxito',
                       'success'
                     )
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((result1: { isConfirmed: any }) => {
+                      if (result1.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -434,8 +434,8 @@ cuadroAmarrillo: string = '';
                 case this.rechazado:
                   swal
                     .fire('', 'Se ha rechazado el MBE con éxito', 'success')
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((result3: { isConfirmed: any }) => {
+                      if (result3.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -444,8 +444,8 @@ cuadroAmarrillo: string = '';
                 case this.validado:
                   swal
                     .fire('', 'Se ha aprobado el MBE con éxito', 'success')
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((result2: { isConfirmed: any }) => {
+                      if (result2.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -600,7 +600,7 @@ cuadroAmarrillo: string = '';
 
   datosInterseccion(columna: number, fila: number) {
     let respuesta = this.datosIntersecciones.find(
-      (obj) => obj.idFila === columna && obj.idColumna === fila
+      (obj1) => obj1.idFila === columna && obj1.idColumna === fila
     );
 
     let obj = respuesta;
@@ -619,7 +619,7 @@ cuadroAmarrillo: string = '';
 
   validarDatosBurbujas(columna: number, fila: number){
     let respuesta = this.datosIntersecciones.find(
-      (obj) => obj.idFila === columna && obj.idColumna === fila
+      (obj1) => obj1.idFila === columna && obj1.idColumna === fila
     );
 
     return respuesta === undefined ? false : true;
