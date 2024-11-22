@@ -156,7 +156,7 @@ export class EditarGmbeComponent{
         this.gmbservices.crearImagen(this.imageFile, nombre).subscribe(
           res => {
             enviar.ruta = res.remotePath;
-            this.gmbservices.actualizarGmbe(enviar).subscribe(res=>{
+            this.gmbservices.actualizarGmbe(enviar).subscribe(res1=>{
               swal.fire({
                 icon: 'success',
                 text: 'MBE actualizado con éxito',

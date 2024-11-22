@@ -85,7 +85,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
       responsive: true,
       onClick: (e: any, item: any) => {
         if (item.length > 0) {
-          const { datasetIndex, index } = item[0];
+          const { index } = item[0];
           const { idMbe, idFila, idColumna, idGpo } = bubbleData[index];
           if (!this.router.url.includes('vista-previa')) {
             this.tablaEvaluacion(idMbe, idFila, idColumna, Number(idGpo));
@@ -108,7 +108,7 @@ export class BurbujasComponent implements AfterViewInit, OnDestroy {
           position: 'average' as 'average',
           callbacks: {
             label: (context: any) => {
-              const { datasetIndex, dataIndex } = context;
+              const {  dataIndex } = context;
               const { nombreGpo, valorOriginalZ } = bubbleData[dataIndex];
               return `${nombreGpo} ${valorOriginalZ}`;
             }

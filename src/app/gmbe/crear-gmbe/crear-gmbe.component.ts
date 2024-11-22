@@ -1318,9 +1318,9 @@ export class CrearGmbeComponent implements OnInit {
   eliminarCategoriaTabla(tipo: number, id: number) {
     console.info(id)
 
-    let aux: { categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; subcategorias: any[]; }[] = [];
+    let aux: { categoria: { idCatalogo: number; subcategorias: any[]; } ; subcategorias: any[]; }[] = [];
     this.estructuraFinalColumnasTitulos.forEach((e: {
-      categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
+      categoria: { idCatalogo: number; subcategorias: any[]; } ; idCatalogo: number; subcategorias: any[];
     }) => {
       let sub: any[] = [];
       e.subcategorias.forEach((i: any) => {
@@ -1338,7 +1338,7 @@ export class CrearGmbeComponent implements OnInit {
     aux = [];
 
     this.estructuraFinalFilasTitulos.forEach((e: {
-      categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
+      categoria: { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
     }) => {
       let sub: any[] = [];
       e.subcategorias.forEach((i: any) => {

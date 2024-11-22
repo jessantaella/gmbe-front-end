@@ -58,12 +58,11 @@
 
  }
  .btn-acciones{
-   color : #21409a
+   color : #21409a;
+   cursor: pointer;
  }
 
- .btn-acciones{
-  cursor: pointer;
- }
+
 
 
  .btn-acciones-inabil{
@@ -147,19 +146,6 @@
 }
 
 
-div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
-  border: 0;
-  border-radius: .25em;
-  background: initial;
-  background-color: #21409a;
-  color: #fff;
-  font-size: 1em;
-}
-
-div:where(.swal2-container) div:where(.swal2-popup) {
-
-  color: #000000 !important;
-}
 
 .page-item.active .page-link {
   z-index: 1;

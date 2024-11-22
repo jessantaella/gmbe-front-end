@@ -372,7 +372,6 @@ export class ListarUsuariosComponent implements OnInit {
                   swal.fire("", "Usuario eliminado exitosamente", "success");
                   this.cambiarPaginaGetAll(0, 10, "", "ACTIVOS");
                 },
-                (err) => {}
               );
             }
           );
@@ -463,11 +462,7 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   validaDisabledGuardarEditar(){
-    if (this.usuarioEditForm.get('idRol')!.value === '1' || this.usuarioEditForm.get('idRol')!.value === 1){
-      return true;
-    }else{
-      return true;
-    }
+  return this.usuarioEditForm.get('idRol')!.value === '1' || this.usuarioEditForm.get('idRol')!.value === 1;
   }
 
 

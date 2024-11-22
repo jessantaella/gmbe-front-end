@@ -160,7 +160,7 @@
               <!-- Subencabezados de columnas (basado en idTipo: 1) -->
               <ng-container style="width: 25rem;" *ngFor="let subcolumna of estructuraFinalColumnasTitulos">
                 <ng-container *ngFor="let hijo of subcolumna.hijos">
-                  <th class="subtitulos-tabla align-middle text-center" [ngStyle]="{'z-index':200}" *ngIf="hijo.idSubCategoria !== 0">
+                  <th id="cabecera1" class="subtitulos-tabla align-middle text-center" [ngStyle]="{'z-index':200}" *ngIf="hijo.idSubCategoria !== 0">
                     {{ hijo.subCategoria }}
                     <div class="text-end"
                       *ngIf="hijo?.idSubCategoria !== 0 && ((hijo?.descripcionSubcategoria !== null && hijo?.descripcionSubcategoria !== '' ) || (hijo?.complementoSubcategoria !== null && hijo?.complementoSubcategoria !== '' )) && !this.imprimir">
@@ -232,7 +232,7 @@
             </div>
             <div class="toast-body textoToast" style="display: flex; flex-wrap: wrap; gap: 10px;">
               <div *ngFor="let index of tiposDatosAyuda" class="d-flex align-items-center">
-                <i class="bi bi-circle-fill" [ngStyle]="{'color': index.complemento}"></i>
+                <em class="bi bi-circle-fill" [ngStyle]="{'color': index.complemento}"></em>
                 <span class="mx-2">{{index.catalogo}}</span>
               </div>
             </div>

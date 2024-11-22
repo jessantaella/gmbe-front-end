@@ -123,7 +123,6 @@ export class InicioComponent implements OnInit {
   }
 
   obtenerMbesPublicos() {
-    let token_gmbe = this.storage.getItem('token-gmbe');
       this.info.obtenerMBEPublicado().subscribe(
         res => {
           
