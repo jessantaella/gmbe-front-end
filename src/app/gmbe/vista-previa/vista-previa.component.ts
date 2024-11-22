@@ -410,8 +410,8 @@ cuadroAmarrillo: string = '';
                 case this.publicado:
                   swal
                     .fire('', 'Se ha publicado el MBE con éxito', 'success')
-                    .then((result: { isConfirmed: any }) => {
-                      if (result.isConfirmed) {
+                    .then((resu: { isConfirmed: any }) => {
+                      if (resu.isConfirmed) {
                         this.validarAccesos(this.usuario.idUsuario);
                         this.router.navigate(['/gmbe']);
                       }
@@ -627,7 +627,7 @@ cuadroAmarrillo: string = '';
 
   datosInterseccion2(columna: number, fila: number) {
     let respuesta = this.revisionDos.find(
-      (obj: any) => obj.idFila === columna && obj.idColumna === fila
+      (o: any) => o.idFila === columna && o.idColumna === fila
     );
 
     let obj = respuesta;

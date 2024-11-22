@@ -170,12 +170,7 @@ i: any;
     //4.- PUBLICADOR
     switch (idCatalogo) {
       case this.creado:
-        
-        if ((this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisionesAcciones) {
-          return true;
-        } else {
-          return false;
-        }
+        return (this.idRol() === 2 || this.idRol() === 4 || this.idRol() === 1) && this.mostrarMensajeRevisionesAcciones
         break;
       case this.pendiente:
         return this.idRol() === 3 || this.idRol() === 4 || this.idRol() === 1;
