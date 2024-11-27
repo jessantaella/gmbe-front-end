@@ -1074,7 +1074,6 @@ export class EditarGmbeComponent{
     this.editarCategoriaForm.get('categoria')?.setValue('');
     this.editarCategoriaForm.get('descripcion')?.setValue('');
     this.editarCategoriaForm.get('url')?.setValue('');
-    this.modalRef?.close();
   }
 
   cerrarModalSubCatalgo() {
@@ -1085,7 +1084,6 @@ export class EditarGmbeComponent{
     this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.editarSubcategoriaForm.get('descripcion')?.setValue('');
     this.editarSubcategoriaForm.get('url')?.setValue('');
-    this.modalRef?.close();
   }
   editarSubcategoria() {
     let id = Number(this.editarSubcategoriaForm.get('categoria')?.value);
