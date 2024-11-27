@@ -791,7 +791,8 @@ export class CrearGmbeComponent implements OnInit {
     enviar.estructura = estructura;
     enviar.ruta = null;
     enviar.idUsuario = this.usuario?.idUsuario;
-    /*this.gmbeservice.crearImagen(this.imageFile, nombre).subscribe(
+    console.log(estructura);
+    this.gmbeservice.crearImagen(this.imageFile, nombre).subscribe(
       response => {
 
         // Maneja la respuesta exitosa aquí
@@ -809,12 +810,24 @@ export class CrearGmbeComponent implements OnInit {
         console.error('Error al subir la imagen', error);
         // Maneja el error aquí
       }
-    );*/
+    );
   }
 
   modificarEstructuraxCache(arreglo:any){
+    console.log(this.gestionDatos.obtenerTodasLasCategorias());
+    console.log(this.gestionDatos.obtenerTodasLasSubcategorias());
     console.log(arreglo);
-    return arreglo;
+    let aux : any[]= [];
+    arreglo.forEach((element: { idSubCategoria: number | null; idCategoria: number; }) => {
+        if(element.idSubCategoria !== null){
+          let encontrado = this.gestionDatos.buscarSubcategoriaPorId(element.idSubCategoria);
+          aux.push({idCategoria:element.idCategoria,idSubcategoria:element.idSubCategoria,descripcion:encontrado?.descripcion ?? '',complemento:encontrado?.complemento ?? ''});
+        }else{
+          let encontrado = this.gestionDatos.buscarCategoriaPorId(element.idCategoria);
+          aux.push({idCategoria:element.idCategoria,idSubcategoria:element.idSubCategoria,descripcion:encontrado?.descripcion ?? '',complemento:encontrado?.complemento ?? ''});
+        }
+    });
+    return aux;
   }
 
   consultarAccesos(idUsuario: number) {
