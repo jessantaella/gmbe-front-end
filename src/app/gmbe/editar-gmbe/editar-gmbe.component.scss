@@ -8,36 +8,6 @@
   --bs-btn-active-color: white;
 }
 
-@media (max-width: 1030px) {
-  .movil
-  {
-    padding: 0 !important;
-  }
-
-  .movil-padding-2{
-    padding: 0.5rem !important;
-  }
-
-  .movil-imagen-padding-2{
-    padding: 0rem !important;
-  }
-}
-
-.texto{
-  color: #000000 !important;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@media (min-width: 1031px) {
-  .movil-padding-2{
-    padding: 0.5rem !important;
-  }
-
-  .movil-imagen-padding-2{
-    padding: 0.5rem !important;
-  }
-}
-
 .custom-accordion-button:not(.collapsed) {
   background-color: #2B3172; /* Nuevo color de fondo cuando el acordeón está abierto */
   color: white; /* Se mantiene el color del texto */
@@ -127,41 +97,178 @@
   }
 
   .listado{
-    height: 200px;
+    height: 150px;
+    width: 50%;
+    margin-left: 10px;
     overflow: auto;
   }
 
-  .titulo-swal{
+  .titulos-tabla{
+    background-color: #3968C6;
+    color: white;
+  } 
+  .subtitulos-tabla{
+    background-color: #BEDBFE;
+    color: white;
+  }
+
+  .caption-original {
+    caption-side: top; /* Esto es el valor por defecto, pero se puede especificar explícitamente */
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px; /* Espacio debajo del caption */
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    font-weight: normal;
+    color: #000000; 
   }
-  @media (max-width: 576px) {
-    .accordion-body .row {
-      align-items: center;
-    }
-  
-    .accordion-body label.col-form-label {
-      text-align: left;
-    }
-  
-    .accordion-body .col-12, 
-    .accordion-body .col-md-6 {
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-  
-    .file-upload-wrapper {
-      display: flex;
-      align-items: center;
-    }
-  
-    .file-upload-wrapper .upload-icon {
-      cursor: pointer;
-    }
-  
-    .imagen {
-      max-width: 100%;
-      height: auto;
-    }
+ 
+
+  .d-flex {
+    display: flex;
+    align-items: center;
   }
+  
+  .vertical-text {
+    writing-mode: vertical-rl; /* Rota el texto 90 grados en el sentido contrario a las agujas del reloj */
+    transform: rotate(180deg); /* Ajusta la dirección del texto */
+    text-align: center;
+    margin-right: 1rem; /* Espacio entre el texto y la tabla */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    font-weight: bold; /* Opcional: Hace que el texto sea negrita */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #000000;
+  }
+
+  .table-responsive{
+    height: 40vh;
+    overflow: scroll;
+  }
+
+  /* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 767px) {
+  .listado {
+    width: 100%;
+    margin-left: 0; /* Opcional: Ajusta el margen para móviles si es necesario */
+  }
+}
+.table{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.tituloModal{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  color:#ffffff;
+}
+
+label{
+  font-family: Arial, Helvetica, sans-serif;
+  color:#000000;
+}
+
+.btn-agregar{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
+.btn-agregar:hover{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
+.btn-agregar:focus{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
+.btn-agregar:active{
+  background: #21409a !important;
+  color:#ffffff !important;
+  font-size: 11px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  --bs-btn-active-bg: #21409a !important;
+  --bs-btn-active-color: white !important;
+}
+
+
+
+/* Estilo para el texto del mensaje en el modal */
+.swal2-html-container {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+/* Estilo para el botón */
+.swal2-confirm {
+  background-color: #21409a; /* Color de fondo azul */
+  color: white;             /* Texto en blanco */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+.custom-swal-popup {
+  background-color: #21409a !important;
+  color: #ffffff !important; /* Asegurar que el texto sea legible */
+}
+
+/* Estilos personalizados para el botón de confirmación */
+div.swal2-container button.swal2-styled.swal2-confirm.custom-swal-confirm-button {
+  background-color: #21409a !important;
+  color: #ffffff !important; /* Asegurar que el texto del botón sea legible */
+  border: none !important; /* Eliminar cualquier borde */
+  box-shadow: none !important; /* Eliminar cualquier sombra */
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 576px) {
+  .btnOtrasAcciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .modal-body .row {
+    align-items: center;
+  }
+
+  .modal-body label.col-form-label {
+    text-align: left;
+  }
+}
+
+.agregar-btn{
+  background-color: #21409a;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+#celdaVacia{
+  background: #eff3ec;
+}
+
+th,tr{
+  font-size: 13px;
+}
+
+.text-danger{
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px;
+}

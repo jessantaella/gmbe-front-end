@@ -18,9 +18,18 @@ export class GmbeServicesService {
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/find-by-tipo-catalogo?idTipoCatalogo='+tipo;
     return this.http.get<any>(url);
   }
+  listarCatalogo2(tipo:number, idMbe:number):Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+`api/gmbe-catalogos/api/mbe/get-mbe-categorias/${idMbe}`
+    return this.http.get<any>(url);
+  }
 
   listarSubcategorias(padre:number):Observable<any>{
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/find-by-id-relacion?idRelacion='+padre;
+    return this.http.get<any>(url);
+  }
+
+  listarSubcategorias2(padre:number, idMbe:number):Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+`api/gmbe-catalogos/api/mbe/get-mbe-sub-categorias/${idMbe}/${padre}`
     return this.http.get<any>(url);
   }
 
@@ -76,6 +85,29 @@ export class GmbeServicesService {
     let categoria = {
       idTipoCatalogo: 3,
       idCatalogo:id,
+      catalogo:nombre,
+      descripcion:descripcion,
+      complemento:complemento
+    };
+    return this.http.put<any>(urlEditar,categoria,{});
+  }
+  editarCategoria2(id:number,nombre:string, descripcion:string, complemento: string, idMbe: number):Observable<any>{
+    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe/api/gmbe-catalogos/api/mbe/upt-mbe-categoria/'+idMbe;
+    let categoria = {
+      idTipoCatalogo: 3,
+      idCatalogo:id,
+      catalogo:nombre,
+      descripcion:descripcion,
+      complemento:complemento
+    };
+    return this.http.put<any>(urlEditar,categoria,{});
+  }
+
+  editarSubcategoria2(id:number,nombre:string, idSub:number, descripcion:string, complemento: string,idMbe: number):Observable<any>{
+    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe/api/gmbe-catalogos/api/mbe/upt-mbe-sub-categoria/'+idMbe;
+    let categoria = {
+      idTipoCatalogo: 3,
+      idCatalogo:idSub,
       catalogo:nombre,
       descripcion:descripcion,
       complemento:complemento
