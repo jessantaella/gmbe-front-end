@@ -54,13 +54,13 @@ export class GmbeServicesService {
     return this.http.get<any>(url);
   }
 
-  crearCategoria(nombre:string, descripcion:string, complemento: string):Observable<any>{
+  crearCategoria(nombre:string):Observable<any>{
     let urlCrear=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/crear';
     let categoria = {
       tipoCatalogo:'CATEGORIAS',
       catalogo:nombre,
-      descripcion:descripcion,
-      complemento:complemento,
+      descripcion:null,
+      complemento:null,
       idRelacionCatalogo:null
     };
     return this.http.post<any>(urlCrear,categoria,{});
