@@ -431,7 +431,7 @@ export class EditarGmbeComponent{
     this.ver = false;
   }
 
-  open(content: TemplateRef<any>, tipo: string) {
+  open( tipo: string) {
     this.categoriaForm.reset();
     this.subcategoriaForm.reset();
     this.eliminarCategoriaForm.reset();
@@ -479,19 +479,13 @@ export class EditarGmbeComponent{
       this.eliminarSubcategoriaForm.get('descripcion')?.disable();
       this.eliminarSubcategoriaForm.get('url')?.disable();
     }
-
-    this.modalRef = this.modalService.open(content, {
-      centered: true,
-      size: 'lg',
-      backdrop: 'static',
-    });
   }
 
   obtenerCategoriasEditado() {
     this.gmbservices.listarCatalogo2(2,this.id).subscribe(
       (res) => {
         this.arregloCategoriasEditado = res;
-
+        console.log(this.arregloCategoriasEditado)
       },
       (err) => { }
     );
