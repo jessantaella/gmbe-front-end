@@ -71,7 +71,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingTwo">
           <button class="accordion-button custom-accordion-button" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"  (click)="open('categoriaEditar')">
+            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"  (click)="open('categoriaEditar')" >
             Marco conceptual
           </button>
         </h2>
@@ -88,7 +88,7 @@
                   <div class="mb-3 row align-items-center">
                     <div class="row my-1">
                       <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Nombre categoría:</label>
-                      <div class="col-sm-8">
+                      <div class="col-sm-8 mt-2">
                         <select class="form-select" formControlName="categoria" 
                         (change)="this.escucharSelectEditado($event)" >
                                 <option value="" disabled >Seleccione una opción</option>
@@ -136,7 +136,7 @@
                 <form [formGroup]="editarSubcategoriaForm">
                   <div class="mb-3 row">
                     <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 mt-2">
                       <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria" (change)="obtenerSubCategoriasEditado($event)">
                         <option value="" disabled >Seleccione una opción</option>
                         <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">{{categoria.catalogo}}

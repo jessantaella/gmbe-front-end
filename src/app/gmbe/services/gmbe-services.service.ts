@@ -92,7 +92,7 @@ export class GmbeServicesService {
     return this.http.put<any>(urlEditar,categoria,{});
   }
   editarCategoria2(id:number,nombre:string, descripcion:string, complemento: string, idMbe: number):Observable<any>{
-    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe/api/gmbe-catalogos/api/mbe/upt-mbe-categoria/'+idMbe;
+    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/upt-mbe-categoria/'+idMbe;
     let categoria = {
       idTipoCatalogo: 3,
       idCatalogo:id,
@@ -104,7 +104,7 @@ export class GmbeServicesService {
   }
 
   editarSubcategoria2(id:number,nombre:string, idSub:number, descripcion:string, complemento: string,idMbe: number):Observable<any>{
-    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe/api/gmbe-catalogos/api/mbe/upt-mbe-sub-categoria/'+idMbe;
+    let urlEditar=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/mbe/upt-mbe-sub-categoria/'+idMbe;
     let categoria = {
       idTipoCatalogo: 3,
       idCatalogo:idSub,
