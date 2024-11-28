@@ -106,9 +106,9 @@ export class CrearGmbeComponent implements OnInit {
     private fb: FormBuilder,
     private gmbeservice: GmbeServicesService,
     private router: Router,
-    private storage: StorageService, 
+    private storage: StorageService,
     private cifrado: CifradoService,
-    private gestionDatos:GestionDatosGMBEService
+    private gestionDatos: GestionDatosGMBEService
   ) {
     this.usuario = JSON.parse(this.cifrado.descifrar(this.storage.getItem('usr')!));
     this.titulos.changePestaña('Crear  MBE');
@@ -203,7 +203,7 @@ export class CrearGmbeComponent implements OnInit {
 
     this.editarNombre = categoria.catalogo;
 
-    let {descripcion, complemento} = this.gestionDatos.buscarCategoriaPorId(idCategoria) || {descripcion:'',complemento:''};
+    let { descripcion, complemento } = this.gestionDatos.buscarCategoriaPorId(idCategoria) || { descripcion: '', complemento: '' };
 
     console.log(this.gestionDatos.buscarCategoriaPorId(idCategoria));
 
@@ -550,24 +550,24 @@ export class CrearGmbeComponent implements OnInit {
     }
   }
 
-  eliminarSubcategoria(tipo: number, elemento: any){
+  eliminarSubcategoria(tipo: number, elemento: any) {
     console.log(this.estructuraFinalColumnasTitulos);
     if (tipo === 1) {
       this.estructuraFinalColumnasSubitulos =
         this.estructuraFinalColumnasSubitulos.filter(
           (e: { idCatalogo: any; }) => e.idCatalogo !== elemento.idCatalogo
         );
-        this.estructuraFinalColumnasTitulos.forEach((item: { subcategorias: any[]; }) => {
-          item.subcategorias = item.subcategorias.filter(subcategoria => {
-            return subcategoria.idCatalogo !== elemento.idCatalogo;
-          });
+      this.estructuraFinalColumnasTitulos.forEach((item: { subcategorias: any[]; }) => {
+        item.subcategorias = item.subcategorias.filter(subcategoria => {
+          return subcategoria.idCatalogo !== elemento.idCatalogo;
         });
-        this.estructuraFinalColumnasTitulos = this.estructuraFinalColumnasTitulos.filter((item: { subcategorias: string | any[]; }) => item.subcategorias.length > 0);
-    }else{
+      });
+      this.estructuraFinalColumnasTitulos = this.estructuraFinalColumnasTitulos.filter((item: { subcategorias: string | any[]; }) => item.subcategorias.length > 0);
+    } else {
       this.estructuraFinalFilasSubitulos =
-      this.estructuraFinalFilasSubitulos.filter(
-        (e: { idCatalogo: any; }) => e.idCatalogo !== elemento.idCatalogo
-      );
+        this.estructuraFinalFilasSubitulos.filter(
+          (e: { idCatalogo: any; }) => e.idCatalogo !== elemento.idCatalogo
+        );
       this.estructuraFinalFilasTitulos.forEach((item: { subcategorias: any[]; }) => {
         item.subcategorias = item.subcategorias.filter(subcategoria => {
           return subcategoria.idCatalogo !== elemento.idCatalogo;
@@ -671,7 +671,7 @@ export class CrearGmbeComponent implements OnInit {
   obtenerSubCategoriasEditado(idPadre: any) {
 
     this.habilitarSub = false;
-    this.mostrarErrorurl =false;
+    this.mostrarErrorurl = false;
     this.eliminarSubcategoriaForm.get('subCategoria')?.setValue('');
     this.eliminarSubcategoriaForm.get('descripcion')?.setValue('');
     this.eliminarSubcategoriaForm.get('url')?.setValue('');
@@ -693,18 +693,18 @@ export class CrearGmbeComponent implements OnInit {
 
         this.subCategoriasEditado = res;
       });
-   
+
   }
 
   changeSubcategoria(idCatalogo: any) {
-    this.mostrarErrorurl =false;
+    this.mostrarErrorurl = false;
     let selectElement = idCatalogo.target as HTMLSelectElement;
     let selectedValue = Number(selectElement.value);
     let sub = this.subCategoriasEditado.find((e: any) => e.idCatalogo === selectedValue)
 
-    console.log(this.gestionDatos.obtenerTodasLasSubcategorias(),sub.idCatalogo)
+    console.log(this.gestionDatos.obtenerTodasLasSubcategorias(), sub.idCatalogo)
 
-    let {descripcion,complemento } = this.gestionDatos.buscarSubcategoriaPorId(sub.idCatalogo)|| {descripcion:'',complemento:''};
+    let { descripcion, complemento } = this.gestionDatos.buscarSubcategoriaPorId(sub.idCatalogo) || { descripcion: '', complemento: '' };
 
     this.editarSubcategoriaForm.get('descripcion')?.setValue(descripcion);
     this.editarSubcategoriaForm.get('url')?.setValue(complemento);
@@ -813,19 +813,32 @@ export class CrearGmbeComponent implements OnInit {
     );
   }
 
-  modificarEstructuraxCache(arreglo:any){
+  modificarEstructuraxCache(arreglo: any) {
     console.log(this.gestionDatos.obtenerTodasLasCategorias());
     console.log(this.gestionDatos.obtenerTodasLasSubcategorias());
     console.log(arreglo);
-    let aux : any[]= [];
-    arreglo.forEach((element: { idSubCategoria: number | null; idCategoria: number; }) => {
-        if(element.idSubCategoria !== null){
-          let encontrado = this.gestionDatos.buscarSubcategoriaPorId(element.idSubCategoria);
-          aux.push({idCategoria:element.idCategoria,idSubcategoria:element.idSubCategoria,descripcion:encontrado?.descripcion ?? '',complemento:encontrado?.complemento ?? ''});
-        }else{
-          let encontrado = this.gestionDatos.buscarCategoriaPorId(element.idCategoria);
-          aux.push({idCategoria:element.idCategoria,idSubcategoria:element.idSubCategoria,descripcion:encontrado?.descripcion ?? '',complemento:encontrado?.complemento ?? ''});
+    let aux: any[] = [];
+    arreglo.forEach((element: { idSubCategoria: number | null; idCategoria: number; tipo: any; }) => {
+      if (element.idSubCategoria !== null) {
+        let encontradoSub = this.gestionDatos.buscarSubcategoriaPorId(element.idSubCategoria);
+        let encontradoCat = this.gestionDatos.buscarCategoriaPorId(element.idCategoria);
+        let obj = 
+        {
+          tipo:element.tipo,
+          categoria:{id:element.idCategoria,descripcion: encontradoCat?.descripcion ?? '', complemento: encontradoCat?.complemento ?? ''},
+          subcategoria:{id:element.idSubCategoria, descripcion: encontradoSub?.descripcion ?? '', complemento: encontradoSub?.complemento ?? ''}
         }
+        aux.push(obj);
+      } else {
+        let encontradoCat = this.gestionDatos.buscarCategoriaPorId(element.idCategoria);
+        let obj = 
+        {
+          tipo:element.tipo,
+          categoria:{id:element.idCategoria,descripcion: encontradoCat?.descripcion ?? '', complemento: encontradoCat?.complemento ?? ''},
+          subcategoria:null
+        }
+        aux.push(obj);
+      }
     });
     return aux;
   }
@@ -968,10 +981,10 @@ export class CrearGmbeComponent implements OnInit {
           this.obtenerCategorias();
           this.subCategorias = [];
           this.modalRef.close();
-          if(this.gestionDatos.buscarSubcategoriaPorId(res?.data?.idCatalogo)){
-            this.gestionDatos.modificarCategoria(res?.data?.idCatalogo,descripcion,url)
-          }else{
-            this.gestionDatos.agregarCategoria(res?.data?.idCatalogo,descripcion,url);
+          if (this.gestionDatos.buscarSubcategoriaPorId(res?.data?.idCatalogo)) {
+            this.gestionDatos.modificarCategoria(res?.data?.idCatalogo, descripcion, url)
+          } else {
+            this.gestionDatos.agregarCategoria(res?.data?.idCatalogo, descripcion, url);
           }
           console.log(this.gestionDatos.obtenerTodasLasCategorias());
         }
@@ -995,7 +1008,7 @@ export class CrearGmbeComponent implements OnInit {
               confirmButton: 'guardar-swal',
               cancelButton: 'cancelar-swal',
             },
-            
+
           })
             .then((result: { isConfirmed: any }) => {
               if (result.isConfirmed) {
@@ -1019,10 +1032,10 @@ export class CrearGmbeComponent implements OnInit {
                       this.obtenerCategorias();
                       this.subCategorias = [];
                       this.modalRef.close();
-                      if(this.gestionDatos.buscarSubcategoriaPorId(res?.data?.idCatalogo)){
-                        this.gestionDatos.modificarCategoria(res?.data?.idCatalogo,descripcion,url)
-                      }else{
-                        this.gestionDatos.agregarCategoria(res?.data?.idCatalogo,descripcion,url);
+                      if (this.gestionDatos.buscarSubcategoriaPorId(res?.data?.idCatalogo)) {
+                        this.gestionDatos.modificarCategoria(res?.data?.idCatalogo, descripcion, url)
+                      } else {
+                        this.gestionDatos.agregarCategoria(res?.data?.idCatalogo, descripcion, url);
                       }
                       console.log(this.gestionDatos.obtenerTodasLasCategorias());
                     }
@@ -1054,48 +1067,48 @@ export class CrearGmbeComponent implements OnInit {
 
     descripcion = descripcion?.trim();
     url = url !== null ? url?.trim() : '';
-          if (this.tipoSeleccionado && url.length > 0) {
-            if (!this.urlPattern.test(url)) {
-              swal.fire({
-                title: '',
-                text: 'Ingresa una URL',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                customClass: {
-                  popup: 'custom-swal-popup',
-                  confirmButton: 'custom-swal-confirm-button'
-                }
-              });
-              return;
-            }
+    if (this.tipoSeleccionado && url.length > 0) {
+      if (!this.urlPattern.test(url)) {
+        swal.fire({
+          title: '',
+          text: 'Ingresa una URL',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
           }
-          let actualizado =  this.gestionDatos.modificarCategoria(id,descripcion,url);
-          if(!actualizado)  this.gestionDatos.agregarCategoria(id,descripcion,url);
-          // Verifica la respuesta de modificarCategoria si es false entonces agrega categoria
-          //this.gmbeservice.editarCategoria(id, nombre, descripcion, url).subscribe(
-          //  res => {
-              swal.fire({
-                title: '',
-                text: 'Registro editado exitosamente',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                customClass: {
-                  popup: 'custom-swal-popup',
-                  confirmButton: 'custom-swal-confirm-button'
-                }
-              });
-              if (this.modalRef) {
-                this.editarCategoriaForm.get('categoria')?.setValue('');
-                this.editarCategoriaForm.get('descripcion')?.setValue('');
-                this.editarCategoriaForm.get('url')?.setValue('');
-                this.obtenerCategorias();
-                this.subCategorias = [];
-                this.activarAgregar = false;
-                this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-                this.modalRef.close();
-                this.storage.sesionRemoveItem('EstructuraTabla');
-                console.log(this.gestionDatos.obtenerTodasLasCategorias());
-              }
+        });
+        return;
+      }
+    }
+    let actualizado = this.gestionDatos.modificarCategoria(id, descripcion, url);
+    if (!actualizado) this.gestionDatos.agregarCategoria(id, descripcion, url);
+    // Verifica la respuesta de modificarCategoria si es false entonces agrega categoria
+    //this.gmbeservice.editarCategoria(id, nombre, descripcion, url).subscribe(
+    //  res => {
+    swal.fire({
+      title: '',
+      text: 'Registro editado exitosamente',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      customClass: {
+        popup: 'custom-swal-popup',
+        confirmButton: 'custom-swal-confirm-button'
+      }
+    });
+    if (this.modalRef) {
+      this.editarCategoriaForm.get('categoria')?.setValue('');
+      this.editarCategoriaForm.get('descripcion')?.setValue('');
+      this.editarCategoriaForm.get('url')?.setValue('');
+      this.obtenerCategorias();
+      this.subCategorias = [];
+      this.activarAgregar = false;
+      this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+      this.modalRef.close();
+      this.storage.sesionRemoveItem('EstructuraTabla');
+      console.log(this.gestionDatos.obtenerTodasLasCategorias());
+    }
   }
 
   existeCategoriaSubcategoria(idCategoria: number): boolean {
@@ -1137,7 +1150,7 @@ export class CrearGmbeComponent implements OnInit {
         return;
       }
     }
-    this.gmbeservice.crearSubcategoria(nombre, this.subcategoriaForm.get('categoria')?.value, '','').subscribe(
+    this.gmbeservice.crearSubcategoria(nombre, this.subcategoriaForm.get('categoria')?.value, '', '').subscribe(
       res => {
         swal.fire({
           title: '',
@@ -1151,7 +1164,7 @@ export class CrearGmbeComponent implements OnInit {
           this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
           this.modalRef.close();
         }
-        this.gestionDatos.agregarSubcategoria(this.subcategoriaForm.get('categoria')?.value,res?.data.idCatalogo,descripcion,url);
+        this.gestionDatos.agregarSubcategoria(this.subcategoriaForm.get('categoria')?.value, res?.data.idCatalogo, descripcion, url);
       },
       err => {
         swal.close();
@@ -1195,12 +1208,12 @@ export class CrearGmbeComponent implements OnInit {
                       this.obtenerCategorias();
                       this.subCategorias = [];
                       this.modalRef.close();
-                      this.gestionDatos.agregarSubcategoria(this.subcategoriaForm.get('categoria')?.value,data?.idCatalogo,descripcion,url);
+                      this.gestionDatos.agregarSubcategoria(this.subcategoriaForm.get('categoria')?.value, data?.idCatalogo, descripcion, url);
                     }
                   });
               }
             });
-        }else{
+        } else {
           // Manejo de otros errores
           swal.fire({
             icon: 'error',
@@ -1229,74 +1242,74 @@ export class CrearGmbeComponent implements OnInit {
     url = url !== null ? url?.trim() : '';
     descripcion = descripcion !== null ? descripcion?.trim() : '';
 
-          if (this.tipoSeleccionado && url.length > 0) {
-            if (!this.urlPattern.test(url)) {
-              swal.fire({
-                title: '',
-                text: 'Ingresa una URL',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                customClass: {
-                  popup: 'custom-swal-popup',
-                  confirmButton: 'custom-swal-confirm-button'
-                }
-              });
-              return;
-            }
+    if (this.tipoSeleccionado && url.length > 0) {
+      if (!this.urlPattern.test(url)) {
+        swal.fire({
+          title: '',
+          text: 'Ingresa una URL',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'custom-swal-popup',
+            confirmButton: 'custom-swal-confirm-button'
           }
+        });
+        return;
+      }
+    }
 
-          this.gmbeservice.editarSubcategoria(id, nombre, validarIdSub, '', '').subscribe(
-            res => {
-              swal.fire({
-                title: '',
-                text: 'Registro editado exitosamente',
-                icon: 'success',
-                confirmButtonText: 'OK'
-              });
-              this.subCategoriasEditado = [];
-              //Se limpia los arrays de subcategorias agregadas y los checkboxes
-              this.subcategoriasAgregadas = [];
-              this.subCategorias = [];
-              //La bandera de guardado se pone en false
-              this.activarAgregar = false;
-              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
-              this.editarSubcategoriaForm.get('categoria')?.setValue('');
-              this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
-              this.editarSubcategoriaForm.get('descripcion')?.setValue('');
-              this.editarSubcategoriaForm.get('url')?.setValue('');
-              //Vuelve a cargar las subcategorias
-              this.obtenerCategorias();
-              this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-              this.subCategorias = [];
+    this.gmbeservice.editarSubcategoria(id, nombre, validarIdSub, '', '').subscribe(
+      res => {
+        swal.fire({
+          title: '',
+          text: 'Registro editado exitosamente',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        this.subCategoriasEditado = [];
+        //Se limpia los arrays de subcategorias agregadas y los checkboxes
+        this.subcategoriasAgregadas = [];
+        this.subCategorias = [];
+        //La bandera de guardado se pone en false
+        this.activarAgregar = false;
+        this.SelectCatelogirasForm.get('selectCategoria')?.setValue('');
+        this.editarSubcategoriaForm.get('categoria')?.setValue('');
+        this.editarSubcategoriaForm.get('subCategoria')?.setValue('');
+        this.editarSubcategoriaForm.get('descripcion')?.setValue('');
+        this.editarSubcategoriaForm.get('url')?.setValue('');
+        //Vuelve a cargar las subcategorias
+        this.obtenerCategorias();
+        this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
+        this.subCategorias = [];
 
-              this.modalService.dismissAll();
-              this.storage.sesionRemoveItem('EstructuraTabla');
-              
-              if(this.gestionDatos.buscarSubcategoriaPorId(id)){
-                this.gestionDatos.modificarSubcategoria(id,idSub,descripcion,url)
-              }else{
-                this.gestionDatos.agregarSubcategoria(id,idSub,descripcion,url);
-              }
-              console.log(this.gestionDatos.obtenerTodasLasSubcategorias());
+        this.modalService.dismissAll();
+        this.storage.sesionRemoveItem('EstructuraTabla');
 
-            },
-            err => {
+        if (this.gestionDatos.buscarSubcategoriaPorId(id)) {
+          this.gestionDatos.modificarSubcategoria(id, idSub, descripcion, url)
+        } else {
+          this.gestionDatos.agregarSubcategoria(id, idSub, descripcion, url);
+        }
+        console.log(this.gestionDatos.obtenerTodasLasSubcategorias());
 
-              // Cerrar la animación de carga
-              swal.close();
-              // Mostrar mensaje de error
-              swal.fire({
-                icon: 'error',
-                text: err.error.messaje,
-                confirmButtonText: 'OK',
-                customClass: {
-                  htmlContainer: 'titulo-swal',
-                  confirmButton: 'ok-swal',
-                }
-              })
+      },
+      err => {
 
-            }
-          );
+        // Cerrar la animación de carga
+        swal.close();
+        // Mostrar mensaje de error
+        swal.fire({
+          icon: 'error',
+          text: err.error.messaje,
+          confirmButtonText: 'OK',
+          customClass: {
+            htmlContainer: 'titulo-swal',
+            confirmButton: 'ok-swal',
+          }
+        })
+
+      }
+    );
   }
 
   eliminarCategoriaFinal() {
@@ -1337,7 +1350,7 @@ export class CrearGmbeComponent implements OnInit {
           this.obtenerCategorias();
           this.subCategorias = [];
           this.editarCategoriaForm.get('descripcion')?.setValue('');
-          
+
           this.editarCategoriaForm.get('url')?.setValue('');
           this.eliminarCategoriaForm.get('descripcion')?.setValue('');
           this.eliminarCategoriaForm.get('url')?.setValue('');
@@ -1458,7 +1471,7 @@ export class CrearGmbeComponent implements OnInit {
           this.obtenerCategorias();
           this.subCategoriasEditado = [];
           this.subCategorias = [];
-          this.gestionDatos.eliminarSubcategoria(this.eliminarSubcategoriaForm.get('categoria')?.value,id)
+          this.gestionDatos.eliminarSubcategoria(this.eliminarSubcategoriaForm.get('categoria')?.value, id)
         }
       },
     )

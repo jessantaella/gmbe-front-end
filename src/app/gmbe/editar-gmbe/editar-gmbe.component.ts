@@ -852,7 +852,7 @@ export class EditarGmbeComponent{
     console.log(nombre)
     console.log(descripcion)
 
-    this.gmbservices.crearCategoria(nombre, descripcion, url).subscribe(
+    this.gmbservices.crearCategoria(nombre).subscribe(
       res => {
         swal.fire({
           title: '',
