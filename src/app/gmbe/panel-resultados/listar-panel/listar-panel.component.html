@@ -135,7 +135,8 @@
                 *ngIf="estructuraFinalColumnasTitulos.length > 0">
                 <!-- Encabezado principal vacío para las filas -->
                  <div class="d-flex justify-content-around w-100">
-                  <span class="w-50 h-100" >Categoría General</span>
+                  <span class="w-50 h-100" style="margin-right: 10px;">Categoría General</span>
+                  <div class="separator-line" *ngIf="this.estructuraFinalFilasSubitulos.length > 0"></div>
                   <span class="w-50 h-100" *ngIf="this.estructuraFinalFilasSubitulos.length > 0" >Tipo de apoyo</span>
                  </div>
               </th>
@@ -143,7 +144,7 @@
               <!-- Encabezados de columnas (basado en idTipo: 1) -->
               <th scope="col" class="titulos-tabla align-middle"
                 *ngFor="let columna of estructuraFinalColumnasTitulos ; let i = index"
-                [ngStyle]="{'width': (this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? ancho : this.estructuraFinalColumnasTitulos[i].hijos.length * ancho) + 'px'}"
+                [ngStyle]="{'width': (this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 150 : this.estructuraFinalColumnasTitulos[i].hijos.length * 150) + 'px'}"
                 [attr.colspan]="this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria !== 0 ? this.estructuraFinalColumnasTitulos[i].hijos.length : 1"
                 [attr.rowspan]="this.estructuraFinalColumnasTitulos[i].hijos[0].idSubCategoria === 0 ? 2 : 1">
                 {{ columna.categoria }} <br>
@@ -180,7 +181,7 @@
                 <!-- Encabezado de categoría general en las filas -->
                 <!-- Encabezado de categoría general en las filas -->
                 <th class="align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" id="padre"
-                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 30, 'height': ancho}"
+                [ngStyle]="{'background-color' : fila?.color, 'color':'white', 'left': '0px', 'z-index': 30, 'height': alto}"
                 [attr.rowspan]="fila.count" 
                 [attr.colspan]="fila?.idSubCategoria !== 0 ? 1 : 2"
                 *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria !== fila?.idCategoria">
@@ -195,7 +196,7 @@
               
               <!-- Primera subcategoría de la fila -->
               <th class="subtitulos-tabla align-middle text-center" [ngClass]="{'sticky-left' : !this.modoCaptura}" scope="row" *ngIf="fila?.idSubCategoria !== 0"
-                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 30, 'height': ancho}">
+                [ngStyle]="{'background-color': fila?.color, 'color': 'white', 'left': '125px', 'width': '300px', 'z-index': 30, 'height': alto}">
                 <span style="word-break: break-word;" >{{ fila?.subCategoria }}</span>
                 <div class="text-end"
                   *ngIf="fila?.idSubCategoria !== 0 && ((fila?.descripcionSubcategoria !== null && fila?.descripcionSubcategoria !== '' ) || (fila?.complementoSubcategoria !== null && fila?.complementoSubcategoria !== '')) && !this.imprimir">
@@ -208,7 +209,7 @@
                 <!-- Iterar columnas para la subcategoría actual (idTipo: 1) -->
                 <ng-container *ngFor="let columna of estructuraFinalColumnasTitulos; let i = index; trackBy: trackByFn">
                   <th [ngStyle]="{'border': this.modoCaptura ? '0.5px solid' : ''}" #thElemento id="thElemento-{{u}}-{{i}}" class="contenido-tabla " *ngFor="let hijo of columna.hijos; let j = index; trackBy: trackByFn" style="background-color: #f0f8ff;">
-                       <app-burbujas-personales [titulo]="'panel'" *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="ancho" [alto]="ancho"></app-burbujas-personales>
+                       <app-burbujas-personales [titulo]="'panel'" *ngIf="this.validarDatos(fila.idEstructura,hijo.idEstructura)" [datosBurbujas]="datosInterseccion(fila.idEstructura,hijo.idEstructura,u,i)"  [ancho]="ancho" [alto]="alto"></app-burbujas-personales>
                   </th>
                 </ng-container>
               </tr>

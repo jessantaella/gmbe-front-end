@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, Input, PLATFORM_ID, SimpleChanges } from '@angular/core';
+import { Component, Inject, Input, PLATFORM_ID, SimpleChanges, ElementRef, ViewChild, } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./burbujas-personales.component.scss']
 })
 export class BurbujasPersonalesComponent {
+  @ViewChild('bubbleContainer', { static: true }) bubbleContainer!: ElementRef;
 
 
   @Input() datosBurbujas: Array<{
@@ -37,7 +38,7 @@ export class BurbujasPersonalesComponent {
 
   burbujasExistentes: Array<{ x: number, y: number, r: number, fillColor: string, nombreGpo: string , count:number, idGpo : number}> = [];
 
-
+  maxR = 0;
   tiempoEspera:number=10;
 
   anchoActual: number = 0; // Almacena el ancho actual
@@ -50,6 +51,14 @@ export class BurbujasPersonalesComponent {
 
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      // Solo se ejecuta en el navegador
+      const element = this.bubbleContainer.nativeElement;
+      this.ancho = element.offsetWidth>150 ? element.offsetWidth-100 : 150;
+      this.alto = element.offsetHeight>=100 ? element.offsetHeight : 100;
+      this.alto = this.burbujasExistentes.length<4 && element.offsetWidth>150 ? 80 :this.ancho; 
+    }
+
     this.inicializarBurbujas();
   }
 
@@ -114,15 +123,33 @@ export class BurbujasPersonalesComponent {
     valorMaximoZ: number;
   }) {
     const { count, nombreGpo, colorBubble, idGpo } = bubble;
-    const chartWidth = this.ancho-20 || 150;
-    const chartHeight = this.alto-20 || 150;
-    const padding = this.datosBurbujas.length>8 ? 5: 10;
+
+    if (isPlatformBrowser(this.platformId)) {
+      // Solo se ejecuta en el navegador
+      const element = this.bubbleContainer.nativeElement;
+      this.ancho = element.offsetWidth>150 ? element.offsetWidth-100 : 150;
+      this.alto = element.offsetHeight>100 ? element.offsetHeight-50 : 100;
+    }
+    console.log(this.ancho) 
+    console.log(this.alto);
+
+    const chartWidth = this.ancho-20;
+    const chartHeight = this.alto-20;
+    let padding = this.datosBurbujas.length>8 ? 5: 10;
+    padding = this.datosBurbujas.length<=2 ? 10:padding;
   
     // Determinar el count máximo para escalar los radios
     const maxCount = this.countMayor;
   
     // Contar cuántas burbujas tienen el valor máximo
     const maxCountBubbles = this.datosBurbujas.filter(b => b.count === maxCount).length;
+
+
+      // Suma todos los valores de count
+  const totalCount = this.datosBurbujas.reduce((sum, b) => sum + b.count, 0);
+
+  // Calcula la media
+  const media = totalCount / this.datosBurbujas.length;
   
     let minRadius = 4;
 
@@ -130,16 +157,33 @@ export class BurbujasPersonalesComponent {
       return item.count < min ? item.count : min;
     }, Infinity);
 
+    let maxRadius = 0;
+    if(this.ancho>150){
+       maxRadius=maxCount<20 ? maxCount*this.ancho/100 : maxCount/2*this.ancho/100
+    }else{
+      maxRadius =this.datosBurbujas.length>6 && this.ancho<=chartWidth && minCount>7?   Math.min(chartWidth, chartHeight) / 12: Math.min(chartWidth, chartHeight) / 6;
+      maxRadius = minCount>7 || this.datosBurbujas.length>10?  Math.min(chartWidth, chartHeight) / 20 : maxRadius;
+      minRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? 3: minRadius;
+      maxRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? Math.min(chartWidth, chartHeight) / 6: maxRadius;
+    }
+    if(this.datosBurbujas.length<7 && maxCount>20 && media>25){
+      maxRadius = 7;
+    }else if(this.datosBurbujas.length<7 && maxCount<10){
+      maxRadius = 10;
+    }
+    if(this.datosBurbujas.length<10 && maxCount<10 && maxCountBubbles <2){
+      maxRadius = 15;
+    }
 
-    let maxRadius =this.datosBurbujas.length>6 && this.ancho<=150 && minCount>7?   Math.min(chartWidth, chartHeight) / 12: Math.min(chartWidth, chartHeight) / 6;
-   
-    maxRadius = minCount>7 || this.datosBurbujas.length>10?  Math.min(chartWidth, chartHeight) / 20 : maxRadius;
+    if(this.datosBurbujas.length === 1){
+      maxRadius= 20;
+    }
 
-    minRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? 3: minRadius;
-    maxRadius = maxCountBubbles === this.datosBurbujas.length && maxCount < 3 ? Math.min(chartWidth, chartHeight) / 6: maxRadius;
-  
+
+    this.maxR = maxRadius;
+
     // Ajustar el radio máximo si hay muchas burbujas grandes
-    if (maxCountBubbles > 1 || this.datosBurbujas.length>8 ) {
+    if ((maxCountBubbles > 1 || this.datosBurbujas.length>8) && maxCount>2 ) {
       let divisor = this.datosBurbujas.length>7 && maxCount<3 ? 1.5:2;
       maxRadius = Math.min(
         maxRadius,
@@ -148,7 +192,7 @@ export class BurbujasPersonalesComponent {
     }
   
     // Escalar el radio
-    const r = minRadius + ((count / maxCount) * (maxRadius - minRadius));
+    const r = Math.abs( minRadius + ((count / maxCount) * (maxRadius - minRadius)));
   
     let x: number = 0,
       y: number = 0;
@@ -178,7 +222,7 @@ export class BurbujasPersonalesComponent {
         x = Math.random() * (chartWidth - 2 * r) + r;
         y = Math.random() * (chartHeight - 2 * r) + r;
         x =x+chartWidth>= this.ancho ? x-(r+padding):x;
-        y =y+chartHeight>=this.ancho ? y-(r-padding):y;
+        y =y+chartHeight>=this.alto-padding ? y-(r-padding):y-r;
   
         // Verificar superposición
         const overlappingBubble = this.burbujasExistentes.find(b =>
@@ -197,7 +241,7 @@ export class BurbujasPersonalesComponent {
         x = Math.random() * (chartWidth - 2 * r) + r;
         y = Math.random() * (chartHeight - 2 * r) + r;
         x =x+chartWidth>= this.ancho ? x-(r+padding):x;
-        y =y+chartHeight>=this.ancho ? y-(r-padding):y;
+        y =y+chartHeight>=this.alto-padding ? y-(r-padding):y-r;
   
       }
     }
@@ -206,19 +250,21 @@ export class BurbujasPersonalesComponent {
     x = Math.max(r, Math.min(chartWidth - r, x));
     y = Math.max(r, Math.min(chartHeight - r, y));
     x =x+chartWidth>= this.ancho ? x-(r+padding):x;
-    y =y+chartHeight>=this.ancho ? y-(r-padding):y;
+    y =y+chartHeight>=this.alto-padding ? y-(r-padding)-padding:y-r;
 
 
     // Añadir burbuja
     this.burbujasExistentes.push({ x, y, r, fillColor: colorBubble, nombreGpo, count, idGpo });
-  
+    console.log(this.burbujasExistentes)
     // Ajustar posiciones si hay superposiciones
     this.ajustarSuperposiciones();
+
   }
   
   
   ajustarSuperposiciones() {
-    const padding = this.datosBurbujas.length>8 ? 5: 10;
+    let padding = this.datosBurbujas.length>8 ? 5: 10;
+    padding = this.datosBurbujas.length<=2 ? 25 :padding;
   
     for (let i = 0; i < this.burbujasExistentes.length; i++) {
       for (let j = i + 1; j < this.burbujasExistentes.length; j++) {
@@ -297,5 +343,7 @@ calcularNivel(grpo: any[],valor:number){
  return position +1; // -1 si el valor no se encuentra
 }
 
+getAncho(){ return this.ancho};
+getAlto(){return this.alto;}
 
 }

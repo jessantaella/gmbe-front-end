@@ -226,3 +226,17 @@ ul:hover{
   max-height: 200px;
   overflow-y: auto;
 }
+
+.separator-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px; /* Grosor de la línea */
+  background-color: #f0f8ff; /* Color de la línea */
+  margin-left: -1px; /* Ajuste para centrar la línea */
+}
+
+th{
+  min-width: 150px
+}

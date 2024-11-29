@@ -25,7 +25,8 @@ declare var swal: any;
 })
 export class CrearGmbeComponent implements OnInit {
 
-  private urlPattern = new RegExp('^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(\/\S*)?$');
+  private urlPattern = new RegExp('^(https?:\\/\\/|www\\.)[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,})(:[0-9]{1,5})?(\\/\\S*)?$');
+
 
 
 

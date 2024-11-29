@@ -194,7 +194,11 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
     this.pantallaCargando();
     //this.escucharCambiosSelect();
     this.abrirToastAyuda = true;
-    //this.calcularDimensiones();
+    if (isPlatformBrowser(this.platformId)) {
+      this.ancho = window.innerWidth * 0.1;
+      this.alto = window.innerHeight * 0.1;
+    }
+    
   }
 
   @HostListener('window:resize', ['$event'])
@@ -211,13 +215,9 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
         });
       }
       // Solo se ejecuta en el navegador
-      this.ancho = window.innerWidth * 0.1;
-      this.alto = window.innerHeight * 0.1;
-    } else {
-      // Proporciona un valor por defecto para el servidor
-      this.ancho = 150;
-      this.alto = 150;
-    }
+      this.ancho = window.innerWidth * 0.1 < 150 ? 150 : window.innerWidth * 0.1 ;
+      this.alto = window.innerHeight * 0.1 < 100 ? 100 : window.innerHeight * 0.1;
+    } 
   }
 
   pantallaCargando() {
