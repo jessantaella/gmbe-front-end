@@ -363,6 +363,11 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
   }
 
   masInformacion() {
+    console.log('url',this.urlModal)
+    // Verifica si la URL comienza con http:// o https://
+    if (!/^https?:\/\//i.test(this.urlModal)) {
+      this.urlModal = 'https://' + this.urlModal; // Agrega https:// por defecto
+    }
     window.open(this.urlModal, '_blank');
   }
 

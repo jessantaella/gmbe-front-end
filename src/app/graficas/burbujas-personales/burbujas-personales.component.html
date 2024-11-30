@@ -1,9 +1,9 @@
-  <div #bubbleContainer class="bubble-container align-middle text-center" [ngStyle]="{'width': getAncho() > 300 ? getAncho() / 1.5 + 'px' : (getAncho() < 150 ? 150 + 'px' : getAncho() + 'px'),'height':getAlto()>=80 ? 80+'px': getAlto()+'px','margin':maxR ==10 && getAncho()>300 ? 0:'auto'}">
+  <div #bubbleContainer class="bubble-container align-middle text-center" [ngStyle]="{'width': getAncho() > 300 ? getAncho() / 1.5 + 'px' : (getAncho() < 150 ? 140 + 'px' : getAncho() + 'px'),'height':getAlto()>=80 ? 80+'px': getAlto()+'px',}">
     <div *ngFor="let bubble of burbujasExistentes"
          class="bubble"
          [style.width.px]=" (bubble.r * 2)* factorEscala"
          [style.height.px]="(bubble.r * 2)* factorEscala"
-         [style.left.px]="bubble.x"
+         [style.left.px]="bubble.x<1 ? 0:bubble.x"
          [style.top.px]="bubble.y"
          [style.zIndex]="calcularNivel(burbujasExistentes,bubble.count)"
          [style.background-color]="bubble.fillColor"
