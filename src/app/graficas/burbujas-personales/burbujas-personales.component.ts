@@ -206,7 +206,7 @@ export class BurbujasPersonalesComponent {
     const centerY = chartHeight / 2;
   
     if (count === maxCount) {
-      if (maxCountBubbles > 1000) {
+      if (maxCountBubbles > 1) {
         // Distribuir burbujas grandes en un círculo compacto
         const angleIncrement = (2 * Math.PI) / maxCountBubbles;
         const index = this.burbujasExistentes.filter(b => b.count === maxCount).length;
@@ -263,8 +263,6 @@ export class BurbujasPersonalesComponent {
     this.burbujasExistentes.push({ x, y, r, fillColor: colorBubble, nombreGpo, count, idGpo });
     // Ajustar posiciones si hay superposiciones
    this.ajustarSuperposiciones();
-   //this.distribuirBurbujas();
-
    if((this.burbujasExistentes.length>10 && media>60) || (this.burbujasExistentes.length>10 && media <4)){
     this.distribuirBurbujas();
    }
