@@ -95,7 +95,7 @@
           [attr.rowspan]="subFilas?.countSubCats"
           [attr.colspan]="subFilas?.countSubCats == 1 && subFilas?.idCategoria?.hijos?.length<1 ? 2 : 1"
           *ngIf="estructuraFinalFilasSubitulos[u - 1]?.idCategoria?.idCatalogo !== subFilas?.idCategoria?.idCatalogo"
-          [ngStyle]="{'left': '0px', 'z-index': 100,'height': 200 + 'px'}">
+          [ngStyle]="{'left': '0px', 'z-index': 100}">
         {{ subFilas?.idCategoria?.catalogo }}
       </th>
 

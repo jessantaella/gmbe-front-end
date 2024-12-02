@@ -225,7 +225,7 @@ export class BurbujasPersonalesComponent {
       // Posición aleatoria para otras burbujas
       let positioned = false;
       let attempts = 0;
-      while (!positioned && attempts < 1) {
+      while (!positioned && attempts < 10000) {
         x = Math.random() * (chartWidth - 2 * r) + r;
         y = Math.random() * (chartHeight - 2 * r) + r;
         x =x+chartWidth>= this.ancho ? x-(r+padding):x;
@@ -265,10 +265,14 @@ export class BurbujasPersonalesComponent {
     this.burbujasExistentes.push({ x, y, r, fillColor: colorBubble, nombreGpo, count, idGpo });
     // Ajustar posiciones si hay superposiciones
    //this.ajustarSuperposiciones();
-   if((this.burbujasExistentes.length>10 && media>60) || (this.burbujasExistentes.length>10 && media <4 || this.maxR>=150)){
-    this.distribuirBurbujas();
+   
+   if(this.burbujasExistentes.length<=12){
+    this.distribuirBurbujas1();
    }
 
+   if((this.burbujasExistentes.length>10 && this.valorMedio>60) || (this.burbujasExistentes.length>10 && media <4 || this.maxR>=150 || this.valorMedio<3)){
+    this.distribuirBurbujas();
+   }
   }
   
 
@@ -355,42 +359,100 @@ export class BurbujasPersonalesComponent {
       this.burbujasExistentes.push(burbuja);
     
     }
-     
-  
-  ajustarSuperposiciones() {
-    let padding = this.datosBurbujas.length>8 ? 5: 10;
-    padding = this.datosBurbujas.length<=2 ? 25 :padding;
-  
-    for (let i = 0; i < this.burbujasExistentes.length; i++) {
-      for (let j = i + 1; j < this.burbujasExistentes.length; j++) {
-        const b1 = this.burbujasExistentes[i];
-        const b2 = this.burbujasExistentes[j];
-  
-        const dist = Math.hypot(b1.x - b2.x, b1.y - b2.y);
-        const minDist = b1.r + b2.r + padding;
-  
-        if (dist < minDist) {
-          const overlap = minDist - dist;
-          const angle = Math.atan2(b2.y - b1.y, b2.x - b1.x);
-  
-          const moveX = (overlap / 2) * Math.cos(angle);
-          const moveY = (overlap / 2) * Math.sin(angle);
-  
-          b1.x -= moveX;
-          b1.y -= moveY;
-          b2.x += moveX;
-          b2.y += moveY;
-  
-          // Asegurar que no se salgan del contenedor
-          b1.x = Math.max(b1.r, Math.min((this.ancho -(b1.r*2) * b1.r) - b1.r, b1.x));
-          b1.y = Math.max(b1.r, Math.min((this.alto -(b1.r*2) * b1.r) - b1.r, b1.y));
-          b2.x = Math.max(b2.r, Math.min((this.ancho -(b2.r*2) * b2.r) - b2.r, b2.x));
-          b2.y = Math.max(b2.r, Math.min((this.alto -(b2.r*2) * b2.r) - b2.r, b2.y));
+
+    distribuirBurbujas1() {
+        const columnas = Math.ceil(Math.sqrt(this.burbujasExistentes.length)); // Número de columnas (aproximadamente raíz cuadrada del total)
+        const filas = Math.ceil(this.burbujasExistentes.length / columnas); // Número de filas
+        const cellWidth = this.ancho / columnas; // Ancho de cada celda
+        const cellHeight = this.alto / filas; // Altura de cada celda
+        const randomOffset = 0.3; // Variación aleatoria (20% del tamaño de la celda)
+      
+        let index = 0;
+      
+        // Ordenar burbujas de mayor a menor
+        this.burbujasExistentes.sort((a, b) => b.r - a.r);
+      
+        for (let fila = 0; fila < filas; fila++) {
+          for (let columna = 0; columna < columnas; columna++) {
+            if (index >= this.burbujasExistentes.length) break;
+      
+            const bubble = this.burbujasExistentes[index];
+      
+            // Coordenadas base del centro de la celda
+            const baseX = columna * cellWidth + cellWidth / 2;
+            const baseY = fila * cellHeight + cellHeight / 2;
+      
+            // Variación aleatoria dentro de la celda
+            const offsetX = (Math.random() - 0.5) * cellWidth * randomOffset;
+            const offsetY = (Math.random() - 0.5) * cellHeight * randomOffset;
+      
+            // Asignar coordenadas finales
+            bubble.x = Math.max(bubble.r, Math.min(((this.ancho-10)-(bubble.r*2)) - bubble.r, baseX + offsetX));
+            bubble.y = Math.max(bubble.r, Math.min(((this.alto-20)-(bubble.r*2)) - bubble.r, baseY + offsetY));
+            
+            index++;
+          }
         }
       }
+      
+
+    ajustarSuperposiciones() {
+      const padding = 30; // Espacio adicional para evitar superposiciones demasiado cercanas
+      const maxAttempts = 1000; // Límite de intentos
+      let attempt = 0;
+      let hasOverlap = true;
+    
+      while (hasOverlap && attempt < maxAttempts) {
+        hasOverlap = false;
+    
+        for (let i = 0; i < this.burbujasExistentes.length; i++) {
+          for (let j = i + 1; j < this.burbujasExistentes.length; j++) {
+            const b1 = this.burbujasExistentes[i];
+            const b2 = this.burbujasExistentes[j];
+    
+            const dist = Math.hypot(b1.x - b2.x, b1.y - b2.y);
+            const minDist = b1.r + b2.r + padding;
+    
+            if (dist < minDist) {
+              hasOverlap = true; // Indicar que hubo superposición en este intento
+    
+              const overlap = minDist - dist;
+              const angle = Math.atan2(b2.y - b1.y, b2.x - b1.x);
+    
+              const moveX = (overlap / 2) * Math.cos(angle);
+              const moveY = (overlap / 2) * Math.sin(angle);
+    
+              b1.x -= moveX;
+              b1.y -= moveY;
+              b2.x += moveX;
+              b2.y += moveY;
+    
+              // Asegurar que b1 se mantenga dentro del contenedor
+              b1.x = Math.max(b1.r, Math.min(this.ancho - ((b1.r * 2) - padding), b1.x-b1.r));
+              b1.y = Math.max(b1.r, Math.min(this.alto - ((b1.r * 2) - padding), b1.y-b1.r));
+    
+              // Asegurar que b2 se mantenga dentro del contenedor
+              b2.x = Math.max(b2.r, Math.min(this.ancho - ((b2.r * 2) - padding), b2.x-b1.r));
+              b2.y = Math.max(b2.r, Math.min(this.alto - ((b2.r * 2) - padding), b2.y-b2.r));
+            }
+          }
+        }
+    
+        attempt++;
+      }
+    
+      if (attempt >= maxAttempts) {
+        console.warn(`Se alcanzó el máximo de intentos (${maxAttempts}) y aún hay superposiciones.`);
+      }
+    
+      // Distribuir burbujas en el espacio disponible
+      this.burbujasExistentes.forEach(burbuja => {
+        burbuja.x = Math.max(burbuja.r, Math.min(this.ancho - ((burbuja.r * 2) - padding), burbuja.x-(burbuja.r*2)));
+        burbuja.y = Math.max(burbuja.r, Math.min(this.alto - ((burbuja.r * 2) - padding), burbuja.y-(burbuja.r*2)));
+      });
     }
-  }
-  
+    
+
   distribuirBurbujas() {
     const areaWidth = this.ancho - 20;
     const areaHeight = this.alto - 20;
@@ -518,6 +580,64 @@ calcularNivel(grpo: any[],valor:number){
  // Devolver la posición en formato 1-based (1, 2, 3, ...)
  return position +1; // -1 si el valor no se encuentra
 }
+
+calcularLeft(bubble: any, burbujasExistentes: any[], ancho: number): number {
+  const padding = 5; // Espacio mínimo entre burbujas
+  let left = bubble.x;
+
+  for (const otraBurbuja of burbujasExistentes) {
+    if (bubble === otraBurbuja) continue; // No comparar con sí misma
+
+    const distY = Math.abs(bubble.y - otraBurbuja.y);
+    const minDistY = (bubble.r * 2)+ otraBurbuja.r + padding;
+
+    if (distY < minDistY) {
+      const distX = Math.abs(left - otraBurbuja.x);
+      const minDistX = (bubble.r * 2) + otraBurbuja.r + padding;
+
+      if (distX < minDistX) {
+        // Calcular nuevo left
+        const adjustment = minDistX - distX;
+        left = otraBurbuja.x + adjustment;
+
+        // Mantener dentro de los límites
+        left = Math.max(bubble.r, Math.min(ancho - bubble.r, left));
+      }
+    }
+  }
+
+  return left;
+}
+
+calcularTop(bubble: any, burbujasExistentes: any[], alto: number): number {
+  const padding = 5; // Espacio mínimo entre burbujas
+  let top = bubble.y;
+
+  for (const otraBurbuja of burbujasExistentes) {
+    if (bubble === otraBurbuja) continue; // No comparar con sí misma
+
+    const distX = Math.abs(bubble.x - otraBurbuja.x);
+    const minDistX = (bubble.r * 2) + otraBurbuja.r + padding;
+
+    if (distX < minDistX) {
+      const distY = Math.abs(top - otraBurbuja.y);
+      const minDistY = (bubble.r * 2) + otraBurbuja.r + padding;
+
+      if (distY < minDistY) {
+        // Calcular nuevo top
+        const adjustment = minDistY - distY;
+        top = otraBurbuja.y + adjustment;
+
+        // Mantener dentro de los límites
+        top = Math.max(bubble.r, Math.min(alto - bubble.r, top));
+      }
+    }
+  }
+
+  return top;
+}
+
+
 
 
 getAncho(){ return this.ancho};
