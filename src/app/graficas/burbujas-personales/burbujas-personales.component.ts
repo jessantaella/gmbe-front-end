@@ -44,6 +44,7 @@ export class BurbujasPersonalesComponent {
   anchoActual: number = 0; // Almacena el ancho actual
   altoActual: number = 0; // Almacena el alto actual
   factorEscala: number = 1; // Factor para escalar las burbujas
+  valorMedio = 0;
 
   constructor(private router: Router,@Inject(PLATFORM_ID) private platformId: Object){
   }
@@ -258,12 +259,13 @@ export class BurbujasPersonalesComponent {
     x =x+chartWidth>= this.ancho ? x-(r+padding):x;
     y =y+chartHeight>=this.alto-padding ? y-(r-padding)-padding:y-r;
 
+    this.valorMedio =media;
 
     // Añadir burbuja
     this.burbujasExistentes.push({ x, y, r, fillColor: colorBubble, nombreGpo, count, idGpo });
     // Ajustar posiciones si hay superposiciones
-   this.ajustarSuperposiciones();
-   if((this.burbujasExistentes.length>10 && media>60) || (this.burbujasExistentes.length>10 && media <4)){
+   //this.ajustarSuperposiciones();
+   if((this.burbujasExistentes.length>10 && media>60) || (this.burbujasExistentes.length>10 && media <4 || this.maxR>=150)){
     this.distribuirBurbujas();
    }
 
@@ -380,10 +382,10 @@ export class BurbujasPersonalesComponent {
           b2.y += moveY;
   
           // Asegurar que no se salgan del contenedor
-          b1.x = Math.max(b1.r, Math.min((this.ancho * b1.r) - b1.r, b1.x));
-          b1.y = Math.max(b1.r, Math.min((this.alto * b1.r) - b1.r, b1.y));
-          b2.x = Math.max(b2.r, Math.min((this.ancho * b2.r) - b2.r, b2.x));
-          b2.y = Math.max(b2.r, Math.min((this.alto * b2.r) - b2.r, b2.y));
+          b1.x = Math.max(b1.r, Math.min((this.ancho -(b1.r*2) * b1.r) - b1.r, b1.x));
+          b1.y = Math.max(b1.r, Math.min((this.alto -(b1.r*2) * b1.r) - b1.r, b1.y));
+          b2.x = Math.max(b2.r, Math.min((this.ancho -(b2.r*2) * b2.r) - b2.r, b2.x));
+          b2.y = Math.max(b2.r, Math.min((this.alto -(b2.r*2) * b2.r) - b2.r, b2.y));
         }
       }
     }
@@ -401,84 +403,76 @@ export class BurbujasPersonalesComponent {
     const totalRadios = this.burbujasExistentes.reduce((sum, burbuja) => sum + burbuja.r, 0);
     const mediaRadios = totalRadios / this.burbujasExistentes.length;
   
-    // Verificar si son 5 o menos burbujas y la media de los radios es menor a 50
-    if (this.burbujasExistentes.length>10) {
+    if (this.burbujasExistentes.length > 10) {
       const occupiedSpaces: { x: number; y: number; r: number }[] = [];
-  
-      // Dividir las burbujas en dos sectores
       const midPoint = areaWidth / 2;
+  
       const sectorLeft = this.burbujasExistentes.slice(0, Math.ceil(this.burbujasExistentes.length / 2));
       const sectorRight = this.burbujasExistentes.slice(Math.ceil(this.burbujasExistentes.length / 2));
   
-      // Función para generar una posición aleatoria dentro de un rango
       const generateRandomPosition = (minX: number, maxX: number, minY: number, maxY: number) => {
         return {
           x: Math.random() * (maxX - minX) + minX,
-          y: Math.random() * (maxY - minY) + minY
+          y: Math.random() * (maxY - minY) + minY,
         };
       };
   
-      // Distribuir burbujas en el sector izquierdo
-      sectorLeft.forEach(burbuja => {
-        let x: number, y: number;
-        let isOverlapping = false;
-        do {
-          const position = generateRandomPosition(burbuja.r, midPoint - burbuja.r, burbuja.r, areaHeight - burbuja.r);
-          x = position.x <4 ? burbuja.r*2 : position.x;
-          y = position.y <4 ? burbuja.r*2 : position.y;
-        
-         x =
-            x >= areaWidth - burbuja.r * 2
-              ? x - burbuja.r * 2
-              : x-burbuja.r;
-          y =
-            y >= areaHeight - burbuja.r * 2
-              ? y - burbuja.r * 2
-              : y-burbuja.r;
+      const distributeSector = (sector: any[], minX: number, maxX: number, centerBias: boolean) => {
+        sector.forEach(burbuja => {
+          let x: number, y: number;
+          let isOverlapping = false;
+          let attempts = 0; // Contador de intentos
+          const maxAttempts = 1000; // Límite de intentos
   
-          // Verificar solapamiento con burbujas ya colocadas
-          isOverlapping = occupiedSpaces.some(space => {
-            const dx = x - space.x;
-            const dy = y - space.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            return distance < burbuja.r + space.r;
-          });
+          do {
+            const adjustedMinX = centerBias ? midPoint - (areaWidth / 4) : minX;
+            const adjustedMaxX = centerBias ? midPoint + (areaWidth / 4) : maxX;
   
-          if (!isOverlapping) {
-            burbuja.x = x;
-            burbuja.y = y;
-            occupiedSpaces.push({ x: burbuja.x, y: burbuja.y, r: burbuja.r });
+            const position = generateRandomPosition(
+              Math.max(adjustedMinX, burbuja.r),
+              Math.min(adjustedMaxX, areaWidth - burbuja.r),
+              burbuja.r,
+              areaHeight - burbuja.r
+            );
+  
+            x = position.x + burbuja.r*2 >this.alto ? position.x - burbuja.r*2:position.x-burbuja.r;
+            y = position.y + burbuja.r*2 >this.ancho ? position.y - burbuja.r*2:position.y-burbuja.r;
+            
+            // Verificar solapamiento
+            isOverlapping = occupiedSpaces.some(space => {
+              const dx = x - space.x;
+              const dy = y - space.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              return distance < (burbuja.r + space.r);
+            });
+  
+            attempts++; // Incrementar contador de intentos
+  
+            if (!isOverlapping) {
+              burbuja.x = x;
+              burbuja.y = y;
+              occupiedSpaces.push({ x: burbuja.x, y: burbuja.y, r: burbuja.r });
+            }
+          } while (isOverlapping && attempts < maxAttempts);
+  
+          if (attempts >= maxAttempts) {
+            console.warn(`No se pudo ubicar la burbuja después de ${maxAttempts} intentos.`, burbuja);
           }
-        } while (isOverlapping);
-      });
+        });
+      };
   
-      // Distribuir burbujas en el sector derecho
-      sectorRight.forEach(burbuja => {
-        let x: number, y: number;
-        let isOverlapping = false;
-        do {
-          const position = generateRandomPosition(midPoint + burbuja.r, areaWidth - burbuja.r, burbuja.r, areaHeight - burbuja.r);
-          x = position.x;
-          y = position.y;
+      // Determinar si la mayoría de las burbujas tiene valores pequeños
+      const smallBubbleThreshold = mediaRadios * 0.8; // Considerar "pequeñas" las burbujas con radios menores al 80% de la media
+      const smallBubblesCount = this.burbujasExistentes.filter(b => b.r < smallBubbleThreshold).length;
+      const centerBias = smallBubblesCount > this.burbujasExistentes.length / 2;
   
-          // Verificar solapamiento con burbujas ya colocadas
-          isOverlapping = occupiedSpaces.some(space => {
-            const dx = x - space.x;
-            const dy = y - space.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            return distance < burbuja.r + space.r;
-          });
-  
-          if (!isOverlapping) {
-            burbuja.x = x;
-            burbuja.y = y;
-            occupiedSpaces.push({ x: burbuja.x, y: burbuja.y, r: burbuja.r });
-          }
-        } while (isOverlapping);
-      });
+      // Distribuir burbujas en cada sector
+      distributeSector(sectorLeft, 0, midPoint, centerBias);
+      distributeSector(sectorRight, midPoint, areaWidth, centerBias);
     }
   }
   
+
       
 
   showTooltip(event: MouseEvent, bubble: any) {
@@ -524,6 +518,7 @@ calcularNivel(grpo: any[],valor:number){
  // Devolver la posición en formato 1-based (1, 2, 3, ...)
  return position +1; // -1 si el valor no se encuentra
 }
+
 
 getAncho(){ return this.ancho};
 getAlto(){return this.alto;}
