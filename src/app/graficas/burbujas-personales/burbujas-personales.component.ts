@@ -178,6 +178,10 @@ export class BurbujasPersonalesComponent {
       maxRadius= 20;
     }
 
+    if(maxRadius>40 && this.getAncho()>200){
+      maxRadius=20;
+    }
+
 
     this.maxR = maxRadius;
 

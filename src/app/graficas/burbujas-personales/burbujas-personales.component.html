@@ -1,4 +1,5 @@
   <div #bubbleContainer class="bubble-container align-middle text-center" [ngStyle]="{'width': getAncho() > 300 ? getAncho() + 'px' : (getAncho() < 150 ? 140 + 'px' : getAncho() + 'px'),'height':getAlto()>=80 ? 80+'px': getAlto()+'px',}">
+    {{maxR}} {{getAncho()}}
     <div *ngFor="let bubble of burbujasExistentes"
          class="bubble"
          [style.width.px]=" (bubble.r * 2)* factorEscala"

@@ -9,7 +9,7 @@ import { GmbeServicesService } from './gmbe/services/gmbe-services.service';
 import { CifradoService } from './services/cifrado.service';
 import { Router } from '@angular/router';
 import { TokenService } from './services/token.services';
-
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
@@ -40,14 +40,16 @@ export class AppComponent implements OnInit {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.url.loadServerConfig();
+    
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void>{
+    await this.verificarToken();
     this.notificacionesService.mostrarNotificaciones$.subscribe((mostrar) => {
       console.log('Cambio en mostrarNotificaciones:', mostrar);
       this.mostrarNotificaciones = mostrar;
     });
-    this.verificarToken();
+
     //this.consultarTags();
 
     this.meta.addTag({
@@ -135,14 +137,20 @@ export class AppComponent implements OnInit {
     console.log('Versión guardada en localStorage:', this.storage.getItem('Versión'));
   }
 
-  verificarToken(){
-    if(!this.storage.getItem('token-gmbe-publico')){
-    this.tokenServices.obtenerTokenPublico().subscribe(
-      res=>{
-        this.storage.setItem("token-gmbe-publico",this.cifrado.cifrar(res.token));
-      })
+  async verificarToken(): Promise<void> {
+    const tokenPublico = this.storage.getItem('token-gmbe-publico');
+    
+    if (!tokenPublico) {
+      try {
+        // Esperar la respuesta del token público
+        const res: any = await firstValueFrom(this.tokenServices.obtenerTokenPublico());
+        // Guardar el token cifrado en el almacenamiento
+        this.storage.setItem('token-gmbe-publico', this.cifrado.cifrar(res.token));
+      } catch (error) {
+        console.error('Error al obtener el token público:', error);
+      }
+    }
   }
-}
   
   
 }
