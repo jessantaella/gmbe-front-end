@@ -1374,7 +1374,7 @@ export class EditarGmbeComponent{
                   confirmButton: 'custom-swal-confirm-button'
                 }
               });
-              if (this.modalRef) {
+              
                 this.editarCategoriaForm.get('categoria')?.setValue('');
                 this.editarCategoriaForm.get('descripcion')?.setValue('');
                 this.editarCategoriaForm.get('url')?.setValue('');
@@ -1382,9 +1382,7 @@ export class EditarGmbeComponent{
                 this.subCategorias = [];
                 this.activarAgregar = false;
                 this.SelectCatelogirasForm.get('selectCategoria')?.setValue('0');
-                this.modalRef.close();
                 this.storage.sesionRemoveItem('EstructuraTabla');
-              }
             },
             err => {
               // Manejo de errores
