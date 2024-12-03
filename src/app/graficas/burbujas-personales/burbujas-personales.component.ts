@@ -242,8 +242,6 @@ export class BurbujasPersonalesComponent {
           attempts++;
         }
       }
-  
-      // Si no se puede encontrar un lugar después de muchos intentos, forzar la posición
       if (!positioned) {
         x = Math.random() * (chartWidth - 2 * r) + r;
         y = Math.random() * (chartHeight - 2 * r) + r;
