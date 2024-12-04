@@ -950,34 +950,44 @@ mostrarErrorUrlSubcategoria: boolean = false;
   //1:CREAR 2:EDITAR 3:CREAR CAT 4:EDITAR CAT
   validaUrl(form: number) {
     let url;
-
+    let isValid = true; 
+  
     switch (form) {
-      case 1:
+      case 1: // Validar URL de categoría en creación
         url = this.categoriaForm.get('url')?.value;
+        this.mostrarErrorUrlCategoria = false; 
         break;
-      case 2:
+      case 2: // Validar URL de categoría en edición
         url = this.editarCategoriaForm.get('url')?.value;
+        this.mostrarErrorUrlCategoria = false; 
         break;
-      case 3:
+      case 3: // Validar URL de subcategoría en creación
         url = this.subcategoriaForm.get('url')?.value;
+        this.mostrarErrorUrlSubcategoria = false; 
         break;
-      case 4:
+      case 4: // Validar URL de subcategoría en edición
         url = this.editarSubcategoriaForm.get('url')?.value;
+        this.mostrarErrorUrlSubcategoria = false; 
         break;
     }
-
-    if (url.length > 0) {
-      if (!this.urlPattern.test(url)) {
-        console.log('entro')
-        console.log(url)
-        this.mostrarErrorurl = true;
-      } else {
-        this.mostrarErrorurl = false;
-      }
-    } else {
-      this.mostrarErrorurl = false;
+  
+    if (url && url.trim().length > 0) {
+      isValid = this.urlPattern.test(url); 
     }
-
+  
+    
+    if (!isValid) {
+      switch (form) {
+        case 1:
+        case 2:
+          this.mostrarErrorUrlCategoria = true;
+          break;
+        case 3:
+        case 4:
+          this.mostrarErrorUrlSubcategoria = true;
+          break;
+      }
+    }
   }
   crearSubcategoria() {
 

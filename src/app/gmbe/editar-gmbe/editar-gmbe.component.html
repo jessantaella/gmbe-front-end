@@ -108,7 +108,7 @@
                           <label for="url" class="col-12 col-md-4 col-form-label text-md-end">Página de Interés:</label>
                           <div class="col-12 col-md-8">
                             <input type="url" id="url" class="form-control" placeholder="Página de Interés" formControlName="url" (input)="validaUrl(2)">
-                            <span *ngIf="mostrarErrorurl" class="text-danger">Ingresa una URL</span>
+                            <span *ngIf="mostrarErrorUrlCategoria" class="text-danger">Ingresa una URL</span>
                           </div>
                         </div>
                       </div>
@@ -118,7 +118,7 @@
                     <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModalCatalgo()">
                       <fa-icon [icon]="faRotateLeft"></fa-icon> Cancelar
                     </button>
-                    <button type="button" class="btn btn-sm btn-guardar" (click)="editarCategoria()" [disabled]="!editarCategoriaForm.valid || mostrarErrorurl">
+                    <button type="button" class="btn btn-sm btn-guardar" (click)="editarCategoria()" [disabled]="!editarCategoriaForm.valid || mostrarErrorUrlCategoria">
                       <fa-icon [icon]="faFloppyDisk"></fa-icon> Guardar
                     </button>
                   </div>
@@ -166,7 +166,7 @@
                           <label for="urlSub" class="col-12 col-md-4 col-form-label text-md-end">Página de Interés:</label>
                           <div class="col-12 col-md-8">
                             <input type="url" id="urlSub" class="form-control" placeholder="Página de Interés" formControlName="url" (input)="validaUrl(4)">
-                            <span *ngIf="mostrarErrorurl" class="text-danger">Ingresa una URL</span>
+                            <span *ngIf="mostrarErrorUrlSubcategoria" class="text-danger">Ingresa una URL</span>
                           </div>
                         </div>
                       </div>
@@ -176,7 +176,7 @@
                     <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModalSubCatalgo()">
                       <fa-icon [icon]="faRotateLeft"></fa-icon> Cancelar
                     </button>
-                    <button type="button" class="btn btn-sm btn-guardar" (click)="editarSubcategoria()" [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl || !this.habilitarSub">
+                    <button type="button" class="btn btn-sm btn-guardar" (click)="editarSubcategoria()" [disabled]="!editarSubcategoriaForm.valid || mostrarErrorUrlSubcategoria || !this.habilitarSub">
                       <fa-icon [icon]="faFloppyDisk"></fa-icon> Guardar
                     </button>
                   </div>
