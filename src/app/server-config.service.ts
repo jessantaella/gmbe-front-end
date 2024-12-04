@@ -39,16 +39,16 @@ export class ServerConfigService {
       if(url.includes('localhost')) {url = 'http://10.1.15.102:81/conf/server-conf.json';}
       const headers = new HttpHeaders()
   
-      /*    this.http.get<any>(url,{ headers: headers })
+          this.http.get<any>(url,{ headers: headers })
             .subscribe(response => {
-              this.serverConfig = 'http://10.1.15.156:8080/'//response.servidor;
+              this.serverConfig = response.servidor;
               if(this.storage.getItem('srv') !== this.serverConfig){
                   this.storage.setItem('srv',this.serverConfig)
               }
             }, error => {
               console.error('Error al cargar la configuración del servidor:', error);
-            });*/
-      this.serverConfig = `http://${ruta}/`;
+            });
+      //this.serverConfig = `http://${ruta}/`;
     }
   }
 
