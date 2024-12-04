@@ -241,18 +241,15 @@ mostrarErrorUrlSubcategoria: boolean = false;
     );
   }
 
-  borrarImagen() {
+  borrarImagen(): void {
     this.imageUrl = null;
+    this.imageFile = null; // También limpia cualquier archivo previamente cargado
+    this.detectarCambios(); // Asegúrate de registrar el cambio para que el botón se actualice
   }
 
   validarGuardar(): boolean {
-    // Verifica si el formulario es válido y se han detectado cambios en los campos principales
-    return (
-      this.generales.valid &&
-      (this.generales.dirty || this.imageFile !== null)
-    );
+    return this.generales.valid && (this.imageUrl !== null || this.imageFile !== null);
   }
-  
 
   
   onFileChange(event: any): void {
@@ -984,7 +981,7 @@ mostrarErrorUrlSubcategoria: boolean = false;
           break;
         case 3:
         case 4:
-          this.mostrarErrorUrlSubcategoria = true;
+          this.mostrarErrorUrlSubcategoria = true; // Error en subcategoría.
           break;
       }
     }
