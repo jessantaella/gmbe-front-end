@@ -42,7 +42,7 @@ export class ServerConfigService {
   
       try {
         const response: any = await firstValueFrom(this.http.get<any>(url, { headers }));
-        this.serverConfig = response.servidor; //'https://qa.coneval.org.mx/'; // O usa: response.servidor;
+        this.serverConfig = response.servidor;//'https://qa.coneval.org.mx/'; // O usa: response.servidor;
   
         if (this.storage.getItem('srv') !== this.serverConfig) {
           this.storage.setItem('srv', this.serverConfig);
