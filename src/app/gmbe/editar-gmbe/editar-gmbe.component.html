@@ -49,15 +49,14 @@
                     ícono MBE:</label>
                   <div class="d-flex flex-wrap align-items-center">
                     <div class="movil-imagen-padding-2 bd-highlight" *ngIf="imageUrl">
-                      <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen">
+                      <img [src]="imageUrl" alt="icono" class="img-thumbnail imagen img-margin">
                     </div>
                     <div class="movil-padding-2 bd-highlight">
                       <div class="file-upload-wrapper">
-                          <input type="file" class="file-upload-input" accept=".png, .jpg, .jpeg" (change)="onFileChange($event)">
-                          <i class="fas fa-upload upload-icon"></i>
-                        </div> 
+                        <input type="file" class="file-upload-input" accept=".png, .jpg, .jpeg" (change)="onFileChange($event)">
+                        <i class="fas fa-upload upload-icon"></i>
+                      </div>
                     </div>
-
                     <div class="p-2 bd-highlight">
                       <fa-icon [icon]="faX" class="btnOtrasAcciones" (click)="borrarImagen()"></fa-icon>
                     </div>
@@ -79,113 +78,110 @@
           <div class="accordion-body">
             <div class="container">
               <div class="row">
-                <div class="col-lg-6">
-                    <div class="modal-header">
-                      <label class="modal-title w-100 text-center tituloModal">Editar categoría</label>
-                    </div>
+                <div class="col-lg-6 col-12">
+                  <div class="modal-header">
+                    <label class="modal-title w-100 text-center tituloModal">Editar categoría</label>
+                  </div>
                   <div class="modal-body">
-                <form [formGroup]="editarCategoriaForm">
-                  <div class="mb-3 row align-items-center">
-                    <div class="row my-1">
-                      <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Nombre categoría:</label>
-                      <div class="col-sm-8 mt-2">
-                        <select class="form-select" formControlName="categoria" 
-                        (change)="this.escucharSelectEditado($event)" >
-                                <option value="" disabled >Seleccione una opción</option>
-                                <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">
-                                  {{categoria.catalogo}}</option>
-                              </select>
+                    <form [formGroup]="editarCategoriaForm">
+                      <div class="mb-3">
+                        <div class="row my-2 align-items-center">
+                          <label for="nombre" class="col-12 col-md-4 col-form-label text-md-end">Nombre categoría:</label>
+                          <div class="col-12 col-md-8 mt-2">
+                            <select class="form-select" formControlName="categoria" (change)="this.escucharSelectEditado($event)">
+                              <option value="" disabled>Seleccione una opción</option>
+                              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">
+                                {{categoria.catalogo}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+              
+                        <div class="row my-2 align-items-center">
+                          <label for="descripcion" class="col-12 col-md-4 col-form-label text-md-end">Descripción:</label>
+                          <div class="col-12 col-md-8">
+                            <textarea type="text" class="form-control" id="descripcion" placeholder="Descripción" formControlName="descripcion"></textarea>
+                          </div>
+                        </div>
+              
+                        <div class="row my-2 align-items-center">
+                          <label for="url" class="col-12 col-md-4 col-form-label text-md-end">Página de Interés:</label>
+                          <div class="col-12 col-md-8">
+                            <input type="url" id="url" class="form-control" placeholder="Página de Interés" formControlName="url" (input)="validaUrl(2)">
+                            <span *ngIf="mostrarErrorurl" class="text-danger">Ingresa una URL</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-            
-                    <div class="row my-1">
-                      <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Descripción:</label>
-                      <div class="col-sm-8">
-                        <textarea type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion"></textarea>
-                        <!--input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion"-->
+                    </form>
+                  </div>
+                  <div class="modal-footer justify-content-center mb-3">
+                    <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModalCatalgo()">
+                      <fa-icon [icon]="faRotateLeft"></fa-icon> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-sm btn-guardar" (click)="editarCategoria()" [disabled]="!editarCategoriaForm.valid || mostrarErrorurl">
+                      <fa-icon [icon]="faFloppyDisk"></fa-icon> Guardar
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="col-lg-6 col-12">
+                  <div class="modal-header">
+                    <label class="modal-title w-100 text-center tituloModal">Editar sub-categoría</label>
+                  </div>
+                  <div class="modal-body">
+                    <form [formGroup]="editarSubcategoriaForm">
+                      <div class="mb-3">
+                        <div class="row my-2 align-items-center">
+                          <label for="categoria" class="col-12 col-md-4 col-form-label text-md-end">* Nombre categoría:</label>
+                          <div class="col-12 col-md-8 mt-2">
+                            <select class="form-select" formControlName="categoria" (change)="obtenerSubCategoriasEditado($event)">
+                              <option value="" disabled>Seleccione una opción</option>
+                              <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">
+                                {{categoria.catalogo}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+              
+                        <div class="row my-2 align-items-center">
+                          <label for="subCategoria" class="col-12 col-md-4 col-form-label text-md-end">* Nombre subcategoría:</label>
+                          <div class="col-12 col-md-8">
+                            <select class="form-select" formControlName="subCategoria" (change)="changeSubcategoria($event)">
+                              <option value="" disabled>Seleccione una opción</option>
+                              <option [value]="categoria.idCatalogo" *ngFor="let categoria of subCategoriasEditado">
+                                {{categoria.catalogo}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+              
+                        <div class="row my-2 align-items-center">
+                          <label for="descripcionSub" class="col-12 col-md-4 col-form-label text-md-end">Descripción:</label>
+                          <div class="col-12 col-md-8">
+                            <textarea type="text" class="form-control" id="descripcionSub" placeholder="Descripción" formControlName="descripcion"></textarea>
+                          </div>
+                        </div>
+              
+                        <div class="row my-2 align-items-center">
+                          <label for="urlSub" class="col-12 col-md-4 col-form-label text-md-end">Página de Interés:</label>
+                          <div class="col-12 col-md-8">
+                            <input type="url" id="urlSub" class="form-control" placeholder="Página de Interés" formControlName="url" (input)="validaUrl(4)">
+                            <span *ngIf="mostrarErrorurl" class="text-danger">Ingresa una URL</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row my-1"  >
-                      <label for="nombre" class="col-sm-3 col-form-label text-sm-right text-md-end">Página de Interés:</label>
-                      <div class="col-sm-8">
-                        <input type="url" id="website" name="website" class="form-control" id="nombre" placeholder="Página de Interés" formControlName="url" (input)="validaUrl(2)">
-                          <span *ngIf="mostrarErrorurl" class="text-danger">Ingresa una URL</span>
-                      </div>
-                    </div>
+                    </form>
                   </div>
-                </form>
+                  <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModalSubCatalgo()">
+                      <fa-icon [icon]="faRotateLeft"></fa-icon> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-sm btn-guardar" (click)="editarSubcategoria()" [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl || !this.habilitarSub">
+                      <fa-icon [icon]="faFloppyDisk"></fa-icon> Guardar
+                    </button>
+                  </div>
+                </div>
               </div>
-            
-            <div class="modal-footer justify-content-center mb-3">
-              <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModalCatalgo()">
-                <fa-icon [icon]="faRotateLeft"></fa-icon>
-                Cancelar
-              </button>
-              <button type="button" class="btn btn-sm btn-guardar" (click)="editarCategoria()" [disabled]="!editarCategoriaForm.valid || mostrarErrorurl===true">
-                <fa-icon [icon]="faFloppyDisk"></fa-icon>
-                Guardar
-              </button>
-            </div>
-          </div>
-         
-          <div class="col-lg-6">
-            <div class="modal-header">
-              <label class="modal-title w-100 text-center tituloModal">Editar sub-categoría</label>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="editarSubcategoriaForm">
-                  <div class="mb-3 row">
-                    <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre categoría:</label>
-                    <div class="col-sm-6 mt-2">
-                      <select class="form-select" aria-label="Seleccione una opción" formControlName="categoria" (change)="obtenerSubCategoriasEditado($event)">
-                        <option value="" disabled >Seleccione una opción</option>
-                        <option [value]="categoria.idCatalogo" *ngFor="let categoria of arregloCategoriasEditado">{{categoria.catalogo}}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-            
-                  <div class="mb-3 row">
-                    <label for="categoria" class="col-sm-4 col-form-label text-sm-left text-md-end">* Nombre subcategoría:</label>
-                    <div class="col-sm-6">
-                      <select class="form-select" aria-label="Seleccione una opción" formControlName="subCategoria" (change)="changeSubcategoria($event)">
-                        <option value="" disabled >Seleccione una opción</option>
-                        <option [value]="categoria.idCatalogo" *ngFor="let categoria of subCategoriasEditado">{{categoria.catalogo}}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-            
-                  <div class="mb-3 row">
-                    <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Descripción:</label>
-                    <div class="col-sm-6">
-                      <textarea type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion"></textarea>
-                      <!--input type="text" class="form-control" id="nombre" placeholder="Descripción" formControlName="descripcion"-->
-                    </div>
-                  </div>
-            
-                  <div class="mb-3 row">
-                    <label for="nombre" class="col-sm-4 col-form-label text-sm-left text-md-end">Página de Interés:</label>
-                    <div class="col-sm-6">
-                      <input type="url" id="website" name="website" class="form-control" id="nombre" placeholder="Página de Interés" formControlName="url" (input)="validaUrl(4)">
-                      <span *ngIf="mostrarErrorurl"  class="text-danger">Ingresa una URL</span>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-sm btn-cancelar" (click)="this.cerrarModalSubCatalgo()">
-                  <fa-icon [icon]="faRotateLeft"></fa-icon>
-                  Cancelar
-                </button>
-                <button type="button" class="btn btn-sm btn-guardar" (click)="editarSubcategoria()"
-                  [disabled]="!editarSubcategoriaForm.valid || mostrarErrorurl===true || !this.habilitarSub">
-                  <fa-icon [icon]="faFloppyDisk"></fa-icon>
-                  Guardar
-                </button>
-              </div>
-            </div>
-          </div>
           </div>
         </div>
       </div>
