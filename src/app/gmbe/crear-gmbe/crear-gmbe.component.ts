@@ -826,7 +826,7 @@ export class CrearGmbeComponent implements OnInit {
         {
           tipo:element.tipo,
           categoria:{id:element.idCategoria,descripcion: encontradoCat?.descripcion ?? '', complemento: encontradoCat?.complemento ?? ''},
-          subcategoria:{id:element.idSubCategoria, descripcion: encontradoSub?.descripcion ?? '', complemento: encontradoSub?.complemento ?? ''}
+          subCategoria:{id:element.idSubCategoria, descripcion: encontradoSub?.descripcion ?? '', complemento: encontradoSub?.complemento ?? ''}
         }
         aux.push(obj);
       } else {
@@ -835,7 +835,7 @@ export class CrearGmbeComponent implements OnInit {
         {
           tipo:element.tipo,
           categoria:{id:element.idCategoria,descripcion: encontradoCat?.descripcion ?? '', complemento: encontradoCat?.complemento ?? ''},
-          subcategoria:null
+          subCategoria:null
         }
         aux.push(obj);
       }
