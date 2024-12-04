@@ -60,7 +60,7 @@ mostrarErrorUrlSubcategoria: boolean = false;
   puedeEditarSubCategoria: boolean = false;
   cambiosDetectados: boolean = false;
 
-  private urlPattern = new RegExp('^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(\/\S*)?$');
+  private urlPattern = new RegExp('^(https?:\\/\\/|www\\.)[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,})(:[0-9]{1,5})?(\\/\\S*)?$');
   editarNombre: any;
 
   faPlus = faPlus;
