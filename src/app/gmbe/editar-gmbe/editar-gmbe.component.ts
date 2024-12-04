@@ -56,6 +56,7 @@ export class EditarGmbeComponent{
   editarNombreSubcategoria: any;
   habilitarSub: boolean = false;
   puedeEditarSubCategoria: boolean = false;
+  cambiosDetectados: boolean = false;
 
   private urlPattern = new RegExp('^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(\/\S*)?$');
   editarNombre: any;
@@ -154,6 +155,10 @@ export class EditarGmbeComponent{
     this.reiniciarSelect();
     this.detectarSelect();
     this.bloquearInputEliminado();
+    this.generales.valueChanges.subscribe(() => {
+      this.detectarCambios(); 
+    });
+    
   }
   
   bloquearInputEliminado() {
@@ -238,9 +243,14 @@ export class EditarGmbeComponent{
     this.imageUrl = null;
   }
 
-  validarGuardar() {
-    return this.generales.valid && this.estructuraFinalFilasSubitulos.length > 0 && this.estructuraFinalColumnasSubitulos.length > 0 && this.imageFile;
+  validarGuardar(): boolean {
+    // Verifica si el formulario es válido y se han detectado cambios en los campos principales
+    return (
+      this.generales.valid &&
+      (this.generales.dirty || this.imageFile !== null)
+    );
   }
+  
 
   
   onFileChange(event: any): void {
@@ -260,6 +270,7 @@ export class EditarGmbeComponent{
       }
   
       this.imageFile = file;
+      this.detectarCambios();
   
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -269,6 +280,10 @@ export class EditarGmbeComponent{
   
       event.target.value = ''; // Limpia el input de archivo después de leerlo
     }
+  }
+
+  detectarCambios(): void {
+    this.cambiosDetectados = true;
   }
 
   guardar() {

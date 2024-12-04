@@ -1089,7 +1089,7 @@ export class CrearGmbeComponent implements OnInit {
     //  res => {
     swal.fire({
       title: '',
-      text: 'Registro editado exitosamente',
+      text: 'Los cambios realizados en la categoría se registrarán cuando se finalicé la creación del MBE',
       icon: 'success',
       confirmButtonText: 'OK',
       customClass: {
@@ -1262,7 +1262,7 @@ export class CrearGmbeComponent implements OnInit {
       res => {
         swal.fire({
           title: '',
-          text: 'Registro editado exitosamente',
+          text: 'Los cambios realizados en la sub-categoría se registrarán cuando se finalicé la creación del MBE',
           icon: 'success',
           confirmButtonText: 'OK'
         });
