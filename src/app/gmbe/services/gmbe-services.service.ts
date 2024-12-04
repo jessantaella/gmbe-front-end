@@ -18,9 +18,18 @@ export class GmbeServicesService {
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/find-by-tipo-catalogo?idTipoCatalogo='+tipo;
     return this.http.get<any>(url);
   }
+  listarCatalogo2(tipo:number, idMbe:number):Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+`api/gmbe-catalogos/api/mbe/get-mbe-categorias/${idMbe}`
+    return this.http.get<any>(url);
+  }
 
   listarSubcategorias(padre:number):Observable<any>{
     let url = this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/find-by-id-relacion?idRelacion='+padre;
+    return this.http.get<any>(url);
+  }
+
+  listarSubcategorias2(padre:number, idMbe:number):Observable<any>{
+    let url = this.serverConfigService.getServerConfig()+`api/gmbe-catalogos/api/mbe/get-mbe-sub-categorias/${idMbe}/${padre}`
     return this.http.get<any>(url);
   }
 
@@ -54,13 +63,13 @@ export class GmbeServicesService {
     return this.http.get<any>(url);
   }
 
-  crearCategoria(nombre:string, descripcion:string, complemento: string):Observable<any>{
+  crearCategoria(nombre:string):Observable<any>{
     let urlCrear=this.serverConfigService.getServerConfig()+'api/gmbe-catalogos/api/catalogo/crear';
     let categoria = {
       tipoCatalogo:'CATEGORIAS',
       catalogo:nombre,
-      descripcion:descripcion,
-      complemento:complemento,
+      descripcion:null,
+      complemento:null,
       idRelacionCatalogo:null
     };
     return this.http.post<any>(urlCrear,categoria,{});
@@ -81,6 +90,42 @@ export class GmbeServicesService {
       complemento:complemento
     };
     return this.http.put<any>(urlEditar,categoria,{});
+  }
+  editarCategoria2(id: number, nombre: string, descripcion: string, complemento: string, idMbe: number): Observable<any> {
+    const urlEditar = this.serverConfigService.getServerConfig() + 'api/gmbe-catalogos/api/mbe/upt-mbe-categoria/' + idMbe;
+  
+    // Crear un objeto FormData
+    const formData = new FormData();
+    formData.append('idTipoCatalogo', '3'); // `FormData` solo acepta strings o Blobs
+    formData.append('idCategoria', id.toString());
+    formData.append('descripcion', descripcion);
+    formData.append('complemento', complemento);
+  
+    // Hacer la solicitud PUT utilizando FormData
+    return this.http.put<any>(urlEditar, formData);
+  }
+  
+
+  editarSubcategoria2(
+    id: number,
+    nombre: string,
+    idSub: number,
+    descripcion: string,
+    complemento: string,
+    idMbe: number
+  ): Observable<any> {
+    const urlEditar = this.serverConfigService.getServerConfig() + 'api/gmbe-catalogos/api/mbe/upt-mbe-sub-categoria/' + idMbe;
+  
+    // Crear un objeto FormData
+    const formData = new FormData();
+    formData.append('idTipoCatalogo', '3'); // `FormData` solo acepta strings o Blobs
+    formData.append('idCategoria', id.toString());
+    formData.append('idSubCategoria', idSub.toString());
+    formData.append('descripcion', descripcion);
+    formData.append('complemento', complemento);
+  
+    // Hacer la solicitud PUT utilizando FormData
+    return this.http.put<any>(urlEditar, formData);
   }
 
   editarSubcategoria(id:number,nombre:string, idSub:number, descripcion:string, complemento: string):Observable<any>{

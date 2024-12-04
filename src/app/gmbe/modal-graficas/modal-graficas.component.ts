@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Inject, PLATFORM_ID, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { GmbeServicesService } from '../services/gmbe-services.service';
@@ -10,6 +10,7 @@ import {
   faRotateLeft
 } from '@fortawesome/free-solid-svg-icons';
 declare var swal: any;
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-modal-graficas',
@@ -66,6 +67,9 @@ id: number = 0;
 versionMaxima = 1;
 faRotate = faRotateLeft;
 anchoCelda = 150;
+ancho: number=150;
+alto:  number=150;
+
 
   constructor(
     private fb: FormBuilder,
@@ -73,7 +77,8 @@ anchoCelda = 150;
     private modalService: NgbModal,
     private cifrado: CifradoService,
     private storage: StorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId: object
   ) { 
     this.usuario = JSON.parse(
       this.cifrado.descifrar(this.storage.getItem('usr')!)
@@ -93,6 +98,10 @@ anchoCelda = 150;
  ngOnInit(): void {
    this.cargarEstructuraMbe();
    this.pantallaCargando();
+   if (isPlatformBrowser(this.platformId)) {
+    this.ancho = window.innerWidth * 0.1 < 150 ? 150 : window.innerWidth * 0.1 ;
+    this.alto = window.innerHeight * 0.1 < 100 ? 100 : window.innerHeight * 0.1;
+  }
  }
 
  pantallaCargando() {

@@ -18,7 +18,7 @@
                     <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
                       *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
                     <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-                      [ngStyle]="{'width': (columna.countSubCats === 0 ? anchoCelda : columna.countSubCats * anchoCelda) + 'px'}"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 150) + 'px'}"
                       *ngFor="let columna of estructuraFinalColumnasTitulos"
                       [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
                       [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
@@ -71,7 +71,7 @@
                     <th id="tituloTablaColumna" colspan="2" rowspan="2" class="titulos-tabla align-middle"
                       *ngIf="estructuraFinalColumnasTitulos.length > 0"></th>
                     <th id="subtituloTablaColumna" scope="col" class="titulos-tabla align-middle"
-                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 200) + 'px'}"
+                      [ngStyle]="{'width': (columna.countSubCats === 0 ? 150 : columna.countSubCats * 150) + 'px'}"
                       *ngFor="let columna of estructuraFinalColumnasTitulos"
                       [attr.colspan]="columna.countSubCats > 0 ? columna.countSubCats : 1"
                       [attr.rowspan]=" columna?.hijos[0].auxiliar  ? 2 : 1">
@@ -102,7 +102,7 @@
         
                     <ng-container *ngFor="let subcolumna of estructuraFinalColumnasTitulos; let i = index;">
                       <th #thElemento2 id="thElemento2-{{u}}-{{i}}"   class="contenido-tabla" *ngFor="let hijo of subcolumna.hijos; let j = index">
-                        <app-burbujas-personales *ngIf="this.validarDatosBurbujas(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" [datosBurbujas]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"  [ancho]="anchoCelda" [alto]="anchoCelda"></app-burbujas-personales>
+                        <app-burbujas-personales *ngIf="this.validarDatosBurbujas(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))" [datosBurbujas]="datosInterseccion(subFilas?.idEstructura,regresaValorSinSubcategoria(subcolumna,hijo?.idEstructura))"  [ancho]="ancho" [alto]="alto"></app-burbujas-personales>
                       </th>
                     </ng-container>
                   </tr>

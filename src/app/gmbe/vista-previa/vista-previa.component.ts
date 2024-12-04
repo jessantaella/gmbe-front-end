@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmbeServicesService } from '../services/gmbe-services.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ModalGraficasComponent } from '../modal-graficas/modal-graficas.component';
 import { DataDynamic } from 'src/app/base/services/dinamic-data.services';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var swal: any;
 
@@ -100,6 +101,9 @@ renderizadoServices: any;
 
 cuadroAmarrillo: string = '';
 
+ancho: number=150;
+alto:  number=150;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -112,7 +116,8 @@ cuadroAmarrillo: string = '';
     private imagen: DataDynamic,
     private titulos: TitulosService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.titulos.changeBienvenida(this.textoBienvenida);
     this.titulos.changePestaña(this.textoBienvenida);
@@ -145,6 +150,11 @@ cuadroAmarrillo: string = '';
     this.cargarEstructuraMbe();
     this.pantallaCargando();
     this.estatusVdalidado();
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.ancho = window.innerWidth * 0.1 < 150 ? 150 : window.innerWidth * 0.1 ;
+      this.alto = window.innerHeight * 0.1 < 100 ? 100 : window.innerHeight * 0.1;
+    }
   }
 
   renderizado() {

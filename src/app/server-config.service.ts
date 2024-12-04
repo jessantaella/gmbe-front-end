@@ -2,6 +2,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { StorageService } from './services/storage-service.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ServerConfigService {
  
 
 
-  loadServerConfig() {
+   async loadServerConfig(): Promise<void> {
     if(this.isBrowser){
       const hostname = window.location.hostname;
       //const hostname = '10.1.15.156';
@@ -39,16 +40,16 @@ export class ServerConfigService {
       if(url.includes('localhost')) {url = 'http://10.1.15.102:81/conf/server-conf.json';}
       const headers = new HttpHeaders()
   
-          this.http.get<any>(url,{ headers: headers })
-            .subscribe(response => {
-              this.serverConfig = response.servidor;
-              if(this.storage.getItem('srv') !== this.serverConfig){
-                  this.storage.setItem('srv',this.serverConfig)
-              }
-            }, error => {
-              console.error('Error al cargar la configuración del servidor:', error);
-            });
-      //this.serverConfig = `http://${ruta}/`;
+      try {
+        const response: any = await firstValueFrom(this.http.get<any>(url, { headers }));
+        this.serverConfig = response.servidor;//'https://qa.coneval.org.mx/'; // O usa: response.servidor;
+  
+        if (this.storage.getItem('srv') !== this.serverConfig) {
+          this.storage.setItem('srv', this.serverConfig);
+        }
+      } catch (error) {
+        console.error('Error al cargar la configuración del servidor:', error);
+      }
     }
   }
 

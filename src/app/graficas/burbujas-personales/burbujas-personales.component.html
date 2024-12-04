@@ -1,9 +1,9 @@
-  <div class="bubble-container" [ngStyle]="{'width.px': ancho, 'height.px': alto}">
+  <div #bubbleContainer class="bubble-container align-middle text-center" [ngStyle]="{'width': getAncho() > 300 ? getAncho() + 'px' : (getAncho() < 150 ? 140 + 'px' : getAncho() + 'px'),'height':getAlto()>=80 ? 80+'px': getAlto()+'px',}">
     <div *ngFor="let bubble of burbujasExistentes"
          class="bubble"
          [style.width.px]=" (bubble.r * 2)* factorEscala"
          [style.height.px]="(bubble.r * 2)* factorEscala"
-         [style.left.px]="bubble.x"
+         [style.left.px]="bubble.x<1 ? 0:bubble.x"
          [style.top.px]="bubble.y"
          [style.zIndex]="calcularNivel(burbujasExistentes,bubble.count)"
          [style.background-color]="bubble.fillColor"
@@ -11,7 +11,6 @@
          (mouseout)="hideTooltip()"
          (click)="redireccionar(datosBurbujas[0].idMbe,datosBurbujas[0].idFila,datosBurbujas[0].idColumna,bubble.idGpo)">
     </div>
-  
     <!-- Tooltip personalizado -->
     <div  *ngIf="tooltipVisible" class="tooltip2 text-center align-middle" [ngStyle]="tooltipStyles" width="100%">
       <div class="tooltip-color" [style.background-color]="tooltipData.fillColor"></div> 
