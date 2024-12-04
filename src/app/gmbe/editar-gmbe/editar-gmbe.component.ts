@@ -51,6 +51,8 @@ export class EditarGmbeComponent{
   activarAgregar: boolean = false;
   padreActual: number = 0;
   mostrarErrorurl: boolean = false;
+  mostrarErrorUrlCategoria: boolean = false; 
+mostrarErrorUrlSubcategoria: boolean = false; 
   existeCategoria: boolean = false;
   subCategoriasEditado: any;
   editarNombreSubcategoria: any;

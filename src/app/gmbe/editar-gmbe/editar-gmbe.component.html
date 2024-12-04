@@ -1,4 +1,4 @@
-<div class="container-fluid texto" >
+<div class="container-fluid texto margen-inferior" >
   <div class="accordion w-75 m-auto mt-3" id="accordionExample">
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
@@ -62,16 +62,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="container m-2 text-center">
-                <button class="btn btn-sm btn-cancelar m-2" [routerLink]="['/gmbe']">
-                  <fa-icon [icon]="faRotateLeft"></fa-icon>
-                  Cancelar
-                </button>
-                <button class="btn btn-sm btn-guardar m-2" [disabled]="!validarGuardar()" (click)="guardar()">
-                  <fa-icon [icon]="faFloppyDisk"></fa-icon>
-                  Guardar
-                </button>
               </div>
             </div>
           </form>
@@ -195,6 +185,16 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="container m-2 text-center">
+      <button class="btn btn-sm btn-cancelar m-2" [routerLink]="['/gmbe']">
+        <fa-icon [icon]="faRotateLeft"></fa-icon>
+        Cancelar
+      </button>
+      <button class="btn btn-sm btn-guardar m-2" [disabled]="!validarGuardar()" (click)="guardar()">
+        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+        Guardar
+      </button>
     </div>
   </div>
 </div>
