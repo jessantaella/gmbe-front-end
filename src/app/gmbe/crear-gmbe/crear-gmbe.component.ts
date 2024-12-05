@@ -1061,8 +1061,6 @@ export class CrearGmbeComponent implements OnInit {
 
   editarCategoria() {
     let id = Number(this.editarCategoriaForm.get('categoria')?.value);
-    let nombre = this.editarNombre;
-
     let descripcion = this.editarCategoriaForm.get('descripcion')?.value;
     let url = this.editarCategoriaForm.get('url')?.value;
 

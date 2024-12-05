@@ -489,7 +489,7 @@ export class BurbujasPersonalesComponent {
         };
       };
   
-      const distributeSector = (sector: any[], minX: number, maxX: number, centerBias: boolean) => {
+      const distributeSector = (sector: any[], minX: number, maxX: number) => {
         sector.forEach(burbuja => {
           let x: number, y: number;
           let isOverlapping = false;
@@ -539,8 +539,8 @@ export class BurbujasPersonalesComponent {
       const centerBias = smallBubblesCount > this.burbujasExistentes.length / 2;
   
       // Distribuir burbujas en cada sector
-      distributeSector(sectorLeft, 0, midPoint, centerBias);
-      distributeSector(sectorRight, midPoint, areaWidth, centerBias);
+      distributeSector(sectorLeft, 0, midPoint);
+      distributeSector(sectorRight, midPoint, areaWidth);
     }
   }
   
@@ -650,7 +650,7 @@ calcularTop(bubble: any, burbujasExistentes: any[], alto: number): number {
 
 
 
-getAncho(){ return this.ancho};
+getAncho(){ return this.ancho}
 getAlto(){return this.alto;}
 
 getMargin(){return Math.floor(Math.random() * 30);}

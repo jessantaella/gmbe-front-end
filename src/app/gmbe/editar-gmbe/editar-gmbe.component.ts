@@ -1232,9 +1232,9 @@ mostrarErrorUrlSubcategoria: boolean = false;
   eliminarCategoriaTabla(tipo: number, id: number) {
     console.info(id)
 
-    let aux: { categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; subcategorias: any[]; }[] = [];
+    let aux: { categoria: { idCatalogo: number; subcategorias: any[]; } ; subcategorias: any[]; }[] = [];
     this.estructuraFinalColumnasTitulos.forEach((e: {
-      categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
+      categoria: { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
     }) => {
       let sub: any[] = [];
       e.subcategorias.forEach((i: any) => {
@@ -1252,7 +1252,7 @@ mostrarErrorUrlSubcategoria: boolean = false;
     aux = [];
 
     this.estructuraFinalFilasTitulos.forEach((e: {
-      categoria: { idCatalogo: number; subcategorias: any[]; } | { idCatalogo: number; subcategorias: any[]; }; idCatalogo: number; subcategorias: any[];
+      categoria: { idCatalogo: number; subcategorias: any[]; } ; idCatalogo: number; subcategorias: any[];
     }) => {
       let sub: any[] = [];
       e.subcategorias.forEach((i: any) => {
