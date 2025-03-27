@@ -143,7 +143,9 @@ export class AppComponent implements OnInit {
     if (!tokenPublico) {
       try {
         // Esperar la respuesta del token público
-        const res: any = await firstValueFrom(this.tokenServices.obtenerTokenPublico());
+        const res: any = await setTimeout(() => {
+          this.tokenServices.obtenerTokenPublico();
+        }, 3000);
         // Guardar el token cifrado en el almacenamiento
         this.storage.setItem('token-gmbe-publico', this.cifrado.cifrar(res.token));
       } catch (error) {

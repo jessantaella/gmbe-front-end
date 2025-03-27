@@ -858,7 +858,7 @@ export class PanelResultadosComponent implements OnInit, OnDestroy{
       (res: HttpResponse<ArrayBuffer>) => {
         if (res.body!.byteLength > 0) {
           this.descargarImagenPanel();
-          const file = new Blob([res.body], { type: 'application/xlsx' });
+          const file = res.body !== null? new Blob([res.body], { type: 'application/xlsx' }) : new Blob();
           const fileURL = URL.createObjectURL(file);
           var link = document.createElement('a');
           link.href = fileURL;

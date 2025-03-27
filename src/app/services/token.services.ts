@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServerConfigService } from 'src/app/server-config.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { StorageService } from './storage-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
 
-  constructor(private http:HttpClient,private serverConfigService: ServerConfigService) { }
+  private serverConfig: string = '';
 
-  obtenerTokenPublico():Observable<any>{
-    let url = this.serverConfigService.getServerConfig()+'api/coneval-ms-auth/api/auth/token-gen';
-    return this.http.post<any>(url,{sistema:'GMBE'});
+  constructor(private http:HttpClient,private storage:StorageService) { }
+
+  obtenerTokenPublico(): Observable<any> {
+      let urlToken = this.storage.getItem('srv') + 'api/coneval-ms-auth/api/auth/token-gen';
+      return this.http.post<any>(urlToken, { sistema: 'GMBE' });
   }
 
 }
